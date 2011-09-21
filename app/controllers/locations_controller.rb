@@ -5,6 +5,8 @@ class LocationsController < ApplicationController
 
  
  def index
+   require 'Partay'
+   @reference = Partay.post('/maps/api/place/add/json?sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc1', { :location => {:lat => '33.71064',:lng => '-84.479605'}} )
     if params[:search]
       #create session object containg search adddress
       Rails.cache.write("searchtext",params[:search])
@@ -14,7 +16,7 @@ class LocationsController < ApplicationController
           url = "https://maps.googleapis.com/maps/api/place/search/json?"
           latlng=[@myGeo['results'][0]['geometry']['location']['lat'], @myGeo['results'][0]['geometry']['location']['lng']]  
            thisradius= '1500'
-          thistype= 'restaurant'
+          thistype= 'shoe_store'
           myresponse = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{latlng.join(',')}&types=#{thistype}&radius=#{thisradius}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")   
          @latlng=latlng
           @features = myresponse  
@@ -26,7 +28,7 @@ class LocationsController < ApplicationController
           @latlng=['33.758922','-84.3871099']
           lnglat = '33.758922,-84.3871099'
           thisradius= '1500'
-          thistype= 'restaurant'
+          thistype= 'shoe_store'
            myresponse = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{lnglat}&radius=#{thisradius}&types=#{thistype}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")   
            @features = myresponse
            @resultscount = @features['results'].count  

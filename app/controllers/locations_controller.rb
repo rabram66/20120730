@@ -43,8 +43,7 @@ class LocationsController < ApplicationController
   def details
    reference = params[:reference]   
    @search = Rails.cache.read("searchtext")
-    @tester = Tester.new
-  
+     
     @details = HTTParty.get( "https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")   
       end
  

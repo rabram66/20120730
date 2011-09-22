@@ -4,7 +4,7 @@ require 'httparty'
 
 class Partay
    include HTTParty
-  base_uri 'https://maps.googleapis.com' 
+   base_uri 'https://maps.googleapis.com' 
  end
 
   #add to google API

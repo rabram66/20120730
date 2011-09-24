@@ -8,7 +8,7 @@ gem 'rails', '3.0.9'
 gem 'sqlite3'
 gem 'geocoder'
 gem 'httparty'
-
+gem
 # Use unicorn as the web server
 # gem 'unicorn'
 

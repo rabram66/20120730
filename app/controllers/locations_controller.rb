@@ -3,11 +3,11 @@ class LocationsController < ApplicationController
         # GET /locations
   # GET /locations.xml
 
- 
  def index
-   require 'Partay'
-   @reference = Partay.post('/maps/api/place/add/json?sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc1', { :location => {:lat => '33.71064',:lng => '-84.479605'}} )
-    if params[:search]
+   
+  require 'Partay'
+   @reference = Partay.post('/maps/api/place/add/json?sensor=true&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc1',  {:location => {:lat => '33.71064',:lng => '-84.479605'}} )
+       if params[:search]
       #create session object containg search adddress
       Rails.cache.write("searchtext",params[:search])
       @searchtext = params[:search]
@@ -77,11 +77,13 @@ class LocationsController < ApplicationController
   # POST /locations.xml
   def create
     @location = Location.new(params[:location])
-
+      
     respond_to do |format|
       if @location.save
+ 
         format.html { redirect_to(@location, :notice => 'Location was successfully created.') }
         format.xml  { render :xml => @location, :status => :created, :location => @location }
+        
        #  @myGeo = HTTParty.post("https://maps.googleapis.com/maps/api/place/add/json?sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc", :query => {[:location][])
 
 

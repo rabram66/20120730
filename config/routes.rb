@@ -1,14 +1,16 @@
 LocationDB::Application.routes.draw do
   resources :newstuffs
 
- 
+     post "locations/index"
 
   root :to => "locations#index"
+  
   resources :locations
   get  "locations" => "locations#viewresults"
   get "locations/new" => "locations#new"
   get "details/:reference" => "locations#details", :as => :locations_details
     get "details/:id" => "locations#details", :as => :locations_details
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

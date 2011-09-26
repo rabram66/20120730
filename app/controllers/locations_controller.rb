@@ -45,7 +45,7 @@ class LocationsController < ApplicationController
    @search = Rails.cache.read("searchtext")
    @details = HTTParty.get( "https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
    
-   unless Location.find_by_reference(reference).nil?
+   unless Location.find_by_name(reference).nil?
    @newtweets = Twitter.user_timeline(Location.find_by_reference(reference).twitter).first.text
     #@newtweets = Twitter.user_timeline(@details['result']['twitter']).first.text  
       end

@@ -7,7 +7,7 @@ class LocationsController < ApplicationController
    
   if params[:search]
       #create session object containg search adddress
-      @result = request.location
+      @result = request.remote_ip
       Rails.cache.write("searchtext",params[:search])
       @searchtext = params[:search]
    

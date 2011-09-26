@@ -6,7 +6,7 @@ class Location < ActiveRecord::Base
 def fulladdress
     [address, city, state]
   end
-  attr_accessible :name, :address, :city, :state, :twitter, :phone, :latitude, :longitude
+  attr_accessible :name, :address, :city, :state, :twitter, :phone, :latitude, :longitude, :reference
   geocoded_by :address
   after_validation :geocode
   

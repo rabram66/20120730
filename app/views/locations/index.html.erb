@@ -44,7 +44,7 @@
 	</head>
 	
 <body onload="initialize()">
-	<%= @result %>
+<%= @locations.first.name %>
 			<div class="span-8"><table>
 		<tr>
 	<% form_tag locations_path, :method => 'get' do %>
@@ -61,7 +61,7 @@
     <%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %>></li>
 </ul>
 <% else%>
-<%= location.id %>
+<%= '' %>
   </tr>
 <% end %>
 <% end %>

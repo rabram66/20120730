@@ -7,7 +7,7 @@ class LocationsController < ApplicationController
    
   if params[:search]
       #create session object containg search adddress
-      @result = request.remote_ip
+ 
       Rails.cache.write("searchtext",params[:search])
       @searchtext = params[:search]
    
@@ -23,15 +23,24 @@ class LocationsController < ApplicationController
           @locations = Location.near(params[:search], 5, :order => :distance)
           else
                #if no address entered, use default address.  Helps with initial opening page
+          ipresult = request.remote_ip
+         #remember to replace hard coded ip address with ipresult in order to have dynamic location search.
+          @result = HTTParty.get( "http://geoip3.maxmind.com/b?l=NTCuakb7nqa6&i=74.244.43.206")
+          @splitResult = @result.split(',')
+          #@result = HTTParty.get( "http://geoip3.maxmind.com/b?l=NTCuakb7nqa6&i=#{ipresult}")
+         # @result = HTTParty.get( "http://api.hostip.info/get_html.php?ip=#{ipresult}&position=true")
+         
           url = "https://maps.googleapis.com/maps/api/place/search/json?"
-          @latlng=['33.758922','-84.3871099']
-          lnglat = '33.758922,-84.3871099'
-          thisradius= '1500'
+          @latlng= [@splitResult[3],@splitResult[4]]
+          lnglat = [@splitResult[3],@splitResult[4]]
+          #lnglat = '@latlng[0], @latlng[1]'
+          thisradius= '15000'
           thistype= 'restaurant'
-           myresponse = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{lnglat}&radius=#{thisradius}&types=#{thistype}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")   
-           @features = myresponse
-           @resultscount = @features['results'].count  
-          @locations = Location.find(:all, :conditions => "latitude = #{@latlng[0]}")
+           myresponse = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{lnglat.join(',')}&radius=#{thisradius}&types=#{thistype}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")   
+          @features = myresponse
+          @resultscount = @features['results'].count  
+          @locations = Location.all(:conditions => "city = 'Atlanta'")
+          #@locations = Location.find(:all, :conditions => "latitude = #{@splitResult[3]}")
  end
    respond_to do |format|
       format.html # index.html.erb

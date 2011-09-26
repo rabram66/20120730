@@ -41,7 +41,7 @@
     	
 
 var infowindow = new google.maps.InfoWindow({  
-  content: '<%= @details['result']['name']%>' ,
+  content: '<%= @details['result']['name']%> <%= @details['result']['rating']%> <%= @newtweets %>' ,
   position: latlng,
   
 }); 

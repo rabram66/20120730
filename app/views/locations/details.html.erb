@@ -38,16 +38,16 @@
       map: map,
       title: 'Click me'
         });
-    	
+  
+  var contentString = '<%= @details['result']['name']%> <%= @details['result']['rating']%> <%= @newtweets %>';	
 
 var infowindow = new google.maps.InfoWindow({  
-  content: '<%= @details['result']['name']%> <%= @details['result']['rating']%> <%= @newtweets %>' ,
+  content: contentString,
   position: latlng,
   
 }); 
 infowindow.open(map, marker);
 }
-
 
 
 </script>

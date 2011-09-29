@@ -1,5 +1,3 @@
-
-<h1>Listing Index </h1>
 <html>
 	<head>
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -20,7 +18,7 @@
     	   
     
     var myOptions = {
-      zoom: 18,
+      zoom: 15,
       center: latlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
@@ -44,39 +42,36 @@
 	</head>
 	
 <body onload="initialize()">
-			<div class="span-8"><table>
-		<tr>
+	
+<div class="container">
+	<div class="span-24">
+	<div id= "header-logo" class="span-24"><img src="http://stpaulshomecoming.com/images/header1.jpg" /></div>
+	<div class="span-15"><div class="whitebox">
 	<% form_tag locations_path, :method => 'get' do %>
-  <p>
-    <%= text_field_tag :search, params[:search] %>
+    <%= text_field_tag :search, params[:search], :size => 55 %>
     <%= submit_tag "Search", :name => nil %>
-  </p>
-<% end %></tr>
-		<tr>
+    <% end %>
+
 <% @locations.each do |location| %>
 <% if location.reference?%>
   <ul>
-    <li><%= link_to location.name, :action => 'details', :reference => location.reference %> -  <img src="http://www.1nservice.com/uploadedImages/1NService/Home/twitter_logo.jpg" width="22"/>  <%= link_to 'Edit', edit_location_path(location) %>
+    <li class="alternate"><%= link_to location.name, :action => 'details', :reference => location.reference %> -  <%= location.address %> <img src="http://www.1nservice.com/uploadedImages/1NService/Home/twitter_logo.jpg" width="12"/>  <%= link_to 'Edit', edit_location_path(location) %>
     <%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %>></li>
 </ul>
 <% else%>
 <%= '' %>
-  </tr>
-<% end %>
+
+
+ <% end %>
 <% end %>
 <% i = 0 %>
 	<%   while (i < @resultscount)%>
 	<ul>
-		<li> <%= link_to @features['results'][i]['name'], :action => 'details',  :reference => @features['results'][i]['reference']%></li>
+		<li> <%= link_to @features['results'][i]['name'], :action => 'details',  :reference => @features['results'][i]['reference']%> - <%= @features['results'][i]['vicinity']%></li>
 	</ul> 
 	<% i += 1 %>
 <% end %>
-	
+</div></div>
+  <div classs ="span-8" id="map_canvas" style="width:350px; height:200px"></div></div></div>
 
-
-</table></div>
-<div classs ="span-8" id="map_canvas" style="width:60%; height:60%"></div>
-
-
-
-
+</body>

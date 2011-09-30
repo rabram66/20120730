@@ -9,6 +9,7 @@ gem 'sqlite3'
 gem 'geocoder'
 gem 'httparty'
 gem 'twitter'
+gem 'heroku'
 
 # Use unicorn as the web server
 # gem 'unicorn'

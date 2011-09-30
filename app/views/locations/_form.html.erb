@@ -39,7 +39,7 @@
 
   <div class="field">
     <%= f.label :types %><br/>
-    <%= f.select :types, %w[Restaurant Bar Store] %>
+    <%= f.select :types, %w[Restaurant Bar Store], {:include_blank => true} %>
   </div>
 
   <div class="field">

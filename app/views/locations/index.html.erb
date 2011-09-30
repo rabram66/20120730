@@ -1,77 +1,69 @@
 <html>
-	<head>
-		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-<style type="text/css">
-  html { height: 100% }
-  body { height: 100%; margin: 0; padding: 0 }
-  #map_canvas { height: 100% }
-</style>
-<script type="text/javascript"
-    src="http://maps.googleapis.com/maps/api/js?sensor=true">
-</script>
-<script type="text/javascript">
-        
-    function initialize() {
-    	
-    	   var latlng = new google.maps.LatLng(<%= @latlng[0]%> ,<%= @latlng[1]%>  );
-    	   var latlng2 = new google.maps.LatLng(<%= @latlng[0]%> ,<%= @latlng[1]%>  );
-    	   
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+            src="http://maps.googleapis.com/maps/api/js?sensor=true">
+    </script>
+    <script type="text/javascript">        
+      function initialize() {    	
+        var latlng = new google.maps.LatLng(<%= @latlng[0]%> ,<%= @latlng[1]%>  );
+        var latlng2 = new google.maps.LatLng(<%= @latlng[0]%> ,<%= @latlng[1]%>  );    	   
     
-    var myOptions = {
-      zoom: 15,
-      center: latlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
+        var myOptions = {
+          zoom: 15,
+          center: latlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
  
-  var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);    
+        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);    
        
-  var marker = new google.maps.Marker({
-      position: latlng,
-      map: map,
-      title: 'Click me'
+        var marker = new google.maps.Marker({
+          position: latlng,
+          map: map,
+          title: 'Click me'
         });
         
-         var marker2 = new google.maps.Marker({
-      position: latlng2,
-      map: map,
-      title: 'Click me'
+        var marker2 = new google.maps.Marker({
+          position: latlng2,
+          map: map,
+          title: 'Click me'
         });
         
-  }
-</script>
-	</head>
-	
-<body onload="initialize()">
-	
-<div class="container">
-	<div class="span-24">
-	<div id= "header-logo" class="span-24"><img src="http://stpaulshomecoming.com/images/header1.jpg" /></div>
-	<div class="span-15"><div class="whitebox">
-	<% form_tag locations_path, :method => 'get' do %>
-    <%= text_field_tag :search, params[:search], :size => 55 %>
-    <%= submit_tag "Search", :name => nil %>
-    <% end %>
+      }
+    </script>
+  </head>
+  <body onload="initialize()">
+    <div class="container">
+      <div class="span-24">
+        <div id= "header-logo" class="span-24"><img src="http://stpaulshomecoming.com/images/header1.jpg" /></div>
+        <div class="span-15"><div class="whitebox">
+            <%= form_tag locations_path, :method => 'get' do %>
+              <%= text_field_tag :search, params[:search], :size => 55 %>
+              <%= submit_tag "Search", :name => nil %>
+            <% end %>
 
-<% @locations.each do |location| %>
-<% if location.reference?%>
-  <ul>
-    <li class="alternate"><%= link_to location.name, :action => 'details', :reference => location.reference %> -  <%= location.address %> <img src="http://www.1nservice.com/uploadedImages/1NService/Home/twitter_logo.jpg" width="12"/>  <%= link_to 'Edit', edit_location_path(location) %>
-    <%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %>></li>
-</ul>
-<% else%>
-<%= '' %>
-
-
- <% end %>
-<% end %>
-<% i = 0 %>
-	<%   while (i < @resultscount)%>
-	<ul>
-		<li> <%= link_to @features['results'][i]['name'], :action => 'details',  :reference => @features['results'][i]['reference']%> - <%= @features['results'][i]['vicinity']%></li>
-	</ul> 
-	<% i += 1 %>
-<% end %>
-</div></div>
-  <div classs ="span-8" id="map_canvas" style="width:350px; height:200px"></div></div></div>
-
-</body>
+            <% @locations.each do |location| %>
+              <% if location.reference?%>
+                <ul>
+                  <li class="alternate"><%= link_to location.name, :action => 'details', :reference => location.reference %> -  <%= location.address %> <img src="http://www.1nservice.com/uploadedImages/1NService/Home/twitter_logo.jpg" width="12"/>  <%= link_to 'Edit', edit_location_path(location) %>
+                    <%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %>></li>
+                </ul>
+              <% else%>
+                <%= '' %>
+              <% end %>
+            <% end %>
+            <% i = 0 %>
+            <%   while (i < @resultscount)%>
+              <ul>
+                <li> <%= link_to @features['results'][i]['name'], :action => 'details',  :reference => @features['results'][i]['reference']%> - <%= @features['results'][i]['vicinity']%></li>
+              </ul> 
+              <% i += 1 %>
+            <% end %>
+          </div></div>
+        <div classs ="span-8" id="map_canvas" style="width:350px; height:200px"></div></div></div>
+  </body>

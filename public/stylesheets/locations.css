@@ -6,6 +6,6 @@
     padding-left: 70px;
 }
 
-.tweet a, .tweet a:visited {
+.tweet a, .tweet a:visited, .feed a, .feed a:visited {
     color: #0066CC
 }

@@ -1,24 +1,104 @@
-<p id="notice"><%= notice %></p>
-<p>
-  <b>Address:</b>
-  <%= @location.address %>
-</p>
-
-<p>
-  <b>Latitude:</b>
-  <%= @location.latitude %>
-</p>
-
-<p>
-  <b>Longitude:</b>
-  <%= @location.longitude %>
-</p>
-
-
-<ul>
-<% for location in @location.nearbys(20)%>
-<li><%= link_to location.address,location%> <%= location.distance %></li>
+<% content_for :stylesheets do  %>
+  <%= stylesheet_link_tag "facebox/facebox" %>
 <% end %>
-</ul>
-<%= link_to 'Edit', edit_location_path(@location) %> |
-<%= link_to 'Back', locations_path %>
+
+<% content_for :javascripts do  %>
+  <%= javascript_include_tag "facebox/jquery", "facebox/facebox" %>
+  <script type="text/javascript">
+    jQuery(document).ready(function($) {
+      $('a[rel*=facebox]').facebox({
+        loadingImage : '../images/loading.gif',
+        closeImage   : '../images/closelabel.png'
+      })
+    })
+  </script>
+<% end %>
+
+<div id="loc_information">
+  <p id="notice"><%= notice %></p>
+  <p>
+    Thank you for signing up with Nearbythis. Below is the information that we will display when someone clicks the link to your business. 
+  </p>
+
+  <p>
+    <b>Business Name:</b>
+    <%= @location.name %>
+  </p>
+  <p>
+    <b>Address:</b>
+    <%= @location.address %>
+  </p>
+
+  <p>
+    <b>Phone:</b>
+    <%= @location.phone %>
+  </p>
+
+  <p class="tweet"> 
+    <% unless @tweet.blank? %>
+      <b>Twitter Tweet
+        (<%= link_to @location.twitter_name, "http://twitter.com/#{@location.twitter_name}", :target => "_blank" %>) 
+        - <%= link_to "Edit", "#twitter_name", :rel => "facebox"  %>:</b><br/>
+      <% @tweet.first(10).each do |tweet| %>    
+          <%= link_to @location.twitter_name, "http://twitter.com/#{@location.twitter_name}", :target => "_blank" %>: 
+          <%= tweet["text"] %> 
+        <br/>
+        <br/>
+      <% end %>
+    <% else %>
+      <%= link_to "Edit Twitter Name", "#twitter_name", :rel => "facebox"  %></b><br/>
+    <% end %>
+  </p>
+
+  <p class="feed">
+    <% unless @feed.blank? %>
+      <b>Facebook Page Feed 
+        (<%= author_link(@feed["entries"][0]["author"]["name"], @location.facebook_page_id) %>) 
+        - <%= link_to "Edit", "#facebook_page", :rel => "facebox" %>
+        :</b><br/>
+      <% @feed["entries"].first(10).each do |feed| %>
+        <% unless feed["title"].blank? %>
+            <%= author_link(feed["author"]["name"], @location.facebook_page_id) %>:
+          <%= feed["title"] %><br/><br/>
+        <% end %>
+      <% end %>
+    <% else %>
+      <%= link_to "Edit Facebook Page", "#facebook_page", :rel => "facebox" %>
+    <% end %>
+  </p>
+
+  <div id="twitter_name" style="display:none;"> 
+    <h2>Edit Facebook Page</h2>
+    <%= form_for(@location) do |f| %>
+      <div class="field">
+        <%= f.label :twitter_name %><br />
+        <%= f.text_field :twitter_name %>
+      </div>
+
+      <div class="actions">        
+        <%= f.submit "Update Twitter Name" %>
+      </div>
+    <% end %>
+  </div>
+  <div id="facebook_page" style="display:none;">
+    <h2>Edit Facebook Page</h2>
+    <%= form_for(@location) do |f| %>      
+      <div class="field">
+        <%= f.label :facebook_page_id %><br />
+        <%= f.text_field :facebook_page_id %>
+      </div>
+      <div class="actions">
+        <%= f.submit "Update Facebook Page" %>
+      </div>
+    <% end %>
+  </div> 
+
+  <ul>
+    <% for location in @location.nearbys(20)%>
+      <li><%= link_to location.address,location%> <%= location.distance %></li>
+    <% end %>
+  </ul>
+
+  <%= link_to 'Edit', edit_location_path(@location) %> |
+  <%= link_to 'Back', locations_path %>
+</div>

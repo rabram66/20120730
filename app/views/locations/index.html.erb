@@ -39,6 +39,9 @@
   </head>
   <body onload="initialize()">
     <div class="container">
+      <div class="auth">
+        <%= link_to "Signup", "/signup" %>
+      </div>      
       <div class="span-24">
         <div id= "header-logo" class="span-24"><img src="http://stpaulshomecoming.com/images/header1.jpg" /></div>
         <div class="span-15"><div class="whitebox">
@@ -65,5 +68,8 @@
               <% i += 1 %>
             <% end %>
           </div></div>
-        <div classs ="span-8" id="map_canvas" style="width:350px; height:200px"></div></div></div>
+        <div classs ="span-8" id="map_canvas" style="width:350px; height:200px"></div>        
+      </div>        
+    </div>
   </body>
+</html>

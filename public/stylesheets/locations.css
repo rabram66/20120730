@@ -2,7 +2,7 @@
     text-align: right;
 }
 
-#new_location_form, #loc_information {
+#new_location_form, #loc_information, #edit_location_form {
     padding-left: 70px;
 }
 

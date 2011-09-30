@@ -38,7 +38,7 @@ class LocationsController < ApplicationController
       myresponse = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{lnglat.join(',')}&radius=#{thisradius}&types=#{thistype}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")   
       @features = myresponse
       @resultscount = @features['results'].count  
-      @locations = Location.all(:conditions => "city = 'Atlanta'")
+      @locations = Location.all
       #@locations = Location.find(:all, :conditions => "latitude = #{@splitResult[3]}")
     end
     respond_to do |format|
@@ -55,7 +55,7 @@ class LocationsController < ApplicationController
     @details = HTTParty.get( "https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
    
     unless Location.find_by_reference(reference).nil?
-      @newtweets = Twitter.user_timeline(Location.find_by_reference(reference).twitter).first.text
+      @newtweets = Twitter.user_timeline(Location.find_by_reference(reference).twitter_name).first.text
       #@newtweets = Twitter.user_timeline(@details['result']['twitter']).first.text  
     end
   end
@@ -104,7 +104,17 @@ class LocationsController < ApplicationController
   # POST /locations
   # POST /locations.xml
   def create
-    @location = Location.new(params[:location])
+    @location = Location.new(params[:location])    
+
+    # transale address into lat/long
+    lat, long = Geocoder.coordinates(@location.full_address)     
+    
+    response = get_place_report(params[:location], long, lat)
+    
+    
+    @location.reference = response["reference"]
+    
+   
       
     respond_to do |format|
       if @location.save 
@@ -143,6 +153,18 @@ class LocationsController < ApplicationController
       format.html { redirect_to(locations_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  private 
+  
+  def get_place_report(location, long, lat)
+    myarray = {:location => {:lat => lat.to_f, :lng => long.to_f},
+      :accuracy => 50, :name => location[:name], 
+      :types => [location[:types]], :language => "en-AU"}
+    json_string = myarray.to_json()
+    
+    res = RestClient.post "https://maps.googleapis.com/maps/api/place/add/json?sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc", json_string, :content_type => :json, :accept => :json
+    ActiveSupport::JSON.decode(res)
   end
   
 end 

@@ -33,6 +33,11 @@
     <b>Phone:</b>
     <%= @location.phone %>
   </p>
+  
+  <p>
+    <b>Status:</b>
+    <%= @location.reference.nil? ? "INVALID_REQUEST" : "OK" %>
+  </p>
 
   <p class="tweet"> 
     <% unless @tweet.blank? %>

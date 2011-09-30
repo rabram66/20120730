@@ -18,6 +18,10 @@ class Location < ActiveRecord::Base
     [address, city, state]
   end
   
+  def full_address
+    "#{address} #{city}, #{state}"
+  end
+  
   attr_accessible :name, :address, :city, :state, :twitter, 
                   :phone, :latitude, :longitude, :reference, :email, 
                   :types, :twitter_name, :facebook_page_id

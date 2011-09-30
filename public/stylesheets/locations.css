@@ -1,0 +1,11 @@
+.auth {
+    text-align: right;
+}
+
+#new_location_form, #loc_information {
+    padding-left: 70px;
+}
+
+.tweet a, .tweet a:visited {
+    color: #0066CC
+}

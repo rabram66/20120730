@@ -112,5 +112,6 @@ DEPENDENCIES
   heroku
   httparty
   rails (= 3.0.9)
+  rest-client (~> 1.6.7)
   sqlite3
   twitter

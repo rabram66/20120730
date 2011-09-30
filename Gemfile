@@ -10,6 +10,7 @@ gem 'geocoder'
 gem 'httparty'
 gem 'twitter'
 gem 'heroku'
+gem "rest-client", "~> 1.6.7"
 
 # Use unicorn as the web server
 # gem 'unicorn'

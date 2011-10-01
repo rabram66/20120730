@@ -131,6 +131,15 @@ class LocationsController < ApplicationController
   # PUT /locations/1.xml
   def update
     @location = Location.find(params[:id])
+    
+    full_address = "#{params[:location][:address]} #{params[:location][:city]}, #{params[:location][:state]}"
+    # transale address into lat/long
+    lat, long = Geocoder.coordinates(full_address)     
+    
+    response = get_place_report(params[:location], long, lat)
+    
+    
+    @location.reference = response["reference"]
 
     respond_to do |format|
       if @location.update_attributes(params[:location])

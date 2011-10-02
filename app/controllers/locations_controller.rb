@@ -66,8 +66,10 @@ class LocationsController < ApplicationController
     @location = Location.find(params[:id])
     
     begin
+      # convert real name to id
       res_page = RestClient.get "https://graph.facebook.com/#{@location.facebook_page_id}"
       result_page = ActiveSupport::JSON.decode(res_page) 
+      
       facebook_link = "http://www.facebook.com/feeds/page.php?id=#{result_page["id"]}&format=json"
       res = RestClient.get facebook_link
       @feed = ActiveSupport::JSON.decode(res)

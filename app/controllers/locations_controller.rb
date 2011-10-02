@@ -66,16 +66,18 @@ class LocationsController < ApplicationController
     @location = Location.find(params[:id])
     
     begin
-    facebook_link = "http://www.facebook.com/feeds/page.php?id=#{@location.facebook_page_id}&format=json"
-    res = RestClient.get facebook_link
-    @feed = ActiveSupport::JSON.decode(res)
+      res_page = RestClient.get "https://graph.facebook.com/#{@location.facebook_page_id}"
+      result_page = ActiveSupport::JSON.decode(res_page) 
+      facebook_link = "http://www.facebook.com/feeds/page.php?id=#{result_page["id"]}&format=json"
+      res = RestClient.get facebook_link
+      @feed = ActiveSupport::JSON.decode(res)
     rescue
     end
     
     begin
-    twitter_link = "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=#{@location.twitter_name}"
-    timeline = RestClient.get twitter_link
-    @tweet = ActiveSupport::JSON.decode(timeline)
+      twitter_link = "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=#{@location.twitter_name}"
+      timeline = RestClient.get twitter_link
+      @tweet = ActiveSupport::JSON.decode(timeline)
     rescue
     end
     
@@ -114,7 +116,6 @@ class LocationsController < ApplicationController
     
     @location.reference = response["reference"]
     
-   
       
     respond_to do |format|
       if @location.save 

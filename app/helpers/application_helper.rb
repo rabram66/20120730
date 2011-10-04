@@ -13,7 +13,7 @@ module ApplicationHelper
   end
   
   def rating_info
-    "Rating #{@details['result']['rating']} out of 5" unless @details['result']['rating']
+    "Rating #{@details['result']['rating']} out of 5" unless @details['result']['rating'].blank?
   end
   
   def twitter_feed

@@ -13,9 +13,15 @@
   
       var marker = new google.maps.Marker({position: myLatLng, map: map, title: 'Click me' });
   
-      var contentString = "<b><%= raw business_name %></b> <%= rating_info %> \n" +
-        "<br/><img src='/images/twitter-logo.jpg' style='vertical-align:bottom'/><%= raw @last_tweet %>" +
-        "<br/><img src='/images/facebook-logo.png'  style='vertical-align:bottom'/><%= raw @last_post %>";
+      var contentString  = "<b><%= raw business_name %></b> <%= rating_info %> \n";
+      if (<%= raw @last_tweet %> != null) {
+        contentString += "<br/><img src='/images/twitter-logo.jpg' style='vertical-align:bottom'/><%= raw @last_tweet %>";
+      }
+          
+      if (<%= raw @last_post %> != null) {
+        contentString += "<br/><img src='/images/facebook-logo.png'  style='vertical-align:bottom'/><%= raw @last_post %>";
+      }
+          
 
       var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});
         

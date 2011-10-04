@@ -14,8 +14,8 @@
       var marker = new google.maps.Marker({position: myLatLng, map: map, title: 'Click me' });
   
       var contentString = "<b><%= raw business_name %></b> <%= rating_info %> \n" +
-          "<br/><img src='/images/twitter-logo.jpg' style='vertical-align:bottom'/><%= raw @last_tweet %>" +
-          "<br/><img src='/images/facebook-logo.png'  style='vertical-align:bottom'/><%= raw @last_post %>";
+        "<br/><img src='/images/twitter-logo.jpg' style='vertical-align:bottom'/><%= raw @last_tweet %>" +
+        "<br/><img src='/images/facebook-logo.png'  style='vertical-align:bottom'/><%= raw @last_post %>";
 
       var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});
         
@@ -27,3 +27,10 @@
 <li> <%= location['lat']%> , <%= location['lng']%> </li>
 <li><%= @newtweets %></li>
 <div id="map_canvas"></div>
+<div id="people_saying">
+  <% @people_saying.each do |say| %>
+    <div>
+      <%= say["text"] %>
+    </div>    
+  <% end %>
+</div>

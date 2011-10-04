@@ -9,4 +9,21 @@ body { height: 100%; margin: 0; padding: 0 }
 
 #people_saying {
     float: right;
+    width: 300px;    
 }
+
+#people_saying .tweet_result {
+    border: 2px solid #DDDDDD;
+    padding:7px;
+}
+
+body {line-height:1.5;background:none !important;}
+
+body {font-size:75%;color:#222;background:none !important;font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;}
+
+
+#detail {
+    width:960px; margin:0 auto;
+}
+
+

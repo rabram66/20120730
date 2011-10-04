@@ -23,14 +23,26 @@
     }
   </script>
 <% end %>
-<h2>Details </h2>
-<li> <%= location['lat']%> , <%= location['lng']%> </li>
-<li><%= @newtweets %></li>
-<div id="map_canvas"></div>
-<div id="people_saying">
-  <% @people_saying.each do |say| %>
-    <div>
-      <%= say["text"] %>
-    </div>    
-  <% end %>
+<div id="detail">  
+  <br/><br/>
+  <div id="map_canvas"></div>
+  <div id="people_saying">
+    <table class="tweet_result">
+      <% @people_saying['results'].first(8).each do |say| %>
+        <tr>
+          <td>
+            <a href="http://twitter.com/<%= say['from_user'] %>" target="_blank">
+              <img src="<%= say["profile_image_url"] %>" />
+            </a>
+          </td>
+          <td>
+            <a href="http://twitter.com/<%= say['from_user'] %>/status/<%= say['id'] %>" target="_blank">
+              <%= say["text"] %>
+            </a>
+          </td>
+        </tr>
+      <% end %>
+    </table>  
+  </div>
+  <br/><br/>
 </div>

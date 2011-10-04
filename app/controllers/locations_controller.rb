@@ -56,9 +56,8 @@ class LocationsController < ApplicationController
     unless location.nil?
       @last_tweet = get_last_tweet(location)
       @last_post = get_last_post(location)      
-    end
-    
-    @people_saying = get_tweet_search(@details['result']['name']) unless @details.nil?
+    end    
+    @people_saying = get_tweet_search(@details['result']['name'], @details['result']['types'][0]) unless @details.nil?
   end
  
    
@@ -197,8 +196,8 @@ class LocationsController < ApplicationController
     ActiveSupport::JSON.decode(timeline).first["text"]    
   end
   
-  def get_tweet_search(busness_name) 
-    tweet = RestClient.get "http://search.twitter.com/search.json?q=#{busness_name}&count=10"
+  def get_tweet_search(busness_name, type) 
+    tweet = RestClient.get  "http://search.twitter.com/search.json?q=#{busness_name.gsub(" ", "+")}+#{type}&count=10"    
     ActiveSupport::JSON.decode(tweet)
   end
   

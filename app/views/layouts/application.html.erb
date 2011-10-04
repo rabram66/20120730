@@ -8,7 +8,7 @@
     <%= yield :javascripts %>  
     <%= csrf_meta_tag %>
   </head>
-  <body>
+  <body onload="<%= "initialize()" unless location.nil? %>">
     <%= yield %>
   </body>
 </html>

@@ -48,18 +48,16 @@ class LocationsController < ApplicationController
   end
  
   def details
-    require 'rubygems'
-    require 'twitter'
     reference = params[:reference]   
     @search = Rails.cache.read("searchtext")
-    @details = HTTParty.get( "https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-   
-    unless Location.find_by_reference(reference).nil?
-      @newtweets = Twitter.user_timeline(Location.find_by_reference(reference).twitter_name).first.text
-      #@newtweets = Twitter.user_timeline(@details['result']['twitter']).first.text  
+    @details = HTTParty.get("https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+    
+    location = Location.find_by_reference(reference)    
+    unless location.nil?
+      @last_tweet = get_last_tweet(location)
+      @last_post = get_last_post(location)
     end
   end
-    
  
    
   def show
@@ -177,6 +175,24 @@ class LocationsController < ApplicationController
     
     res = RestClient.post "https://maps.googleapis.com/maps/api/place/add/json?sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc", json_string, :content_type => :json, :accept => :json
     ActiveSupport::JSON.decode(res)
+  end
+  
+  def get_last_post(location)
+    unless location.facebook_page_id.blank?
+      # convert real name to id      
+      res_page = RestClient.get "https://graph.facebook.com/#{location.facebook_page_id}"
+      result_page = ActiveSupport::JSON.decode(res_page) 
+      
+      facebook_link = "http://www.facebook.com/feeds/page.php?id=#{result_page["id"]}&format=json"
+      res = RestClient.get facebook_link
+      results = ActiveSupport::JSON.decode(res)
+      return results["entries"].first["title"]
+    end
+  end
+  
+  def get_last_tweet(location)
+    timeline = RestClient.get "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=#{location.twitter_name}&count=1"
+    ActiveSupport::JSON.decode(timeline).first["text"]    
   end
   
 end 

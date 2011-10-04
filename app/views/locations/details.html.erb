@@ -1,49 +1,29 @@
-<html>
-  <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <style type="text/css">
-      html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0 }
-      #map_canvas { height: 100% }
-    </style>
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true">
-    </script>
-    <script type="text/javascript">        
-      function initialize() {
-        var latlng = new google.maps.LatLng(<%= @details['result']['geometry']['location']['lat']%> , <%= @details['result']['geometry']['location']['lng']%>);
+<% content_for :javascripts do %>
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>    
+  <script type="text/javascript">        
+    function initialize() {
+      var latlng = new google.maps.LatLng(<%= location['lat'] %> , <%= location['lng'] %>);
     
-        var myOptions = {
-          zoom: 18,
-          center: latlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
+      var myOptions = {zoom: 18, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP};
  
-        var map = new google.maps.Map(document.getElementById("map_canvas"),
-        myOptions);    
+      var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);    
         
       
-        var myLatLng = new google.maps.LatLng(<%= @details['result']['geometry']['location']['lat']%>, <%= @details['result']['geometry']['location']['lng']%>);
+      var myLatLng = new google.maps.LatLng(<%= location['lat'] %>, <%= location['lng'] %>);
   
-        var marker = new google.maps.Marker({
-          position: myLatLng,
-          map: map,
-          title: 'Click me'
-        });
+      var marker = new google.maps.Marker({position: myLatLng, map: map, title: 'Click me' });
   
-        var contentString = "<%= raw @details['result']['name'] %> <%= @details['result']['rating']%> <%= raw @newtweets %>";
+      var contentString = "<b><%= raw business_name %></b> <%= rating_info %> \n" +
+          "<br/><img src='/images/twitter-logo.jpg'/><%= raw @last_tweet %>" +
+          "<br/><img src='/images/facebook-logo.png'/><%= raw @last_post %>";
 
-        var infowindow = new google.maps.InfoWindow({  
-          content: contentString,
-          position: latlng}); 
-        infowindow.open(map, marker);
-      }
-    </script>
-
-  </head>
-  <body onload="initialize()">
-    <h2>Details </h2>
-  <li> <%= @details['result']['geometry']['location']['lat']%> , <%= @details['result']['geometry']['location']['lng']%> </li>
-  <li><%= @newtweets %></li>
-  <div id="map_canvas" style="width:100%; height:100%"></div>
-</body>
-</html>
+      var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});
+        
+      infowindow.open(map, marker);
+    }
+  </script>
+<% end %>
+<h2>Details </h2>
+<li> <%= location['lat']%> , <%= location['lng']%> </li>
+<li><%= @newtweets %></li>
+<div id="map_canvas"></div>

@@ -16,8 +16,20 @@ module ApplicationHelper
     "Rating #{@details['result']['rating']} out of 5" unless @details['result']['rating']
   end
   
-  def last_tweet
-    
+  def twitter_feed
+    str = ""
+    unless @last_tweet.blank?      
+      str += @last_tweet["text"].gsub("\n", " ");
+    end
+    str
+  end
+  
+  def facebook_feed
+    str = ""
+    unless @last_post.blank?
+      str += @last_post.gsub("\n", " ")
+    end
+    str
   end
   
   def last_post

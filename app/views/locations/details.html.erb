@@ -14,16 +14,16 @@
       var marker = new google.maps.Marker({position: myLatLng, map: map, title: 'Click me' });
   
       var contentString  = "<b><%= raw business_name %></b> <%= rating_info %> \n";
+      if ("<%= twitter_feed %>" !=  "") {
+        contentString += "<br/><img src='/images/twitter-logo.jpg' style='vertical-align:bottom;'/>";
+        contentString += "<a href=\"http://twitter.com/<%= @location.twitter_name %>/status/<%= @last_tweet['id'] %>\" target=\"_blank\"><%= twitter_feed %></a>";
+      }
+          
+      if ("<%= facebook_feed %>" !=  "") {
+        contentString += "<br/><img src='/images/facebook-logo.png'  style='vertical-align:bottom'/>"
+        contentString += "<a target='_blank' href='<%= @is_real_name == true ?  "http://www.facebook.com/#{@location.facebook_page_id }" : "http://www.facebook.com/pages/#{ @location.name.gsub(" ", "-") }/#{@location.facebook_page_id }" %>'><%= facebook_feed %></a>";
+      }
       
-      if ("<%= raw @last_tweet.gsub("\n", " ") %>" != null) {
-        contentString += "<br/><img src='/images/twitter-logo.jpg' style='vertical-align:bottom'/><%= raw @last_tweet.gsub("\n", " ") %>";
-      }
-          
-      if ("<%= raw @last_post.gsub("\n", " ") %>" != null) {
-        contentString += "<br/><img src='/images/facebook-logo.png'  style='vertical-align:bottom'/><%= raw @last_post.gsub("\n", " ") %>";
-      }
-          
-
       var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});
         
       infowindow.open(map, marker); 

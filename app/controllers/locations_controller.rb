@@ -52,11 +52,11 @@ class LocationsController < ApplicationController
     @search = Rails.cache.read("searchtext")
     @details = HTTParty.get("https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
     
-    debugger
-    location = Location.find_by_reference(reference)    
-    unless location.nil?
-      @last_tweet = get_last_tweet(location)
-      @last_post = get_last_post(location)      
+    @location = Location.find_by_reference(reference)      
+    unless @location.blank?
+      @is_real_name = is_real_name(@location.facebook_page_id)
+      @last_tweet = get_last_tweet(@location)
+      @last_post = get_last_post(@location)      
     end    
     @people_saying = get_tweet_search(@details['result']['name'], @details['result']['types'][0]) unless @details.nil?
   end
@@ -181,25 +181,35 @@ class LocationsController < ApplicationController
   
   def get_last_post(location)
     unless location.facebook_page_id.blank?
-      # convert real name to id      
-      res_page = RestClient.get "https://graph.facebook.com/#{location.facebook_page_id}"
-      result_page = ActiveSupport::JSON.decode(res_page) 
+      # convert real name to id  
+      id = location.facebook_page_id
+      if is_real_name(location.facebook_page_id)
+        res_page = RestClient.get "https://graph.facebook.com/#{location.facebook_page_id}"
+        result_page = ActiveSupport::JSON.decode(res_page) 
+        id = result_page["id"]
+      end
       
-      facebook_link = "http://www.facebook.com/feeds/page.php?id=#{result_page["id"]}&format=json"
+      debugger
+      facebook_link = "http://www.facebook.com/feeds/page.php?id=#{id}&format=json"
       res = RestClient.get facebook_link
       results = ActiveSupport::JSON.decode(res)
+      
       return results["entries"].first["title"]
     end
   end
   
   def get_last_tweet(location)
     timeline = RestClient.get "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=#{location.twitter_name}&count=1"
-    ActiveSupport::JSON.decode(timeline).first["text"]    
+    ActiveSupport::JSON.decode(timeline).first 
   end
   
   def get_tweet_search(busness_name, type) 
     tweet = RestClient.get  "http://search.twitter.com/search.json?q=#{busness_name.gsub(" ", "+")}+#{type}&count=10"    
     ActiveSupport::JSON.decode(tweet)
+  end
+  
+  def is_real_name(name)
+    name.to_i == 0? true : false
   end
   
 end 

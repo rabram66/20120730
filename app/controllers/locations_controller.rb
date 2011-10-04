@@ -189,7 +189,6 @@ class LocationsController < ApplicationController
         id = result_page["id"]
       end
       
-      debugger
       facebook_link = "http://www.facebook.com/feeds/page.php?id=#{id}&format=json"
       res = RestClient.get facebook_link
       results = ActiveSupport::JSON.decode(res)

@@ -203,7 +203,7 @@ class LocationsController < ApplicationController
   end
   
   def get_tweet_search(busness_name, type) 
-    tweet = RestClient.get  "http://search.twitter.com/search.json?q=#{busness_name.gsub(" ", "+")}+#{type}&count=10"    
+    tweet = RestClient.get  "http://search.twitter.com/search.json?q=#{busness_name.gsub(" ", "+")}&count=10"    
     ActiveSupport::JSON.decode(tweet)
   end
   

@@ -20,7 +20,7 @@ module ApplicationHelper
     str = ""
     unless @last_tweet.blank?      
       str += @last_tweet["text"].gsub("\n", " ");
-    end
+    end    
     str
   end
   

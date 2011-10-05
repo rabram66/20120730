@@ -21,7 +21,7 @@
           
       if ("<%= facebook_feed %>" !=  "") {
         contentString += "<br/><img src='/images/facebook-logo.png'  style='vertical-align:bottom'/>"
-        contentString += "<a target='_blank' href='<%= @is_real_name == true ?  "http://www.facebook.com/#{@location.facebook_page_id }" : "http://www.facebook.com/pages/#{ @location.name.gsub(" ", "-") }/#{@location.facebook_page_id }" %>'><%= facebook_feed %></a>";
+        contentString += "<a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id %>'><%= facebook_feed %></a>";
       }
       
       var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});
@@ -31,6 +31,7 @@
   </script>
 <% end %>
 <div id="detail">  
+  facebook page id: <%= @location.facebook_page_id %>
   <br/><br/>
   <div id="map_canvas"></div>
   <div id="people_saying">

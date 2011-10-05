@@ -17,7 +17,7 @@
       
       if ("<%= twitter_feed %>" !=  "") {
         contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td><img src='/images/twitter-logo.jpg'/></td>";
-        contentString += "<td><a href=\"http://twitter.com/<%= @last_tweet.first['user']['screen_name'] %>/status/<%= @last_tweet.first['id'] %>\" target=\"_blank\"><%= twitter_feed %></a></td></tr></table>";
+        contentString += "<td><a href=\"http://twitter.com/<%= @last_tweet.first['user']['screen_name'] unless @last_tweet.blank? %>/status/<%= @last_tweet.first['id'] unless @last_tweet.blank? %>\" target=\"_blank\"><%= twitter_feed %></a></td></tr></table>";
       }
           
       if ("<%= facebook_feed %>" !=  "") {

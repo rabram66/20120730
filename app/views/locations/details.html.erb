@@ -30,11 +30,16 @@
     }
   </script>
 <% end %>
+  
 <div id="detail">  
   <br/><br/>
+  
   <div id="map_canvas"></div>
   <div id="people_saying">
     <table class="tweet_result">
+      <tr>
+        <td colspan="2" class="back_index"><%= link_to 'Back', locations_path %></td>
+      </tr>
       <% @people_saying['results'].first(8).each do |say| %>
         <tr>
           <td>

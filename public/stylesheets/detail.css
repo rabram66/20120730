@@ -26,4 +26,6 @@ body {font-size:75%;color:#222;background:none !important;font-family:"Helvetica
     width:960px; margin:0 auto;
 }
 
-
+.back_index {
+    text-align: right;
+}

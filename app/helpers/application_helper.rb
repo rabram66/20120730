@@ -18,8 +18,7 @@ module ApplicationHelper
   
   def twitter_feed
     str = ""
-    unless @last_tweet.blank?
-      str += "@#{@details['result']['name']} "
+    unless @last_tweet.blank?      
       str += @last_tweet.first["text"].gsub("\n", " ");
     end
     str

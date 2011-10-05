@@ -21,8 +21,8 @@
       }
           
       if ("<%= facebook_feed %>" !=  "") {
-        contentString += "<img src='/images/facebook-logo.png'  style='vertical-align:bottom'/>"
-        contentString += "<a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id  unless @location.blank? %>'><%= facebook_feed %></a>";
+        contentString += "<table style='margin-bottom:0px !important;'><tr><td><img src='/images/facebook-logo.png'/></td>"
+        contentString += "<td><a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id  unless @location.blank? %>'><%= facebook_feed %></a></td></tr></table>";
       }
       
       var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});

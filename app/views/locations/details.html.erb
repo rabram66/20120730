@@ -16,12 +16,12 @@
       var contentString  = "<b><%= raw business_name %></b> <%= rating_info %> \n";
       
       if ("<%= twitter_feed %>" !=  "") {
-        contentString += "<br/><img src='/images/twitter-logo.jpg' style='vertical-align:bottom;'/>";
-        contentString += "<a href=\"http://twitter.com/<%= @location.twitter_name unless @location.blank? %>/status/<%= @last_tweet['id'] unless @last_tweet.nil? %>\" target=\"_blank\"><%= twitter_feed %></a>";
+        contentString += "<table style='margin-bottom:0px !important;'><tr><td><img src='/images/twitter-logo.jpg'/></td>";
+        contentString += "<td><a href=\"http://twitter.com/<%= @last_tweet['results'].first['from_user'] %>/status/<%= @last_tweet['results'].first['id'] %>\" target=\"_blank\"><%= twitter_feed %></a></td></tr></table>";
       }
           
       if ("<%= facebook_feed %>" !=  "") {
-        contentString += "<br/><img src='/images/facebook-logo.png'  style='vertical-align:bottom'/>"
+        contentString += "<img src='/images/facebook-logo.png'  style='vertical-align:bottom'/>"
         contentString += "<a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id  unless @location.blank? %>'><%= facebook_feed %></a>";
       }
       
@@ -31,28 +31,30 @@
     }
   </script>
 <% end %>
-  
+
 <div id="detail">  
   <br/><br/>
   <div class="back_index"><%= link_to 'Back', locations_path %></div>
   <div id="map_canvas"></div>
-  <div id="people_saying">
-    <table class="tweet_result">      
-      <% @people_saying['results'].first(8).each do |say| %>
-        <tr>
-          <td>
-            <a href="http://twitter.com/<%= say['from_user'] %>" target="_blank">
-              <img src="<%= say["profile_image_url"] %>" />
-            </a>
-          </td>
-          <td>
-            <a href="http://twitter.com/<%= say['from_user'] %>/status/<%= say['id'] %>" target="_blank">
-              <%= say["text"] %>
-            </a>
-          </td>
-        </tr>
-      <% end %>
-    </table>  
-  </div>
+  <% unless @user_saying.blank? %>
+    <div id="people_saying">
+      <table class="tweet_result">      
+        <% @user_saying.first(8).each_with_index do |user_say, index| %>         
+            <tr>
+              <td>
+                <a href="http://twitter.com/<%= user_say['user']['screen_name'] %>" target="_blank">
+                  <img src="<%= user_say['user']["profile_image_url"] %>" />
+                </a>
+              </td>
+              <td>
+                <a href="http://twitter.com/<%= user_say['user']['screen_name'] %>/status/<%= user_say['id_str'] %>" target="_blank">
+                  <%= user_say["text"] %>
+                </a>
+              </td>
+            </tr>
+          <% end %>       
+      </table>  
+    </div>
+  <% end %>
   <br/><br/>
 </div>

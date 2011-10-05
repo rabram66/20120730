@@ -20,8 +20,8 @@ module ApplicationHelper
     str = ""
     unless @last_tweet.blank?
       str += "@#{@details['result']['name']} "
-      str += @last_tweet['results'].first["text"].gsub("\n", " ");
-    end    
+      str += @last_tweet.first["text"].gsub("\n", " ");
+    end
     str
   end
   

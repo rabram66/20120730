@@ -54,11 +54,12 @@ class LocationsController < ApplicationController
     
     @location = Location.find_by_reference(reference)    
     unless @location.blank?
-      @is_real_name = is_real_name(@location.facebook_page_id)
-      @user_saying = get_tweet_search(@location)
+      @is_real_name = is_real_name(@location.facebook_page_id)      
+      @last_tweet = get_last_tweet(@location.twitter_name)    
       @last_post = get_last_post(@location)      
     end    
-    @last_tweet = get_last_tweet(@details['result']['name'])    
+    @user_saying = get_tweet_search(@details['result']['name'])
+    debugger
   end
  
    
@@ -197,14 +198,14 @@ class LocationsController < ApplicationController
     end
   end
   
-  def get_last_tweet(bussiness_name)    
-    tweet = RestClient.get  "http://search.twitter.com/search.json?q=#{bussiness_name.gsub(" ", "+")}&count=1"    
-    ActiveSupport::JSON.decode(tweet)    
+  def get_last_tweet(user_name)    
+    timeline = RestClient.get "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=#{user_name}&count=1"
+    ActiveSupport::JSON.decode(timeline)    
   end
   
-  def get_tweet_search(location) 
-    timeline = RestClient.get "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=#{location.twitter_name}&count=10"
-    ActiveSupport::JSON.decode(timeline)
+  def get_tweet_search(bussiness_name) 
+    tweet = RestClient.get  "http://search.twitter.com/search.json?q=#{bussiness_name.gsub(" ", "+")}&count=10"    
+    ActiveSupport::JSON.decode(tweet)    
   end
   
   def is_real_name(name)

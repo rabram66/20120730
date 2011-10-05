@@ -1,6 +1,6 @@
 <% content_for :javascripts do %>
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>    
-  <script type="text/javascript">        
+  <script type="text/javascript">    
     function initialize() {
       var latlng = new google.maps.LatLng(<%= location['lat'] %> , <%= location['lng'] %>);
     
@@ -14,14 +14,15 @@
       var marker = new google.maps.Marker({position: myLatLng, map: map, title: 'Click me' });
   
       var contentString  = "<b><%= raw business_name %></b> <%= rating_info %> \n";
+      
       if ("<%= twitter_feed %>" !=  "") {
         contentString += "<br/><img src='/images/twitter-logo.jpg' style='vertical-align:bottom;'/>";
-        contentString += "<a href=\"http://twitter.com/<%= @location.twitter_name %>/status/<%= @last_tweet['id'] %>\" target=\"_blank\"><%= twitter_feed %></a>";
+        contentString += "<a href=\"http://twitter.com/<%= @location.twitter_name unless @location.blank? %>/status/<%= @last_tweet['id'] unless @last_tweet.nil? %>\" target=\"_blank\"><%= twitter_feed %></a>";
       }
           
       if ("<%= facebook_feed %>" !=  "") {
         contentString += "<br/><img src='/images/facebook-logo.png'  style='vertical-align:bottom'/>"
-        contentString += "<a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id %>'><%= facebook_feed %></a>";
+        contentString += "<a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id  unless @location.blank? %>'><%= facebook_feed %></a>";
       }
       
       var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});

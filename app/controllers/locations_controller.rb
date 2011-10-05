@@ -50,10 +50,9 @@ class LocationsController < ApplicationController
   def details
     reference = params[:reference]   
     @search = Rails.cache.read("searchtext")
-    @details = HTTParty.get("https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+    @details = HTTParty.get("https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=true&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
     
-    @location = Location.find_by_reference(reference)   
-    
+    @location = Location.find_by_reference(reference)    
     unless @location.blank?
       @is_real_name = is_real_name(@location.facebook_page_id)
       @last_tweet = get_last_tweet(@location)

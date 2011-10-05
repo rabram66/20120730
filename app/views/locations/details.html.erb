@@ -33,13 +33,10 @@
   
 <div id="detail">  
   <br/><br/>
-  
+  <div class="back_index"><%= link_to 'Back', locations_path %></div>
   <div id="map_canvas"></div>
   <div id="people_saying">
-    <table class="tweet_result">
-      <tr>
-        <td colspan="2" class="back_index"><%= link_to 'Back', locations_path %></td>
-      </tr>
+    <table class="tweet_result">      
       <% @people_saying['results'].first(8).each do |say| %>
         <tr>
           <td>

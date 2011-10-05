@@ -58,8 +58,7 @@ class LocationsController < ApplicationController
       @last_tweet = get_last_tweet(@location.twitter_name)    
       @last_post = get_last_post(@location)      
     end    
-    @user_saying = get_tweet_search(@details['result']['name'])
-    debugger
+    @user_saying = get_tweet_search(@details['result']['name'])    
   end
  
    

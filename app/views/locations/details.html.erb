@@ -16,12 +16,12 @@
       var contentString  = "<b><%= raw business_name %></b> <%= rating_info %> \n";
       
       if ("<%= twitter_feed %>" !=  "") {
-        contentString += "<table style='margin-bottom:0px !important;'><tr><td><img src='/images/twitter-logo.jpg'/></td>";
+        contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td><img src='/images/twitter-logo.jpg'/></td>";
         contentString += "<td><a href=\"http://twitter.com/<%= @last_tweet['results'].first['from_user'] %>/status/<%= @last_tweet['results'].first['id'] %>\" target=\"_blank\"><%= twitter_feed %></a></td></tr></table>";
       }
           
       if ("<%= facebook_feed %>" !=  "") {
-        contentString += "<table style='margin-bottom:0px !important;'><tr><td><img src='/images/facebook-logo.png'/></td>"
+        contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td><img src='/images/facebook-logo.png'/></td>"
         contentString += "<td><a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id  unless @location.blank? %>'><%= facebook_feed %></a></td></tr></table>";
       }
       

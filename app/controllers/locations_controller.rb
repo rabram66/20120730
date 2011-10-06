@@ -50,15 +50,15 @@ class LocationsController < ApplicationController
   def details
     reference = params[:reference]   
     @search = Rails.cache.read("searchtext")
-    @details = HTTParty.get("https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=true&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+    @details = get_place_response(reference)
     
     @location = Location.find_by_reference(reference)    
     unless @location.blank?
-      @is_real_name = is_real_name(@location.facebook_page_id)      
       @last_tweet = get_last_tweet(@location.twitter_name)    
-      @last_post = get_last_post(@location)      
+      @last_post = get_last_post(@location)
+      @user_saying = get_tweet_search(@location.twitter_name)
     end    
-    @user_saying = get_tweet_search(@details['result']['name'])    
+    
   end
  
    
@@ -179,6 +179,10 @@ class LocationsController < ApplicationController
     ActiveSupport::JSON.decode(res)
   end
   
+  def get_place_response(reference)
+    HTTParty.get("https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=true&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+  end
+  
   def get_last_post(location)
     unless location.facebook_page_id.blank?
       # convert real name to id  
@@ -193,7 +197,7 @@ class LocationsController < ApplicationController
       res = RestClient.get facebook_link
       results = ActiveSupport::JSON.decode(res)
       
-      return results["entries"].first["title"]
+      return results["entries"].first["title"] unless results["entries"].blank?
     end
   end
   
@@ -203,7 +207,7 @@ class LocationsController < ApplicationController
   end
   
   def get_tweet_search(bussiness_name) 
-    tweet = RestClient.get  "http://search.twitter.com/search.json?q=#{bussiness_name.gsub(" ", "+")}&count=10"    
+    tweet = RestClient.get  "http://search.twitter.com/search.json?q=@#{bussiness_name.gsub(" ", "+")}&count=10"    
     ActiveSupport::JSON.decode(tweet)    
   end
   

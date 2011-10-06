@@ -5,17 +5,16 @@ class LocationsController < ApplicationController
   TYPE = 'restaurant'
   # GET /locations
   # GET /locations.xml
-  def index   
-    search = params[:search]
-    unless search.blank?
-      Rails.cache.write("searchtext", search)
-      @latlng = Geocoder.coordinates(search)      
+  def index    
+    session[:search] = params[:search] unless params[:search].blank?
+    unless session[:search].blank?      
+      @latlng = Geocoder.coordinates(session[:search])
     else
       @latlng = request.location.coordinates      
-      search = @latlng
+      session[:search] = @latlng
     end    
     @place_responses = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{@latlng.join(',')}&types=#{TYPE}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")         
-    @locations = Location.near(search, 5, :order => :distance)
+    @locations = Location.near(session[:search], 5, :order => :distance)
   end
  
   def details

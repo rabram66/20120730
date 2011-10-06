@@ -8,14 +8,15 @@ class LocationsController < ApplicationController
   # GET /locations.xml
   def index    
     session[:search] = params[:search] unless params[:search].blank?
+    search = session[:search]
     unless session[:search].blank?      
       @latlng = Geocoder.coordinates(session[:search])
     else
       @latlng = request.location.coordinates      
-      session[:search] = @latlng
-    end    
+      search = @latlng
+    end
     @near_your_locations = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{@latlng.join(',')}&types=#{TYPE}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")         
-    @locations = Location.near(session[:search], 5, :order => :distance)
+    @locations = Location.near(search, 5, :order => :distance)
   end
  
   def details

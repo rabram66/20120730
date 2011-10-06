@@ -1,58 +1,41 @@
-<html>
-  <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <style type="text/css">
-      html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0 }
-      #map_canvas { height: 100% }
-    </style>
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
-    <script type="text/javascript">        
-      function initialize() {    	
-        var latlng = new google.maps.LatLng(<%= @latlng[0] %> ,<%= @latlng[1] %>  );
-        var latlng2 = new google.maps.LatLng(<%= @latlng[0] %> ,<%= @latlng[1] %>  );    	   
-    
-        var myOptions = {
-          zoom: 15,
-          center: latlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
+<% content_for :javascripts do  %>
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+  <script type="text/javascript">        
+    function initialize() {    	
+      var latlng = new google.maps.LatLng(<%= @latlng[0]%> ,<%= @latlng[1]%>  );
+      var myOptions = {
+        zoom: 15,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
  
-        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);    
+      var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);    
        
-        new google.maps.Marker({
-          position: latlng,
-          map: map,
-          title: 'Click me'
-        });
-        
-        new google.maps.Marker({
-          position: latlng2,
-          map: map,
-          title: 'Click me'
-        });        
-      }
-    </script>
-  </head>
-  <body onload="initialize()">
-    <div class="container">
-      <div class="auth">        
-        <%= link_to "Signup", "/signup" %>
-      </div>      
-      <div class="span-24">
-        <div id= "header-logo" class="span-24">
-          <img src="http://stpaulshomecoming.com/images/header1.jpg" />
-        </div>
-        <div class="span-15">
-          <div class="whitebox">
-            <%= render 'search' %>            
-            <%= render 'locations' %>            
-            <%= render 'near_your_locations' %>            
-          </div>
-        </div>
-        <div classs ="span-8" id="map_canvas" style="width:350px; height:200px">          
-        </div>
+      new google.maps.Marker({
+        position: latlng,
+        map: map,
+        title: 'Click me'
+      });
+    }
+  </script>
+<% end %>
+<div class="container">
+  <div class="auth">
+    <%= @latlng[0] %> ,<%= @latlng[1] %>
+    <%= link_to "Signup", "/signup" %>
+  </div>      
+  <div class="span-24">
+    <div id= "header-logo" class="span-24">
+      <img src="http://stpaulshomecoming.com/images/header1.jpg" />
+    </div>
+    <div class="span-15">
+      <div class="whitebox">
+        <%= render 'search' %>            
+        <%= render 'locations' %>            
+        <%= render 'near_your_locations' %>            
       </div>
     </div>
-  </body>
-</html>
+    <div classs ="span-8" id="map_canvas" style="width:350px; height:200px">          
+    </div>
+  </div>
+</div>

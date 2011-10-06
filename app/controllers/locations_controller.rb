@@ -12,7 +12,7 @@ class LocationsController < ApplicationController
       @latlng = Geocoder.coordinates(search)      
     else
       @latlng = request.location.coordinates      
-      search = @latlng      
+      search = @latlng
     end    
     @place_responses = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{@latlng.join(',')}&types=#{TYPE}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")         
     @locations = Location.near(search, 5, :order => :distance)

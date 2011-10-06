@@ -34,24 +34,8 @@ class LocationsController < ApplicationController
    
   def show
     @location = Location.find(params[:id])
-    
-    begin
-      # convert real name to id
-      res_page = RestClient.get "https://graph.facebook.com/#{@location.facebook_page_id}"
-      result_page = ActiveSupport::JSON.decode(res_page) 
-      
-      facebook_link = "http://www.facebook.com/feeds/page.php?id=#{result_page["id"]}&format=json"
-      res = RestClient.get facebook_link
-      @feed = ActiveSupport::JSON.decode(res)
-    rescue
-    end
-    
-    begin
-      twitter_link = "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=#{@location.twitter_name}"
-      timeline = RestClient.get twitter_link
-      @tweet = ActiveSupport::JSON.decode(timeline)
-    rescue
-    end
+    @feed = get_facebook_feed(@location.facebook_page_id)
+    @tweet = get_twitter_feed(@location.twitter_name)
     
     respond_to do |format|
       format.html # show.html.erb
@@ -138,6 +122,28 @@ class LocationsController < ApplicationController
   end
   
   private 
+  
+  def get_facebook_feed(facebook_page_id)
+    begin
+      # convert real name to id
+      res_page = RestClient.get "https://graph.facebook.com/#{facebook_page_id}"
+      result_page = ActiveSupport::JSON.decode(res_page) 
+      
+      facebook_link = "http://www.facebook.com/feeds/page.php?id=#{result_page["id"]}&format=json"
+      res = RestClient.get facebook_link
+      return ActiveSupport::JSON.decode(res)
+    rescue
+    end
+  end
+  
+  def get_twitter_feed(twitter_name)
+    begin
+      twitter_link = "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=#{twitter_name}"
+      timeline = RestClient.get twitter_link
+      return ActiveSupport::JSON.decode(timeline)
+    rescue
+    end
+  end
   
   def get_place_report(location, long, lat)
     myarray = {:location => {:lat => lat.to_f, :lng => long.to_f},

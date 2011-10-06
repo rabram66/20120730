@@ -33,7 +33,7 @@
     <b>Phone:</b>
     <%= @location.phone %>
   </p>
-  
+
   <p>
     <b>Status:</b>
     <%= @location.reference.nil? ? "INVALID_REQUEST" : "OK" %>
@@ -58,12 +58,12 @@
   <p class="feed">
     <% unless @feed.blank? %>
       <b>Facebook Page Feed 
-        (<%= author_link(@feed["entries"][0]["author"]["name"], @location.facebook_page_id) %>) 
+        (<%= link_to @feed["entries"][0]["author"]["name"], "http://www.facebook.com/#{@location.facebook_page_id}" unless @feed["entries"].blank? %>) 
         - <%= link_to "Edit", "#facebook_page", :rel => "facebox" %>
         :</b><br/>
       <% @feed["entries"].first(10).each do |feed| %>
         <% unless feed["title"].blank? %>
-            <%= author_link(feed["author"]["name"], @location.facebook_page_id) %>:
+            <%= link_to feed["author"]["name"], "http://www.facebook.com/#{@location.facebook_page_id}" %>:
           <%= feed["title"] %><br/><br/>
         <% end %>
       <% end %>

@@ -3,6 +3,7 @@ class LocationsController < ApplicationController
   
   RADIUS = '15000'
   TYPE = 'restaurant'
+  
   # GET /locations
   # GET /locations.xml
   def index    
@@ -13,7 +14,7 @@ class LocationsController < ApplicationController
       @latlng = request.location.coordinates      
       session[:search] = @latlng
     end    
-    @place_responses = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{@latlng.join(',')}&types=#{TYPE}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")         
+    @near_your_locations = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{@latlng.join(',')}&types=#{TYPE}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")         
     @locations = Location.near(session[:search], 5, :order => :distance)
   end
  

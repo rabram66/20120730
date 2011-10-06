@@ -1,8 +1,8 @@
-<% @place_responses['results'].each do |response| %>
+<% @near_your_locations['results'].each do |location| %>
   <ul>
     <li> 
-      <%= link_to response['name'], :action => 'details', :reference => response['reference']%> 
-      <%= "- #{response['vicinity']}" unless response['vicinity'].blank? %>
+      <%= link_to location['name'], :action => 'details', :reference => location['reference']%> 
+      <%= "- #{location['vicinity']}" unless location['vicinity'].blank? %>
     </li>
   </ul>   
 <% end %>

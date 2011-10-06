@@ -1,50 +1,21 @@
 class LocationsController < ApplicationController
   respond_to :html, :xml, :json, :js
+  
+  RADIUS = '15000'
+  TYPE = 'restaurant'
   # GET /locations
   # GET /locations.xml
-
   def index   
-    if params[:search]
-      #create session object containg search adddress
- 
-      Rails.cache.write("searchtext",params[:search])
-      @searchtext = params[:search]
-   
-      @myGeo = HTTParty.get("http://maps.googleapis.com/maps/api/geocode/json?address=#{URI.escape(params[:search])}&sensor=true")
-      url = "https://maps.googleapis.com/maps/api/place/search/json?"
-      latlng=[@myGeo['results'][0]['geometry']['location']['lat'], @myGeo['results'][0]['geometry']['location']['lng']]  
-      thisradius= '1500'
-      thistype= 'restaurant'
-      myresponse = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{latlng.join(',')}&types=#{thistype}&radius=#{thisradius}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")   
-      @latlng=latlng
-      @features = myresponse  
-      @resultscount = @features['results'].count      
-      @locations = Location.near(params[:search], 5, :order => :distance)
+    search = params[:search]
+    unless search.blank?
+      Rails.cache.write("searchtext", search)
+      @latlng = Geocoder.coordinates(search)      
     else
-      #if no address entered, use default address.  Helps with initial opening page
-      ipresult = request.remote_ip
-      #remember to replace hard coded ip address with ipresult in order to have dynamic location search.
-      @result = HTTParty.get( "http://geoip3.maxmind.com/b?l=NTCuakb7nqa6&i=74.244.43.206")
-      @splitResult = @result.split(',')
-      #@result = HTTParty.get( "http://geoip3.maxmind.com/b?l=NTCuakb7nqa6&i=#{ipresult}")
-      # @result = HTTParty.get( "http://api.hostip.info/get_html.php?ip=#{ipresult}&position=true")
-         
-      url = "https://maps.googleapis.com/maps/api/place/search/json?"
-      @latlng= [@splitResult[3],@splitResult[4]]
-      lnglat = [@splitResult[3],@splitResult[4]]
-      #lnglat = '@latlng[0], @latlng[1]'
-      thisradius= '15000'
-      thistype= 'restaurant'
-      myresponse = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{lnglat.join(',')}&radius=#{thisradius}&types=#{thistype}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")   
-      @features = myresponse
-      @resultscount = @features['results'].count  
-      @locations = Location.all
-      #@locations = Location.find(:all, :conditions => "latitude = #{@splitResult[3]}")
-    end
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @locations }
-    end
+      @latlng = request.location.coordinates      
+      search = @latlng      
+    end    
+    @place_responses = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{@latlng.join(',')}&types=#{TYPE}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")         
+    @locations = Location.near(search, 5, :order => :distance)
   end
  
   def details
@@ -58,7 +29,6 @@ class LocationsController < ApplicationController
       @last_post = get_last_post(@location)
       @user_saying = get_tweet_search(@location.twitter_name)
     end    
-    
   end
  
    

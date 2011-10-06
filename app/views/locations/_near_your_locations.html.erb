@@ -1,0 +1,6 @@
+<% @place_responses['results'].each do |response| %>
+  <ul>
+    <li> <%= link_to response['name'], :action => 'details', :reference => response['reference']%> - <%= response['vicinity']%>
+    </li>
+  </ul>   
+<% end %>

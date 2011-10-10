@@ -1,3 +1,4 @@
+include Geokit::Geocoders
 class LocationsController < ApplicationController
   respond_to :html, :xml, :json, :js
   
@@ -6,16 +7,17 @@ class LocationsController < ApplicationController
   
   # GET /locations
   # GET /locations.xml
-  def index    
+  def index
     session[:search] = params[:search] unless params[:search].blank?
     search = session[:search]
     unless session[:search].blank?      
       @latlng = Geocoder.coordinates(session[:search])
-    else
-      @latlng = request.location.coordinates      
+    else      
+      current_location = ActiveSupport::JSON.decode(MultiGeocoder::geocode(request.remote_ip).to_s)
+      @latlng = [current_location["Latitude"], current_location["Longitude"]]
       search = @latlng
     end
-    @near_your_locations = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{@latlng.join(',')}&types=#{TYPE}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")         
+    @near_your_locations = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{@latlng.join(',')}&types=#{TYPE}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
     @locations = Location.near(search, 5, :order => :distance)
   end
  

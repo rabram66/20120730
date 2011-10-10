@@ -2,7 +2,7 @@
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
   <script type="text/javascript">        
     function initialize() {    	
-      var latlng = new google.maps.LatLng(<%= @latlng[0]%> ,<%= @latlng[1]%>  );
+      var latlng = new google.maps.LatLng(<%= @latlng[0] %> ,<%= @latlng[1] %>  );
       var myOptions = {
         zoom: 15,
         center: latlng,
@@ -18,9 +18,7 @@
       });
     }
   </script>
-<% end %>
-  <%= @latlng %>
-  <%= @ip %>
+<% end %> 
 <div class="container">
   <div class="auth">    
     <%= link_to "Signup", "/signup" %>

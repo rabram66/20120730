@@ -8,13 +8,11 @@ class LocationsController < ApplicationController
   # GET /locations
   # GET /locations.xml
   def index    
-    
     session[:search] = params[:search] unless params[:search].blank?
     search = session[:search]
     unless session[:search].blank?      
       @latlng = Geocoder.coordinates(session[:search])
-    else
-      @ip = request.remote_ip
+    else      
       current_location = ActiveSupport::JSON.decode(MultiGeocoder.geocode(request.remote_ip).to_s)
       @latlng = [current_location["Latitude"], current_location["Longitude"]]
       search = @latlng

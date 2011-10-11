@@ -5,8 +5,8 @@ module ApplicationHelper
   end
   
   def location
-    return @details['result']['geometry']['location'] unless @details.blank?
-    return @latlng unless @latlng.blank?
+    #return @latlng unless @latlng.blank?
+    return @details['result']['geometry']['location'] unless @details.blank?    
   end
   
   def business_name

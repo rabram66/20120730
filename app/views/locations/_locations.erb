@@ -1,3 +1,4 @@
+<% unless @locations.blank? %>
 <% @locations.each do |location| %>
   <% if location.reference? %>
     <ul>
@@ -7,4 +8,5 @@
   <% else%>
     <%= '' %>
   <% end %>
+<% end %> 
 <% end %> 

@@ -4,21 +4,32 @@ class LocationsController < ApplicationController
   
   RADIUS = '15000'
   TYPE = 'restaurant'
+  DEFAULT_LOCATION = 'Sanjose, CA'
   
-  # GET /locations
-  # GET /locations.xml
+  
   def index    
-    session[:search] = params[:search] unless params[:search].blank?
-    search = session[:search]
-    unless session[:search].blank?      
-      @latlng = Geocoder.coordinates(session[:search])
-    else      
-      current_location = ActiveSupport::JSON.decode(MultiGeocoder.geocode(request.remote_ip).to_s)
-      @latlng = [current_location["Latitude"], current_location["Longitude"]]
-      search = @latlng
+    current_location = ActiveSupport::JSON.decode(MultiGeocoder.geocode(request.remote_ip).to_s)
+    unless current_location["Latitude"].blank?
+      @latlng = [current_location["Latitude"], current_location["Longitude"]]    
+    else
+      # default address
+      @latlng = Geocoder.coordinates(DEFAULT_LOCATION)
     end
+    coordinates = @latlng.blank? ? "" : @latlng.join(',') 
+    @near_your_locations = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates}&types=#{TYPE}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+    @locations = Location.near(coordinates, 5, :order => :distance)
+  end
+  
+  def search
+    @latlng = [params[:latitude], params[:longitude]]    
+    @locations = Location.near(@latlng.join(','), 50, :order => :distance)
+    render :partial => "locations", :collection => @locations
+  end
+  
+  def near_location
+    @latlng = [params[:latitude], params[:longitude]]
     @near_your_locations = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{@latlng.join(',')}&types=#{TYPE}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-    @locations = Location.near(search, 5, :order => :distance)
+    render :partial => "near_your_locations", :collection => @near_your_locations
   end
  
   def details

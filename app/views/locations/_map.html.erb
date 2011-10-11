@@ -18,25 +18,27 @@
       };
       map.setUIToDefault();
 
-      // Check for geolocation support	
-      if (navigator.geolocation) {
-        // Get current position
-        navigator.geolocation.getCurrentPosition(function (position) {
-          // Success!
-          longitude = position.coords.longitude;
-          latitude = position.coords.latitude;
-          markOutLocation(position.coords.latitude, position.coords.longitude);          
-          $('#locations').load("/search?longitude=" + longitude + "&latitude=" + latitude );
-          $('#near_your_locations').load("/near_location?longitude=" + longitude + "&latitude=" + latitude );          
-        }, 
-        function () {            
+      <% if @search.blank? %>
+        // Check for geolocation support	
+        if (navigator.geolocation) {
+          // Get current position
+          navigator.geolocation.getCurrentPosition(function (position) {
+            // Success!
+            longitude = position.coords.longitude;
+            latitude = position.coords.latitude;
+            markOutLocation(position.coords.latitude, position.coords.longitude);          
+            $('#locations').load("/search?longitude=" + longitude + "&latitude=" + latitude );
+            $('#near_your_locations').load("/near_location?longitude=" + longitude + "&latitude=" + latitude );          
+          }, 
+          function () {            
+            markOutLocation(<%= @latlng[0] %>, <%= @latlng[1] %>);
+          }        
+        );      
+        }
+        else {             
           markOutLocation(<%= @latlng[0] %>, <%= @latlng[1] %>);
-        }        
-      );      
-      }
-      else {             
-        markOutLocation(<%= @latlng[0] %>, <%= @latlng[1] %>);
-      }
+        }
+      <% end %>
       
       google.setOnLoadCallback(initialize(map,latitude,longitude));
 
@@ -60,4 +62,5 @@
     return map;
   }
 </script>
+
 <div id="maps" style="width: 350px; height: 200px;float:right;"></div>    

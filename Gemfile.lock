@@ -40,7 +40,6 @@ GEM
     faraday_middleware (0.7.0)
       faraday (~> 0.7.3)
     geocoder (1.0.4)
-    geokit (1.6.0)
     hashie (1.1.0)
     heroku (2.9.0)
       launchy (>= 0.3.2)
@@ -116,7 +115,6 @@ PLATFORMS
 
 DEPENDENCIES
   geocoder
-  geokit
   heroku
   httparty
   jquery-rails

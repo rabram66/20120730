@@ -2,12 +2,12 @@ include Geokit::Geocoders
 class LocationsController < ApplicationController
   respond_to :html, :xml, :json, :js
   
-  RADIUS = '15000'
-  TYPE = 'restaurant'
+  RADIUS = '15000'  
   DEFAULT_LOCATION = 'San jose, CA'
   
   
   def index
+    types = get_types("Eat/Drink")
     @search = params[:search]
     unless @search.blank?
       @latlng = Geocoder.coordinates(@search)
@@ -19,7 +19,8 @@ class LocationsController < ApplicationController
     end    
     @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank?
     coordinates = @latlng.blank? ? "" : @latlng.join(',') 
-    @near_your_locations = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates}&types=#{TYPE}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+    
+    @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
     @locations = Location.near(coordinates, 5)
   end
   
@@ -30,8 +31,9 @@ class LocationsController < ApplicationController
   end
   
   def near_location
+    types = get_types("Eat/Drink")
     @latlng = [params[:latitude], params[:longitude]]
-    @near_your_locations = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{@latlng.join(',')}&types=#{TYPE}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+    @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{@latlng.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
     render :partial => "near_your_locations", :collection => @near_your_locations
   end
  
@@ -88,7 +90,7 @@ class LocationsController < ApplicationController
     
     
     @location.reference = response["reference"]
-    
+    @location.types = get_types(params[:location][:types]) unless params[:location][:types].blank?
       
     respond_to do |format|
       if @location.save 
@@ -139,6 +141,22 @@ class LocationsController < ApplicationController
   end
   
   private 
+  
+  def get_types(types)
+    results = ""
+    if types.eql?("Eat/Drink")
+      results = "bakery%7Cbar%7Ccafe%7Cfood%7Cmeal_takeaway%7Crestaurant"
+    elsif types.eql?("Relax/Care")
+      results = "amusement_park%7Caquarium%7Cart_gallery%7Cbeauty_salon%7Cbowling_alley," +
+        "casino%7Cgym%7Chair_care%7Chealth%7Cmovie_theater%7Cmuseum%7Cnight_club%7Cpark%7Cspa%7Czoo"
+    elsif types.eql?("Relax/Care")
+      results = "atm%7Cbank%7Cbicycle_store%7Cbook_store%7Cbus_station%7Cclothing_store%7Cconvenience_store," +
+        "department_store%7Celectronics_store%7Cestablishment%7Cflorist%7Cgas_station%7Cgrocery_or_supermarket%7C" +
+        "hardware_store%7Chome_goods_store%7Cjewelry_store%7Clibrary%7Cliquor_store%7Clocksmith%7Cpet_store%7C" +
+        "pharmacy%7Cshoe_store%7Cshopping_mall%7Cstore"
+    end
+    results
+  end
   
   def get_facebook_feed(facebook_page_id)
     begin

@@ -1,0 +1,63 @@
+<script src="http://www.google.com/jsapi?key=ABQIAAAAlJFc1lrstqhgTl3ZYo38bBQcfCcww1WgMTxEFsdaTsnOXOVOUhTplLhHcmgnaY0u87hQyd-n-kiOqQ"></script>
+<script>
+  (function () {   
+    google.load("maps", "2");
+    var map;
+    var latitude = <%= @latlng[0] %>;
+    var longitude = <%= @latlng[1] %>;
+    google.setOnLoadCallback(function () {
+      map = new google.maps.Map2(document.getElementById("maps"));
+      markOutLocation = function (lat, lng) {
+        var latLong = new google.maps.LatLng(lat, lng),
+        marker = new google.maps.Marker(latLong);
+        map.setCenter(latLong, 13);
+        map.addOverlay(marker);          
+        google.maps.Event.addListener(marker, "click", function () {
+          marker.openInfoWindow(markerText);
+        });
+      };
+      map.setUIToDefault();
+
+      // Check for geolocation support	
+      if (navigator.geolocation) {
+        // Get current position
+        navigator.geolocation.getCurrentPosition(function (position) {
+          // Success!
+          longitude = position.coords.longitude;
+          latitude = position.coords.latitude;
+          markOutLocation(position.coords.latitude, position.coords.longitude);          
+          $('#locations').load("/search?longitude=" + longitude + "&latitude=" + latitude );
+          $('#near_your_locations').load("/near_location?longitude=" + longitude + "&latitude=" + latitude );          
+        }, 
+        function () {            
+          markOutLocation(<%= @latlng[0] %>, <%= @latlng[1] %>);
+        }        
+      );      
+      }
+      else {             
+        markOutLocation(<%= @latlng[0] %>, <%= @latlng[1] %>);
+      }
+      
+      google.setOnLoadCallback(initialize(map,latitude,longitude));
+
+    });	
+  })();    
+  
+  function initialize(map,lat,lon) {
+
+    map.setCenter(new google.maps.LatLng(lat,lon), 13);
+
+    var point = new google.maps.LatLng(lat,lon);
+    var marker = new google.maps.Marker(point, {draggable: true});
+
+
+    map.addOverlay(marker);
+
+    google.maps.Event.addListener(marker, "dragend", function(latlng) {
+      marker.openInfoWindowHtml("Dragged to <br>" + latlng);
+    });
+
+    return map;
+  }
+</script>
+<div id="maps" style="width: 350px; height: 200px;float:right;"></div>    

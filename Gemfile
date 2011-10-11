@@ -8,5 +8,5 @@ gem 'httparty'
 gem 'twitter'
 gem 'heroku'
 gem 'rest-client', '~> 1.6.7'
-#gem "geokit"
+gem "geokit"
 gem "jquery-rails"

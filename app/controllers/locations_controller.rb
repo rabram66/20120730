@@ -13,7 +13,7 @@ class LocationsController < ApplicationController
       @latlng = Geocoder.coordinates(@search)
     else       
       current_location = ActiveSupport::JSON.decode(MultiGeocoder.geocode(request.remote_ip).to_s)
-      unless current_location["Latitude"].blank?
+      if !current_location["Latitude"].blank? && !current_location["Longitude"].blank?
         @latlng = [current_location["Latitude"], current_location["Longitude"]]      
       end      
     end    

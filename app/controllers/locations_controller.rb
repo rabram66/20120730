@@ -20,12 +20,12 @@ class LocationsController < ApplicationController
     @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank?
     coordinates = @latlng.blank? ? "" : @latlng.join(',') 
     @near_your_locations = HTTParty.get( "https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates}&types=#{TYPE}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-    @locations = Location.near(coordinates, 5, :order => :distance)
+    @locations = Location.near(coordinates, 5)
   end
   
   def search
     @latlng = [params[:latitude], params[:longitude]]    
-    @locations = Location.near(@latlng.join(','), 50, :order => :distance)
+    @locations = Location.near(@latlng.join(','), 50)
     render :partial => "locations", :collection => @locations
   end
   

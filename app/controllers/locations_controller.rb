@@ -10,16 +10,19 @@ class LocationsController < ApplicationController
     types = get_types("Eat/Drink")
     @search = params[:search]
     unless @search.blank?
-      @latlng = Geocoder.coordinates(@search)      
-    else       
-      current_location = ActiveSupport::JSON.decode(MultiGeocoder.geocode(request.remote_ip).to_s)
-      if !current_location["Latitude"].blank? && !current_location["Longitude"].blank?
-        @latlng = [current_location["Latitude"], current_location["Longitude"]]      
-      end      
+      @latlng = Geocoder.coordinates(@search)  
+      session[:search] = @latlng unless @latlng.blank?
+    else      
+      if session[:search].blank?
+        current_location = ActiveSupport::JSON.decode(MultiGeocoder.geocode(request.remote_ip).to_s)
+        if !current_location["Latitude"].blank? && !current_location["Longitude"].blank?
+          @latlng = [current_location["Latitude"], current_location["Longitude"]]        
+        end
+      end
     end
     
-    @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank?
-    coordinates = @latlng.blank? ? "" : @latlng.join(',') 
+    @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank? &&  session[:search].blank?    
+    coordinates = @latlng.blank? ? session[:search].join(',') : @latlng.join(',')
     
     @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
     @locations = Location.where("reference is not null")
@@ -35,7 +38,8 @@ class LocationsController < ApplicationController
   def near_location
     types = get_types("Eat/Drink")
     @latlng = [params[:latitude], params[:longitude]]
-    @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{@latlng.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+    session[:search] = @latlng
+    @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{session[:search].join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
     render :partial => "near_your_locations"
   end
  

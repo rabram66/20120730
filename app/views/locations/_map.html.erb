@@ -3,8 +3,8 @@
   (function () {   
     google.load("maps", "2");
     var map;
-    var latitude = <%= @latlng[0] %>;
-    var longitude = <%= @latlng[1] %>;
+    var latitude = <%= session[:search].blank? ? @latlng[0] : session[:search][0] %>;
+    var longitude = <%= session[:search].blank? ? @latlng[1] : session[:search][1] %>;
     google.setOnLoadCallback(function () {
       map = new google.maps.Map2(document.getElementById("maps"));
       markOutLocation = function (lat, lng) {
@@ -18,7 +18,7 @@
       };
       map.setUIToDefault();
 
-      <% if @search.blank? %>
+      <% if session[:search].blank? %>
         // Check for geolocation support	
         if (navigator.geolocation) {
           // Get current position

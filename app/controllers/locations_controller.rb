@@ -17,17 +17,19 @@ class LocationsController < ApplicationController
       if !current_location["Latitude"].blank? && !current_location["Longitude"].blank?
         @latlng = [current_location["Latitude"], current_location["Longitude"]]      
       end      
-    end    
+    end
+    
     @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank?
     coordinates = @latlng.blank? ? "" : @latlng.join(',') 
     
     @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-    @locations = Location.all
+    @locations = Location.where("reference is not null")
   end
   
+  # TODO
   def search
     @latlng = [params[:latitude], params[:longitude]]    
-    @locations = Location.all
+    @locations = Location.where("reference is not null")
     render :partial => "locations"
   end
   

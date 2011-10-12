@@ -25,13 +25,13 @@ class LocationsController < ApplicationController
     coordinates = @latlng.blank? ? session[:search] : @latlng
     
     @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-    @locations = Location.near(coordinates, 5)
+    @locations = Location.near(coordinates, 10)
   end
   
   # TODO
   def search
     @latlng = [params[:latitude].to_f, params[:longitude].to_f]
-    @locations = Location.near(@latlng, 5)
+    @locations = Location.near(@latlng, 10)
     render :partial => "locations"
   end
   

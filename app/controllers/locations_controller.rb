@@ -2,7 +2,7 @@ include Geokit::Geocoders
 class LocationsController < ApplicationController
   respond_to :html, :xml, :json, :js
   
-  RADIUS = '500000'  
+  RADIUS = '3000'  
   DEFAULT_LOCATION = 'San jose, CA'
   
   
@@ -11,6 +11,7 @@ class LocationsController < ApplicationController
     @search = params[:search]
     unless @search.blank?
       @latlng = Geocoder.coordinates(@search)
+      @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank?
     else       
       current_location = ActiveSupport::JSON.decode(MultiGeocoder.geocode(request.remote_ip).to_s)
       if !current_location["Latitude"].blank? && !current_location["Longitude"].blank?

@@ -10,8 +10,7 @@ class LocationsController < ApplicationController
     types = get_types("Eat/Drink")
     @search = params[:search]
     unless @search.blank?
-      @latlng = Geocoder.coordinates(@search)
-      @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank?
+      @latlng = Geocoder.coordinates(@search)      
     else       
       current_location = ActiveSupport::JSON.decode(MultiGeocoder.geocode(request.remote_ip).to_s)
       if !current_location["Latitude"].blank? && !current_location["Longitude"].blank?
@@ -90,10 +89,7 @@ class LocationsController < ApplicationController
     lat, long = Geocoder.coordinates(@location.full_address)     
     
     response = get_place_report(params[:location], long, lat)
-    
-    
     @location.reference = response["reference"]
-    @location.types = get_types(params[:location][:types]) unless params[:location][:types].blank?
       
     respond_to do |format|
       if @location.save 
@@ -152,7 +148,7 @@ class LocationsController < ApplicationController
     elsif types.eql?("Relax/Care")
       results = "amusement_park%7Caquarium%7Cart_gallery%7Cbeauty_salon%7Cbowling_alley," +
         "casino%7Cgym%7Chair_care%7Chealth%7Cmovie_theater%7Cmuseum%7Cnight_club%7Cpark%7Cspa%7Czoo"
-    elsif types.eql?("Relax/Care")
+    elsif types.eql?("Shop/Find")
       results = "atm%7Cbank%7Cbicycle_store%7Cbook_store%7Cbus_station%7Cclothing_store%7Cconvenience_store," +
         "department_store%7Celectronics_store%7Cestablishment%7Cflorist%7Cgas_station%7Cgrocery_or_supermarket%7C" +
         "hardware_store%7Chome_goods_store%7Cjewelry_store%7Clibrary%7Cliquor_store%7Clocksmith%7Cpet_store%7C" +
@@ -183,13 +179,12 @@ class LocationsController < ApplicationController
     end
   end
   
-  def get_place_report(location, long, lat)
+  def get_place_report(location, long, lat)    
     myarray = {:location => {:lat => lat.to_f, :lng => long.to_f},
       :accuracy => 50, :name => location[:name], 
       :types => [location[:types]], :language => "en-AU"}
-    json_string = myarray.to_json()
-    
-    res = RestClient.post "https://maps.googleapis.com/maps/api/place/add/json?sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc", json_string, :content_type => :json, :accept => :json
+    json_string = myarray.to_json()    
+    res = RestClient.post "https://maps.googleapis.com/maps/api/place/add/json?sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc", json_string, :content_type => :json, :accept => :json    
     ActiveSupport::JSON.decode(res)
   end
   

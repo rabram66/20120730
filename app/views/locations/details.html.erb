@@ -14,21 +14,26 @@
       var marker = new google.maps.Marker({position: myLatLng, map: map, title: 'Click me' });
   
       var contentString  = "<b><%= raw business_name %></b> <%= rating_info %> \n";
+
+     
+  <% unless twitter_feed.blank? %> 
+      contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/twitter-logo.jpg'/></td>";
+      contentString += "<td><a href=\"http://twitter.com/<%= @last_tweet.first['user']['screen_name'] unless @last_tweet.blank? %>/status/<%= @last_tweet.first['id'] unless @last_tweet.blank? %>\" target=\"_blank\"><%= twitter_feed %></a></td></tr></table>";
+  <% end %>
+
+  <% unless facebook_feed.blank? %> 
+      contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/facebook-logo.png'/></td>"
+      contentString += "<td><a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id  unless @location.blank? %>'><%= facebook_feed %></a></td></tr></table>";
+  <% end %>
+
+  <% unless @details.blank? %>
+      contentString += "<br/><br/><table style='width:400px;margin-bottom:0px !important;'><tr><td style='text-align:center;'><img src=\"<%= @details['result']['icon'] %>\"/></td></tr></table>"      
+  <% end %>
       
-      if ("<%= twitter_feed %>" !=  "") {
-        contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/twitter-logo.jpg'/></td>";
-        contentString += "<td><a href=\"http://twitter.com/<%= @last_tweet.first['user']['screen_name'] unless @last_tweet.blank? %>/status/<%= @last_tweet.first['id'] unless @last_tweet.blank? %>\" target=\"_blank\"><%= twitter_feed %></a></td></tr></table>";
-      }
-          
-      if ("<%= facebook_feed %>" !=  "") {
-        contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/facebook-logo.png'/></td>"
-        contentString += "<td><a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id  unless @location.blank? %>'><%= facebook_feed %></a></td></tr></table>";
-      }
-      
-      var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});
+    var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});
         
-      infowindow.open(map, marker); 
-    }
+    infowindow.open(map, marker); 
+  }
   </script>
 <% end %>
 
@@ -40,19 +45,19 @@
     <div id="people_saying">
       <table class="tweet_result">      
         <% @user_saying['results'].first(8).each do |user_say| %>
-            <tr>
-              <td>
-                <a href="http://twitter.com/<%= user_say['chescababy'] %>" target="_blank">
-                  <img src="<%= user_say["profile_image_url"] %>" />
-                </a>
-              </td>
-              <td>
-                <a href="http://twitter.com/<%= user_say['from_user'] %>/status/<%= user_say['id_str'] %>" target="_blank">
-                  <%= user_say["text"] %>
-                </a>
-              </td>
-            </tr>
-          <% end %>       
+          <tr>
+            <td>
+              <a href="http://twitter.com/<%= user_say['chescababy'] %>" target="_blank">
+                <img src="<%= user_say["profile_image_url"] %>" />
+              </a>
+            </td>
+            <td>
+              <a href="http://twitter.com/<%= user_say['from_user'] %>/status/<%= user_say['id_str'] %>" target="_blank">
+                <%= user_say["text"] %>
+              </a>
+            </td>
+          </tr>
+        <% end %>       
       </table>  
     </div>
   <% end %>

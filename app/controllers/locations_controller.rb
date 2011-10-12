@@ -22,16 +22,16 @@ class LocationsController < ApplicationController
     end
     
     @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank? &&  session[:search].blank?    
-    coordinates = @latlng.blank? ? session[:search].join(',') : @latlng.join(',')
+    coordinates = @latlng.blank? ? session[:search] : @latlng
     
-    @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-    @locations = Location.where("reference is not null")
+    @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+    @locations = Location.near(coordinates, RADIUS)
   end
   
   # TODO
   def search
-    @latlng = [params[:latitude], params[:longitude]]    
-    @locations = Location.where("reference is not null")
+    @latlng = [params[:latitude].to_f, params[:longitude].to_f]
+    @locations = Location.near(@latlng, RADIUS)
     render :partial => "locations"
   end
   

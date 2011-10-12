@@ -48,6 +48,7 @@ class LocationsController < ApplicationController
     @search = Rails.cache.read("searchtext")
     @details = get_place_response(reference)
     
+    debugger
     @location = Location.find_by_reference(reference)    
     unless @location.blank?
       @last_tweet = get_last_tweet(@location.twitter_name)    

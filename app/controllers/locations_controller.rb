@@ -3,7 +3,7 @@ class LocationsController < ApplicationController
   respond_to :html, :xml, :json, :js
   
   RADIUS = '3000'  
-  DEFAULT_LOCATION = 'San jose, CA'
+  DEFAULT_LOCATION = 'Atlanta, GA'
   
   
   def index

@@ -2,7 +2,7 @@ include Geokit::Geocoders
 class LocationsController < ApplicationController
   respond_to :html, :xml, :json, :js
   
-  RADIUS = '15000'  
+  RADIUS = '500000'  
   DEFAULT_LOCATION = 'San jose, CA'
   
   
@@ -21,20 +21,20 @@ class LocationsController < ApplicationController
     coordinates = @latlng.blank? ? "" : @latlng.join(',') 
     
     @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-    @locations = Location.near(coordinates, 5)
+    @locations = Location.all
   end
   
   def search
     @latlng = [params[:latitude], params[:longitude]]    
-    @locations = Location.near(@latlng.join(','), 50)
-    render :partial => "locations", :collection => @locations
+    @locations = Location.all
+    render :partial => "locations"
   end
   
   def near_location
     types = get_types("Eat/Drink")
     @latlng = [params[:latitude], params[:longitude]]
     @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{@latlng.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-    render :partial => "near_your_locations", :collection => @near_your_locations
+    render :partial => "near_your_locations"
   end
  
   def details

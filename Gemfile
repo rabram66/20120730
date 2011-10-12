@@ -10,4 +10,4 @@ gem 'heroku'
 gem 'rest-client', '~> 1.6.7'
 gem "geokit"
 gem "jquery-rails"
-gem 'ruby-debug19'
+#gem 'ruby-debug19'

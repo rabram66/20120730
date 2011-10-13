@@ -11,6 +11,4 @@ gem 'heroku'
 gem 'rest-client', '~> 1.6.7'
 gem "geokit"
 gem "jquery-rails"
-gem 'mechanize'
 gem 'paperclip'
-#gem 'ruby-debug19'

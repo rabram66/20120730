@@ -1,4 +1,5 @@
 include Geokit::Geocoders
+require 'mechanize'
 class LocationsController < ApplicationController
   respond_to :html, :xml, :json, :js
   

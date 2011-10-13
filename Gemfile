@@ -13,4 +13,4 @@ gem "geokit"
 gem "jquery-rails"
 gem 'mechanize'
 gem 'paperclip'
-gem 'ruby-debug19'
+#gem 'ruby-debug19'

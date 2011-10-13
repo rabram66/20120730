@@ -9,6 +9,16 @@
     <%= csrf_meta_tag %>
   </head>
   <body onload="<%= "initialize()" unless location.nil? %>">
-    <%= yield %>
+    <div class="container">       
+      <div class="auth">    
+        <%= link_to "Home", "/" %> || <%= link_to "Add Adv", "/advertises/new" %> || <%= link_to "Signup", "/signup" %>
+      </div> 
+      <div class="span-24">
+        <div id= "header-logo" class="span-24">
+          <img src="http://stpaulshomecoming.com/images/header1.jpg" />
+        </div>        
+        <%= yield %>
+      </div>
+    </div>
   </body>
 </html>

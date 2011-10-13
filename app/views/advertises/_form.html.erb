@@ -1,0 +1,25 @@
+<%= form_for(@advertise) do |f| %>
+  <% if @advertise.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@advertise.errors.count, "error") %> prohibited this advertise from being saved:</h2>
+
+      <ul>
+      <% @advertise.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :business_type %><br />
+    <%= f.select :business_type, %w[restaurant store bar cafe grocery], {:include_blank => true} %>    
+  </div>  
+  <div class="field">
+    <%= f.label "Photo" %><br />
+    <%= f.file_field :photo %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

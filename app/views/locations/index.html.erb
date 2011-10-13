@@ -1,24 +1,16 @@
-<div class="container">
-  <div class="auth">    
-    <%= link_to "Signup", "/signup" %>
-  </div>      
-  <div class="span-24">
-    <div id= "header-logo" class="span-24">
-      <img src="http://stpaulshomecoming.com/images/header1.jpg" />
-    </div>
-    <div class="span-15">
-      <div class="whitebox">        
-        <%= render 'search' %>            
-        <div id="locations">
-          <%= render 'locations' %>   
-        </div>        
-        <div id="near_your_locations">
-          <%= render 'near_your_locations' %>
-        </div>
-      </div>
-    </div>
-    <div>
-      <%= render 'map' %>
+<div class="span-15">
+  <div class="whitebox">        
+    <%= render 'search' %>            
+    <div id="locations">
+      <%= render 'locations' %>   
+    </div>        
+    <div id="near_your_locations">
+      <%= render 'near_your_locations' %>
     </div>
   </div>
 </div>
+<div>
+  <%= render 'map' %>
+</div>
+
+

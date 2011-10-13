@@ -15,7 +15,7 @@ class LocationsController < ApplicationController
       session[:search] = @latlng unless @latlng.blank?
     else      
       if session[:search].blank?
-        current_location = ActiveSupport::JSON.decode(MultiGeocoder.geocode(request.remote_ip).to_s)
+        current_location = MultiGeocoder.geocode(request.remote_ip).to_json
         if !current_location["Latitude"].blank? && !current_location["Longitude"].blank?
           @latlng = [current_location["Latitude"], current_location["Longitude"]]        
         end
@@ -51,7 +51,7 @@ class LocationsController < ApplicationController
     
     @location = Location.find_by_reference(reference)        
     
-    @logo = get_logo(@details)
+    @advertise = get_logo(@details, @location)
     
     unless @location.blank?
       @last_tweet = get_last_tweet(@location.twitter_name)    
@@ -149,14 +149,17 @@ class LocationsController < ApplicationController
   
   private
   
-  def get_logo(details)
-    place_link = details['result']['url']
-    unless place_link.blank?
-      agent = Mechanize.new
-      page = agent.get(place_link)
-      res = page.search(".//div[@class='photo-border']/img")
-      return res[0]["src"] unless res.blank?    
+  def get_logo(details, location)   
+    adv = nil
+    unless location.blank?      
+      adv = Advertise.find_by_business_type(location.types)
+    else      
+      details['result']['types'].each do |type|
+        adv = Advertise.find_by_business_type(type)
+        return adv unless adv.blank?
+      end
     end
+    return adv
   end
   
   def get_types(types)

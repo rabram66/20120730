@@ -26,8 +26,10 @@
       contentString += "<td><a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id  unless @location.blank? %>'><%= facebook_feed %></a></td></tr></table>";
   <% end %>
 
-  <% unless @logo.blank? %>
-      contentString += "<br/><br/><table style='width:400px;margin-bottom:0px !important;'><tr><td style='text-align:center;'><img src=\"<%= @logo %>\"/></td></tr></table>"      
+  <% unless @advertise.blank? %>
+      contentString += "<br/><br/><table style='width:400px;margin-bottom:0px !important;'><tr><td style='text-align:center;'>";
+      contentString += '<%= image_tag @advertise.photo.url(:medium) %>';
+      contentString += "</td></tr></table>" ;     
   <% end %>
       
     var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});
@@ -36,7 +38,6 @@
   }
   </script>
 <% end %>
-
 <div id="detail">  
   <br/><br/>
   <div class="back_index"><%= link_to 'Back', locations_path %></div>

@@ -1,4 +1,6 @@
 LocationDB::Application.routes.draw do
+  resources :advertises
+
   resources :newstuffs
   resources :locations
 

@@ -152,7 +152,7 @@ class LocationsController < ApplicationController
   def get_logo(details)
     place_link = details['result']['url']
     unless place_link.blank?
-      agent = WWW::Mechanize.new 
+      agent = Mechanize.new
       page = agent.get(place_link)
       res = page.search(".//div[@class='photo-border']/img")
       return res[0]["src"] unless res.blank?    

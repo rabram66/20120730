@@ -48,8 +48,10 @@ class LocationsController < ApplicationController
     @search = Rails.cache.read("searchtext")
     @details = get_place_response(reference)
     
-    debugger
-    @location = Location.find_by_reference(reference)    
+    @location = Location.find_by_reference(reference)        
+    
+    @logo = get_logo(@details)
+    
     unless @location.blank?
       @last_tweet = get_last_tweet(@location.twitter_name)    
       @last_post = get_last_post(@location)
@@ -144,7 +146,15 @@ class LocationsController < ApplicationController
     end
   end
   
-  private 
+  private
+  
+  def get_logo(details)
+    place_link = details['result']['url']
+    agent = WWW::Mechanize.new 
+    page = agent.get(place_link)
+    res = page.search(".//div[@class='photo-border']/img")
+    return res[0]["src"] unless res.blank?
+  end
   
   def get_types(types)
     results = ""

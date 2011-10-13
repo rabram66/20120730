@@ -150,10 +150,12 @@ class LocationsController < ApplicationController
   
   def get_logo(details)
     place_link = details['result']['url']
-    agent = WWW::Mechanize.new 
-    page = agent.get(place_link)
-    res = page.search(".//div[@class='photo-border']/img")
-    return res[0]["src"] unless res.blank?
+    unless place_link.blank?
+      agent = WWW::Mechanize.new 
+      page = agent.get(place_link)
+      res = page.search(".//div[@class='photo-border']/img")
+      return res[0]["src"] unless res.blank?    
+    end
   end
   
   def get_types(types)

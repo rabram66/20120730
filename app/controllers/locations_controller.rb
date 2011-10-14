@@ -24,8 +24,11 @@ class LocationsController < ApplicationController
     @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank? &&  session[:search].blank?    
     coordinates = @latlng.blank? ? session[:search] : @latlng
     
-    @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")    
-    @locations = Location.near(coordinates, 300)    
+    @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+		begin 
+	    @locations = Location.near(coordinates, 300)    
+		rescue
+		end
   end
   
   # TODO

@@ -32,6 +32,10 @@ GEM
       multi_json (~> 1.0)
     addressable (2.2.6)
     arel (2.1.4)
+    aws-s3 (0.6.2)
+      builder
+      mime-types
+      xml-simple
     bcrypt-ruby (2.1.4)
     bcrypt-ruby (2.1.4-x86-mingw32)
     builder (3.0.0)
@@ -129,12 +133,14 @@ GEM
       multi_xml (~> 0.4.0)
       simple_oauth (~> 0.1.5)
     tzinfo (0.3.30)
+    xml-simple (1.1.0)
 
 PLATFORMS
   ruby
   x86-mingw32
 
 DEPENDENCIES
+  aws-s3 (~> 0.6.2)
   geocoder
   geokit
   heroku

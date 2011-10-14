@@ -3,7 +3,7 @@ class Advertise < ActiveRecord::Base
     :storage => :s3,
     :bucket => 'nearbythis',
     :s3_credentials => {
-      :access_key_id => ENV['S3_KEY'],
-      :secret_access_key => ENV['S3_SECRET']
+      :access_key_id => "AKIAJTNES3VB7PXOEBZQ",
+      :secret_access_key => "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"
     }
 end

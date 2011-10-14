@@ -33,7 +33,12 @@ module ApplicationHelper
     str
   end
   
-  def last_post
-    
+  def types(search_type)
+    result = ""
+    ['Eat/Drink', 'Relax/Care', 'Shop/Find'].each do |type|
+      result += "<option #{"selected='selected'" if type.eql?(search_type)} value=#{type}>#{type}</option>"
+    end
+    result.html_safe
   end
+
 end

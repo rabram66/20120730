@@ -7,7 +7,7 @@ class LocationsController < ApplicationController
   
   
   def index
-    types = get_types("Eat/Drink")
+    types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])
     @search = params[:search]
     unless @search.blank?
       @latlng = Geocoder.coordinates(@search)  
@@ -26,7 +26,7 @@ class LocationsController < ApplicationController
     
     @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
 		begin 
-	    @locations = Location.near(coordinates, 300)    
+	    @locations = Location.near(coordinates, 5)    
 		rescue
 		end
   end

@@ -18,7 +18,7 @@ relax_care = ["amusement park", "aquarium", "art gallery", "beauty salon", "bowl
   "casino", "gym", "hair care", "health", "movie theater", "museum", "night club", "park", "spa", "zoo"]  
   
 shop_find = ["atm", "bank", "bicycle store", "book store", "bus station", "clothing store", "convenience store" ,
-  "department store", "electronics store", "establishment", "florist", "gas station", "grocery or supermarket",
+  "department store", "electronics store", "establishment", "florist", "gas station", "grocery", "supermarket",
   "hardware store", "home goods store", "jewelry store", "library", "liquor store", "locksmith", "pet store",
   "pharmacy", "shoe store", "shopping mall", "store"]
 locations = Location.all

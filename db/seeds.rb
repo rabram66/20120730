@@ -12,7 +12,7 @@ require 'csv'
 #end
 
 puts "update general location....."
-eat_drink = ["bakery", "bar", "cafe", "food", "meal takeaway", "restaurant"]  
+eat_drink = ["bakery", "coke", "bar", "cafe", "food", "meal takeaway", "restaurant"]  
   
 relax_care = ["amusement park", "aquarium", "art gallery", "beauty salon", "bowling alley",
   "casino", "gym", "hair care", "health", "movie theater", "museum", "night club", "park", "spa", "zoo"]  

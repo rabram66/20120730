@@ -25,8 +25,8 @@ class LocationsController < ApplicationController
     coordinates = @latlng.blank? ? session[:search] : @latlng
     
     @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-		begin 
-	    @locations = Location.near(coordinates, 5)    
+		begin
+	    @locations = Location.near(coordinates, 300).where(:general_type => params[:types])   
 		rescue
 		end
   end
@@ -100,7 +100,7 @@ class LocationsController < ApplicationController
     
     response = get_place_report(params[:location], long, lat)
     @location.reference = response["reference"]
-      
+    @location.general_type = get_general_type(params[:location][:types])
     respond_to do |format|
       if @location.save 
         format.html { redirect_to(@location, :notice => 'Location was successfully created.') }
@@ -119,13 +119,10 @@ class LocationsController < ApplicationController
     
     full_address = "#{params[:location][:address]} #{params[:location][:city]}, #{params[:location][:state]}"
     # transale address into lat/long
-    lat, long = Geocoder.coordinates(full_address)     
-    
-    response = get_place_report(params[:location], long, lat)
-    
-    
+    lat, long = Geocoder.coordinates(full_address)    
+    response = get_place_report(params[:location], long, lat)    
     @location.reference = response["reference"]
-
+    @location.general_type = get_general_type(params[:location][:types])
     respond_to do |format|
       if @location.update_attributes(params[:location])
         format.html { redirect_to(@location, :notice => 'Location was successfully updated.') }
@@ -164,20 +161,23 @@ class LocationsController < ApplicationController
     return adv
   end
   
-  def get_types(types)
+
+  def types(general_type)
     results = ""
-    if types.eql?("Eat/Drink")
-      results = "bakery%7Cbar%7Ccafe%7Cfood%7Cmeal_takeaway%7Crestaurant"
-    elsif types.eql?("Relax/Care")
-      results = "amusement_park%7Caquarium%7Cart_gallery%7Cbeauty_salon%7Cbowling_alley," +
-        "casino%7Cgym%7Chair_care%7Chealth%7Cmovie_theater%7Cmuseum%7Cnight_club%7Cpark%7Cspa%7Czoo"
-    elsif types.eql?("Shop/Find")
-      results = "atm%7Cbank%7Cbicycle_store%7Cbook_store%7Cbus_station%7Cclothing_store%7Cconvenience_store," +
-        "department_store%7Celectronics_store%7Cestablishment%7Cflorist%7Cgas_station%7Cgrocery_or_supermarket%7C" +
-        "hardware_store%7Chome_goods_store%7Cjewelry_store%7Clibrary%7Cliquor_store%7Clocksmith%7Cpet_store%7C" +
-        "pharmacy%7Cshoe_store%7Cshopping_mall%7Cstore"
+    if general_type.eql?("Eat/Drink")
+      results = eat_drink
+    elsif general_type.eql?("Relax/Care")
+      results = relax_care
+    elsif general_type.eql?("Shop/Find")
+      results = shop_find
     end
     results
+  end
+    
+  def get_general_type(type)    
+    return "Eat/Drink" if eat_drink.include?(type)
+    return "Relax/Care" if relax_care.include?(type)
+    return "Shop/Find" if shop_find.include?(type)
   end
   
   def get_facebook_feed(facebook_page_id)
@@ -245,6 +245,38 @@ class LocationsController < ApplicationController
   
   def is_real_name(name)
     name.to_i == 0? true : false
+  end
+  
+  def eat_drink
+    return ["bakery", "bar", "cafe", "food", "meal takeaway", "restaurant"]
+  end
+  
+  def relax_care
+    ["amusement park", "aquarium", "art gallery", "beauty salon", "bowling alley",
+      "casino", "gym", "hair care", "health", "movie theater", "museum", "night club", "park", "spa", "zoo"]
+  end
+  
+  def shop_find
+    ["atm", "bank", "bicycle store", "book store", "bus station", "clothing store", "convenience store" ,
+      "department store", "electronics store", "establishment", "florist", "gas station", "grocery or supermarket",
+      "hardware store", "home goods store", "jewelry store", "library", "liquor store", "locksmith", "pet store",
+      "pharmacy", "shoe store", "shopping mall", "store"]
+  end
+  
+  def get_types(types)
+    results = ""
+    if types.eql?("Eat/Drink")
+      results = "bakery%7Cbar%7Ccafe%7Cfood%7Cmeal_takeaway%7Crestaurant"
+    elsif types.eql?("Relax/Care")
+      results = "amusement_park%7Caquarium%7Cart_gallery%7Cbeauty_salon%7Cbowling_alley," +
+        "casino%7Cgym%7Chair_care%7Chealth%7Cmovie_theater%7Cmuseum%7Cnight_club%7Cpark%7Cspa%7Czoo"
+    elsif types.eql?("Shop/Find")
+      results = "atm%7Cbank%7Cbicycle_store%7Cbook_store%7Cbus_station%7Cclothing_store%7Cconvenience_store," +
+        "department_store%7Celectronics_store%7Cestablishment%7Cflorist%7Cgas_station%7Cgrocery_or_supermarket%7C" +
+        "hardware_store%7Chome_goods_store%7Cjewelry_store%7Clibrary%7Cliquor_store%7Clocksmith%7Cpet_store%7C" +
+        "pharmacy%7Cshoe_store%7Cshopping_mall%7Cstore"
+    end
+    results
   end
   
 end 

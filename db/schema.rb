@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111013134859) do
+ActiveRecord::Schema.define(:version => 20111015034339) do
 
   create_table "advertises", :force => true do |t|
     t.string   "business_type"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(:version => 20111013134859) do
     t.string   "types"
     t.integer  "accuracy",         :default => 50
     t.string   "facebook_page_id"
+    t.string   "general_type"
   end
 
   create_table "newstuffs", :force => true do |t|

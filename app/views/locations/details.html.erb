@@ -18,12 +18,12 @@
      
   <% unless twitter_feed.blank? %> 
       contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/twitter-logo.jpg'/></td>";
-      contentString += "<td><a href=\"http://twitter.com/<%= @last_tweet.first['user']['screen_name'] unless @last_tweet.blank? %>/status/<%= @last_tweet.first['id'] unless @last_tweet.blank? %>\" target=\"_blank\"><%= twitter_feed %></a></td></tr></table>";
+      contentString += "<td><a href=\"http://twitter.com/<%= @last_tweet.first['user']['screen_name'] unless @last_tweet.blank? %>/status/<%= @last_tweet.first['id'] unless @last_tweet.blank? %>\" target=\"_blank\"><%= twitter_feed.html_safe %></a></td></tr></table>";
   <% end %>
 
   <% unless facebook_feed.blank? %> 
       contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/facebook-logo.png'/></td>"
-      contentString += "<td><a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id  unless @location.blank? %>'><%= facebook_feed %></a></td></tr></table>";
+      contentString += "<td><a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id  unless @location.blank? %>'><%= facebook_feed.html_safe %></a></td></tr></table>";
   <% end %>
 
   <% unless @advertise.blank? %>

@@ -26,7 +26,7 @@ class LocationsController < ApplicationController
     
     @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
 		begin
-	    @locations = Location.near(coordinates, 300).where(:general_type => params[:types])   
+	    @locations = Location.near(coordinates, 3000).where(:general_type => params[:types])   
 		rescue
 		end
   end
@@ -55,6 +55,7 @@ class LocationsController < ApplicationController
     
     @advertise = get_logo(@details, @location)
     
+    
     unless @location.blank?
       @last_tweet = get_last_tweet(@location.twitter_name)    
       @last_post = get_last_post(@location)
@@ -65,6 +66,7 @@ class LocationsController < ApplicationController
    
   def show
     @location = Location.find(params[:id])
+    
     @feed = get_facebook_feed(@location.facebook_page_id)
     @tweet = get_twitter_feed(@location.twitter_name)
     
@@ -121,8 +123,8 @@ class LocationsController < ApplicationController
     # transale address into lat/long
     lat, long = Geocoder.coordinates(full_address)    
     response = get_place_report(params[:location], long, lat)    
-    @location.reference = response["reference"]
-    @location.general_type = get_general_type(params[:location][:types])
+    @location.reference = response["reference"] unless response["reference"].blank?
+    @location.general_type = get_general_type(params[:location][:types]) unless params[:location][:types].blank?
     respond_to do |format|
       if @location.update_attributes(params[:location])
         format.html { redirect_to(@location, :notice => 'Location was successfully updated.') }
@@ -190,7 +192,7 @@ class LocationsController < ApplicationController
       res = RestClient.get facebook_link
       return ActiveSupport::JSON.decode(res)
     rescue
-    end
+    end    
   end
   
   def get_twitter_feed(twitter_name)
@@ -215,7 +217,7 @@ class LocationsController < ApplicationController
     HTTParty.get("https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=true&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
   end
   
-  def get_last_post(location)
+  def get_last_post(location)    
     unless location.facebook_page_id.blank?
       # convert real name to id  
       id = location.facebook_page_id

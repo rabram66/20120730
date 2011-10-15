@@ -26,7 +26,7 @@ class LocationsController < ApplicationController
     
     @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
 		begin
-	    @locations = Location.near(coordinates, 3000).where(:general_type => params[:types])   
+	    @locations = Location.near(coordinates, 300).where(:general_type => params[:types])   
 		rescue
 		end
   end

@@ -14,4 +14,3 @@ gem "jquery-rails"
 gem 'paperclip'
 gem 'pg'
 gem "aws-s3", "~> 0.6.2"
-gem 'ruby-debug19'

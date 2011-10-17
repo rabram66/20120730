@@ -4,7 +4,7 @@ class LocationsController < ApplicationController
   
   RADIUS = '3000'  
   DEFAULT_LOCATION = 'Atlanta, GA'
-  
+  before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
   
   def index
     types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])

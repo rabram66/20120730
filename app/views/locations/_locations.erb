@@ -2,8 +2,12 @@
 <% @locations.each do |location| %>
   <% if location.reference? %>
     <ul>
-      <li class="alternate"><%= link_to location.name, :action => 'details', :reference => location.reference %> -  <%= location.address %> <img src="http://www.1nservice.com/uploadedImages/1NService/Home/twitter_logo.jpg" width="12"/>  <%= link_to 'Edit', edit_location_path(location) %>
-        <%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %>></li>
+      <li class="alternate"><%= link_to location.name, :action => 'details', :reference => location.reference %> -  <%= location.address %> <img src="http://www.1nservice.com/uploadedImages/1NService/Home/twitter_logo.jpg" width="12"/>  
+        <% unless current_user.blank? %>
+          <%= link_to 'Edit', edit_location_path(location) %>
+          <%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %>
+        <% end %>
+      </li>
     </ul>
   <% else%>
     <%= '' %>

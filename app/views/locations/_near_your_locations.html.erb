@@ -2,8 +2,9 @@
   <% @near_your_locations['results'].each do |location| %>
     <ul>
       <li> 
-        <%= link_to location['name'], :action => 'details', :reference => location['reference']%> 
+        <%= link_to location['name'], :action => 'details', :reference => location['reference'] %> 
         <%= "- #{location['vicinity']}" unless location['vicinity'].blank? %>
+        <%= link_to "Destroy", "#", :class => "delete_location", :id => location['reference'] %>
       </li>
     </ul>   
   <% end %>

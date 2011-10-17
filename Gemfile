@@ -12,7 +12,7 @@ gem 'rest-client', '~> 1.6.7'
 gem "geokit"
 gem "jquery-rails"
 gem 'paperclip'
-gem 'pg'
+#gem 'pg'
 gem "aws-s3", "~> 0.6.2"
 gem "devise"
 #gem 'ruby-debug19'

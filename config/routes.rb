@@ -1,4 +1,6 @@
 LocationDB::Application.routes.draw do
+  devise_for :users
+
   resources :advertises
 
   resources :newstuffs

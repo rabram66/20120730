@@ -11,9 +11,15 @@
   <body onload="<%= "initialize()" unless location.nil? %>">
     <div class="container">    
       <% unless params[:action].eql?("details") %>
-      <div class="auth">    
-        <%= link_to "Home", "/" %> || <%= link_to "Advertises", "/advertises" %> || <%= link_to "Signup", "/signup" %>
-      </div> 
+        <div class="auth">
+          <%= link_to "Home", "/" %> || 
+          <% if current_user.blank? %>
+            <%= link_to "Login", "/users/sign_in" %>
+          <% else %>
+            <%= link_to "Advertises", "/advertises" %> || <%= link_to "Signup Location", "/signup" %> || 
+            <%= link_to "Logout", destroy_user_session_path, :method => :delete %>
+          <% end %>
+        </div>
       <% end %>
       <div class="span-24">
         <% unless params[:action].eql?("details") %>

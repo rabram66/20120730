@@ -13,6 +13,9 @@
   </tr>
 
 <% @events.each do |event| %>
+  <% if (!current_user.blank? and current_user.role.eql? "Admin") or
+     (!current_user.blank? and current_user.id.eql? event.user_id)
+  %>
   <tr>
     <td><%= event.name %></td>
     <td><%= event.address %></td>
@@ -23,6 +26,7 @@
     <td><%= link_to 'Edit', edit_event_path(event) %></td>
     <td><%= link_to 'Destroy', event, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
+  <% end %>
 <% end %>
 </table>
 

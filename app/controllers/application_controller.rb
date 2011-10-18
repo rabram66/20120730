@@ -2,8 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :role
   
-  def role
-    puts "================", params[:controller], params[:action]
+  def role    
     if (params[:controller].eql?("locations") && params[:action].eql?("index")) or 
         (params[:controller].eql?("locations") && params[:action].eql?("details")) or
         (params[:controller].eql?("locations") && params[:action].eql?("search")) or

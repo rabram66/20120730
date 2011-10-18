@@ -15,10 +15,18 @@
           <%= link_to "Home", "/" %> || 
           <% if current_user.blank? %>
             <%= link_to "Login", "/users/sign_in" %>
-          <% else %>
-            <%= link_to "Events", "/events" %> || 
+          <% else %>            
+            <% if current_user.role == "Promoter" or current_user.role == "Admin" %>
+              <%= link_to "Events", "/events" %> || 
+            <% end %>
+
+            <% if current_user.role == "Admin" %>
               <%= link_to "Advertises", "/advertises" %> || 
+              <%= link_to "Users", "/users" %> || 
+            <% end %>
+            <% if current_user.role == "User" or current_user.role == "Admin" %>
               <%= link_to "Signup Location", "/signup" %> || 
+            <% end %>
             <%= link_to "Logout", destroy_user_session_path, :method => :delete %>
           <% end %>
         </div>

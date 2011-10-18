@@ -13,7 +13,7 @@ class Location < ActiveRecord::Base
   validates :twitter_name,  :presence => true
   validates :facebook_page_id,  :presence => true
   
-  
+  belongs_to :user
   def fulladdress
     [address, city, state]
   end
@@ -24,7 +24,7 @@ class Location < ActiveRecord::Base
   
   attr_accessible :name, :address, :city, :state, :twitter, 
                   :phone, :latitude, :longitude, :reference, :email, 
-                  :types, :twitter_name, :facebook_page_id
+                  :types, :twitter_name, :facebook_page_id, :user_id
   geocoded_by :address
   after_validation :geocode
   

@@ -2,6 +2,7 @@ include Geokit::Geocoders
 require 'json'
 
 class LocationsController < ApplicationController
+  
   respond_to :html, :xml, :json, :js
   
   RADIUS = '3000'  
@@ -116,7 +117,6 @@ class LocationsController < ApplicationController
   # POST /locations.xml
   def create
     @location = Location.new(params[:location])    
-
     # transale address into lat/long
     lat, long = Geocoder.coordinates(@location.full_address)     
     

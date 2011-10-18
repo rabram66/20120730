@@ -1,12 +1,7 @@
 LocationDB::Application.routes.draw do
-  resources :events
-
   devise_for :users
-
-  resources :advertises
-
-  resources :newstuffs
-  resources :locations
+  resources :users, :events, :advertises, :newstuffs, :locations
+  
 
   post "locations/index"
   get "near_location" => "locations#near_location"

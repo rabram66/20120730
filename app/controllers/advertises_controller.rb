@@ -2,6 +2,7 @@ class AdvertisesController < ApplicationController
   # GET /advertises
   # GET /advertises.xml
   def index
+    
     @advertises = Advertise.all
 
     respond_to do |format|

@@ -50,7 +50,9 @@
   <div class="field">
     <%= f.label :facebook_page_id %><br />
     <%= f.text_field :facebook_page_id %>
+    <%= f.hidden_field :user_id, :value => current_user.id %>
   </div>
+
 
   <div class="actions">
     <%= f.submit %>

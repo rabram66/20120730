@@ -1,4 +1,4 @@
-<div class="span-15">
+<div class="span-15" style="float: left;">
   <div class="whitebox">        
     <%= render 'search' %>            
     <div id="locations">
@@ -9,8 +9,15 @@
     </div>
   </div>
 </div>
-<div>
+<div style="float: right;">
   <%= render 'map' %>
+  <div>
+    <h2>Events</h2> <br/>
+    <% @events.each do |event| %>
+    <b><%= event.name %> -  <%= event.address %></b><br/>
+      <%= event.description %><br/><br/>
+    <% end %>
+  </div>
 </div>
 
 

@@ -6,8 +6,7 @@
           <% unless current_user.blank? %>
             <%= link_to 'Edit', edit_location_path(location) %>
             <%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %>
-            <%#= link_to "Des", "#", :class => "delete_location", :id => location.reference %>
-            <image src="/images/ajax-loader.gif" style="display: none;" class="img_<%= location.reference %>"/>
+            
           <% end %>
         </li>
       </ul>

@@ -34,6 +34,8 @@ class LocationsController < ApplicationController
 	    @locations = Location.near(coordinates, 300).where(:general_type => params[:types])   
 		rescue
 		end
+    
+    @events = Event.all
   end
   
   # TODO

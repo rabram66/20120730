@@ -14,8 +14,11 @@
   <div class="events_index">
     <h2>Events</h2>
     <% @events.each do |event| %>
-    <b><%= event.name %> -  <%= event.address %></b><br/>
-      <%= event.description %><br/><br/>
+      <div style="border-bottom: 1px dotted gray;">
+        <b><%= event.name %> -  <%= event.address %></b><br/>
+        <%= event.description %><br/>
+      </div>    
+      <br/>
     <% end %>
   </div>
 </div>

@@ -1,4 +1,6 @@
 include Geokit::Geocoders
+require 'json'
+
 class LocationsController < ApplicationController
   respond_to :html, :xml, :json, :js
   
@@ -68,9 +70,10 @@ class LocationsController < ApplicationController
   
   def delete_place    
     myarray = {:reference => params[:id]}
+    myarray = ActiveSupport::JSON.encode(myarray) 
     result = RestClient.post "https://maps.googleapis.com/maps/api/place/delete/json?sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc", myarray, :content_type => :json, :accept => :json
     res = ActiveSupport::JSON.decode(result)
-    debugger
+    
     if res['status'].eql?("OK")
       render :text => "1"
     else

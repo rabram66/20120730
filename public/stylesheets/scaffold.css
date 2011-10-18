@@ -54,3 +54,11 @@ div.field, div.actions {
   font-size: 12px;
   list-style: square;
 }
+.events_index {
+    padding-left:10px;
+    margin-top: 210px;
+    border-color: beige;
+    border-style:solid;
+    border-width:5px;
+}
+

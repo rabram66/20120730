@@ -33,7 +33,7 @@ class LocationsController < ApplicationController
 		end
     
     begin
-	    @locations = Location.near(coordinates, 5).where(:general_type => params[:types])   
+	    @locations = Location.near(coordinates, 300).where(:general_type => params[:types])   
 		rescue
 		end
     
@@ -50,7 +50,7 @@ class LocationsController < ApplicationController
   # TODO
   def search
     @latlng = [params[:latitude].to_f, params[:longitude].to_f]
-    @locations = Location.near(@latlng, 5)
+    @locations = Location.near(@latlng, 300)
     render :partial => "locations"
   end
   

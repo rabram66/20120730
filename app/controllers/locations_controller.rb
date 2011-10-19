@@ -45,8 +45,7 @@ class LocationsController < ApplicationController
     rescue
 		end
     
-    begin
-    end
+    begin    
     @events = Event.near(coordinates, 300)    
     rescue
 		end

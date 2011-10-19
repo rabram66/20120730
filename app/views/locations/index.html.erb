@@ -11,31 +11,10 @@
 </div>
 <div style="float: right;">
   <%= render 'map' %>
-  <div class="events_index">
-    <h2>Events</h2>
-    <% @events.each do |event| %>
-      <div style="border-bottom: 1px dotted gray;">
-        <b><%= event.name %> -  <%= event.address %></b><br/>
-        <%= event.description %><br/>
-      </div>    
-      <br/>
-    <% end %>
-  </div>
   
-  <% begin %>
-  <div class="deals">
-    <h2>Daily Deals</h2>
-    <% @deals['root']['response']['deals']['list_item'].each do |deal| %>
-      <div style="border-bottom: 1px dotted gray;">
-        <a href="<%= deal['yipit_url'] %>" target="_blank">
-          <%= deal['yipit_title'] %>
-        </a>
-      </div>
-    <% end %>
-    <br/>
-  </div>
-  <% rescue %>
-  <% end %>
+  <%= render 'events' %>
+  
+  <%= render 'deals' %>
 </div>
 
 

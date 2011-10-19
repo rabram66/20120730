@@ -1,0 +1,14 @@
+<% begin %>
+  <div class="deals">
+    <h2>Daily Deals</h2>
+    <% @deals['root']['response']['deals']['list_item'].each do |deal| %>
+      <div style="border-bottom: 1px dotted gray;">
+        <a href="<%= deal['yipit_url'] %>" target="_blank">
+          <%= deal['yipit_title'] %>
+        </a>
+      </div>
+    <% end %>
+    <br/>
+  </div>
+<% rescue %>
+<% end %>

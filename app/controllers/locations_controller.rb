@@ -44,7 +44,12 @@ class LocationsController < ApplicationController
       @deals = ActiveSupport::JSON.decode(deals)
     rescue
 		end
-    @events = Event.all
+    
+    begin
+    end
+    @events = Event.near(coordinates, 300)    
+    rescue
+		end
   end
   
   # TODO

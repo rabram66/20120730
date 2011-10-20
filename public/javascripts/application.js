@@ -1,12 +1,6 @@
 $(document).ready(function() {
-    
-    $("#location_name").tokenInput("/load_page", {
-    crossDomain: false,
-    prePopulate: $("#location_name").data("pre"),
-    theme: "facebook"
-  });
-  
-  $("#location_facebook_page_id").tokenInput("/load_page", {
+
+$("#location_facebook_page_id").tokenInput("/load_page", {
     crossDomain: false,
     prePopulate: $("#location_facebook_page_id").data("pre"),
     theme: "facebook"

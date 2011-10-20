@@ -26,9 +26,10 @@
             // Success!
             longitude = position.coords.longitude;
             latitude = position.coords.latitude;
-            markOutLocation(position.coords.latitude, position.coords.longitude);          
-            $('#locations').load("/search?longitude=" + longitude + "&latitude=" + latitude );
-            $('#near_your_locations').load("/near_location?longitude=" + longitude + "&latitude=" + latitude );          
+            markOutLocation(position.coords.latitude, position.coords.longitude);                      
+            window.location = "/search?longitude=" + longitude + "&latitude=" + latitude ;
+            // $('#locations').load("/search?longitude=" + longitude + "&latitude=" + latitude );
+            //$('#near_your_locations').load("/near_location?longitude=" + longitude + "&latitude=" + latitude );          
           }, 
           function () {            
             markOutLocation(<%= @latlng[0] %>, <%= @latlng[1] %>);

@@ -34,7 +34,7 @@ require 'csv'
 #  location.save
 #end
 
-puts "create roles..."
-["User", "Promoter", "Admin"].each do |role_name|
-  Role.create(:name => role_name)
-end
+#puts "create roles..."
+#["User", "Promoter", "Admin"].each do |role_name|
+#  Role.create(:name => role_name)
+#end

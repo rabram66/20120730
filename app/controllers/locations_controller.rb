@@ -113,16 +113,23 @@ class LocationsController < ApplicationController
   # GET /locations/new.xml
   def new
     @location = Location.new
-
+    @pages = {}
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @location }
     end
   end
-
+  
+  def load_page  
+    results = RestClient.get "https://graph.facebook.com/search?q=#{params[:q].gsub(" ", "+")}&limit=5&type=page"
+    res = ActiveSupport::JSON.decode(results)    
+    render :json => res['data']
+  end
+  
   # GET /locations/1/edit
   def edit
     @location = Location.find(params[:id])
+    @pages = [{id: @location.id, name: @location.name}]
   end
 
   # POST /locations
@@ -140,6 +147,7 @@ class LocationsController < ApplicationController
         format.html { redirect_to(@location, :notice => 'Location was successfully created.') }
         format.xml  { render :xml => @location, :status => :created, :location => @location }        
       else
+        @pages = {}
         format.html { render :action => "new" }
         format.xml  { render :xml => @location.errors, :status => :unprocessable_entity }
       end
@@ -162,6 +170,7 @@ class LocationsController < ApplicationController
         format.html { redirect_to(@location, :notice => 'Location was successfully updated.') }
         format.xml  { head :ok }
       else
+        @pages = [{id: @location.id, name: @location.name}]
         format.html { render :action => "edit" }
         format.xml  { render :xml => @location.errors, :status => :unprocessable_entity }
       end

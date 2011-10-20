@@ -75,6 +75,7 @@ class LocationsController < ApplicationController
     
     @advertise = get_logo(@details, @location)
     
+    @origin_address = params[:address]
     
     unless @location.blank?
       @last_tweet = get_last_tweet(@location.twitter_name)    

@@ -30,3 +30,171 @@ body {font-size:75%;color:#222;background:none !important;font-family:"Helvetica
     text-align: right;
     padding-bottom: 10px;
 }
+
+
+#directions {
+    float: left;
+}
+
+
+body {
+  position: relative;
+}
+
+#content {
+  width: 640px;
+  padding: 8px;
+  background-color: #eeeeff;
+  border: 1px solid #000066;
+}
+
+#svPanel {
+  width: 638px;
+  height: 319px;
+  position: relative;
+}
+
+#status {
+  position: absolute;
+  top: 120px;
+  left: 0px;
+  width: 638px;
+  text-align: center;
+  font: 32pt sans-serif;
+  color: #666666;
+  background-color: white;
+}
+
+#instruction {
+  position: absolute;
+  top: 295px;
+  left: 0px;
+  width: 638px;
+  text-align: center;
+  font: 16pt sans-serif;
+  color: #eeeeee;
+  display: none;
+}
+
+#svPanel, #directions, #map {
+  border: 1px solid black;
+  background-color: white;
+}
+
+#streetview {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 638px;
+  height: 319px;
+}
+
+#progressBorder {
+  position: relative;
+  width: 638px;
+  height: 10px;
+  margin: 2px 0px 2px 0px;
+  border: 1px solid #000066;
+  background-color: white;
+  overflow: hidden;
+}
+
+#progressBar {
+  position: absolute;
+  background-color: #000066;
+  width: 636px;
+  height: 8px;
+  top: 1px;
+  right:1px;
+}
+
+#map {
+  width: 317px;
+  height: 317px;
+  margin-right: 1px;
+  overflow: hidden;
+}
+
+#directions {
+  width: 317px;
+  height: 400px;
+  margin-left: 1px;
+  position: relative;
+  overflow: auto;
+}
+
+.waypoint {
+  position: relative;
+  background-color: #eeeeee;
+  border: 1px solid #666666;
+  padding: 6px;
+  margin: 4px;
+  font: 10pt sans-serif;
+}
+
+.letterIcon {
+  width: 24px;
+  height: 38px;
+  background-image: none;
+}
+
+.waypointAddress {
+  position: absolute;
+  top: 17px;
+  left: 32px;
+}
+
+#summary {
+  padding: 4px;
+  font: 10pt sans-serif;
+}
+
+.dstep {
+  border-top: 1px solid #666666;
+  padding: 4px;
+  padding-left: 8px;
+  font: 10pt sans-serif;
+  margin-left: 4px;
+  margin-right: 4px;
+  cursor: pointer;
+  background-color: white;
+}
+
+.label {
+  width: 52px;
+  text-align: right;
+  font: 12pt sans-serif;
+  float: left;
+  position: relative;
+  top: 4px;
+  margin-right: 5px;
+}
+
+.input {
+  float: left;
+  width: 252px;
+  text-align: left;
+}
+
+.controls {
+ clear: both;
+ padding: 4px;
+}
+
+#speed {
+  float: left;
+}
+
+#buttons {
+ float: right;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  vertical-align: top;
+}
+
+

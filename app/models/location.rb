@@ -25,7 +25,7 @@ class Location < ActiveRecord::Base
   attr_accessible :name, :address, :city, :state, :twitter, 
                   :phone, :latitude, :longitude, :reference, :email, 
                   :types, :twitter_name, :facebook_page_id, :user_id
-  geocoded_by :address
+  geocoded_by :full_address
   after_validation :geocode
   
 end

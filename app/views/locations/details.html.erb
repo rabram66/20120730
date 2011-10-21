@@ -1,15 +1,15 @@
 <% content_for :javascripts do %>
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>    
   <script type="text/javascript">    
-    function initialize() {
-      var latlng = new google.maps.LatLng(<%= location['lat'] %> , <%= location['lng'] %>);
+    function initialize() {      
+      var latlng = new google.maps.LatLng(<%= location[0] %> , <%= location[1] %>);
     
       var myOptions = {zoom: 18, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP};
  
       var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);    
         
       
-      var myLatLng = new google.maps.LatLng(<%= location['lat'] %>, <%= location['lng'] %>);
+      var myLatLng = new google.maps.LatLng(<%= location[0] %> , <%= location[1] %>);
   
       var marker = new google.maps.Marker({position: myLatLng, map: map, title: 'Click me' });
   

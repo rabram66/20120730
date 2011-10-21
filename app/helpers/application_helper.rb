@@ -6,15 +6,27 @@ module ApplicationHelper
   
   def location
     #return @latlng unless @latlng.blank?
-    return @details['result']['geometry']['location'] unless @details.blank?    
+    unless @location.blank?
+      return @location.latitude, @location.longitude
+    else
+      return @details['result']['geometry']['location']['lat'], @details['result']['geometry']['location']['lng'] unless @details.blank?    
+    end
+    
   end
   
   def business_name
-    @details['result']['name']
+    unless @location.blank?
+      return @location.name
+    else
+      return @details['result']['name']
+    end
   end
   
   def rating_info
+    begin
     "Rating #{@details['result']['rating']} out of 5" unless @details['result']['rating'].blank?
+    rescue
+    end
   end
   
   def twitter_feed

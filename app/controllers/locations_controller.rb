@@ -33,7 +33,7 @@ class LocationsController < ApplicationController
 		end
     
     begin
-	    @locations = Location.near(coordinates, 300).where(:general_type => params[:types])   
+	    @locations = Location.near(coordinates, 10).where(:general_type => params[:types])   
 		rescue
 		end
     
@@ -46,7 +46,7 @@ class LocationsController < ApplicationController
 		end
     
     begin     
-    @events = Event.near(coordinates, 300)    
+    @events = Event.near(coordinates, 10)    
     rescue
 		end
   end
@@ -76,7 +76,7 @@ class LocationsController < ApplicationController
     @advertise = get_logo(@details, @location)
     
     @origin_address = params[:address]
-    
+    debugger
     unless @location.blank?
       @last_tweet = get_last_tweet(@location.twitter_name)    
       @last_post = get_last_post(@location)

@@ -38,12 +38,12 @@ class LocationsController < ApplicationController
 		end
     
     #get deals from yipit
-#    begin
-#      deals = RestClient.get "http://api.yipit.com/v1/deals/?key=zZnf9zms8Kxp6BPE&lat=#{coordinates[0]}&lon=#{coordinates[1]}"
-#      deals = Hash.from_xml(deals).to_json
-#      @deals = ActiveSupport::JSON.decode(deals)
-#    rescue
-#		end
+    begin
+      deals = RestClient.get "http://api.yipit.com/v1/deals/?key=zZnf9zms8Kxp6BPE&lat=#{coordinates[0]}&lon=#{coordinates[1]}"
+      deals = Hash.from_xml(deals).to_json
+      @deals = ActiveSupport::JSON.decode(deals)
+    rescue
+		end
     
     begin     
     @events = Event.near(coordinates, 300)    

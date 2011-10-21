@@ -33,7 +33,7 @@ class LocationsController < ApplicationController
 		end
     
     begin
-	    @locations = Location.near(coordinates, 10).where(:general_type => params[:types])   
+	    @locations = Location.near(coordinates, 2).where(:general_type => params[:types])   
 		rescue
 		end
     
@@ -46,7 +46,7 @@ class LocationsController < ApplicationController
 		end
     
     begin     
-    @events = Event.near(coordinates, 10)    
+    @events = Event.near(coordinates, 2)
     rescue
 		end
   end

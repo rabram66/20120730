@@ -1,11 +1,12 @@
-<% @locations.each do |location| %>
+<% unless @locations.blank? %>
+  <% @locations.each do |location| %>
     <% unless location.reference.blank? %>
       <ul class="<%= location.reference %>">
         <li class="alternate"><%= link_to location.name, :action => 'details', :address => location.full_address, :reference => location.reference %> -  <%= location.address %> <img src="http://www.1nservice.com/uploadedImages/1NService/Home/twitter_logo.jpg" width="12"/>  
           <% unless current_user.blank? %>
-          <% if current_user.role.eql? "Admin" or current_user.id.eql?(location.user_id) %>
-            <%= link_to 'Edit', edit_location_path(location) %>
-            <%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %>
+            <% if current_user.role.eql? "Admin" or current_user.id.eql?(location.user_id) %>
+              <%= link_to 'Edit', edit_location_path(location) %>
+              <%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %>
             <% end %>
           <% end %>
         </li>
@@ -14,3 +15,4 @@
       <%= '' %>
     <% end %>
   <% end %> 
+<% end %> 

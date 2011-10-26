@@ -19,7 +19,7 @@
       directionsDisplay.setMap(map);
       directionsDisplay.setPanel(document.getElementById('directions-panel'));
             
-      marker = new google.maps.Marker({position: bussiness_address, map: map, title: 'Click me' });
+      //marker = new google.maps.Marker({position: bussiness_address, map: map, title: 'Click me' });
   
       var contentString  = "<b><%= raw business_name %></b> <%= rating_info %> \n";
 
@@ -43,7 +43,20 @@
       var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});
         
       infowindow.open(map, marker); 
-      directionsDisplay.setMap(map);
+      
+      
+      var request = {
+        origin: "<%= cookies[:address].gsub("&", ",") unless cookies[:address].blank? %>",
+        destination: "<%= @origin_address %>",
+        travelMode: google.maps.DirectionsTravelMode.WALKING
+      };
+      directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          directionsDisplay.setDirections(response);
+        }
+      });
+      
+      //directionsDisplay.setMap(map);
     }
   
     function calcRoute() {
@@ -71,8 +84,8 @@
 
 <div>  
   <input type="hidden" id="end" value="<%= @origin_address %>" />  
-  <b>Current Address: </b>
-  <input type="text" id="start"/>  
+  <input type="hidden" id="start" value="<%= cookies[:address].gsub("&", ",") unless cookies[:address].blank? %>"/>  
+  <input type="hidden" id="route" />
 </div>  
 
 <div id="detail">  
@@ -104,3 +117,6 @@
   <% end %>
   <br/><br/>
 </div>
+  <script>
+    $("#route").click();
+  </script>

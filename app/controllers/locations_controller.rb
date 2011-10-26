@@ -12,9 +12,8 @@ class LocationsController < ApplicationController
   
   def index
     types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])
-    @search = params[:search].blank? ? cookies[:address]: params[:search]
-    unless @search.blank?
-      cookies[:address] = { :value => @search, :expires => 1.year.from_now }
+    @search = params[:search] unless params[:search].blank?
+    unless @search.blank?      
       @latlng = Geocoder.coordinates(@search)  
       session[:search] = @latlng unless @latlng.blank?
     else      
@@ -28,6 +27,8 @@ class LocationsController < ApplicationController
     
     @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank? &&  session[:search].blank?    
     coordinates = @latlng.blank? ? session[:search] : @latlng
+    
+    cookies[:address] = { :value => coordinates, :expires => 1.year.from_now }
     begin
       @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
     rescue

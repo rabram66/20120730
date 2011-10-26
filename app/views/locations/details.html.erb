@@ -56,8 +56,7 @@
       var request = {
         origin: start,
         destination: end,
-        travelMode: google.maps.DirectionsTravelMode.WALKING,
-        zoom: 18
+        travelMode: google.maps.DirectionsTravelMode.WALKING
       };
       directionsService.route(request, function(response, status) {
         if (status == google.maps.DirectionsStatus.OK) {

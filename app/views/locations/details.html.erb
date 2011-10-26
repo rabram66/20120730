@@ -47,7 +47,7 @@
       
       var request = {
         origin: "<%= cookies[:address].gsub("&", ",") unless cookies[:address].blank? %>",
-        destination: "<%= @origin_address %>",
+        destination: bussiness_address,
         travelMode: google.maps.DirectionsTravelMode.WALKING
       };
       directionsService.route(request, function(response, status) {

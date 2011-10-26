@@ -28,9 +28,19 @@ $(document).ready(function() {
         return false;
     })
     
-    $('#end').bind('keypress', function(e) {
+    $('#start').bind('keypress', function(e) {        
         if(e.keyCode==13){
+            var address = $("#start").val();
             calcRoute();
+            jQuery.ajax({
+                data:{},
+                dataType: "text",
+                type:'get',
+                url:'/save_place/' + address,
+                success: function(text) {
+                // do nothing
+                }
+            })
         }
     });
 })

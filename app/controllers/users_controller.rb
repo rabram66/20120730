@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_filter :role
   before_filter :authenticate_user!
   
   def index    

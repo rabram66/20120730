@@ -1,4 +1,7 @@
 class EventsController < ApplicationController
+  
+  before_filter :role
+  
   # GET /events
   # GET /events.json
   def index

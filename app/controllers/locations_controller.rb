@@ -3,7 +3,7 @@ require 'json'
 require 'open-uri'
 
 class LocationsController < ApplicationController
-  
+  before_filter :role, :except => [:delete_place, :save_place]
   respond_to :html, :xml, :json, :js
   
   RADIUS = '3000'  
@@ -12,8 +12,9 @@ class LocationsController < ApplicationController
   
   def index
     types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])
-    @search = params[:search]
+    @search = params[:search].blank? ? cookies[:address]: params[:search]
     unless @search.blank?
+      cookies[:address] = { :value => @search, :expires => 1.year.from_now }
       @latlng = Geocoder.coordinates(@search)  
       session[:search] = @latlng unless @latlng.blank?
     else      
@@ -33,7 +34,7 @@ class LocationsController < ApplicationController
 		end
     
     begin
-	    @locations = Location.near(coordinates, 2).where(:general_type => params[:types])   
+	    @locations = Location.near(coordinates, 2).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
 		rescue
 		end
     
@@ -46,14 +47,14 @@ class LocationsController < ApplicationController
 		end
     
     begin     
-    @events = Event.near(coordinates, 2)
+      @events = Event.near(coordinates, 2)
     rescue
 		end
   end
   
   # TODO
   def search
-   @latlng = [params[:latitude], params[:longitude]]
+    @latlng = [params[:latitude], params[:longitude]]
     session[:search] = @latlng
     redirect_to locations_path
   end
@@ -90,6 +91,15 @@ class LocationsController < ApplicationController
     res = ActiveSupport::JSON.decode(result)
     
     if res['status'].eql?("OK")
+      render :text => "1"
+    else
+      render :text => "2"
+    end
+  end
+  
+  def save_place
+    cookies[:address] = { :value => params[:address], :expires => 1.year.from_now }    
+    unless cookies[:address].blank?
       render :text => "1"
     else
       render :text => "2"
@@ -318,7 +328,7 @@ class LocationsController < ApplicationController
         "department_store%7Celectronics_store%7Cestablishment%7Cflorist%7Cgas_station%7Cgrocery_or_supermarket%7C" +
         "hardware_store%7Chome_goods_store%7Cjewelry_store%7Clibrary%7Cliquor_store%7Clocksmith%7Cpet_store%7C" +
         "pharmacy%7Cshoe_store%7Cshopping_mall%7Cstore"
-    end
+    end    
     results
   end
   

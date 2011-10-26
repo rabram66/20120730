@@ -49,10 +49,11 @@
     function calcRoute() {
       marker.setMap(null);
       var start = document.getElementById('start').value;
-      if (start == "") {
-        start = bussiness_address;
-      }
+      
       var end = document.getElementById('end').value;
+      if (end == "") {
+        end = bussiness_address;
+      }
       var request = {
         origin: start,
         destination: end,
@@ -63,16 +64,15 @@
           directionsDisplay.setDirections(response);
         }
       });
-    }
-
+    }    
     google.maps.event.addDomListener(window, 'load', initialize);
   </script>
 <% end %>
 
 <div>  
-  <input type="hidden" id="start" value="<%= @origin_address %>" />  
+  <input type="hidden" id="end" value="<%= @origin_address %>" />  
   <b>Current Address: </b>
-  <input type="text" id="end"/>  
+  <input type="text" id="start"/>  
 </div>  
 
 <div id="detail">  

@@ -1,4 +1,6 @@
 class AdvertisesController < ApplicationController
+  before_filter :role
+  
   # GET /advertises
   # GET /advertises.xml
   def index

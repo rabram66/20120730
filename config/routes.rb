@@ -11,6 +11,7 @@ LocationDB::Application.routes.draw do
   get "details/:reference" => "locations#details", :as => :locations_details
   get "details/:id" => "locations#details", :as => :locations_details  
   get "/delete_place/:id" => "locations#delete_place"
+  match "save_place/:address" => "locations#save_place"
   get "/load_page" => "locations#load_page"  
   root :to => "locations#index"  
 end

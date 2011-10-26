@@ -2,14 +2,23 @@ html { height: 100% }
 body { height: 100%; margin: 0; padding: 0 }
 
 #map_canvas {
-    width: 600px;
-    height: 600px;
+    width: 500px;
+    height: 500px;
+    float: left;
+}
+
+#detail #map_canvas {
+    margin: 0px 10px 0px 10px;
+}
+
+#directions-panel {
+    width: 190px;
     float: left;
 }
 
 #people_saying {
     float: right;
-    width: 300px;    
+    width: 200px;    
 }
 
 #people_saying .tweet_result {

@@ -1,10 +1,10 @@
 $(document).ready(function() {
 
-$("#location_facebook_page_id").tokenInput("/load_page", {
-    crossDomain: false,
-    prePopulate: $("#location_facebook_page_id").data("pre"),
-    theme: "facebook"
-  });
+    $("#location_facebook_page_id").tokenInput("/load_page", {
+        crossDomain: false,
+        prePopulate: $("#location_facebook_page_id").data("pre"),
+        theme: "facebook"
+    });
   
   
     $('.delete_location').live('click', function() {
@@ -27,4 +27,10 @@ $("#location_facebook_page_id").tokenInput("/load_page", {
         })
         return false;
     })
+    
+    $('#end').bind('keypress', function(e) {
+        if(e.keyCode==13){
+            calcRoute();
+        }
+    });
 })

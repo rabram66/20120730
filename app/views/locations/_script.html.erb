@@ -1,12 +1,49 @@
 <script src="http://www.google.com/jsapi?key=ABQIAAAAhLOpZfesDeMKWC3zGdB4BxRyAQIOZcmWQaZgGjJb-w1DbZAmsxTfbS2hwencPWx3W54SemwGmRyFwA"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
 <script>
-  (function () {   
-    google.load("maps", "2");
-    var map;
-    var latitude = <%= session[:search].blank? ? @latlng[0] : session[:search][0] %>;
-    var longitude = <%= session[:search].blank? ? @latlng[1] : session[:search][1] %>;
-    google.setOnLoadCallback(function () {
-      map = new google.maps.Map2(document.getElementById("maps"));
+  var map;
+  var latitude = <%= session[:search].blank? ? @latlng[0] : session[:search][0] %>;
+  var longitude = <%= session[:search].blank? ? @latlng[1] : session[:search][1] %>;
+  function initialize() {    
+    var mapOptions = {
+      center: new google.maps.LatLng(latitude, longitude),
+      zoom: 13,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById('maps'),
+    mapOptions);
+    
+    var point = new google.maps.LatLng(latitude,longitude);
+    var marker = new google.maps.Marker({
+      position: point,
+      map: map
+    });
+    marker.setMap(map);  
+    
+    
+    var input = document.getElementById('searchTextField');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+
+    autocomplete.bindTo('bounds', map);    
+    // Sets a listener on a radio button to change the filter type on Places
+    // Autocomplete.
+    function setupClickListener(id, types) {
+      var radioButton = document.getElementById(id);
+      google.maps.event.addDomListener(radioButton, 'click', function() {
+        autocomplete.setTypes(types);
+      });
+    }
+
+    setupClickListener('changetype-all', []);
+    setupClickListener('changetype-establishment', ['establishment']);
+    setupClickListener('changetype-geocode', ['geocode']);    
+    return map;
+  }
+  google.maps.event.addDomListener(window, 'load', initialize);
+      
+   
+  (function () {    
+    google.setOnLoadCallback(function () {      
       markOutLocation = function (lat, lng) {
         var latLong = new google.maps.LatLng(lat, lng),
         marker = new google.maps.Marker(latLong);
@@ -16,8 +53,6 @@
           marker.openInfoWindow(markerText);
         });
       };
-      map.setUIToDefault();
-
       <% if session[:search].blank? %>
         // Check for geolocation support       
         if (navigator.geolocation) {
@@ -41,25 +76,9 @@
         }
       <% end %>
       
-      google.setOnLoadCallback(initialize(map,latitude,longitude));
+      google.setOnLoadCallback(initialize);
 
     });        
   })();    
-  
-  function initialize(map,lat,lon) {
-
-    map.setCenter(new google.maps.LatLng(lat,lon), 13);
-
-    var point = new google.maps.LatLng(lat,lon);
-    var marker = new google.maps.Marker(point, {draggable: true});
-
-
-    map.addOverlay(marker);
-
-    google.maps.Event.addListener(marker, "dragend", function(latlng) {
-      marker.openInfoWindowHtml("Dragged to <br>" + latlng);
-    });
-
-    return map;
-  }
+      
 </script>

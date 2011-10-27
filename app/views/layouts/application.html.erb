@@ -8,7 +8,7 @@
     <%= yield :javascripts %>  
     <%= csrf_meta_tag %>
   </head>
-  <body onload="<%= "initialize()" unless location.nil? %>" onunload="GUnload();">
+  <body onload="<%= "initialize()" unless location.nil? %>" onunload="GUnload();">    
     <div class="container">
       <% unless params[:action].eql?("details") %>
         <div class="auth">

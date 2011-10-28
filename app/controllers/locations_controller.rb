@@ -7,7 +7,7 @@ class LocationsController < ApplicationController
   respond_to :html, :xml, :json, :js
   
   RADIUS = '3000'  
-  DEFAULT_LOCATION = 'Atlanta, GA'
+  DEFAULT_LOCATION = 'Atlanta, GA' 
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
   
   def index

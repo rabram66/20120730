@@ -38,3 +38,11 @@ require 'csv'
 #["User", "Promoter", "Admin"].each do |role_name|
 #  Role.create(:name => role_name)
 #end
+
+# import country data from countries cvs file
+puts "importing country data..."
+Address.delete_all
+CSV.foreach("#{Rails.root}/db/locations.csv") do |row|
+  address = Address.new(:city => row[0], :state => row[1])
+  address.save
+end

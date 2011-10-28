@@ -4,16 +4,31 @@
       <h2><%= pluralize(@advertise.errors.count, "error") %> prohibited this advertise from being saved:</h2>
 
       <ul>
-      <% @advertise.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
+        <% @advertise.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="field">    
     <%= f.label :business_type %><br />
     <%= f.select :business_type, %w[restaurant coke grocery store bar cafe grocery], {:include_blank => true} %>    
+  </div>  
+
+  <div class="field">
+    <%= f.label :city %><br />
+    <%= f.text_field :city %>    
+  </div>  
+
+  <div class="field">
+    <%= f.label :state %><br />
+    <%= f.text_field :state %>    
+  </div>
+
+  <div class="field">
+    <%= f.label :business_name %><br />
+    <%= f.select :business_name,  Location.select("DISTINCT name").collect {|p| [ p.name, p.name ] }, { :include_blank => true } %>    
   </div>  
   <div class="field">
     <%= f.label "Photo" %><br />

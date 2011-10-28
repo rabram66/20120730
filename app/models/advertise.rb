@@ -6,4 +6,6 @@ class Advertise < ActiveRecord::Base
       :access_key_id => "AKIAJTNES3VB7PXOEBZQ",
       :secret_access_key => "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"
     }
+    
+  has_and_belongs_to_many :locations
 end

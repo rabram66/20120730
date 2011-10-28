@@ -26,8 +26,7 @@ class LocationsController < ApplicationController
     end
     
     @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank? &&  session[:search].blank?    
-    coordinates = @latlng.blank? ? session[:search] : @latlng
-    
+    coordinates = @latlng.blank? ? session[:search] : @latlng    
     cookies[:address] = { :value => coordinates, :expires => 1.year.from_now }
     begin
       @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
@@ -232,8 +231,9 @@ class LocationsController < ApplicationController
   def get_logo(details, location)   
     adv = nil
     unless location.blank?      
-      adv = Advertise.find_by_business_type(location.types)
+      adv = Advertise.where("types = #{location.types} and city like '%#{location.city}%' and state like '%#{location.state}%'").first();
     else      
+      debugger
       details['result']['types'].each do |type|
         adv = Advertise.find_by_business_type(type)
         return adv unless adv.blank?

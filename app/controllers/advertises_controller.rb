@@ -28,7 +28,7 @@ class AdvertisesController < ApplicationController
   # GET /advertises/new.xml
   def new
     @advertise = Advertise.new
-
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @advertise }

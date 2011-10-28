@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <%= stylesheet_link_tag "iphone" %>
+  </head>
+  <body>
+    <%= form_tag "/iphone", :method => 'get' do %>  
+      <div class="label">Latitude: </div>  
+      <div class="text_field"><%= text_field_tag :lat %></div>
+      <div class="label">Longitude: </div>
+      <div class="text_field"><%= text_field_tag :lng %></div>
+      <%= submit_tag "Search", :class => "submit" %>
+    <% end %>
+
+    <% unless @results.blank? %>
+      <div>
+        <%= @results %>
+      </div>
+    <% end %>
+  </body>  
+</html>

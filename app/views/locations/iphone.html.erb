@@ -3,6 +3,10 @@
     <%= stylesheet_link_tag "iphone" %>
   </head>
   <body>
+    <div class="label">&nbsp;</div>
+    <div class="text_field">
+      <i><a href="http://www.getlatlon.com/" target="_blank">http://www.getlatlon.com/</a></i><br/><br/><br/>
+    </div>
     <%= form_tag "/iphone", :method => 'get' do %>  
       <div class="label">Latitude: </div>  
       <div class="text_field"><%= text_field_tag :lat %></div>

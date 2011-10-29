@@ -31,5 +31,14 @@ $(document).ready(function() {
     $("#route").click(function(){
         calcRoute();
     })
+    
+    
+    $("#advertise_address_name").live('change', function() {
+        $("#ajax_load").show();
+        $('#advertise_business_name').load("/load_business/" + $(this).val().replace(" ","%20").replace(", ",",%20"), function() {
+            $("#ajax_load").hide();
+        });
+    //$("#ajax_load").hide();
+    }) 
        
 })

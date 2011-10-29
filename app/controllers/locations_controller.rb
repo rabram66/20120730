@@ -3,7 +3,7 @@ require 'json'
 require 'open-uri'
 
 class LocationsController < ApplicationController
-  before_filter :role, :except => [:delete_place, :save_place, :iphone, :xml_res]
+  before_filter :role, :except => [:details, :index,:delete_place, :save_place, :iphone, :xml_res, :load_business]
   respond_to :html, :xml, :json, :js
   
   RADIUS = '3000'  
@@ -131,6 +131,33 @@ class LocationsController < ApplicationController
     else
       render :text => "2"
     end
+  end
+  
+  def load_business
+    address = params[:address]    
+    coordinates= Geocoder.coordinates(address)  
+    
+      
+    begin
+      near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+    rescue
+    end
+    xml_res = Array.new
+    
+    begin      
+      locations = Location.near(coordinates, 2)
+      locations.each do |location|
+        xml_res += [location.name]
+      end
+    rescue
+    end
+      
+    near_your_locations['results'].each do |location|
+      xml_res += [location['name']]
+    end
+    
+    @results = xml_res    
+    render :partial => 'business_name', :layout => false, :results => @results
   end
  
    

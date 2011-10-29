@@ -43,6 +43,7 @@ require 'csv'
 puts "importing country data..."
 Address.delete_all
 CSV.foreach("#{Rails.root}/db/locations.csv") do |row|
-  address = Address.new(:city => row[0], :state => row[1])
+  name = "#{row[0]}, #{row[1]}"
+  address = Address.new(:name => name)
   address.save
 end

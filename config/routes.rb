@@ -12,6 +12,7 @@ LocationDB::Application.routes.draw do
   get "details/:id" => "locations#details", :as => :locations_details  
   get "/delete_place/:id" => "locations#delete_place"
   match "save_place/:address" => "locations#save_place"
+  get "/load_business/:address" => "locations#load_business"
   get "/load_page" => "locations#load_page"  
   get "/iphone" => "locations#iphone"
   get "/xml_res" => "locations#xml_res"

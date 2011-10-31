@@ -5,7 +5,7 @@
         <%= link_to location['name'], :action => 'details', :reference => location['reference'] %> 
         <%= "- #{location['vicinity']}" unless location['vicinity'].blank? %>
         <% if !current_user.blank? and current_user.role.eql? "Admin" %>
-          <%= link_to "Destroy", "#", :class => "delete_location", :id => location['reference'] %>
+          <%= link_to "Delete", "#", :class => "delete_location", :id => location['reference'] %>
           <image src="/images/ajax-loader.gif" style="display: none;" class="img_<%= location['reference'] %>"/>
           <span style="color:red;" class="error_<%= location['reference'] %>"></span>
         <% end %>

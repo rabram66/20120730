@@ -12,20 +12,20 @@
     <div class="container">
       <% unless params[:action].eql?("details") %>
         <div class="auth">
-          <%= link_to "Home", "/" %> || 
+          <%= link_to "Home", "/" %> &nbsp; 
           <% if current_user.blank? %>
             <%= link_to "Login", "/users/sign_in" %>
           <% else %>            
             <% if current_user.role == "Promoter" or current_user.role == "Admin" %>
-              <%= link_to "Events", "/events" %> || 
+              <%= link_to "Events", "/events" %> &nbsp;  
             <% end %>
 
             <% if current_user.role == "Admin" %>
-              <%= link_to "Advertises", "/advertises" %> || 
-              <%= link_to "Users", "/users" %> || 
+              <%= link_to "Advertise", "/advertises" %> || 
+              <%= link_to "Users", "/users" %> &nbsp;  
             <% end %>
             <% if current_user.role == "User" or current_user.role == "Admin" %>
-              <%= link_to "Signup Location", "/signup" %> || 
+              <%= link_to "Signup", "/signup" %> &nbsp; 
             <% end %>
             <%= link_to "Logout", destroy_user_session_path, :method => :delete %>
           <% end %>
@@ -34,8 +34,13 @@
       <div class="span-24">
         <% unless params[:action].eql?("details") %>
           <div id= "header-logo" class="span-24">
-            <img src="http://stpaulshomecoming.com/images/header1.jpg" />
-          </div>        
+          	<img src='images/Nearbythis_Logo.png' />
+           </div>  
+            <div id = "HeaderInfo" classs="span-24"> 
+           	 <br/>
+           <span><h3><center>The best way to discover deals & events happening nearby you right now.</center></h3>
+           	 </span>
+           	</div>     
         <% end %>
         <%= yield %>
       </div>

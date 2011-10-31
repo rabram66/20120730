@@ -6,7 +6,7 @@
           <% unless current_user.blank? %>
             <% if current_user.role.eql? "Admin" or current_user.id.eql?(location.user_id) %>
               <%= link_to 'Edit', edit_location_path(location) %>
-              <%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %>
+              <%= link_to 'Delete', location, :confirm => 'Are you sure?', :method => :delete %>
             <% end %>
           <% end %>
         </li>

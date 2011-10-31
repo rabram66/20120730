@@ -23,7 +23,9 @@
 
   <div class="field">
     <%= f.label :business_name %><br />
-    <%= f.select :business_name, Location.select("DISTINCT name").collect {|p| [ p.name, p.name ] }, { :include_blank => false }, :multiple => true, :size => 6, :style => "width:280px" %>    
+    <select style="width:280px" size="6" name="advertise[business_name][]" multiple="multiple" id="advertise_business_name">
+      <%= render "/locations/business_name" %>
+    </select>    
     <image src="/images/ajax-loader.gif" id="ajax_load" style="display: none;"/>
   </div>  
   <div class="field">

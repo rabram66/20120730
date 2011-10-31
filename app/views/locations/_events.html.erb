@@ -1,5 +1,5 @@
 <div class="events_index">
-  <h2>Events</h2>
+  <span><h2>Events</h2></span>
   <% unless @events.blank? %>
     <% @events.each do |event| %>
       <div style="border-bottom: 1px dotted gray;">
@@ -7,6 +7,8 @@
         <%= event.description %><br/>
       </div>    
       <br/>
-    <% end %>
-  <% end %>
+          <% end %>
+    
+      <% end %>
+      No events near you right now. <a href="#"> Create an event </a>
 </div>

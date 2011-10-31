@@ -26,7 +26,11 @@ class LocationsController < ApplicationController
     end
     
     @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank? &&  session[:search].blank?    
-    coordinates = @latlng.blank? ? session[:search] : @latlng    
+    coordinates = @latlng.blank? ? session[:search] : @latlng  
+    if coordinates.blank?
+      @latlng = [33.7489954, -84.3879824] # DEFAULT_LOCATION = 'Atlanta, GA' 
+      coordinates = @latlng
+    end
     cookies[:address] = { :value => coordinates, :expires => 1.year.from_now }
     begin
       @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
@@ -135,14 +139,18 @@ class LocationsController < ApplicationController
   
   def load_business
     address = params[:address]    
+    category = params[:category]
     coordinates= Geocoder.coordinates(address)  
+          
+    xml_res = Array.new
     
-      
     begin
-      near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+      near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{category}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+      near_your_locations['results'].each do |location|
+        xml_res += [location['name']]
+      end
     rescue
     end
-    xml_res = Array.new
     
     begin      
       locations = Location.near(coordinates, 2)
@@ -150,10 +158,6 @@ class LocationsController < ApplicationController
         xml_res += [location.name]
       end
     rescue
-    end
-      
-    near_your_locations['results'].each do |location|
-      xml_res += [location['name']]
     end
     
     @results = xml_res    

@@ -35,7 +35,7 @@ $(document).ready(function() {
     
     $("#advertise_address_name").live('change', function() {
         $("#ajax_load").show();
-        $('#advertise_business_name').load("/load_business/" + $(this).val().replace(" ","%20").replace(", ",",%20"), function() {
+        $('#advertise_business_name').load("/load_business/" + $(this).val().replace(" ","%20").replace(", ",",%20")+ "?category=" + $("#advertise_business_type").val(), function() {
             $("#ajax_load").hide();
         });
     //$("#ajax_load").hide();

@@ -7,8 +7,12 @@
         <%= event.description %><br/>
       </div>    
       <br/>
-          <% end %>
-    
-      <% end %>
-      No events near you right now. <a href="#"> Create an event </a>
+    <% end %>
+  <% else %>
+    No events near you right now. 
+    <% if !current_user.blank? and current_user.role.eql? "Admin" %>
+      <a href="/events/new"> Create an event </a>
+    <% end %>
+  <% end %>
+
 </div>

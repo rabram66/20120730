@@ -6,7 +6,7 @@ class LocationsController < ApplicationController
   before_filter :role, :except => [:details, :index,:delete_place, :save_place, :iphone, :xml_res, :load_business]
   respond_to :html, :xml, :json, :js
   
-  RADIUS = '3000'  
+  RADIUS = '750'  
   DEFAULT_LOCATION = 'Atlanta, GA' 
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
   
@@ -146,7 +146,7 @@ class LocationsController < ApplicationController
     xml_res = Array.new
     
     begin
-      near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{category}&radius=5000&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+      near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{category}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
       near_your_locations['results'].each do |location|
         xml_res += [location['name']]
       end
@@ -268,12 +268,12 @@ class LocationsController < ApplicationController
       adv = Advertise.where("address_name like '%#{location.city}, #{location.state}%'").first() if adv.blank?
       adv = Advertise.where("business_type = '#{location.types}'").first() if adv.blank?
     else
-        loc = details['result']       
-        if loc['vicinity'] != nil && loc['name'] != nil
-          add, city = loc['vicinity'].split(",")          
-          adv = Advertise.where("(address_name like '%#{city.strip}%' or address_name like '%#{add.strip}%') and business_name like '%#{loc['name']}%' ").first()
-          adv = Advertise.where("business_name like '%#{loc['name']}%'").first() if adv.blank?          
-        end      
+      loc = details['result']       
+      if loc['vicinity'] != nil && loc['name'] != nil
+        add, city = loc['vicinity'].split(",")          
+        adv = Advertise.where("(address_name like '%#{city.strip}%' or address_name like '%#{add.strip}%') and business_name like '%#{loc['name']}%' ").first()
+        adv = Advertise.where("business_name like '%#{loc['name']}%'").first() if adv.blank?          
+      end      
     end
     return adv
   end
@@ -365,7 +365,7 @@ class LocationsController < ApplicationController
   end
   
   def eat_drink
-    return ["bakery", "bar", "cafe", "food", "meal takeaway", "restaurant"]
+    return ["bar", "cafe", "food", "restaurant"]
   end
   
   def relax_care
@@ -383,18 +383,16 @@ class LocationsController < ApplicationController
   def get_types(types)
     results = ""
     if types.eql?("Eat/Drink")
-      results = "bakery%7Cbar%7Ccafe%7Cfood%7Cmeal_takeaway%7Crestaurant"
+      results = "bar%7Ccafe%7Crestaurant%7Cfood"
     elsif types.eql?("Relax/Care")
-      results = "amusement_park%7Caquarium%7Cart_gallery%7Cbeauty_salon%7Cbowling_alley," +
-        "casino%7Cgym%7Chair_care%7Chealth%7Cmovie_theater%7Cmuseum%7Cnight_club%7Cpark%7Cspa%7Czoo"
+      results = "aquarium%7cart%20gallery%7Cbeauty%20salon%7Cbowling%20alley," +
+        "casino%7Cgym%7Cmovie%20theater%7Cmuseum%7Cnight%20club%7Cpark%7Cspa"
     elsif types.eql?("Shop/Find")
-      results = "atm%7Cbank%7Cbicycle_store%7Cbook_store%7Cbus_station%7Cclothing_store%7Cconvenience_store," +
-        "department_store%7Celectronics_store%7Cestablishment%7Cflorist%7Cgas_station%7Cgrocery_or_supermarket%7C" +
-        "hardware_store%7Chome_goods_store%7Cjewelry_store%7Clibrary%7Cliquor_store%7Clocksmith%7Cpet_store%7C" +
-        "pharmacy%7Cshoe_store%7Cshopping_mall%7Cstore"
-    end    
+      results = "clothing%20store%7Cshoe%20store%7Cconvenience%20store"
+    end
     results
   end
+  
   
 end 
 

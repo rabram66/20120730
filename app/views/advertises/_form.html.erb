@@ -18,7 +18,7 @@
 
   <div class="field">    
     <%= f.label "Location" %><br />
-    <%= f.select :address_name, Address.select("name").collect {|p| [ p.name, p.name ] }, { :include_blank => true } %>    
+    <%= f.select :address_name, Address.select("name").order("name").collect {|p| [ p.name, p.name ] }, { :include_blank => true } %>    
   </div>
 
   <div class="field">

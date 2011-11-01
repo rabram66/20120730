@@ -104,10 +104,11 @@ class LocationsController < ApplicationController
     @details = get_place_response(reference)
     
     @location = Location.find_by_reference(reference)        
+    @origin_address = params[:address]    
     
     @advertise = get_logo(@details, @location)
     
-    @origin_address = params[:address]    
+    
     unless @location.blank?
       @last_tweet = get_last_tweet(@location.twitter_name)    
       @last_post = get_last_post(@location)      
@@ -263,10 +264,12 @@ class LocationsController < ApplicationController
     adv = nil
     unless location.blank?      
       adv = Advertise.where("address_name like '%#{location.city}, #{location.state}%' and business_name like '%#{location.name}%' ").first();      
-    else      
-      details['result']['types'].each do |type|
-        adv = Advertise.where("address_name like '%#{location['vicinity']}%' and business_name like '%#{location['name']}%' ").first();
-      end
+    else        
+      loc = details['result']       
+        if loc['vicinity'] != nil && loc['name'] != nil
+          add, city = loc['vicinity'].split(",")          
+          adv = Advertise.where("address_name like '%#{city.strip}%' and business_name like '%#{loc['name']}%' ").first();
+        end      
     end
     return adv
   end

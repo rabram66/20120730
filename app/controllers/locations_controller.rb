@@ -32,6 +32,7 @@ class LocationsController < ApplicationController
       coordinates = @latlng
     end
     cookies[:address] = { :value => coordinates, :expires => 1.year.from_now }
+    
     begin
       @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
     rescue
@@ -385,10 +386,10 @@ class LocationsController < ApplicationController
     if types.eql?("Eat/Drink")
       results = "bar%7Ccafe%7Crestaurant%7Cfood"
     elsif types.eql?("Relax/Care")
-      results = "aquarium%7cart%20gallery%7Cbeauty%20salon%7Cbowling%20alley," +
-        "casino%7Cgym%7Cmovie%20theater%7Cmuseum%7Cnight%20club%7Cpark%7Cspa"
+      results = "aquarium%7Cart_gallery%7Cbeauty_salon%7Cbowling_alley," +
+        "casino%7Cgym%7Cmovie_theater%7Cmuseum%7Cnight_club%7Cpark%7Cspa"
     elsif types.eql?("Shop/Find")
-      results = "clothing%20store%7Cshoe%20store%7Cconvenience%20store"
+      results = "clothing_store%7Cshoe_store%7Cconvenience_store"
     end
     results
   end

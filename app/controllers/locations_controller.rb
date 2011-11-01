@@ -264,6 +264,7 @@ class LocationsController < ApplicationController
     adv = nil
     unless location.blank?      
       adv = Advertise.where("address_name like '%#{location.city}, #{location.state}%' and business_name like '%#{location.name}%' ").first();      
+      adv = Advertise.where("business_name like '%#{loc['name']}%'").first() if adv.blank?
     else        
       loc = details['result']       
         if loc['vicinity'] != nil && loc['name'] != nil

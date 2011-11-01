@@ -262,13 +262,10 @@ class LocationsController < ApplicationController
   def get_logo(details, location)   
     adv = nil
     unless location.blank?      
-      #adv = Advertise.where("types = #{location.types} and city like '%#{location.city}%' and state like '%#{location.state}%'").first();
-      adv = Advertise.find_by_business_type(location.types)
+      adv = Advertise.where("address_name like '%#{location.city}, #{location.state}%' and business_name like '%#{location.name}%' ").first();      
     else      
-      debugger
       details['result']['types'].each do |type|
-        adv = Advertise.find_by_business_type(type)
-        return adv unless adv.blank?
+        adv = Advertise.where("address_name like '%#{location['vicinity']}%' and business_name like '%#{location['name']}%' ").first();
       end
     end
     return adv

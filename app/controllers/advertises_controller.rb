@@ -1,6 +1,6 @@
 class AdvertisesController < ApplicationController
   before_filter :role
-  
+  RADIUS = '5000' 
   # GET /advertises
   # GET /advertises.xml
   def index
@@ -57,7 +57,7 @@ class AdvertisesController < ApplicationController
       end
     rescue
     end
-    
+    xml_res = xml_res.sort
     @results = xml_res  
   end
 

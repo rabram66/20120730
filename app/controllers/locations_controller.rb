@@ -145,7 +145,7 @@ class LocationsController < ApplicationController
     xml_res = Array.new
     
     begin
-      near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{category}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+      near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{category}&radius=5000&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
       near_your_locations['results'].each do |location|
         xml_res += [location['name']]
       end
@@ -160,7 +160,7 @@ class LocationsController < ApplicationController
     rescue
     end
     
-    @results = xml_res    
+    @results = xml_res.sort    
     render :partial => 'business_name', :layout => false, :results => @results
   end
  

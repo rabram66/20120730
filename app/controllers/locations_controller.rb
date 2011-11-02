@@ -264,16 +264,16 @@ class LocationsController < ApplicationController
   def get_logo(details, location)   
     adv = nil
     unless location.blank?      
-      adv = Advertise.where("address_name like '%#{location.city}, #{location.state}%' and business_name like '%#{location.name}%' ").first();      
-      adv = Advertise.where("business_name like '%#{location.name}%'").first() if adv.blank?
-      adv = Advertise.where("address_name like '%#{location.city}, #{location.state}%'").first() if adv.blank?
-      adv = Advertise.where("business_type = '#{location.types}'").first() if adv.blank?
+      adv = Advertise.where("address_name like \"%#{location.city}, #{location.state}%\" and business_name like \"%#{location.name}%\" ").first();      
+      adv = Advertise.where("business_name like \"%#{location.name}%\"").first() if adv.blank?
+      adv = Advertise.where("address_name like \"%#{location.city}, #{location.state}%\"").first() if adv.blank?
+      adv = Advertise.where("business_type = \"#{location.types}\"").first() if adv.blank?
     else
       loc = details['result']       
       if loc['vicinity'] != nil && loc['name'] != nil
         add, city = loc['vicinity'].split(",")          
-        adv = Advertise.where("(address_name like '%#{city.strip}%' or address_name like '%#{add.strip}%') and business_name like '%#{loc['name']}%' ").first()
-        adv = Advertise.where("business_name like '%#{loc['name']}%'").first() if adv.blank?          
+        adv = Advertise.where("(address_name like \"%#{city.strip}%\" or address_name like \"%#{add.strip}%\") and business_name like \"%#{loc["name"]}%\s" ").first()
+        adv = Advertise.where("business_name like \"%#{loc["name"]}%\"").first() if adv.blank?          
       end      
     end
     return adv

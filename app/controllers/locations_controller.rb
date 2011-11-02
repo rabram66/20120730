@@ -264,16 +264,16 @@ class LocationsController < ApplicationController
   def get_logo(details, location)   
     adv = nil
     unless location.blank?      
-      adv = Advertise.find_by_sql("SELECT * FROM advertises where address_name like \"%#{location.city}, #{location.state}%\" and business_name like \"%#{location.name}%\"")[0]
-      adv = Advertise.where("business_name like \"%#{location.name}%\"").first() if adv.blank?
-      adv = Advertise.where("address_name like \"%#{location.city}, #{location.state}%\"").first() if adv.blank?
-      adv = Advertise.where("business_type = \"#{location.types}\"").first() if adv.blank?
+      adv = Advertise.where('address_name like "%#{location.city}, #{location.state}%" and business_name like "%#{location.name}%" ').first();      
+      adv = Advertise.where("business_name like '%#{location.name}%'").first() if adv.blank?
+      adv = Advertise.where("address_name like '%#{location.city}, #{location.state}%'").first() if adv.blank?
+      adv = Advertise.where("business_type = '#{location.types}'").first() if adv.blank?
     else
       loc = details['result']       
       if loc['vicinity'] != nil && loc['name'] != nil
         add, city = loc['vicinity'].split(",")          
-        adv = Advertise.find_by_sql "SELECT * FROM advertises where (address_name like \"%#{city.strip}%\" or address_name like \"%#{add.strip}%\") and business_name like \"%#{loc["name"]}%\"" [0]
-        adv = Advertise.where("business_name like \"%#{loc["name"]}%\"").first() if adv.blank?          
+        adv = Advertise.where('(address_name like "%#{city.strip}%" or address_name like "%#{add.strip}%") and business_name like "%#{loc["name"]}%" ').first()
+        adv = Advertise.where("business_name like '%#{loc['name']}%'").first() if adv.blank?          
       end      
     end
     return adv
@@ -381,18 +381,18 @@ class LocationsController < ApplicationController
       "pharmacy", "shoe store", "shopping mall", "store"]
   end
   
-  def get_types(types)
-    results = ""
-    if types.eql?("Eat/Drink")
-      results = "bar%7Ccafe%7Crestaurant%7Cfood"
-    elsif types.eql?("Relax/Care")
-      results = "aquarium%7Cart_gallery%7Cbeauty_salon%7Cbowling_alley," +
-        "casino%7Cgym%7Cmovie_theater%7Cmuseum%7Cnight_club%7Cpark%7Cspa"
-    elsif types.eql?("Shop/Find")
-      results = "clothing_store%7Cshoe_store%7Cconvenience_store"
-    end
-    results
-  end
+ def get_types(types)
+results = ""
+if types.eql?("Eat/Drink")
+results = "bar%7Ccafe%7Crestaurant%7Cfood"
+elsif types.eql?("Relax/Care")
+results = "aquarium%7Cart_gallery%7Cbeauty_salon%7Cbowling_alley," +
+"casino%7Cgym%7Cmovie_theater%7Cmuseum%7Cnight_club%7Cpark%7Cspa"
+elsif types.eql?("Shop/Find")
+results = "clothing_store%7Cshoe_store%7Cconvenience_store"
+end
+results
+end
   
   
 end 

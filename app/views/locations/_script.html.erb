@@ -48,10 +48,10 @@
         var latLong = new google.maps.LatLng(lat, lng),
         marker = new google.maps.Marker(latLong);
         map.setCenter(latLong, 13);
-        map.addOverlay(marker);          
-        google.maps.Event.addListener(marker, "click", function () {
-          marker.openInfoWindow(markerText);
-        });
+        //map.addOverlay(marker);          
+        //google.maps.Event.addListener(marker, "click", function () {
+          //marker.openInfoWindow(markerText);
+        //});
       };
       <% if session[:search].blank? %>
         // Check for geolocation support       

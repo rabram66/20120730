@@ -215,6 +215,7 @@ class LocationsController < ApplicationController
     
     response = get_place_report(params[:location], long, lat)
     @location.reference = response["reference"]
+    @location.types = "grocery_or_supermarket" if params[:location][:types].eql?("grocery")
     @location.general_type = get_general_type(params[:location][:types])
     respond_to do |format|
       if @location.save 

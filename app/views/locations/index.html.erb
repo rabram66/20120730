@@ -13,10 +13,24 @@
 </div>
 <div style="float: right;">
   <%= render 'map' %>
-  
+
   <%= render 'events' %>
-  
-  <%= render 'deals' %>
+
+  <div class="deals">
+    <span><h2>Daily Deals</h2></span>
+    <div id="deal_ajax_load">
+      <img src="/images/ajax-loader.gif" />
+    </div>
+    <div id="yipit_deal">
+      
+    </div>    
+  </div>
 </div>
+
+<script>  
+  $('#yipit_deal').load("/load_deals", function() {
+    $("#deal_ajax_load").hide();
+  });
+</script>
 
 

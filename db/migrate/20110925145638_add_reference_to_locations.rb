@@ -1,6 +1,6 @@
 class AddReferenceToLocations < ActiveRecord::Migration
   def self.up
-    add_column :locations, :reference, :string
+    #add_column :locations, :reference, :string
   end
 
   def self.down

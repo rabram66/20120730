@@ -3,7 +3,7 @@ require 'json'
 require 'open-uri'
 
 class LocationsController < ApplicationController
-  before_filter :role, :except => [:details, :index,:delete_place, :save_place, :iphone, :xml_res, :load_business]
+  before_filter :role, :except => [:load_deals, :details, :index,:delete_place, :save_place, :iphone, :xml_res, :load_business]
   respond_to :html, :xml, :json, :js
   
   RADIUS = '750'  
@@ -41,14 +41,6 @@ class LocationsController < ApplicationController
     begin
 	    @locations = Location.near(coordinates, 2).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
 		rescue
-		end
-    
-    #get deals from yipit
-    begin
-      deals = RestClient.get "http://api.yipit.com/v1/deals/?key=zZnf9zms8Kxp6BPE&lat=#{coordinates[0]}&lon=#{coordinates[1]}"
-      deals = Hash.from_xml(deals).to_json
-      @deals = ActiveSupport::JSON.decode(deals)
-    rescue
 		end
     
     begin     
@@ -164,6 +156,18 @@ class LocationsController < ApplicationController
     
     @results = xml_res.sort    
     render :partial => 'business_name', :layout => false, :results => @results
+  end
+  
+  def load_deals
+    #get deals from yipit
+    begin
+      lat, lon = cookies[:address].split("&")
+      deals = RestClient.get "http://api.yipit.com/v1/deals/?key=zZnf9zms8Kxp6BPE&lat=#{lat}&lon=#{lon}"
+      deals = Hash.from_xml(deals).to_json
+      @deals = ActiveSupport::JSON.decode(deals)
+    rescue
+		end    
+    render :partial => 'deals', :layout => false
   end
  
    

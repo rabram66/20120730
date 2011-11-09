@@ -15,4 +15,4 @@ gem 'paperclip'
 gem 'pg'
 gem "aws-s3", "~> 0.6.2"
 gem "devise"
-gem 'ruby-debug19'
+#gem 'ruby-debug19'

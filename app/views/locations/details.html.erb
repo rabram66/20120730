@@ -25,54 +25,54 @@
 
 
   <% unless twitter_feed.blank? %> 
-        contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/twitter-logo.jpg'/></td>";
-        contentString += "<td><a href=\"http://twitter.com/<%= @last_tweet.first['user']['screen_name'] unless @last_tweet.blank? %>/status/<%= @last_tweet.first['id'] unless @last_tweet.blank? %>\" target=\"_blank\"><%= twitter_feed.html_safe %></a></td></tr></table>";
+      contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/twitter-logo.jpg'/></td>";
+      contentString += "<td><a href=\"http://twitter.com/<%= @last_tweet.first['user']['screen_name'] unless @last_tweet.blank? %>/status/<%= @last_tweet.first['id'] unless @last_tweet.blank? %>\" target=\"_blank\"><%= twitter_feed.html_safe %></a></td></tr></table>";
   <% end %>
 
   <% unless facebook_feed.blank? %> 
-        contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/facebook-logo.png'/></td>"
-        contentString += "<td><a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id  unless @location.blank? %>'><%= facebook_feed.html_safe %></a></td></tr></table>";
+      contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/facebook-logo.png'/></td>"
+      contentString += "<td><a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id  unless @location.blank? %>'><%= facebook_feed.html_safe %></a></td></tr></table>";
   <% end %>
     
-      var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});
+    var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});
         
-      infowindow.open(map, marker); 
+    infowindow.open(map, marker); 
       
       
-      var request = {
-        origin: "<%= cookies[:address].gsub("&", ",") unless cookies[:address].blank? %>",
-        destination: bussiness_address,
-        travelMode: google.maps.DirectionsTravelMode.WALKING
-      };
-      directionsService.route(request, function(response, status) {
-        if (status == google.maps.DirectionsStatus.OK) {
-          directionsDisplay.setDirections(response);
-        }
-      });
-      
-      //directionsDisplay.setMap(map);
-    }
-  
-    function calcRoute() {
-      marker.setMap(null);
-      var start = document.getElementById('start').value;
-      
-      var end = document.getElementById('end').value;
-      if (end == "") {
-        end = bussiness_address;
+    var request = {
+      origin: "<%= cookies[:address].gsub("&", ",") unless cookies[:address].blank? %>",
+      destination: bussiness_address,
+      travelMode: google.maps.DirectionsTravelMode.WALKING
+    };
+    directionsService.route(request, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(response);
       }
-      var request = {
-        origin: start,
-        destination: end,
-        travelMode: google.maps.DirectionsTravelMode.WALKING
-      };
-      directionsService.route(request, function(response, status) {
-        if (status == google.maps.DirectionsStatus.OK) {
-          directionsDisplay.setDirections(response);
-        }
-      });
-    }    
-    google.maps.event.addDomListener(window, 'load', initialize);
+    });
+      
+    //directionsDisplay.setMap(map);
+  }
+  
+  function calcRoute() {
+    marker.setMap(null);
+    var start = document.getElementById('start').value;
+      
+    var end = document.getElementById('end').value;
+    if (end == "") {
+      end = bussiness_address;
+    }
+    var request = {
+      origin: start,
+      destination: end,
+      travelMode: google.maps.DirectionsTravelMode.WALKING
+    };
+    directionsService.route(request, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(response);
+      }
+    });
+  }    
+  google.maps.event.addDomListener(window, 'load', initialize);
   </script>
 <% end %>
 
@@ -89,9 +89,10 @@
     <%= @origin_address %>
   </div>
   <div id="map_canvas"></div>
-  
-  <%= image_tag @advertise.photo.url(:medium), :style => "margin: -510px 0 0 120px; position:relative" %>
-        
+  <% unless @advertise.blank? %>
+    <%= image_tag @advertise.photo.url(:medium), :style => "margin: -510px 0 0 120px; position:relative" %>
+  <% end %>
+
   <% unless @user_saying.blank? %>
     <div id="people_saying">
       <table class="tweet_result">      
@@ -114,6 +115,6 @@
   <% end %>
   <br/><br/>
 </div>
-  <script>
-    $("#route").click();
-  </script>
+<script>
+  $("#route").click();
+</script>

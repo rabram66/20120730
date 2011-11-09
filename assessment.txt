@@ -1,0 +1,9 @@
+- LocationsController is too fat (too much logic in #index)
+- What is the production db? mysql? postgres? sqlite?
+Process for display
+-------------------
+1. Identify location (default based on browser location)
+2. Find Google Places near lat/lng
+3. Find Locations near lat/lng
+4. Merge the results 
+ 4.1 If a place is the same as a location, exclude the place

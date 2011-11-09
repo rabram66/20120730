@@ -66,6 +66,22 @@ class IphoneController < ApplicationController
     render :xml => xml_res
   end
   
+  def delete_place
+    myarray = {:reference => params[:reference]}
+    myarray = ActiveSupport::JSON.encode(myarray) 
+    result = RestClient.post "https://maps.googleapis.com/maps/api/place/delete/json?sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc", myarray, :content_type => :json, :accept => :json
+    res = ActiveSupport::JSON.decode(result)
+    
+    xml_res = Array.new
+    
+    if res['status'].eql?("OK")
+      xml_res += [:status => true]      
+    else
+      xml_res += [:status => false]
+    end
+    render :xml => xml_res
+  end
+  
   
   private
   

@@ -89,10 +89,6 @@
     <%= @origin_address %>
   </div>
   <div id="map_canvas"></div>
-  <% unless @advertise.blank? %>
-    <%= image_tag @advertise.photo.url(:medium), :style => "margin: -510px 0 0 120px; position:relative" %>
-  <% end %>
-
   <% unless @user_saying.blank? %>
     <div id="people_saying">
       <table class="tweet_result">      
@@ -113,6 +109,9 @@
       </table>  
     </div>
   <% end %>
+  <div style="float: left;"><% unless @advertise.blank? %>
+    <%= image_tag @advertise.photo.url(:medium), :style => "margin: -510px 0 0 120px; position:relative" %>
+  <% end %></div>
   <br/><br/>
 </div>
 <script>

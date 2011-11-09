@@ -23,4 +23,5 @@ LocationDB::Application.routes.draw do
   get "/iphone" => "iphone#iphone"
   get "/iphone_details" => "iphone#iphone_details"
   get "/iphone_delete_place/:reference" => "iphone#delete_place"
+  
 end

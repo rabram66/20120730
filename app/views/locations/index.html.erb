@@ -1,3 +1,6 @@
+<% if is_mobile_view? %>
+  Mobile Version
+<% else %>
 <%= render "script" %>
 
 <div class="span-15" style="float: left;">
@@ -32,5 +35,5 @@
     $("#deal_ajax_load").hide();
   });
 </script>
-
+<% end %>
 

@@ -13,43 +13,44 @@ class LocationsController < ApplicationController
   def index
     if is_mobile_device?
       render :text => "welcome mobile"
-    end
-    types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])
-    @search = params[:search] unless params[:search].blank?
-    unless @search.blank?      
-      @latlng = Geocoder.coordinates(@search)  
-      session[:search] = @latlng unless @latlng.blank?
-    else      
-      if session[:search].blank?
-        current_location = MultiGeocoder.geocode(request.remote_ip).to_json
-        if !current_location["Latitude"].blank? && !current_location["Longitude"].blank?
-          @latlng = [current_location["Latitude"], current_location["Longitude"]]        
+    else    
+      types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])
+      @search = params[:search] unless params[:search].blank?
+      unless @search.blank?      
+        @latlng = Geocoder.coordinates(@search)  
+        session[:search] = @latlng unless @latlng.blank?
+      else      
+        if session[:search].blank?
+          current_location = MultiGeocoder.geocode(request.remote_ip).to_json
+          if !current_location["Latitude"].blank? && !current_location["Longitude"].blank?
+            @latlng = [current_location["Latitude"], current_location["Longitude"]]        
+          end
         end
       end
+    
+      @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank? &&  session[:search].blank?    
+      coordinates = @latlng.blank? ? session[:search] : @latlng  
+      if coordinates.blank?
+        @latlng = [33.7489954, -84.3879824] # DEFAULT_LOCATION = 'Atlanta, GA' 
+        coordinates = @latlng
+      end
+      cookies[:address] = { :value => coordinates, :expires => 1.year.from_now }
+    
+      begin
+        @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+      rescue
+      end
+    
+      begin
+        @locations = Location.near(coordinates, 2).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
+      rescue
+      end
+    
+      begin     
+        @events = Event.near(coordinates, 2)
+      rescue
+      end
     end
-    
-    @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank? &&  session[:search].blank?    
-    coordinates = @latlng.blank? ? session[:search] : @latlng  
-    if coordinates.blank?
-      @latlng = [33.7489954, -84.3879824] # DEFAULT_LOCATION = 'Atlanta, GA' 
-      coordinates = @latlng
-    end
-    cookies[:address] = { :value => coordinates, :expires => 1.year.from_now }
-    
-    begin
-      @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-    rescue
-		end
-    
-    begin
-	    @locations = Location.near(coordinates, 2).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
-		rescue
-		end
-    
-    begin     
-      @events = Event.near(coordinates, 2)
-    rescue
-		end
   end
   
   # TODO

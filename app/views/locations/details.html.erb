@@ -95,7 +95,7 @@
         <% @user_saying['results'].first(8).each do |user_say| %>
           <tr>
             <td>
-              <a href="http://twitter.com/<%= user_say['chescababy'] %>" target="_blank">
+              <a href="http://twitter.com/<%= user_say['from_user'] %>" target="_blank">
                 <img src="<%= user_say["profile_image_url"] %>" />
               </a>
             </td>

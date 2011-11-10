@@ -50,33 +50,58 @@ class IphoneController < ApplicationController
   end
  
   def iphone_details
-    reference = params[:reference]    
-    details = get_place_response(reference)    
-    
-    location = Location.find_by_reference(reference)   
-    xml_res = Array.new
-    xml_res += [:address => params[:address]]
-    xml_res += [:details => details]
-    lat, long = ""
+    reference = params[:reference]        
+    location = Location.find_by_reference(reference)  
+    name, lat, lng, address, mentions, lastest_tweet, lastest_post = ""
     unless location.blank?
-      xml_res += [:lastest_tweet => get_last_tweet(location.twitter_name)]
-      xml_res += [:lastest_post => get_last_post(location)]
-      xml_res += [:user_metion => get_tweet_search(location.twitter_name)]
+      name, lat, lng, address, mentions, lastest_tweet, lastest_post = get_loc_details(location) 
+    else      
+      details = get_place_response(reference) 
+      name, lat, lng, address, mentions, lastest_tweet, lastest_post= get_place_details(details)
     end
-    
-    unless location.blank?
-      lat,long = location.latitude, location.longitude
-    else
-      lat, long = details['result']['geometry']['location']['lat'], details['result']['geometry']['location']['lng'] unless details.blank?    
-    end
-    
-    xml_res += [:lat => lat, :lng => long]
     
     advertise = get_logo(details, location)  
-    xml_res += [:logo_url => advertise.blank? ? nil : advertise.photo.url(:medium)]
-       
+    advertise_url = advertise.blank? ? nil : advertise.photo.url(:medium)
+    
+    @output = ""
+    builder = Builder::XmlMarkup.new(:target=> @output, :indent=>1)
+    builder.instruct!
+    builder.Business { |business|
+      business.name name
+      business.lat lat
+      business.lng lng
+      business.address address
+     
+      business.mentions { |metion|
+        unless mentions.blank?
+          mentions['results'].first(5).each do |m|
+            metion.metion {|me|
+              me.from_user m['from_user']
+              me.profile_image_url m['profile_image_url']
+              me.link_tweet "http://twitter.com/#{m['from_user']}/status/#{m['id_str']}"
+              me.tweet m['text']
+            }
+          end
+        end
+      }
+      lastest_tweet = lastest_tweet.first["text"].gsub("\n", " ") unless lastest_tweet.blank?
+      business.advertise_url advertise_url
+      business.lastest_tweet lastest_tweet
+      business.lastest_post lastest_post      
+    }
+    xml_res = builder.to_xml(:root => "BusinessList").gsub("<to_xml root=\"BusinessList\"/>", "")
     
     render :xml => xml_res
+  end
+  
+  def get_loc_details(location)    
+    return location.name,location.latitude, location.longitude, location.full_address, get_tweet_search(location.twitter_name), get_last_tweet(location.twitter_name), get_last_post(location)
+  end
+  
+  def get_place_details(details)
+    #name, lat, lng, address, mentions, lastest_tweet, lastest_post
+    business = details["result"]
+    return business['name'], business["geometry"]["location"]["lat"], business["geometry"]["location"]["lng"], business["formatted_address"], nil, nil, nil
   end
   
   def delete_place
@@ -101,16 +126,16 @@ class IphoneController < ApplicationController
   def get_logo(details, location)   
     adv = nil
     unless location.blank?      
-      adv = Advertise.where("address_name like '%#{location.city}, #{location.state}%' and business_name like '%#{location.name}%' ").first();      
-      adv = Advertise.where("business_name like '%#{location.name}%'").first() if adv.blank?
-      adv = Advertise.where("address_name like '%#{location.city}, #{location.state}%'").first() if adv.blank?
+      adv = Advertise.where("address_name like ? and business_name like ?", "%#{location.city}, #{location.state}%", "%#{location.name}%").first();      
+      adv = Advertise.where("business_name like ? ", "%#{location.name}%").first() if adv.blank?
+      adv = Advertise.where("address_name like ?", "%#{location.city}, #{location.state}%").first() if adv.blank?
       adv = Advertise.where("business_type = '#{location.types}'").first() if adv.blank?
     else
       loc = details['result']       
       if loc['vicinity'] != nil && loc['name'] != nil
         add, city = loc['vicinity'].split(",")          
-        adv = Advertise.where("(address_name like '%#{city.strip}%' or address_name like '%#{add.strip}%') and business_name like '%#{loc['name']}%' ").first()
-        adv = Advertise.where("business_name like '%#{loc['name']}%'").first() if adv.blank?          
+        adv = Advertise.where("(address_name like ? or address_name like ? ) and business_name like ? ", "%#{city.strip}%", "%#{add.strip}%", "%#{loc['name']}%").first()
+        adv = Advertise.where("business_name like ? ", "%#{loc['name']}%").first() if adv.blank?          
       end      
     end
     return adv

@@ -11,6 +11,9 @@ class LocationsController < ApplicationController
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
   
   def index
+    if is_mobile_device?
+      render :text => "welcome mobile"
+    end
     types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])
     @search = params[:search] unless params[:search].blank?
     unless @search.blank?      

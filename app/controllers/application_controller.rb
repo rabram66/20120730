@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  has_mobile_fu
   
   def role    
     if (params[:controller].eql?("locations") && params[:action].eql?("index")) or 

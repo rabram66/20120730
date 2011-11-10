@@ -11,7 +11,7 @@ class LocationsController < ApplicationController
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
   
   def index
-    if is_mobile_view?
+    if is_mobile_device?
       render :text => "welcome mobile"
     else    
       types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])

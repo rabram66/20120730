@@ -1,4 +1,8 @@
 $(document).ready(function() {
+    
+    $(".actions input[type='submit']").live('click', function() {
+        $(this).attr("disabled","true");
+    })
 
     $("#location_facebook_page_id").tokenInput("/load_page", {
         crossDomain: false,

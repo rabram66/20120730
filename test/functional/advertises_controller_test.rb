@@ -2,6 +2,7 @@ require 'test_helper'
 
 class AdvertisesControllerTest < ActionController::TestCase
   setup do
+    sign_in users(:user1)
     @advertise = advertises(:one)
   end
 

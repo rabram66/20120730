@@ -1,9 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
 
 one:
-  city: MyString
-  state: MyString
+  name: "Anytown, Georgia"
 
 two:
-  city: MyString
-  state: MyString
+  name: "Buzzard's Crotch, Tennessee"

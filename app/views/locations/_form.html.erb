@@ -11,7 +11,7 @@
   <% end %>
   <div class="field" id="bus_name">
     <%= f.label :name, "Business name" %><br />
-    <%= f.text_field :name, "data-pre" => params[:action].eql?("edit") ? @pages.to_json : @pages.map(&:attributes).to_json %>
+    <%= f.text_field :name, "data-pre" => params[:action].eql?("edit") ? @pages.to_json : @pages.to_json %>
   </div>
   <div class="field">
     <%= f.label :address, "Street Address" %><br />
@@ -49,7 +49,7 @@
 
   <div class="field" id="face_id">
     <%= f.label :facebook_page_id %><br />
-    <%= f.text_field :facebook_page_id, "data-pre" => params[:action].eql?("edit") ? @pages.to_json : @pages.map(&:attributes).to_json %>    
+    <%= f.text_field :facebook_page_id, "data-pre" => params[:action].eql?("edit") ? @pages.to_json : @pages.to_json %>    
     <%= f.hidden_field :user_id, :value => current_user.id %>
   </div>
 

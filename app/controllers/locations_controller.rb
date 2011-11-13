@@ -333,7 +333,8 @@ class LocationsController < ApplicationController
     end
   end
   
-  def get_last_tweet(user_name)    
+  def get_last_tweet(user_name) 
+    debugger
     timeline = RestClient.get "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=#{user_name}&count=1"
     ActiveSupport::JSON.decode(timeline)    
   end

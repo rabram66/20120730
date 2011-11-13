@@ -11,7 +11,7 @@
       var latlng = new google.maps.LatLng(<%= location[0] %> , <%= location[1] %>);
       bussiness_address = new google.maps.LatLng(<%= location[0] %> , <%= location[1] %>);
       var myOptions = {
-        zoom:18,
+        zoom:10,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         center: bussiness_address
       }
@@ -26,12 +26,12 @@
 
   <% unless twitter_feed.blank? %> 
       contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/twitter-logo.jpg'/></td>";
-      contentString += "<td><a href=\"http://twitter.com/<%= @last_tweet.first['user']['screen_name'] unless @last_tweet.blank? %>/status/<%= @last_tweet.first['id'] unless @last_tweet.blank? %>\" target=\"_blank\"><%= twitter_feed.html_safe %></a></td></tr></table>";
+      contentString += "<td><%= twitter_feed.html_safe %>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"http://twitter.com/<%= @last_tweet.first['user']['screen_name'] unless @last_tweet.blank? %>/status/<%= @last_tweet.first['id'] unless @last_tweet.blank? %>\" target=\"_blank\">follow</a></td></tr></table>";
   <% end %>
 
   <% unless facebook_feed.blank? %> 
       contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/facebook-logo.png'/></td>"
-      contentString += "<td><a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id  unless @location.blank? %>'><%= facebook_feed.html_safe %></a></td></tr></table>";
+      contentString += "<td><%= facebook_feed.html_safe %>&nbsp;&nbsp;&nbsp;&nbsp;<a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id  unless @location.blank? %>'>visit page</a></td></tr></table>";
   <% end %>
     
     var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});
@@ -91,7 +91,10 @@
   <div id="map_canvas"></div>
   <% unless @user_saying.blank? %>
     <div id="people_saying">
-      <table class="tweet_result">      
+      <table class="tweet_result">
+        <tr>
+          <td colspan="2"><h3>What people are saying about <%= @location.name %></h3></td>
+        </tr>
         <% @user_saying['results'].first(8).each do |user_say| %>
           <tr>
             <td>
@@ -99,13 +102,22 @@
                 <img src="<%= user_say["profile_image_url"] %>" />
               </a>
             </td>
-            <td>
-              <a href="http://twitter.com/<%= user_say['from_user'] %>/status/<%= user_say['id_str'] %>" target="_blank">
+            <td>              
                 <%= user_say["text"] %>
+              <a href="http://twitter.com/<%= user_say['from_user'] %>/status/<%= user_say['id_str'] %>" target="_blank">
+                follow
               </a>
             </td>
           </tr>
-        <% end %>       
+          <tr>
+            <td colspan="2">
+              <%= time_ago_in_words(user_say['created_at']) %>
+            </td>
+          </tr>
+        <% end %>   
+          <tr>
+            <td colspan="2">more tweets</td>
+          </tr>
       </table>  
     </div>
   <% end %>

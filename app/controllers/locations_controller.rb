@@ -10,6 +10,10 @@ class LocationsController < ApplicationController
   DEFAULT_LOCATION = 'Atlanta, GA' 
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
   
+  def test_heroku
+    
+  end
+  
   def index
     if is_mobile_device?
       render :text => "welcome mobile"

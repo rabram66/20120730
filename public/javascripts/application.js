@@ -4,8 +4,7 @@ $(document).ready(function() {
         if ($('#metions_id').css("display") != "none") {
             $("#direction_id").text("Tweets");
             $("#metions_id").hide();
-            $("#directions-panel").show();
-            
+            $("#directions-panel").show();            
         }
         else {
             $("#direction_id").text("Directions");

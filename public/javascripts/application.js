@@ -8,7 +8,7 @@ $(document).ready(function() {
             
         }
         else {
-            $("#direction_id").text("Direction");
+            $("#direction_id").text("Directions");
             $("#metions_id").show();
             $("#directions-panel").hide();
         }

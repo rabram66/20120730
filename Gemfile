@@ -17,3 +17,4 @@ gem "aws-s3", "~> 0.6.2"
 gem "devise"
 gem "mobile-fu", "~> 0.2.1"
 #gem 'ruby-debug19'
+

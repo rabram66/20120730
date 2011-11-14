@@ -85,13 +85,17 @@
 <div id="detail">  
   <br/><br/>
   <div class="back_index"><%= link_to 'Back', locations_path %></div>
-  <div id="directions-panel">
-    <%= @origin_address %>
-  </div>
+
   <div id="map_canvas"></div>
-  <% unless @user_saying.blank? %>
-    <div id="people_saying">
-      <table class="tweet_result">
+  <div id="people_saying">
+    <div>
+      <a href="#" id="direction_id">Directions</a>
+    </div>
+    <div id="directions-panel">
+      <%= @origin_address %>
+    </div>
+    <table id="metions_id" class="tweet_result">
+      <% unless @user_saying.blank? %>
         <tr>
           <td colspan="2"><h3>What people are saying about <%= @location.name %></h3></td>
         </tr>
@@ -103,23 +107,23 @@
               </a>
             </td>
             <td>              
-                <%= user_say["text"] %>
+              <%= user_say["text"] %>
               <a href="http://twitter.com/<%= user_say['from_user'] %>/status/<%= user_say['id_str'] %>" target="_blank">
                 follow
               </a><br/>
-               <%= time_ago_in_words(user_say['created_at']) %> ago
+              <%= time_ago_in_words(user_say['created_at']) %> ago
             </td>
           </tr>          
         <% end %>   
-          <tr>
-            <td colspan="2"><a href="http://twitter.com/search?q=%40<%= @location.twitter_name %>">more tweets</a></td>
-          </tr>
-      </table>  
-    </div>
-  <% end %>
+        <tr>
+          <td colspan="2"><a href="http://twitter.com/search?q=%40<%= @location.twitter_name %>" target="_blank">more tweets</a></td>
+        </tr>     
+      <% end %>
+    </table>    
+  </div>
   <div style="float: left;"><% unless @advertise.blank? %>
-    <%= image_tag @advertise.photo.url(:medium), :style => "margin: -510px 0 0 120px; position:relative" %>
-  <% end %>
+      <%= image_tag @advertise.photo.url(:medium), :style => "margin: -200px 0 0 200px; position:relative" %>
+    <% end %>
   </div>
   <br/><br/>
 </div>

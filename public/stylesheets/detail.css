@@ -2,8 +2,8 @@ html { height: 100% }
 body { height: 100%; margin: 0; padding: 0; }
 
 #map_canvas {
-    width: 500px;
-    height: 500px;
+    width: 550px;
+    height: 550px;
     float: left;
 }
 
@@ -12,7 +12,11 @@ body { height: 100%; margin: 0; padding: 0; }
 }
 
 #directions-panel {
-    width: 190px;
+    display: none;
+}
+
+#directions-panel {
+    width: 340px;
     float: left;
 }
 

@@ -1,5 +1,20 @@
 $(document).ready(function() {
     
+    $("#direction_id").live('click', function() {
+        if ($('#metions_id').css("display") != "none") {
+            $("#direction_id").text("Tweets");
+            $("#metions_id").hide();
+            $("#directions-panel").show();
+            
+        }
+        else {
+            $("#direction_id").text("Direction");
+            $("#metions_id").show();
+            $("#directions-panel").hide();
+        }
+        return false;
+    })
+    
     $(".actions input[type='button']").live('click', function() {
         $(this).attr("disabled","true");
         document.location_name.submit();

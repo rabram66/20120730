@@ -1,7 +1,8 @@
 $(document).ready(function() {
     
-    $(".actions input[type='submit']").live('click', function() {
+    $(".actions input[type='button']").live('click', function() {
         $(this).attr("disabled","true");
+        document.location_name.submit();
     })
 
     $("#location_facebook_page_id").tokenInput("/load_page", {

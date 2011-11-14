@@ -106,17 +106,13 @@
                 <%= user_say["text"] %>
               <a href="http://twitter.com/<%= user_say['from_user'] %>/status/<%= user_say['id_str'] %>" target="_blank">
                 follow
-              </a>
+              </a><br/>
+               <%= time_ago_in_words(user_say['created_at']) %> ago
             </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <%= time_ago_in_words(user_say['created_at']) %>
-            </td>
-          </tr>
+          </tr>          
         <% end %>   
           <tr>
-            <td colspan="2">more tweets</td>
+            <td colspan="2"><a href="http://twitter.com/search?q=%40<%= @location.twitter_name %>">more tweets</a></td>
           </tr>
       </table>  
     </div>

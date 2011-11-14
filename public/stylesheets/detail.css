@@ -18,7 +18,7 @@ body { height: 100%; margin: 0; padding: 0; }
 
 #people_saying {
     float: right;
-    width: 200px;    
+    width: 340px;    
 }
 
 #people_saying .tweet_result {

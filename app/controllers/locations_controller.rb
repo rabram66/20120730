@@ -260,6 +260,7 @@ class LocationsController < ApplicationController
     # Exclude the place if the name is blank, 
     # or there is a place with the same name, address, or lat-lng in @locations
     return true if place['name'].blank?
+    return false if @locations.nil?
     @locations.any? do |location|
       ( place['name'] == location.name ) ||
       ( place['vicinity'] && place['vicinity'].include?(location.address) ) ||

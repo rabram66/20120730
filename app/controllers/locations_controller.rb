@@ -17,13 +17,13 @@ class LocationsController < ApplicationController
       types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])
       @search = params[:search] unless params[:search].blank?
       unless @search.blank?      
-        @latlng = Geocoder.coordinates(@search)  
+        @latlng = Geocoder.coordinates(@search)
         session[:search] = @latlng unless @latlng.blank?
       else      
         if session[:search].blank?
           current_location = MultiGeocoder.geocode(request.remote_ip).to_json
           if !current_location["Latitude"].blank? && !current_location["Longitude"].blank?
-            @latlng = [current_location["Latitude"], current_location["Longitude"]]        
+            @latlng = [current_location["Latitude"].to_f, current_location["Longitude"].to_f]        
           end
         end
       end
@@ -45,6 +45,9 @@ class LocationsController < ApplicationController
         @locations = Location.near(coordinates, 2).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
       rescue
       end
+      
+      # Remove duplicates from near_your_locations
+      remove_duplicate_locations
     
       begin     
         @events = Event.near(coordinates, 2)
@@ -55,7 +58,7 @@ class LocationsController < ApplicationController
   
   # TODO
   def search
-    @latlng = [params[:latitude], params[:longitude]]
+    @latlng = [params[:latitude].to_f, params[:longitude].to_f]
     session[:search] = @latlng
     redirect_to locations_path
   end
@@ -242,6 +245,25 @@ class LocationsController < ApplicationController
   end
   
   private
+  
+  def remove_duplicate_locations
+    @near_your_locations['results'].each_with_index do |place, ndx|
+      @near_your_locations['results'][ndx] = nil if exclude_place?(place)
+    end
+    @near_your_locations['results'].compact!
+  end
+  
+  def exclude_place?(place)
+    # Exclude the place if the name is blank, 
+    # or there is a place with the same name, address, or lat-lng in @locations
+    return true if place['name'].blank?
+    @locations.any? do |location|
+      ( place['name'] == location.name ) ||
+      ( place['vicinity'] && place['vicinity'].include?(location.address) ) ||
+      ( place['geometry']['location']['lat'] == location.latitude && 
+        place['geometry']['location']['lng'] == location.longitude )
+    end
+  end
   
   def get_logo(details, location)   
     adv = nil

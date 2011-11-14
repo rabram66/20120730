@@ -29,7 +29,7 @@ class IphoneController < ApplicationController
       end
       
       event_length = Event.near(coordinates, 2).length
-      
+      debugger
       @output = ""
       builder = Builder::XmlMarkup.new(:target=> @output, :indent=>1)
       builder.instruct!

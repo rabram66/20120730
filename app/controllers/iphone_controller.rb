@@ -12,58 +12,65 @@ class IphoneController < ApplicationController
   DEFAULT_LOCATION = 'Atlanta, GA' 
   
   def iphone
+    coordinates = ""
     if !params[:lat].blank? && !params[:lng].blank?
       coordinates = [params[:lat].to_f, params[:lng].to_f]
-      locations = Location.near(coordinates, 2, :order => :distance)
-      
-      begin
-        near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-      rescue
-      end
-      
-      
-      begin
-        deals = RestClient.get "http://api.yipit.com/v1/deals/?key=zZnf9zms8Kxp6BPE&lat=#{coordinates[0]}&lon=#{coordinates[1]}"
-        @deals = ActiveSupport::JSON.decode(deals)
-      rescue
-      end
-      
-      event_length = Event.near(coordinates, 2).length
-      debugger
-      @output = ""
-      builder = Builder::XmlMarkup.new(:target=> @output, :indent=>1)
-      builder.instruct!
-      builder.Result {|r|
-        r.BusinessList { |business_list|
-          locations.each do |location|  
-            business_list.Business {|business|
-              unless location.reference.blank?
-                business.name(location.name)
-                business.location(location.address)
-                business.distance(location.distance)
-                business.reference(location.reference)            
-              end
-            }
-          end         
-          near_your_locations['results'].each do |location|
-            distance = Geocoder::Calculations.distance_between(coordinates, [location['geometry']['location']['lat'].to_f, location['geometry']['location']['lng'].to_f])
-            business_list.Business {|business|
-              business.name(location['name'])
-              business.location(location['vicinity'])            
-              business.distance(distance)
-              business.reference(location['reference'])  
-            }
-          end                  
-        }
-        r.deal_size @deals['root']['response']['deals']['list_item'].size.to_s unless @deals.blank?                 
-        r.event(event_length)
-        r.lat(params[:lat].to_s)
-        r.lng(params[:lng].to_s)
-      }
-      
-      xml_res = builder.to_xml.gsub("<to_xml/>", "")
-      render :xml => xml_res
+    elsif !params[:address].blank?
+      coordinates = Geocoder.coordinates(params[:address])
+    elsif coordinates.blank?
+      coordinates = Geocoder.coordinates(DEFAULT_LOCATION)
     end
+    
+      
+    locations = Location.near(coordinates, 2, :order => :distance)
+      
+    begin
+      near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+    rescue
+    end
+      
+      
+    begin
+      deals = RestClient.get "http://api.yipit.com/v1/deals/?key=zZnf9zms8Kxp6BPE&lat=#{coordinates[0]}&lon=#{coordinates[1]}"
+      @deals = ActiveSupport::JSON.decode(deals)
+    rescue
+    end
+      
+    event_length = Event.near(coordinates, 2).length      
+    @output = ""
+    builder = Builder::XmlMarkup.new(:target=> @output, :indent=>1)
+    builder.instruct!
+    builder.Result {|r|
+      r.BusinessList { |business_list|
+        locations.each do |location|  
+          unless location.reference.blank?
+            business_list.Business {|business|            
+              business.name(location.name)
+              business.location(location.address)
+              business.distance(location.distance)
+              business.reference(location.reference)            
+            }
+          end
+        end         
+        near_your_locations['results'].each do |location|
+          distance = Geocoder::Calculations.distance_between(coordinates, [location['geometry']['location']['lat'].to_f, location['geometry']['location']['lng'].to_f])
+          business_list.Business {|business|
+            business.name(location['name'])
+            business.location(location['vicinity'])            
+            business.distance(distance)
+            business.reference(location['reference'])  
+          }
+        end                  
+      }
+      r.deal_size @deals['root']['response']['deals']['list_item'].size.to_s unless @deals.blank?                 
+      r.event(event_length)
+      r.lat(coordinates[0].to_s)
+      r.lng(coordinates[1].to_s)
+    }
+      
+    xml_res = builder.to_xml.gsub("<to_xml/>", "")
+    render :xml => xml_res
+    
   end
   
   def daily_deals

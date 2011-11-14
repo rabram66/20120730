@@ -32,7 +32,7 @@ module ApplicationHelper
   def twitter_feed
     str = ""
     unless @last_tweet.blank?      
-      str += @last_tweet.first["text"].gsub("\n", " ");
+      str += @last_tweet.first["text"].gsub("\n", " ").gsub(/"/, "");
     end
     str
   end

@@ -76,8 +76,7 @@ class LocationsController < ApplicationController
   end
  
   def details
-    reference = params[:reference]   
-    @search = Rails.cache.read("searchtext")
+    reference = params[:reference]    
     @details = get_place_response(reference)
     
     @location = Location.find_by_reference(reference)        
@@ -338,6 +337,7 @@ class LocationsController < ApplicationController
   end
   
   def get_place_response(reference)
+    debugger
     HTTParty.get("https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=true&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
   end
   

@@ -95,10 +95,16 @@
       <%= @origin_address %>
     </div>
     <table id="metions_id" class="tweet_result">
+      <tr>
+        <td colspan="2"><h3>What people are saying about 
+            <% unless @location.blank? %>
+              <%= @location.name %>
+            <% else %>
+              <%= @details['result']['name'] %>
+            <% end %>
+          </h3></td>
+      </tr>
       <% unless @user_saying.blank? %>
-        <tr>
-          <td colspan="2"><h3>What people are saying about <%= @location.name %></h3></td>
-        </tr>
         <% @user_saying['results'].first(8).each do |user_say| %>
           <tr>
             <td>
@@ -117,7 +123,9 @@
         <% end %>   
         <tr>
           <td colspan="2"><a href="http://twitter.com/search?q=%40<%= @location.twitter_name %>" target="_blank">more tweets</a></td>
-        </tr>     
+        </tr>
+      <% else %>
+        <tr><td colspan="2">No tweets</td></tr>
       <% end %>
     </table>    
   </div>

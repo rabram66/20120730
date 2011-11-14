@@ -28,7 +28,7 @@ class IphoneController < ApplicationController
       rescue
       end
       
-      @event_obj = Event.near(coordinates, 2)
+      event_length = Event.near(coordinates, 2).length
       
       @output = ""
       builder = Builder::XmlMarkup.new(:target=> @output, :indent=>1)
@@ -37,10 +37,12 @@ class IphoneController < ApplicationController
         r.BusinessList { |business_list|
           locations.each do |location|  
             business_list.Business {|business|
-              business.name(location.name)
-              business.location(location.address)
-              business.distance(location.distance)
-              business.reference(location.reference)            
+              unless location.reference.blank?
+                business.name(location.name)
+                business.location(location.address)
+                business.distance(location.distance)
+                business.reference(location.reference)            
+              end
             }
           end         
           near_your_locations['results'].each do |location|
@@ -54,7 +56,7 @@ class IphoneController < ApplicationController
           end                  
         }
         r.deal_size @deals['root']['response']['deals']['list_item'].size.to_s unless @deals.blank?                 
-        r.event(@event_obj.length)
+        r.event(event_length)
         r.lat(params[:lat].to_s)
         r.lng(params[:lng].to_s)
       }

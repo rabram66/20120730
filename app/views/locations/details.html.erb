@@ -113,7 +113,7 @@
               </a>
             </td>
             <td>              
-              <%= user_say["text"] %>
+              <%= user_say["text"].html_safe %>
               <a href="http://twitter.com/<%= user_say['from_user'] %>/status/<%= user_say['id_str'] %>" target="_blank">
                 follow
               </a><br/>

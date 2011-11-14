@@ -21,32 +21,60 @@ class IphoneController < ApplicationController
       rescue
       end
       
+      
+      begin
+        deals = RestClient.get "http://api.yipit.com/v1/deals/?key=zZnf9zms8Kxp6BPE&lat=#{coordinates[0]}&lon=#{coordinates[1]}"
+        @deals = ActiveSupport::JSON.decode(deals)
+      rescue
+      end
+      
+      @event_obj = Event.near(coordinates, 2).size
+      
+      
       @output = ""
       builder = Builder::XmlMarkup.new(:target=> @output, :indent=>1)
       builder.instruct!
-      builder.BusinessList { |business_list|
-        locations.each do |location|  
-          business_list.Business {|business|
-            business.name(location.name)
-            business.location(location.address)
-            business.distance(location.distance)
-            business.reference(location.reference)            
-          }
-        end         
-        near_your_locations['results'].each do |location|
-          distance = Geocoder::Calculations.distance_between(coordinates, [location['geometry']['location']['lat'].to_f, location['geometry']['location']['lng'].to_f])
-          business_list.Business {|business|
-            business.name(location['name'])
-            business.location(location['vicinity'])            
-            business.distance(distance)
-            business.reference(location['reference'])  
-          }
-        end
+      builder.Result {|r|
+        r.BusinessList { |business_list|
+          locations.each do |location|  
+            business_list.Business {|business|
+              business.name(location.name)
+              business.location(location.address)
+              business.distance(location.distance)
+              business.reference(location.reference)            
+            }
+          end         
+          near_your_locations['results'].each do |location|
+            distance = Geocoder::Calculations.distance_between(coordinates, [location['geometry']['location']['lat'].to_f, location['geometry']['location']['lng'].to_f])
+            business_list.Business {|business|
+              business.name(location['name'])
+              business.location(location['vicinity'])            
+              business.distance(distance)
+              business.reference(location['reference'])  
+            }
+          end                  
+        }
+        r.deal_size @deals['root']['response']['deals']['list_item'].size.to_s unless @deals.blank?                 
+        r.event(@event_obj.to_s)
+        r.lat(params[:lat].to_s)
+        r.lng(params[:lng].to_s)
       }
       
-      xml_res = builder.to_xml(:root => "BusinessList").gsub("<to_xml root=\"BusinessList\"/>", "")
+      xml_res = builder.to_xml.gsub("<to_xml/>", "")
       render :xml => xml_res
     end
+  end
+  
+  def daily_deals
+    #get deals from yipit
+    begin
+      lat, lon = cookies[:address].split("&")
+      deals = RestClient.get "http://api.yipit.com/v1/deals/?key=zZnf9zms8Kxp6BPE&lat=#{lat}&lon=#{lon}"
+      deals = Hash.from_xml(deals).to_json
+      @deals = ActiveSupport::JSON.decode(deals)
+    rescue
+		end    
+    render :partial => 'deals', :layout => false
   end
  
   def iphone_details

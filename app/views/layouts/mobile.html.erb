@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NearbyThis</title>
+    <%= stylesheet_link_tag :all, "token-input-facebook" %>
+    <%= yield :stylesheets %>  
+    <%= javascript_include_tag :defaults, "jquery.tokeninput" %>
+    <%= yield :javascripts %>  
+    <%= csrf_meta_tag %>
+  </head>
+  <body onload="<%= "initialize()" unless location.nil? %>" onunload="GUnload();">    
+    <h1>Welcome, Mobile User<h1>
+  </body>
+</html>

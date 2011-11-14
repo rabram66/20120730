@@ -1,0 +1,18 @@
+<div class="events_index">
+  <span><h2>Events</h2></span>
+  <% unless @events.blank? %>
+    <% @events.each do |event| %>
+      <div style="border-bottom: 1px dotted gray;">
+        <b><%= event.name %> -  <%= event.address %></b><br/>
+        <%= event.description %><br/>
+      </div>    
+      <br/>
+    <% end %>
+  <% else %>
+    No events near you right now. 
+    <% if !current_user.blank? and current_user.role.eql? "Admin" %>
+      <a href="/events/new"> Create an event </a>
+    <% end %>
+  <% end %>
+
+</div>

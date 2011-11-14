@@ -1,0 +1,11 @@
+<span><searchbox>
+	<table>
+		<tr><td>If you're looking for places to <b>eat, shop or relax</b> within walking distance,you've come to the right place. 
+			Just type in your current location or where you plan to be and we'll help you find real time recommendations and savings.  Have Fun!</td></tr>
+		<tr><td><%= form_tag locations_path, :method => 'get' do %>
+ Find a place to <%= select_tag :types, types(params[:types]) %>  near <%= text_field_tag :search, @search, :id => "searchTextField", :size => 30 %>  
+  
+  <%= submit_tag "Search", :name => nil %>
+<% end %></td></tr>
+</table>
+</searchbox></span>

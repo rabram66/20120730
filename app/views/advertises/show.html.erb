@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Type:</b>
+  <%= @advertise.business_type %>
+</p>
+
+<p>
+  <b>Photo file name:</b>
+  <%= @advertise.photo_file_name %>
+</p>
+
+<p>
+  <b>Photo content type:</b>
+  <%= @advertise.photo_content_type %>
+</p>
+
+<p>
+  <b>Photo file size:</b>
+  <%= @advertise.photo_file_size %>
+</p>
+
+<p>
+  <b>Photo updated at:</b>
+  <%= @advertise.photo_updated_at %>
+</p>
+
+<p>
+  <b>Photo:</b>
+  <%= image_tag @advertise.photo.url(:medium) %>
+</p>
+
+
+<%= link_to 'Edit', edit_advertise_path(@advertise) %> |
+<%= link_to 'Back', advertises_path %>

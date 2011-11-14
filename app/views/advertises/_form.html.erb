@@ -1,0 +1,38 @@
+<%= form_for(@advertise) do |f| %>
+  <% if @advertise.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@advertise.errors.count, "error") %> prohibited this advertise from being saved:</h2>
+
+      <ul>
+        <% @advertise.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">    
+    <%= f.label :business_type %><br />
+    <%= f.select :business_type, %w[restaurant coke grocery store bar cafe grocery], {:include_blank => true} %>    
+  </div>
+
+  <div class="field">    
+    <%= f.label "Location" %><br />
+    <%= f.select :address_name, Address.select("name").order("name").collect {|p| [ p.name, p.name ] }, { :include_blank => true } %>    
+  </div>
+
+  <div class="field">
+    <%= f.label :business_name %><br />
+    <select style="width:280px" size="6" name="advertise[business_name][]" multiple="multiple" id="advertise_business_name">
+      <%= render "/locations/business_name" %>
+    </select>    
+    <image src="/images/ajax-loader.gif" id="ajax_load" style="display: none;"/>
+  </div>  
+  <div class="field">
+    <%= f.label "Photo" %><br />
+    <%= f.file_field :photo %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,13 @@
+<div id="twitter_name" style="display:none;"> 
+  <h2>Edit Twitter Name</h2>
+  <%= form_for(@location) do |f| %>
+    <div class="field">
+      <%= f.label :twitter_name %><br />
+      <%= f.text_field :twitter_name %>
+    </div>
+
+    <div class="actions">        
+      <%= f.submit "Update Twitter Name" %>
+    </div>
+  <% end %>
+</div>

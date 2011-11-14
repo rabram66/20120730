@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  business_type: restaurant
+  photo_file_name: MyString
+  photo_content_type: MyString
+  photo_file_size: 1
+  photo_updated_at: 2011-10-13 20:48:59
+
+two:
+  business_type: shopping
+  photo_file_name: MyString
+  photo_content_type: MyString
+  photo_file_size: 1
+  photo_updated_at: 2011-10-13 20:48:59

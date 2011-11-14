@@ -1,0 +1,18 @@
+defaults: &defaults
+  key: AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc
+  #key: AIzaSyDcS-zxS0jjCC_2Fk-1gnNWH9ZhdQrRE-s
+  sensor: false
+    
+geocode:
+  sensor: false
+  url: https://maps.googleapis.com/maps/api/geocode/json
+
+details:
+  <<: *defaults
+  url: https://maps.googleapis.com/maps/api/place/details/json
+
+search:
+  <<: *defaults
+  url: https://maps.googleapis.com/maps/api/place/search/json
+  types: restaurants|store|bar|museum
+  radius: 1500 #meters

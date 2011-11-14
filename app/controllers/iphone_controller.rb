@@ -28,8 +28,7 @@ class IphoneController < ApplicationController
       rescue
       end
       
-      @event_obj = Event.near(coordinates, 2).size
-      
+      @event_obj = Event.near(coordinates, 2)
       
       @output = ""
       builder = Builder::XmlMarkup.new(:target=> @output, :indent=>1)
@@ -55,7 +54,7 @@ class IphoneController < ApplicationController
           end                  
         }
         r.deal_size @deals['root']['response']['deals']['list_item'].size.to_s unless @deals.blank?                 
-        r.event(@event_obj.to_s)
+        r.event(@event_obj.length)
         r.lat(params[:lat].to_s)
         r.lng(params[:lng].to_s)
       }

@@ -21,11 +21,13 @@ class IphoneController < ApplicationController
       coordinates = Geocoder.coordinates(DEFAULT_LOCATION)
     end
     
+    types = params[:types].blank? ? get_types("Foot") : get_types(params[:types])
+    
       
-    locations = Location.near(coordinates, 2, :order => :distance)
+    locations = Location.near(coordinates, 2, :order => :distance).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
       
     begin
-      near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+      near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
     rescue
     end
       
@@ -336,12 +338,12 @@ class IphoneController < ApplicationController
   
   def get_types(types)
     results = ""
-    if types.eql?("Eat/Drink")
+    if types.eql?("Foot")
       results = "bar%7Ccafe%7Crestaurant%7Cfood"
-    elsif types.eql?("Relax/Care")
+    elsif types.eql?("Relax")
       results = "aquarium%7Cart_gallery%7Cbeauty_salon%7Cbowling_alley," +
         "casino%7Cgym%7Cmovie_theater%7Cmuseum%7Cnight_club%7Cpark%7Cspa"
-    elsif types.eql?("Shop/Find")
+    elsif types.eql?("Shop")
       results = "clothing_store%7Cshoe_store%7Cconvenience_store"
     end
     results

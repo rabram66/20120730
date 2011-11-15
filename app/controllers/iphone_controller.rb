@@ -21,12 +21,12 @@ class IphoneController < ApplicationController
       coordinates = Geocoder.coordinates(DEFAULT_LOCATION)
     end
     t = ""
-    unless params[:type].blank?      
-      t = "Eat/Drink" if params[:type].eql? "Foot"
-      t = "Relax/Care" if params[:type].eql? "Relax"
-      t = "Shop/Find" if params[:type].eql? "Shop"      
+    unless params[:types].blank?      
+      t = "Eat/Drink" if params[:types].eql? "Foot"
+      t = "Relax/Care" if params[:types].eql? "Relax"
+      t = "Shop/Find" if params[:types].eql? "Shop"      
     end
-    types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])    
+    types = t.blank? ? get_types("Eat/Drink") : get_types(t)    
     
     locations = Location.near(coordinates, 2, :order => :distance).where(:general_type => t.blank? ? "Eat/Drink" : t ) 
       

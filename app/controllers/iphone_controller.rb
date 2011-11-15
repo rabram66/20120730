@@ -20,10 +20,15 @@ class IphoneController < ApplicationController
     elsif coordinates.blank?
       coordinates = Geocoder.coordinates(DEFAULT_LOCATION)
     end
-    
+    t = ""
+    unless params[:type].blank?      
+      t = "Eat/Drink" if params[:type].eql? "Foot"
+      t = "Relax/Care" if params[:type].eql? "Relax"
+      t = "Shop/Find" if params[:type].eql? "Shop"      
+    end
     types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])    
     
-    locations = Location.near(coordinates, 2, :order => :distance).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
+    locations = Location.near(coordinates, 2, :order => :distance).where(:general_type => t.blank? ? "Eat/Drink" : t ) 
       
     begin
       near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")

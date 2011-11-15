@@ -32,6 +32,7 @@ class IphoneController < ApplicationController
       
     begin
       deals = RestClient.get "http://api.yipit.com/v1/deals/?key=zZnf9zms8Kxp6BPE&lat=#{coordinates[0]}&lon=#{coordinates[1]}"
+      deals = Hash.from_xml(deals).to_json
       @deals = ActiveSupport::JSON.decode(deals)
     rescue
     end
@@ -62,6 +63,7 @@ class IphoneController < ApplicationController
           }
         end                  
       }
+      
       r.deal_size @deals['root']['response']['deals']['list_item'].size.to_s unless @deals.blank?                 
       r.event(event_length)
       r.lat(coordinates[0].to_s)
@@ -69,20 +71,73 @@ class IphoneController < ApplicationController
     }
       
     xml_res = builder.to_xml.gsub("<to_xml/>", "")
-    render :xml => xml_res
-    
+    render :xml => xml_res    
   end
   
-  def daily_deals
+  def deals
+    coordinates = ""
+    if !params[:lat].blank? && !params[:lng].blank?
+      coordinates = [params[:lat].to_f, params[:lng].to_f]
+    elsif !params[:address].blank?
+      coordinates = Geocoder.coordinates(params[:address])
+    elsif coordinates.blank?
+      coordinates = Geocoder.coordinates(DEFAULT_LOCATION)
+    end
+    
     #get deals from yipit
-    begin
-      lat, lon = cookies[:address].split("&")
-      deals = RestClient.get "http://api.yipit.com/v1/deals/?key=zZnf9zms8Kxp6BPE&lat=#{lat}&lon=#{lon}"
+    begin      
+      deals = RestClient.get "http://api.yipit.com/v1/deals/?key=zZnf9zms8Kxp6BPE&lat=#{coordinates[0]}&lon=#{coordinates[1]}"
       deals = Hash.from_xml(deals).to_json
       @deals = ActiveSupport::JSON.decode(deals)
     rescue
-		end    
-    render :partial => 'deals', :layout => false
+		end 
+    @output = ""
+    builder = Builder::XmlMarkup.new(:target=> @output, :indent=>1)
+   
+    unless @deals.blank?  
+      builder.Result {|r|
+        r.Deals { |d|
+          @deals['root']['response']['deals']['list_item'].each do |deal|
+            d.Deal { |de|
+              de.title(deal['yipit_title'])
+              de.link(deal['yipit_url'])
+            }            
+          end
+        }
+      }
+    end
+    xml_res = builder.to_xml.gsub("<to_xml/>", "")
+    
+    render :xml => xml_res
+  end
+  
+  def events
+    coordinates = ""
+    if !params[:lat].blank? && !params[:lng].blank?
+      coordinates = [params[:lat].to_f, params[:lng].to_f]
+    elsif !params[:address].blank?
+      coordinates = Geocoder.coordinates(params[:address])
+    elsif coordinates.blank?
+      coordinates = Geocoder.coordinates(DEFAULT_LOCATION)
+    end
+    
+    events = Event.near(coordinates, 2)
+    @output = ""
+    builder = Builder::XmlMarkup.new(:target=> @output, :indent=>1)
+    builder.Result {|r|
+      r.Events {|e| 
+        events.each do |ev|
+          e.Event { |eve|
+            eve.name(ev.name)
+            eve.address(ev.address)
+            eve.description(ev.description)
+          }
+        end
+      }
+    }
+    xml_res = builder.to_xml.gsub("<to_xml/>", "")
+     
+    render :xml => xml_res  
   end
  
   def iphone_details

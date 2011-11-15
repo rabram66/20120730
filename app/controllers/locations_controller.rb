@@ -149,7 +149,8 @@ class LocationsController < ApplicationController
       deals = Hash.from_xml(deals).to_json
       @deals = ActiveSupport::JSON.decode(deals)
     rescue
-		end    
+		end
+    
     render :partial => 'deals', :layout => false
   end
  

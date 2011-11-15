@@ -21,9 +21,8 @@ class IphoneController < ApplicationController
       coordinates = Geocoder.coordinates(DEFAULT_LOCATION)
     end
     
-    types = params[:types].blank? ? get_types("Foot") : get_types(params[:types])
+    types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])    
     
-      
     locations = Location.near(coordinates, 2, :order => :distance).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
       
     begin
@@ -65,8 +64,10 @@ class IphoneController < ApplicationController
           }
         end                  
       }
-      
-      r.deal_size @deals['root']['response']['deals']['list_item'].size.to_s unless @deals.blank?                 
+      begin
+        r.deal_size @deals['root']['response']['deals']['list_item'].size.to_s unless @deals.blank?                 
+      rescue
+      end
       r.event(event_length)
       r.lat(coordinates[0].to_s)
       r.lng(coordinates[1].to_s)
@@ -216,6 +217,26 @@ class IphoneController < ApplicationController
   
   private
   
+  def remove_duplicate_locations
+    @near_your_locations['results'].each_with_index do |place, ndx|
+      @near_your_locations['results'][ndx] = nil if exclude_place?(place)
+    end
+    @near_your_locations['results'].compact!
+  end
+  
+  def exclude_place?(place)
+    # Exclude the place if the name is blank, 
+    # or there is a place with the same name, address, or lat-lng in @locations
+    return true if place['name'].blank?
+    return false if @locations.nil?
+    @locations.any? do |location|
+      ( place['name'] == location.name ) ||
+      ( place['vicinity'] && place['vicinity'].include?(location.address) ) ||
+      ( place['geometry']['location']['lat'] == location.latitude && 
+        place['geometry']['location']['lng'] == location.longitude )
+    end
+  end
+  
   def get_logo(details, location)   
     adv = nil
     unless location.blank?      
@@ -284,7 +305,7 @@ class IphoneController < ApplicationController
     ActiveSupport::JSON.decode(res)
   end
   
-  def get_place_response(reference)
+  def get_place_response(reference)    
     HTTParty.get("https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=true&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
   end
   
@@ -338,12 +359,12 @@ class IphoneController < ApplicationController
   
   def get_types(types)
     results = ""
-    if types.eql?("Foot")
+    if types.eql?("Eat/Drink")
       results = "bar%7Ccafe%7Crestaurant%7Cfood"
-    elsif types.eql?("Relax")
+    elsif types.eql?("Relax/Care")
       results = "aquarium%7Cart_gallery%7Cbeauty_salon%7Cbowling_alley," +
         "casino%7Cgym%7Cmovie_theater%7Cmuseum%7Cnight_club%7Cpark%7Cspa"
-    elsif types.eql?("Shop")
+    elsif types.eql?("Shop/Find")
       results = "clothing_store%7Cshoe_store%7Cconvenience_store"
     end
     results

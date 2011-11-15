@@ -16,12 +16,14 @@ LocationDB::Application.routes.draw do
   get "/load_business/:address" => "locations#load_business"
   get "/load_deals" => "locations#load_deals"
   get "/load_page" => "locations#load_page"  
-  get "/xml_res" => "locations#xml_res"
+  get "/xml_res" => "locations#xml_res"  
   root :to => "locations#index"
   
   #---------------------------- Iphone ----------------------------
   get "/iphone" => "iphone#iphone"
   get "/iphone_details" => "iphone#iphone_details"
   get "/iphone_delete_place/:reference" => "iphone#delete_place"
+  get "/iphone_deals" => "iphone#deals"
+  get "/iphone_events" => "iphone#events"
   
 end

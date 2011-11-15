@@ -46,7 +46,7 @@ class LocationsController < ApplicationController
       end
     
       begin
-        @locations = Location.near(coordinates, 2).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
+        @locations = Location.near(coordinates, 2, :order => :distance).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
       rescue
       end
       

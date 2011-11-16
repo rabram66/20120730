@@ -3,3 +3,7 @@
 
 en:
   hello: "Hello world"
+  mobile:
+    search_prompt: "Type address city, state"
+    search_nearby_button: "Search Nearby"
+    use_my_location_button: "Use My Location"

@@ -1,0 +1,21 @@
+<div data-role='header'>
+  <h1>Nearby This</h1>
+</div>
+<div data-role='content'>
+  <ul data-role="listview" data-theme="g">
+    <% for place in @places -%>
+      <li>
+        <%= link_to "<b>#{place.name}</b> - #{number_with_precision(place.distance(@geocode), :precision => 1)} miles".html_safe, mobile_detail_path(place.reference) %>
+      </li>
+    <% end -%>
+  </ul>
+</div>
+<div data-role="footer" data-id="category-selector" data-position="fixed">
+  <div data-role="navbar">
+    <ul>
+      <li><a href="#" class="ui-btn-active ui-state-persist">Eat</a></li>
+      <li><a href="#">Shop</a></li>
+      <li><a href="#">Relax</a></li>
+    </ul>
+  </div>
+</div>

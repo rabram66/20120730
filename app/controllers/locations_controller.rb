@@ -4,6 +4,8 @@ require 'open-uri'
 
 class LocationsController < ApplicationController
   before_filter :role, :except => [:load_deals, :details, :index,:delete_place, :save_place, :iphone, :xml_res, :load_business]
+  before_filter :redirect_mobile_request
+  
   respond_to :html, :xml, :json, :js
   
   RADIUS = '750'  
@@ -13,7 +15,7 @@ class LocationsController < ApplicationController
   def test_heroku
     
   end
-  
+
   def index
     if is_mobile_device?
       render :text => "welcome mobile"
@@ -249,6 +251,10 @@ class LocationsController < ApplicationController
   end
   
   private
+  
+  def redirect_mobile_request
+    redirect_to :controller => 'mobile', :action => 'index' if is_mobile_device?
+  end
   
   def remove_duplicate_locations
     @near_your_locations['results'].each_with_index do |place, ndx|

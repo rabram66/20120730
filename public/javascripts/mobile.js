@@ -4,6 +4,7 @@ setLatLng = function(position) {
 };
 
 $(function() {
-  window.navigator.geolocation.getCurrentPosition(setLatLng);
+  window.navigator.geolocation.getCurrentPosition(setLatLng); // set lat-lng to current location
+  $('#searchTextField').click(function() {$(this).val('');});  // clear search field of prompt text
 });
 

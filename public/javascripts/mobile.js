@@ -11,8 +11,11 @@ showCategory = function(event) {
 }
 
 $(function() {
-  window.navigator.geolocation.getCurrentPosition(setLatLng); // set lat-lng to current location
-  $('#searchTextField').click(function() {$(this).val('');});  // clear search field of prompt text
+  window.navigator.geolocation.getCurrentPosition( setLatLng );
+});
+
+$('#mobile-content').live('pageinit', function(event) {
+  $('#searchTextField').click( function() {$(this).val('');} );  // clear search field of prompt text
   $('ul#category-selector > li').click( showCategory );
   $('ul#category-selector > li:first a').click();
 });

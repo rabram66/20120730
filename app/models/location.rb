@@ -27,5 +27,9 @@ class Location < ActiveRecord::Base
                   :types, :twitter_name, :facebook_page_id, :user_id
   geocoded_by :full_address
   after_validation :geocode
+
+  def categories
+    [LocationCategory.find_by_name(general_type)]
+  end
   
 end

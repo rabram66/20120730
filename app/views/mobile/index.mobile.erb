@@ -1,0 +1,14 @@
+<div data-role='header'>
+  <h1>Nearby This</h1>
+</div>
+<div id='mobile-index' data-role='content'>
+	<img id='logo' src='/images/Nearbythis_Logo.png' />
+  <%= form_tag mobile_list_path, :id => 'search_form', :method => :get do %>
+    <%= text_field_tag :search, @search, :id => "searchTextField", :value=> t('mobile.search_prompt') %>
+    <%= hidden_field_tag :lat, '', :id => 'lat'%>
+    <%= hidden_field_tag :lng, '', :id => 'lng'%>
+    <%= submit_tag t('mobile.search_nearby_button') %>
+    <center>or</center>
+    <%= submit_tag t('mobile.use_my_location_button'), :id => 'use_my_location' %>
+  <% end %>
+</div>

@@ -16,5 +16,6 @@ gem 'pg'
 gem "aws-s3", "~> 0.6.2"
 gem "devise"
 gem "mobile-fu", "~> 0.2.1"
+gem "faster_haversine", "~> 0.1.3" # Calculating distance between geocodes
 #gem 'ruby-debug19'
 

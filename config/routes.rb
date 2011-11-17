@@ -19,6 +19,11 @@ LocationDB::Application.routes.draw do
   get "/xml_res" => "locations#xml_res"  
   root :to => "locations#index"
   
+  #----------------------------- Mobile ---------------------------
+  get "/mobile" => "mobile#index", :as => :mobile_index
+  get "/mobile/list" => "mobile#list", :as => :mobile_list
+  get "/mobile/detail/:id" => "mobile#detail", :as => :mobile_detail
+  
   #---------------------------- Iphone ----------------------------
   get "/iphone" => "iphone#iphone"
   get "/iphone_details" => "iphone#iphone_details"

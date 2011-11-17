@@ -3,7 +3,7 @@ require 'json'
 require 'open-uri'
 
 class MobileController < ApplicationController
-  layout 'mobile' #LAYOUT
+  layout 'mobile', :except => :map #LAYOUT
 
   # GET The main page with a field to input the address, city, state or to use current location
   def index
@@ -19,10 +19,19 @@ class MobileController < ApplicationController
     @places = Place.find_by_geocode(@geocode)
   end
   
-  # GET the detail for a location
+  # GET the detail for a location/place
   def detail
+    reference = params[:id]    
+    place = Place.find_by_reference(reference)
+    @location = Location.find_by_reference(reference)        
+
+    if @location
+      # @last_tweet = get_last_tweet(@location.twitter_name)    
+      # @last_post = get_last_post(@location)      
+      # @user_saying = get_tweet_search(@location.twitter_name)
+    else
+      @location = place
+    end
   end
     
-
-  private
 end

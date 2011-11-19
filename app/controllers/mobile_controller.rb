@@ -22,15 +22,12 @@ class MobileController < ApplicationController
   # GET the detail for a location/place
   def detail
     reference = params[:id]    
-    place = Place.find_by_reference(reference)
-    @location = Location.find_by_reference(reference)        
+    @location = Location.find_by_reference(reference) || Place.find_by_reference(reference)
 
-    if @location
-      # @last_tweet = get_last_tweet(@location.twitter_name)    
+    if Location === @location
+      @last_tweet = Tweet.latest(@location.twitter_name)    
       # @last_post = get_last_post(@location)      
       # @user_saying = get_tweet_search(@location.twitter_name)
-    else
-      @location = place
     end
   end
     

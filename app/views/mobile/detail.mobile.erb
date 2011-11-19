@@ -5,4 +5,5 @@
   <%= hidden_field_tag :lat, @location.geocode.first, :id => :lat %>
   <%= hidden_field_tag :lng, @location.geocode.last, :id => :lng %>
   <div id='mobile-map'>MAP</div>
+  <p id='mobile-full-address'><%= @location.full_address %></p>
 </div>

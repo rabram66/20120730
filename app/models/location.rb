@@ -14,10 +14,7 @@ class Location < ActiveRecord::Base
   validates :facebook_page_id,  :presence => true
   
   belongs_to :user
-  def fulladdress
-    [address, city, state]
-  end
-  
+
   def full_address
     "#{address} #{city}, #{state}"
   end
@@ -30,6 +27,10 @@ class Location < ActiveRecord::Base
 
   def categories
     [LocationCategory.find_by_name(general_type)]
+  end
+  
+  def most_recent_tweet
+    Tweet.latest(twitter_name) if twitter_name
   end
   
 end

@@ -29,8 +29,16 @@ class Location < ActiveRecord::Base
     [LocationCategory.find_by_name(general_type)]
   end
   
-  def most_recent_tweet
+  def twitter_status
     Tweet.latest(twitter_name) if twitter_name
+  end
+
+  def twitter_mentions
+    twitter_name ? Tweet.search(twitter_name) : []
+  end
+  
+  def facebook_status
+    WallPost.latest(facebook_page_id) if facebook_page_id
   end
   
 end

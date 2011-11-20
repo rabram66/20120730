@@ -25,8 +25,8 @@ class Tweet
       end
     end
     
-    def search(term, count=10)
-      api(SEARCH_URL, CGI.escape(term), count) do |response|
+    def search(screen_name, count=10)
+      api(SEARCH_URL, CGI.escape("@#{screen_name}"), count) do |response|
         response['results'].map do |result|
           Tweet.new( :name              => result['from_user_name'],
                      :screen_name       => result['from_user'],

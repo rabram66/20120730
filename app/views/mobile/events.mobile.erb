@@ -1,0 +1,15 @@
+<div data-role="header">
+  <h1>Events</h1>
+</div>
+<div data-role='content'>
+  <ul id='events-list' data-role="listview" data-theme="g" data-inset='true'>
+    <% for event in @events -%>
+      <li>
+        <h3><%= event.name %></h3>
+        <p class='ul-li-desc event-desc'><%= event.description %></p>
+        <p class='ul-li-desc'>From <span class='event-date'><%= event.start_date.stamp("Jan 1 at 01:00 am") %></span> to <span class='event-date'><%= event.end_date.stamp("Jan 1 at 01:00 am") %></span></p>
+        <p class='ul-li-desc'><%= event.address %> (<%=  number_with_precision(event.distance(@geocode), :precision => 1) %> miles from here)</p>
+      </li>
+    <% end -%>
+  </ul>
+</div>

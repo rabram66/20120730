@@ -2,7 +2,6 @@
   <h1>Nearby This</h1>
   <div data-role="navbar">
     <ul id='category-selector'>
-      <!-- <li><a href="#" class="ui-btn-active ui-state-persist">Eat</a></li> -->
       <li><a href="#">Eat</a></li>
       <li><a href="#">Shop</a></li>
       <li><a href="#">Relax</a></li>
@@ -13,7 +12,10 @@
   <ul id='locations-list' data-role="listview" data-theme="g">
     <% for location in @locations -%>
       <li class='<%= category_class_names(location)%>' style='display:none'>
-        <%= link_to "<b>#{location.name}</b> - #{number_with_precision(location.distance(@geocode), :precision => 1)} miles".html_safe, mobile_detail_path(location.reference) %>
+        <a href="<%=mobile_detail_path(location.reference) %>">
+          <img src='/images/twitter-logo.jpg' class='ui-li-icon twitter-icon'/>
+          <b><%= location.name %></b> - <%= number_with_precision(location.distance(@geocode), :precision => 1) %> miles
+        </a>
       </li>
     <% end -%>
     <% for place in @places -%>
@@ -22,4 +24,13 @@
       </li>
     <% end -%>
   </ul>
+  <div data-role='controlgroup'>
+    <%= ( link_to "#{pluralize(@deals.length, 'Daily Deal')}", 
+          mobile_deals_path(:lat => @geocode.first, :lng => @geocode.last), 
+          :"data-role" => 'button') if @deals.length > 0 %>
+    <%= ( link_to "#{pluralize(@events.length, 'Event')}",
+          mobile_events_path(:lat => @geocode.first, :lng => @geocode.last), 
+          :"data-role" => 'button') if @events.length > 0 %>
+  </div>
+
 </div>

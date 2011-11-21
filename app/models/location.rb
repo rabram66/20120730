@@ -42,11 +42,15 @@ class Location < ActiveRecord::Base
   def facebook_status
     WallPost.latest(facebook_page_id) if facebook_page_id
   end
+  
+  def geo_code
+    [latitude, longitude]
+  end
 
   class << self
     
-    def find_by_geocode(geocode)
-      self.near(geocode, 2, :order => :distance)
+    def find_by_geocode(coordinates)
+      self.near(coordinates, 2, :order => :distance)
     end
 
   end

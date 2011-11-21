@@ -2,7 +2,7 @@ class Place
 
   include LocationPlace
   
-  attr_accessor :name, :vicinity, :reference, :geocode, :categories, :types,
+  attr_accessor :name, :vicinity, :reference, :geo_code, :categories, :types,
                 :phone_number, :website, :full_address
 
   RADIUS = 750
@@ -14,7 +14,7 @@ class Place
     @name = result['name']
     @vicinity = result['vicinity']
     @reference = result['reference']
-    @geocode = [ result['geometry']['location']['lat'].to_f,
+    @geo_code = [ result['geometry']['location']['lat'].to_f,
                  result['geometry']['location']['lng'].to_f ]
     @types = result['types']
     @categories = LocationCategory.find_all_by_types(@types)
@@ -23,10 +23,6 @@ class Place
       @website = result['website']
       @full_address = result['formatted_address']
     end
-  end
-
-  def distance(other_geocode)
-    FasterHaversine.distance(geocode.first, geocode.last, other_geocode.first, other_geocode.last) * MILES_PER_KILOMETER
   end
 
   def in_category?(category)

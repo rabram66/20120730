@@ -51,7 +51,7 @@ class MobileController < ApplicationController
     @locations.any? do |location|
       ( place.name == location.name ) ||
       ( place.vicinity && place.vicinity.include?(location.address) ) ||
-      ( place.geocode == location.geocode )
+      ( place.geo_code == location.geo_code )
     end
   end
   

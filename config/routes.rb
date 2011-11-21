@@ -23,6 +23,7 @@ LocationDB::Application.routes.draw do
   get "/mobile" => "mobile#index", :as => :mobile_index
   get "/mobile/list" => "mobile#list", :as => :mobile_list
   get "/mobile/detail/:id" => "mobile#detail", :as => :mobile_detail
+  get "/mobile/map" => "mobile#map"
   
   #---------------------------- Iphone ----------------------------
   get "/iphone" => "iphone#iphone"

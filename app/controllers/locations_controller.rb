@@ -17,48 +17,44 @@ class LocationsController < ApplicationController
   end
 
   def index
-    if is_mobile_device?
-      render :text => "welcome mobile"
-    else    
-      types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])
-      @search = params[:search] unless params[:search].blank?
-      unless @search.blank?      
-        @latlng = Geocoder.coordinates(@search)
-        session[:search] = @latlng unless @latlng.blank?
-      else      
-        if session[:search].blank?
-          current_location = MultiGeocoder.geocode(request.remote_ip).to_json
-          if !current_location["Latitude"].blank? && !current_location["Longitude"].blank?
-            @latlng = [current_location["Latitude"].to_f, current_location["Longitude"].to_f]        
-          end
+    types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])
+    @search = params[:search] unless params[:search].blank?
+    unless @search.blank?      
+      @latlng = Geocoder.coordinates(@search)
+      session[:search] = @latlng unless @latlng.blank?
+    else      
+      if session[:search].blank?
+        current_location = MultiGeocoder.geocode(request.remote_ip).to_json
+        if !current_location["Latitude"].blank? && !current_location["Longitude"].blank?
+          @latlng = [current_location["Latitude"].to_f, current_location["Longitude"].to_f]        
         end
       end
+    end
+  
+    @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank? &&  session[:search].blank?    
+    coordinates = @latlng.blank? ? session[:search] : @latlng  
+    if coordinates.blank?
+      @latlng = [33.7489954, -84.3879824] # DEFAULT_LOCATION = 'Atlanta, GA' 
+      coordinates = @latlng
+    end
+    cookies[:address] = { :value => coordinates, :expires => 1.year.from_now }
+  
+    begin
+      @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
+    rescue
+    end
+  
+    begin
+      @locations = Location.near(coordinates, 2, :order => :distance).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
+    rescue
+    end
     
-      @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank? &&  session[:search].blank?    
-      coordinates = @latlng.blank? ? session[:search] : @latlng  
-      if coordinates.blank?
-        @latlng = [33.7489954, -84.3879824] # DEFAULT_LOCATION = 'Atlanta, GA' 
-        coordinates = @latlng
-      end
-      cookies[:address] = { :value => coordinates, :expires => 1.year.from_now }
-    
-      begin
-        @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-      rescue
-      end
-    
-      begin
-        @locations = Location.near(coordinates, 2, :order => :distance).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
-      rescue
-      end
-      
-      # Remove duplicates from near_your_locations
-      remove_duplicate_locations
-    
-      begin     
-        @events = Event.near(coordinates, 2)
-      rescue
-      end
+    # Remove duplicates from near_your_locations
+    remove_duplicate_locations
+  
+    begin     
+      @events = Event.near(coordinates, 2)
+    rescue
     end
   end
   
@@ -257,10 +253,12 @@ class LocationsController < ApplicationController
   end
   
   def remove_duplicate_locations
-    @near_your_locations['results'].each_with_index do |place, ndx|
-      @near_your_locations['results'][ndx] = nil if exclude_place?(place)
+    if @near_your_locations
+      @near_your_locations['results'].each_with_index do |place, ndx|
+        @near_your_locations['results'][ndx] = nil if exclude_place?(place)
+      end
+      @near_your_locations['results'].compact!
     end
-    @near_your_locations['results'].compact!
   end
   
   def exclude_place?(place)
@@ -286,7 +284,13 @@ class LocationsController < ApplicationController
     else
       loc = details['result']       
       if loc['vicinity'] != nil && loc['name'] != nil
-        add, city = loc['vicinity'].split(",")          
+        # Some places only have city
+        if loc['vicinity'].include? ','
+          add, city = loc['vicinity'].split(",")
+        else
+          add = ''
+          city = loc['vicinity']
+        end
         adv = Advertise.where("(address_name like ? or address_name like ? ) and business_name like ? ", "%#{city.strip}%", "%#{add.strip}%", "%#{loc['name']}%").first()
         adv = Advertise.where("business_name like ? ", "%#{loc['name']}%").first() if adv.blank?          
       end      

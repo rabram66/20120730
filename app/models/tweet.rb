@@ -42,7 +42,7 @@ class Tweet
     private
     
     def api(url, *args)
-      response = HTTParty.get( sprintf(url, *args) )
+      response = HTTParty.get( format(url, *args) )
       case response.code
       when 200
         yield response.parsed_response

@@ -1,6 +1,8 @@
 class Location < ActiveRecord::Base
-  
+
+  include LocationPlace
   include HTTParty
+
   base_uri 'https://maps.googleapis.com/maps/api/place/add/json?sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc1'
 
   validates :name,  :presence => true
@@ -40,5 +42,14 @@ class Location < ActiveRecord::Base
   def facebook_status
     WallPost.latest(facebook_page_id) if facebook_page_id
   end
+
+  class << self
+    
+    def find_by_geocode(geocode)
+      self.near(geocode, 2, :order => :distance)
+    end
+
+  end
+    
   
 end

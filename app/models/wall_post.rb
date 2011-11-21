@@ -20,11 +20,15 @@ class WallPost
     end
 
     def feed (facebook_id,limit=1)
-      res = HTTParty.get( format(WALL_POST_URL, facebook_id, limit) )
+      url = format(WALL_POST_URL, facebook_id, limit) 
+      res = HTTParty.get( url )
       if res.code == 200 && res.parsed_response['data']
         res.parsed_response['data'].map do |post|
           WallPost.new(:message => post['message'])
         end
+      else
+        Rails.logger.error "Unable to retrieve Facebook feed: (#{res.code}) #{url}"
+        []
       end
     end
 

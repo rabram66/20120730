@@ -1,10 +1,11 @@
 class Place
+
+  include LocationPlace
   
   attr_accessor :name, :vicinity, :reference, :geocode, :categories, :types,
                 :phone_number, :website, :full_address
 
   RADIUS = 750
-  MILES_PER_KILOMETER = 0.621371192
   API_KEY = "AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc"
   SEARCH_REQUEST_URL = "https://maps.googleapis.com/maps/api/place/search/json?location=%.8f,%.8f&types=%s&radius=%d&sensor=true&key=#{API_KEY}"
   DETAILS_REQUEST_URL = "https://maps.googleapis.com/maps/api/place/details/json?reference=%s&sensor=true&key=#{API_KEY}"

@@ -257,10 +257,12 @@ class LocationsController < ApplicationController
   end
   
   def remove_duplicate_locations
-    @near_your_locations['results'].each_with_index do |place, ndx|
-      @near_your_locations['results'][ndx] = nil if exclude_place?(place)
+    if @near_your_locations
+      @near_your_locations['results'].each_with_index do |place, ndx|
+        @near_your_locations['results'][ndx] = nil if exclude_place?(place)
+      end
+      @near_your_locations['results'].compact!
     end
-    @near_your_locations['results'].compact!
   end
   
   def exclude_place?(place)

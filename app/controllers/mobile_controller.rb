@@ -16,19 +16,45 @@ class MobileController < ApplicationController
     else
       Geocoder.coordinates(params[:search])
     end
+
+    @locations = Location.find_by_geocode(@geocode)
     @places = Place.find_by_geocode(@geocode)
+    
+    remove_duplicate_places unless @places.empty? || @locations.empty?
   end
   
   # GET the detail for a location/place
   def detail
     reference = params[:id]    
     @location = Location.find_by_reference(reference) || Place.find_by_reference(reference)
-
+    
     if Location === @location
-      @last_tweet = Tweet.latest(@location.twitter_name)    
-      # @last_post = get_last_post(@location)      
-      # @user_saying = get_tweet_search(@location.twitter_name)
+      @twitter_status = @location.twitter_status
+      @facebook_status = @location.facebook_status
+      @twitter_mentions = @location.twitter_mentions
     end
   end
+
+  private
+
+  def remove_duplicate_places
+    if @places
+      @places.each_with_index do |place, ndx|
+        @places[ndx] = nil if exclude_place?(place)
+      end
+      @places.compact!
+    end
+  end
+  
+  def exclude_place?(place)
+    # Exclude the place if there is a location with the same name, address, or lat-lng
+    @locations.any? do |location|
+      ( place.name == location.name ) ||
+      ( place.vicinity && place.vicinity.include?(location.address) ) ||
+      ( place.geocode == location.geocode )
+    end
+  end
+  
+  
     
 end

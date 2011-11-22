@@ -12,7 +12,7 @@
 ----------------------------------------------------------------------- */
 
 /* reset.css */
-html {margin:0;padding:0;border:0;}
+html {margin:0;padding:0;border:0; background: #f0f1f2}
 body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, dialog, figure, footer, header, hgroup, nav, section {margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}
 article, aside, details, figcaption, figure, dialog, footer, header, hgroup, menu, nav, section {display:block;}
 body {line-height:1.5;}
@@ -26,7 +26,7 @@ a img {border:none;}
 
 /* typography.css */
 html {font-size:100.01%;}
-body {font-size:79%;color:#222;background:#eeeeee; font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;}
+body {font-size:79%;color:#222; background:#ffffff; font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;}
 h1, h2, h3, h4, h5, h6 {font-weight:normal;color:#111;}
 h1 {font-size:3em;line-height:1;margin-bottom:0.5em;}
 h2 {font-size:2em;margin-bottom:0.75em; color:#006600}
@@ -35,7 +35,7 @@ h4 {font-size:1.2em;line-height:1.25;margin-bottom:1.25em;}
 h5 {font-size:1em;font-weight:bold;margin-bottom:1.5em;}
 h6 {font-size:1em;font-weight:bold;}
 h1 img, h2 img, h3 img, h4 img, h5 img, h6 img {margin:0;}
-span h2  {color: #ffffff; margin-left:-10px; padding-left:10px; background-color: #6791bf}
+span h2  {color: #ffffff; margin-left:-10px; padding-left:10px; background-color: #00aad2}
 span h3  {color: #444444;font-size: 26px; font-weight: bold;}
 p {margin:0 0 1.5em;}
 .left {float:left !important;}
@@ -107,7 +107,7 @@ form.inline p {margin-bottom:0;}
 .info a {color:#205791;}
 
 /* grid.css */
-.container {width:950px;margin:0 auto;}
+.container {width:950px;margin:0 auto; background: #FFFFFF; border: 1px solid #d9d9d9;  box-shadow:0 0px 1px rgba(0, 0, 0, 0.7);}
 .showgrid {background:url(src/grid.png);}
 .column, .span-1, .span-2, .span-3, .span-4, .span-5, .span-6, .span-7, .span-8, .span-9, .span-10, .span-11, .span-12, .span-13, .span-14, .span-15, .span-16, .span-17, .span-18, .span-19, .span-20, .span-21, .span-22, .span-23, .span-24 {float:left;margin-right:10px;}
 .last {margin-right:0;}

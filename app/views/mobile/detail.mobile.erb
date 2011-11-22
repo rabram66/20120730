@@ -14,9 +14,13 @@
   <div id='mobile-twitter-mentions'>
     <% if @twitter_mentions && !@twitter_mentions.empty? -%>
       <h3>What People Are Saying</h3>
-      <ul>
+      <ul data-role='listview' data-inset='true'>
         <% for tweet in @twitter_mentions -%>
-          <li><%= tweet.text %></li>
+          <li>
+            <img src="<%= tweet.profile_image_url %>" class="ul-li-thumb"/>
+            <p class='ul-li-desc twitter-mention'><%= tweet.text %></p>
+            <p class='ul-li-desc tweeted-at'><%= time_ago_in_words(tweet.created_at) %> ago</p>
+          </li>
         <% end -%>
       </ul>
     <% end -%>

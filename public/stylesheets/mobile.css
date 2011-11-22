@@ -13,3 +13,16 @@
   border: 2px solid gray;
 }
 
+ul#locations-list img.twitter-icon {
+  top: 0.6em;
+}
+
+ul#events-list p.event-desc {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 1.1em;
+}
+
+ul#events-list span.event-date {
+  font-weight: bold;
+}

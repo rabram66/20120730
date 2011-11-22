@@ -12,13 +12,15 @@ class MobileController < ApplicationController
   #GET the list of nearby locations using the search location
   def list
     @geocode = if params[:commit] == I18n.t('mobile.use_my_location_button') || params[:search].blank? || params[:search] == I18n.t('mobile.search_prompt')
-      [params[:lat].to_f, params[:lng].to_f]        
+      geocode_from_params
     else
       Geocoder.coordinates(params[:search])
     end
 
     @locations = Location.find_by_geocode(@geocode)
     @places = Place.find_by_geocode(@geocode)
+    @deals = Deal.find_by_geocode(@geocode)
+    @events = Event.find_by_geocode(@geocode)
     
     remove_duplicate_places unless @places.empty? || @locations.empty?
   end
@@ -35,7 +37,25 @@ class MobileController < ApplicationController
     end
   end
 
+  def deals
+    @geocode = geocode_from_params
+    @deals = Deal.find_by_geocode(@geocode)
+  end
+  
+  def events
+    @geocode = geocode_from_params
+    @events = Event.find_by_geocode(@geocode)
+  end
+
+  def event
+    @event = Event.find params[:id]
+  end
+
   private
+
+  def geocode_from_params
+    [params[:lat].to_f, params[:lng].to_f]
+  end
 
   def remove_duplicate_places
     if @places

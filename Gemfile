@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.1.0.rc5'
 gem 'sqlite3'
-gem "mysql2", "~> 0.3.7"
+#gem "mysql2", "~> 0.3.7"
 gem 'rack', '1.3.3'
 gem 'geocoder'
 gem 'httparty'
@@ -17,5 +17,6 @@ gem "aws-s3", "~> 0.6.2"
 gem "devise"
 gem "mobile-fu", "~> 0.2.1"
 gem "faster_haversine", "~> 0.1.3" # Calculating distance between geocodes
+gem 'stamp'
 #gem 'ruby-debug19'
 

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  address_ip: MyString
+  business_name: MyString
+  advertise_id: 1
+
+two:
+  address_ip: MyString
+  business_name: MyString
+  advertise_id: 1

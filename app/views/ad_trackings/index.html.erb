@@ -1,0 +1,24 @@
+<h1>Listing ad_trackings</h1>
+
+<table>
+  <tr>
+    <th>Address ip</th>
+    <th>Business name</th>
+    <th>Advertise</th>
+    <th>Time Tracking</th>   
+    <th></th>   
+  </tr>
+
+<% @ad_trackings.each do |ad_tracking| %>
+  <tr>
+    <td><%= ad_tracking.ip_address %></td>
+    <td><%= ad_tracking.business_name %></td>
+    <td><%= link_to (image_tag  ad_tracking.advertise.photo.url(:thumb)), ad_tracking.advertise unless ad_tracking.advertise.blank? %></td>
+    <td> <%= number_with_precision (ad_tracking.updated_at - ad_tracking.created_at), :precision => 2 %> seconds</td>
+    <td><%= link_to 'Show', ad_tracking %></td>    
+  </tr>
+<% end %>
+</table>
+
+<br />
+

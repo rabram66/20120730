@@ -1,6 +1,7 @@
 LocationDB::Application.routes.draw do
+
   devise_for :users
-  resources :users, :events, :advertises, :newstuffs, :locations
+  resources :users, :events, :advertises, :newstuffs, :locations, :ad_trackings
 
   #------------------------Website-----------------------------
   post "locations/index"

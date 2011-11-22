@@ -24,7 +24,7 @@ module ApplicationHelper
   
   def rating_info
     begin
-    "Rating #{@details['result']['rating']} out of 5" unless @details['result']['rating'].blank?
+      "Rating #{@details['result']['rating']} out of 5" unless @details['result']['rating'].blank?
     rescue
     end
   end
@@ -52,5 +52,5 @@ module ApplicationHelper
     end
     result.html_safe
   end
-
+  
 end

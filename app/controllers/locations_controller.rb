@@ -12,9 +12,6 @@ class LocationsController < ApplicationController
   DEFAULT_LOCATION = 'Atlanta, GA' 
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
   
-  def test_heroku
-    
-  end
 
   def index
     types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])
@@ -74,20 +71,32 @@ class LocationsController < ApplicationController
   end
  
   def details
-    reference = params[:reference]    
-    @details = get_place_response(reference)
+    @ad_tracking = AdTracking.new
+    @ad_tracking.ip_address = request.ip
+    @ad_tracking.save
     
+    reference = params[:reference]    
+    @details = get_place_response(reference)    
     @location = Location.find_by_reference(reference)        
-    @origin_address = params[:address]    
+    @origin_address = params[:address]
     
     @advertise = get_logo(@details, @location)
-    
+
     
     unless @location.blank?
       @last_tweet = get_last_tweet(@location.twitter_name)    
       @last_post = get_last_post(@location)      
       @user_saying = get_tweet_search(@location.twitter_name)
-    end    
+    end
+    business_name = ""
+    unless @location.blank? 
+      business_name = @location.name 
+    else 
+      business_name = @details['result']['name'] 
+    end 
+    @ad_tracking.business_name = business_name
+    @ad_tracking.advertise_id = @advertise.id unless @advertise.blank?
+    @ad_tracking.save
   end
   
   def delete_place    
@@ -268,9 +277,9 @@ class LocationsController < ApplicationController
     return false if @locations.nil?
     @locations.any? do |location|
       ( place['name'] == location.name ) ||
-      ( place['vicinity'] && place['vicinity'].include?(location.address) ) ||
-      ( place['geometry']['location']['lat'] == location.latitude && 
-        place['geometry']['location']['lng'] == location.longitude )
+        ( place['vicinity'] && place['vicinity'].include?(location.address) ) ||
+        ( place['geometry']['location']['lat'] == location.latitude && 
+          place['geometry']['location']['lng'] == location.longitude )
     end
   end
   

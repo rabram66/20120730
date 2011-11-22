@@ -26,3 +26,10 @@ ul#events-list p.event-desc {
 ul#events-list span.event-date {
   font-weight: bold;
 }
+
+.center-wrapper{
+  text-align: center;
+}
+.center-wrapper * {
+  margin: 0 auto;
+}

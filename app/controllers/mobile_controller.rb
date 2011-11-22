@@ -22,7 +22,7 @@ class MobileController < ApplicationController
     @deals = Deal.find_by_geocode(@geocode)
     @events = Event.find_by_geocode(@geocode)
     
-    remove_duplicate_places unless @places.empty? || @locations.empty?
+    remove_duplicate_places unless @places.length == 0 || @locations.length == 0
   end
   
   # GET the detail for a location/place

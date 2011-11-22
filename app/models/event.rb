@@ -12,7 +12,7 @@ class Event < ActiveRecord::Base
 
   class << self
     def find_by_geocode(coordinates)
-      self.near(coordinates, 2, :order => :distance)
+      self.near(coordinates, 2)
     end
   end
 

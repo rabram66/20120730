@@ -188,6 +188,7 @@ class LocationsController < ApplicationController
   def load_page  
     results = RestClient.get "https://graph.facebook.com/search?q=#{params[:q].gsub(" ", "+")}&limit=5&type=page"
     res = ActiveSupport::JSON.decode(results)    
+    
     render :json => res['data']
   end
   

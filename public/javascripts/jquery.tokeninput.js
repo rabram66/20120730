@@ -537,7 +537,8 @@ $.TokenList = function (input, settings) {
                 .hide();
 
             $.each(results, function(index, value) {
-                var this_li = $("<li>" + highlight_term(value.name, query) + "</li>")
+                var va = "<img src='https://graph.facebook.com/"+ value.id +"/picture'/>" + value.name + " (" + value.category + " )"; 
+                var this_li = $("<li>" + highlight_term(va, query) + "</li>")
                                   .appendTo(dropdown_ul);
 
                 if(index % 2) {

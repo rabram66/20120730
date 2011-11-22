@@ -78,7 +78,7 @@
 
   <ul>
     <% for location in @location.nearbys(20)%>
-      <li><%= link_to location.address, location %> <%= location.distance(@location.geo_code) %></li>
+      <li><%= link_to location.address, location %> <%= location.distance %></li>
     <% end %>
   </ul>
 

@@ -1,7 +1,5 @@
 class Event < ActiveRecord::Base
 
-  include LocationPlace
-
   validates :name,  :presence => true
   validates :address,  :presence => true
   validates :description,  :presence => true

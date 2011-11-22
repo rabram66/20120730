@@ -16,13 +16,17 @@
       <h3>What People Are Saying</h3>
       <ul data-role='listview' data-inset='true'>
         <% for tweet in @twitter_mentions -%>
-          <li>
+          <li class='mobile-twitter-mention' style="display:none">
             <img src="<%= tweet.profile_image_url %>" class="ul-li-thumb"/>
             <p class='ul-li-desc twitter-mention'><%= tweet.text %></p>
             <p class='ul-li-desc tweeted-at'><%= time_ago_in_words(tweet.created_at) %> ago</p>
           </li>
         <% end -%>
       </ul>
+      <div id='twitter-mention-control' data-role='controlgroup' data-type='horizontal'>
+        <a href='#' id='prev-tweet' data-role='button' data-icon='arrow-l'>Prev</a>
+        <a href='#' id='next-tweet' data-role='button' data-icon='arrow-r'>Next</a>
+      </div>
     <% end -%>
   </div>
 </div>

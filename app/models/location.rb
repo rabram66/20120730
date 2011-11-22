@@ -1,6 +1,5 @@
 class Location < ActiveRecord::Base
 
-  include LocationPlace
   include HTTParty
 
   base_uri 'https://maps.googleapis.com/maps/api/place/add/json?sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc1'
@@ -16,6 +15,8 @@ class Location < ActiveRecord::Base
   validates :facebook_page_id,  :presence => true
   
   belongs_to :user
+  
+  alias_attribute :phone_number, :phone
 
   def full_address
     "#{address} #{city}, #{state}"

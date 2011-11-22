@@ -14,7 +14,7 @@ $('#mobile-map').live('pageinit', function(event) {
         break;
       //Landscape: clockwise
       case -90:
-        break
+        break;
       //Landscape: counterclockwise
       case "180":
         break;

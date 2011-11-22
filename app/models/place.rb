@@ -52,4 +52,3 @@ class Place
   end
 
 end
-    

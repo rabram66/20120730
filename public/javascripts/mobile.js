@@ -32,6 +32,15 @@ mobileMap = {
   }
 };
 
+toggleTwitterMention = function(from, to) {
+  if (to.length != 0) {
+    current.removeClass('current');
+    to.addClass('current');
+    current.hide();
+    to.show();
+  }
+};
+
 $('#mobile-content').live('pageinit', function(event) {
   $('#searchTextField').click( function() {$(this).val('');} );  // clear search field of prompt text
   $('ul#category-selector > li').click( showCategory );
@@ -40,4 +49,15 @@ $('#mobile-content').live('pageinit', function(event) {
     mobileMap.showLocation( $('#lat').val(), $('#lng').val(), $('#mobile-map') );
   }
   $('#use_my_location').click( setCurrentPosition );
+  if ( $('#mobile-twitter-mentions').length > 0 ) {
+    $('li.mobile-twitter-mention:first').show().addClass('current');
+    $('#prev-tweet').click( function(event) {
+      current = $('li.mobile-twitter-mention.current');
+      toggleTwitterMention(current, current.prev());
+    });
+    $('#next-tweet').click( function(event) {
+      current = $('li.mobile-twitter-mention.current');
+      toggleTwitterMention(current, current.next());
+    });
+  }
 });

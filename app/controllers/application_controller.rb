@@ -1,13 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
-  # TODO: Reenable when mobile site stablized
-  # has_mobile_fu(false)
+  has_mobile_fu
 
-  def is_mobile_device?
-    false
-  end
-  
   def role    
     if (params[:controller].eql?("locations") && params[:action].eql?("index")) or 
         (params[:controller].eql?("locations") && params[:action].eql?("details")) or

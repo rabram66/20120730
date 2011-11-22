@@ -14,8 +14,7 @@
     <td><%= ad_tracking.ip_address %></td>
     <td><%= ad_tracking.business_name %></td>
     <td><%= link_to (image_tag  ad_tracking.advertise.photo.url(:thumb)), ad_tracking.advertise unless ad_tracking.advertise.blank? %></td>
-    <td> <%= number_with_precision (ad_tracking.updated_at - ad_tracking.created_at), :precision => 2 %> seconds</td>
-    <td><%= link_to 'Show', ad_tracking %></td>    
+    <td> <%= number_with_precision (ad_tracking.updated_at - ad_tracking.created_at), :precision => 2 %> seconds</td>      
   </tr>
 <% end %>
 </table>

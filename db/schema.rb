@@ -107,7 +107,6 @@ ActiveRecord::Schema.define(:version => 20111122032428) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "user_roles",                            :default => "User"
     t.string   "role",                                  :default => "User"
   end
 

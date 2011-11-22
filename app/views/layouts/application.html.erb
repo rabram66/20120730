@@ -20,7 +20,8 @@
               <%= link_to "Events", "/events" %> &nbsp;  
             <% end %>
 
-            <% if current_user.role == "Admin" %>
+            <% if current_user.role == "Admin" %>&nbsp;
+              <%= link_to "Ad Tracking", "/ad_trackings" %>
               <%= link_to "Advertise", "/advertises" %> || 
               <%= link_to "Users", "/users" %> &nbsp;  
             <% end %>

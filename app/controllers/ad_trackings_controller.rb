@@ -1,4 +1,7 @@
 class AdTrackingsController < ApplicationController
+  
+  before_filter :role
+  
   # GET /ad_trackings
   # GET /ad_trackings.json
   def index

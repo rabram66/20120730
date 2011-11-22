@@ -1,0 +1,13 @@
+common: &common
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: nearbythis
+  
+development:
+  <<: *common
+  database: nearbythis_development
+
+test:
+  <<: *common
+  database: nearbythis_test

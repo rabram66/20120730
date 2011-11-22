@@ -8,11 +8,7 @@ class Location < ActiveRecord::Base
   validates :address,  :presence => true  
   validates :city,  :presence => true  
   validates :state,  :presence => true
-  validates :phone,  :presence => true
-  validates :email,  :presence => true
   validates :types,  :presence => true
-  validates :twitter_name,  :presence => true
-  validates :facebook_page_id,  :presence => true
   
   belongs_to :user
   

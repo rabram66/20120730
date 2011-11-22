@@ -3,7 +3,8 @@ require 'json'
 require 'open-uri'
 
 class MobileController < ApplicationController
-  layout 'mobile', :except => :map #LAYOUT
+  layout 'mobile'
+  before_filter :set_geocode, :except => [:index, :list]
 
   # GET The main page with a field to input the address, city, state or to use current location
   def index
@@ -17,17 +18,19 @@ class MobileController < ApplicationController
       Geocoder.coordinates(params[:search])
     end
 
+    cookies[:geocode] = { :value => @geocode, :expires => 1.year.from_now }
+
     @locations = Location.find_by_geocode(@geocode)
-    @places = Place.find_by_geocode(@geocode)
-    @deals = Deal.find_by_geocode(@geocode)
-    @events = Event.find_by_geocode(@geocode)
+    @places    = Place.find_by_geocode(@geocode)
+    @deals     = Deal.find_by_geocode(@geocode)
+    @events    = Event.find_by_geocode(@geocode)
     
     remove_duplicate_places unless @places.length == 0 || @locations.length == 0
   end
   
   # GET the detail for a location/place
   def detail
-    reference = params[:id]    
+    reference = params[:id]
     @location = Location.find_by_reference(reference) || Place.find_by_reference(reference)
     
     if Location === @location
@@ -38,12 +41,10 @@ class MobileController < ApplicationController
   end
 
   def deals
-    @geocode = geocode_from_params
     @deals = Deal.find_by_geocode(@geocode)
   end
   
   def events
-    @geocode = geocode_from_params
     @events = Event.find_by_geocode(@geocode)
   end
 
@@ -52,9 +53,21 @@ class MobileController < ApplicationController
   end
 
   private
-
+  
+  def set_geocode
+    @geocode = geocode_from_cookie || default_geocode
+  end
+    
   def geocode_from_params
     [params[:lat].to_f, params[:lng].to_f]
+  end
+
+  def geocode_from_cookie
+    cookies[:geocode] && cookies[:geocode].split('&').map{|v| v.to_f}
+  end
+
+  def default_geocode
+    [33.7489954, -84.3879824] # Atlanta, Georgia (center of our universe)
   end
 
   def remove_duplicate_places

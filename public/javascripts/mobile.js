@@ -48,6 +48,7 @@ mobileMap = {
     };
     var map = new google.maps.Map($(elem)[0], mapOptions);
     directionsDisplay.setMap(map);
+    directionsDisplay.setPanel($('#mobile-directions')[0])
 
     var request = {
       origin: origin,
@@ -86,7 +87,7 @@ $('#mobile-content').live('pageinit', function(event) {
   // Mobile map on details page
   if ( $('#mobile-map').length > 0 ) {
     mobileMap.showLocationWithDirections( $('#origin_lat').val(), $('#origin_lng').val(), $('#dest_lat').val(), $('#dest_lng').val(), $('#mobile-map') );
-    // mobileMap.showLocation( $('#lat').val(), $('#lng').val(), $('#mobile-map') );
+    $('#mobile-directions-button').click( function(event) { $('#mobile-directions').toggle(); } );
   }
 
   // Use current location button on index

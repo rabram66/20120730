@@ -26,6 +26,9 @@ class MobileController < ApplicationController
     @deals     = Deal.find_by_geocode(@geocode)
     @events    = Event.find_by_geocode(@geocode)
     
+    # TODO: Remove this CYA code once gaurantee of reference being set is handled
+    @locations.reject! {|l| l.reference.nil? }
+
     remove_duplicate_places unless @places.length == 0 || @locations.length == 0
   end
   
@@ -39,8 +42,6 @@ class MobileController < ApplicationController
       @facebook_status = @location.facebook_status
       @twitter_mentions = @location.twitter_mentions
     end
-    puts "Orig Geocode: #{@geocode.inspect}"
-    puts "Dest Geocode: #{@location.geo_code.inspect}"
   end
 
   def deals

@@ -4,6 +4,7 @@ require 'open-uri'
 
 class MobileController < ApplicationController
   layout 'mobile'
+
   before_filter :set_geocode, :except => [:index, :list]
 
   # GET The main page with a field to input the address, city, state or to use current location
@@ -38,6 +39,8 @@ class MobileController < ApplicationController
       @facebook_status = @location.facebook_status
       @twitter_mentions = @location.twitter_mentions
     end
+    puts "Orig Geocode: #{@geocode.inspect}"
+    puts "Dest Geocode: #{@location.geo_code.inspect}"
   end
 
   def deals

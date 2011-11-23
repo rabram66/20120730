@@ -4,8 +4,8 @@
 <div id='mobile-detail' data-role='content'>
   <%= hidden_field_tag :origin_lat, @geocode.first, :id => :origin_lat %>
   <%= hidden_field_tag :origin_lng, @geocode.last, :id => :origin_lng %>
-  <%= hidden_field_tag :lat, @location.geo_code.first, :id => :lat %>
-  <%= hidden_field_tag :lng, @location.geo_code.last, :id => :lng %>
+  <%= hidden_field_tag :dest_lat, @location.geo_code.first, :id => :dest_lat %>
+  <%= hidden_field_tag :dest_lng, @location.geo_code.last, :id => :dest_lng %>
   <div id='mobile-map'>MAP</div>
   <div id='mobile-full-address'><%= @location.full_address %></div>
   <div id='mobile-twitter-status'>

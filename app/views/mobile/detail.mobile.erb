@@ -23,7 +23,7 @@
     <% end -%>
   </div>
   <div id='mobile-facebook-status'>
-    <%= @facebook_status.message if @facebook_status %>
+    <%= @facebook_status.text if @facebook_status %>
   </div>
   <div id='mobile-twitter-mentions'>
     <% if @twitter_mentions && !@twitter_mentions.empty? -%>

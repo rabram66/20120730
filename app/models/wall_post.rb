@@ -1,35 +1,44 @@
 # Facebook wall post
 class WallPost
 
-  #TODO Replace with NearbyThis access token
-  ACCESS_TOKEN = "AAACEdEose0cBAESXdzrNUwmu4vigIauClbKgGjkQVDdzUfn4TJMtoRFXkfKlKtUNTxwJZAJdChG9jPWSpgmDUZCH6RRbJuSxTItplrZBAZDZD"
+  FEED_URL = "http://www.facebook.com/feeds/page.php?format=json&id=%s"
 
-  WALL_POST_URL = "https://graph.facebook.com/%s/feed?limit=%d&access_token=#{ACCESS_TOKEN}"
-
-  attr_accessor :message
+  attr_accessor :text, :facebook_post_url
   
-  def initialize(message)
-    @message = message
+  def initialize(text, facebook_post_url)
+    @text, @facebook_post_url = text, facebook_post_url
   end
 
   class << self
     
     def latest(facebook_id)
-      posts =  feed(facebook_id)
+      posts = feed(facebook_id)
       posts.first unless posts.blank?
     end
 
-    def feed (facebook_id,limit=1)
-      url = format(WALL_POST_URL, facebook_id, limit) 
-      res = HTTParty.get( url )
-      if res.code == 200 && res.parsed_response['data']
-        res.parsed_response['data'].map do |post|
-          WallPost.new(:message => post['message'])
+    def feed(facebook_id)
+      results = []
+
+      url = format(FEED_URL, facebook_id) 
+      response = RestClient.get( url )
+
+      if response.code == 200
+        begin
+          result = ActiveSupport::JSON.decode(response.body)
+          if result['link'].nil? || result['entries'].nil?
+            Rails.logger.error "Unexpected response body: (#{result}) #{url}"
+          else
+            results = result['entries'].reject{|e| e['title'].strip.blank?}.map do |entry|
+              WallPost.new(entry['title'].strip, entry['alternate'])
+            end
+          end
+        rescue MultiJson::DecodeError => e
+          Rails.logger.error "Exception: #{e}: #{url}"
         end
       else
-        Rails.logger.error "Unable to retrieve Facebook feed: (#{res.code}) #{url}"
-        []
+        Rails.logger.error "Unable to retrieve Facebook feed: (#{response.code}) #{url}"
       end
+      results
     end
 
   end

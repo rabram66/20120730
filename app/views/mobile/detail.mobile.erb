@@ -9,8 +9,10 @@
   <div id='mobile-map'>MAP</div>
   <div id='mobile-full-address'><%= @location.full_address %></div>
   <div id='mobile-twitter-status'>
-    <img src='/images/twitter-logo.jpg'/>
-    <%= @twitter_status.text if @twitter_status %>
+    <% if @twitter_status -%>
+      <img src='/images/twitter-logo.jpg'/>
+      <%= @twitter_status.text %>
+    <% end -%>
   </div>
   <div id='mobile-facebook-status'><%= @facebook_status.message if @facebook_status %></div>
   <div id='mobile-twitter-mentions'>

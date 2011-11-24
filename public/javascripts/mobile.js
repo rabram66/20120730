@@ -95,14 +95,14 @@ $('#mobile-content').live('pageinit', function(event) {
 
   // Prev/Next controls for twitter mentions on details page
   if ( $('#mobile-twitter-mentions').length > 0 ) {
-    $('li.mobile-twitter-mention:first').show().addClass('current');
+    $('div.mobile-twitter-mention:first').show().addClass('current');
     $('#prev-tweet').click( function(event) {
-      current = $('li.mobile-twitter-mention.current');
-      toggleTwitterMention(current, current.prev());
+      current = $('div.mobile-twitter-mention.current');
+      toggleTwitterMention(current, current.prev('div.mobile-twitter-mention'));
     });
     $('#next-tweet').click( function(event) {
-      current = $('li.mobile-twitter-mention.current');
-      toggleTwitterMention(current, current.next());
+      current = $('div.mobile-twitter-mention.current');
+      toggleTwitterMention(current, current.next('div.mobile-twitter-mention'));
     });
   }
 

@@ -31,6 +31,21 @@ ul#events-list span.event-date {
   font-weight: bold;
 }
 
+#directions-and-phone-buttons {
+  font-size: 0.9em;
+}
+
+div.mobile-twitter-mention p.tweeted-at {
+  float: right;
+  font-style: italic;
+}
+
+div.mobile-twitter-mention p.tweet-text {
+  white-space: normal;
+  font-weight: bold;
+  margin-left: -3em;
+}
+
 .center-wrapper{
   text-align: center;
 }

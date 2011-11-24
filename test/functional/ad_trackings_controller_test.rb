@@ -2,6 +2,7 @@ require 'test_helper'
 
 class AdTrackingsControllerTest < ActionController::TestCase
   setup do
+    sign_in users(:user1)
     @ad_tracking = ad_trackings(:one)
   end
 

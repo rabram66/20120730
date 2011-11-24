@@ -3,9 +3,9 @@
 one:
   ip_address: MyString
   business_name: MyString
-  advertise_id: 1
+  advertise: one
 
 two:
   ip_address: MyString
   business_name: MyString
-  advertise_id: 1
+  advertise: one

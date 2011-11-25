@@ -52,10 +52,6 @@ class MobileController < ApplicationController
     @events = Event.find_by_geocode(@geocode)
   end
 
-  def event
-    @event = Event.find params[:id]
-  end
-
   private
   
   def set_geocode

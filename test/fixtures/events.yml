@@ -1,15 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
 
 one:
-  name: MyString
-  address: MyString
+  name: Dunwoody Craft Fair
+  address: "5488 Chamblee Dunwoody Road, Dunwoody, GA"
   start_date: 2011-10-18 10:08:37
   end_date: 2011-10-18 10:08:37
   description: MyText
+  latitude: 33.7489954
+  longitude: -84.3879824
 
 two:
-  name: MyString
-  address: MyString
+  name: Stage Door Players
+  address: "1426 Dunwoody Village Parkway, Dunwoody, GA"
   start_date: 2011-10-18 10:08:37
   end_date: 2011-10-18 10:08:37
   description: MyText
+  latitude: 33.7489954
+  longitude: -84.3879824

@@ -1,11 +1,20 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  address: MyString
-  latitude: 1.5
-  longitude: 1.5
+  name: Bangles R Us
+  address: 2578 Binghamton Drive
+  city: Dunwoody
+  state: GA
+  latitude: 33.7489954
+  longitude: -84.3879824
+  reference: 111
 
 two:
+  name: Baubles R Us
+  address: 537 Memorial Drive
+  city: Atlanta
+  state: GA
   address: MyString
-  latitude: 1.5
-  longitude: 1.5
+  latitude: 33.7489954
+  longitude: -84.3879824
+  reference: 222

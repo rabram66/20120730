@@ -36,18 +36,32 @@
 </div>
 <div style="float: right;">
   <%= render 'map' %>
-
-  <%= render 'events' %>
+  <div class="events_index">
+    <h2 class='header'>Events</h2>
+    <% unless @events.blank? %>
+      <% @events.each do |event| %>
+        <div class='event_item'>
+          <p class='event_title'><%= event.name %> - <%= event.address %></p>
+          <p class='event_desc'><%= event.description %></p>
+        </div>
+      <% end -%>
+    <% else -%>
+      No events near you right now. 
+      <% if !current_user.blank? and current_user.role.eql? "Admin" -%>
+        <a href="/events/new"> Create an event </a>
+      <% end -%>
+    <% end -%>
+  </div>
 
   <div class="deals">
-    <span><h2>Daily Deals</h2></span>
+    <h2 class='header'>Daily Deals</h2>
     <div id="deal_ajax_load">
       <img src="/images/ajax-loader.gif" />
     </div>
     <div id="yipit_deal">
-      
     </div>    
   </div>
+
 </div>
 
 <script>  

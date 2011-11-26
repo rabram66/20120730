@@ -21,7 +21,6 @@ class Deal
         res = ActiveSupport::JSON.decode(response.parsed_response)
         if res['response'] && res['response']['deals']
           deals = res['response']['deals'].map do |deal|
-            
             Deal.new(
               :title      => deal['title'], 
               :url        => deal['url'],

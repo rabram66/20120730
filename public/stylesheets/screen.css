@@ -278,3 +278,7 @@ span#searchbox {
   margin-top:-100px;
 }
 .auth a{  color: #6791bf; font-weight: bold; text-decoration: none;padding-top:7px;}
+
+div.deal_link {
+  border-bottom: 1px dotted gray;
+}

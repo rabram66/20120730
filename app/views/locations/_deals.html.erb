@@ -1,11 +1,5 @@
-<% begin %>  
-    <% @deals['root']['response']['deals']['list_item'].each do |deal| %>
-      <div style="border-bottom: 1px dotted gray;">
-        <a href="<%= deal['yipit_url'] %>" target="_blank">
-          <%= deal['yipit_title'] %>
-        </a>
-      </div>
-    <% end %>
-    <br/>
-<% rescue %>
-<% end %>
+<% @deals.each do |deal| %>
+  <div class='deal_link'>
+    <%= link_to deal.title, deal.url, :target => :blank %>
+  </div>
+<% end -%>

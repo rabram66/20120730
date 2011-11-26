@@ -9,7 +9,7 @@ class LocationsController < ApplicationController
   respond_to :html, :xml, :json, :js
   
   RADIUS = '750'  
-  DEFAULT_LOCATION = 'Atlanta, GA'
+  DEFAULT_LOCATION = [33.7489954, -84.3879824] # Atlanta, GA
 
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
   
@@ -31,7 +31,7 @@ class LocationsController < ApplicationController
     end
   
     # TODO: Clean up
-    @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank? &&  session[:search].blank?    
+    @latlng = DEFAULT_LOCATION if @latlng.blank? && session[:search].blank?    
     coordinates = @latlng.blank? ? session[:search] : @latlng  
     if coordinates.blank?
       @latlng = [33.7489954, -84.3879824] # DEFAULT_LOCATION = 'Atlanta, GA' 
@@ -134,18 +134,9 @@ class LocationsController < ApplicationController
   end
   
   def load_deals
-    #get deals from yipit
-    begin
-      lat, lon = cookies[:address].split("&")
-      deals = RestClient.get "http://api.yipit.com/v1/deals/?key=zZnf9zms8Kxp6BPE&lat=#{lat}&lon=#{lon}"
-      deals = Hash.from_xml(deals).to_json
-      @deals = ActiveSupport::JSON.decode(deals)
-    rescue
-		end
-    
+    @deals = Deal.find_by_geocode( geocode_from_cookie )
     render :partial => 'deals', :layout => false
   end
- 
    
   def show
     @location = Location.find(params[:id])
@@ -242,6 +233,10 @@ class LocationsController < ApplicationController
   end
   
   private
+
+  def geocode_from_cookie
+    cookies[:address] ? cookies[:address].split("&") : DEFAULT_LOCATION
+  end
   
   def redirect_mobile_request
     redirect_to :controller => 'mobile', :action => 'index' if is_mobile_device?

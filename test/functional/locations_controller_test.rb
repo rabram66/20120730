@@ -38,7 +38,6 @@ class LocationsControllerTest < ActionController::TestCase
     assert_template :edit
   end
 
-  # TODO Implement when we get a better handle on things
   test "should update location" do
     put :update, :id => @location.to_param, :location => @location.attributes
     assert_redirected_to location_path(assigns(:location))
@@ -49,6 +48,13 @@ class LocationsControllerTest < ActionController::TestCase
       delete :destroy, :id => @location.to_param
     end
     assert_redirected_to locations_path
+  end
+
+  test 'should load deals' do
+    get :load_deals
+    assert_response :success
+    assert_template :deals
+    assert_select 'div.deal_link'
   end
 
 end

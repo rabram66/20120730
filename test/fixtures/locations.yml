@@ -8,6 +8,7 @@ one:
   latitude: 33.7489954
   longitude: -84.3879824
   reference: 111
+  types: restaurant
 
 two:
   name: Baubles R Us

@@ -5,7 +5,6 @@ LocationDB::Application.routes.draw do
 
   #------------------------Website-----------------------------
   post "locations/index"
-  get "near_location" => "locations#near_location"
   get "search" => "locations#search"
   get "/signup" => "locations#new"
   get  "locations" => "locations#viewresults"

@@ -40,13 +40,11 @@ class LocationsController < ApplicationController
     cookies[:address] = { :value => coordinates, :expires => 1.year.from_now }
     
     category = params[:types].blank? ? LocationCategory::EatDrink : LocationCategory.find_by_name(params[:types])
-
     @locations = Location.near(coordinates, 2, :order => :distance).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
     @locations.reject! {|l| l.reference.nil? } # TODO: Remove this once reference can be gauranteed
 
     @places = Place.find_by_geocode(coordinates, category.types)
     remove_duplicate_places unless @places.empty? || @locations.empty?
-  
     @events = Event.near(coordinates, 2)
   end
   
@@ -57,14 +55,6 @@ class LocationsController < ApplicationController
     redirect_to locations_path
   end
   
-  def near_location
-    types = get_types("Eat/Drink")
-    @latlng = [params[:latitude], params[:longitude]]
-    session[:search] = @latlng
-    @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{session[:search].join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-    render :partial => "near_your_locations",  :layout => false
-  end
- 
   def details
     @ad_tracking = AdTracking.new
     @ad_tracking.ip_address = request.ip

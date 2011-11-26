@@ -294,3 +294,9 @@ div.event_item p.event_title {
 div.event_item p.event_desc {
   margin-bottom: -0.2em;
 }
+
+div#maps {
+ width: 350px; 
+ height: 200px;
+ float:right;
+}

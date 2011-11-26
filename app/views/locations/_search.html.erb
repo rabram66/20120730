@@ -1,8 +1,0 @@
-<span><searchbox>
-			<%= form_tag locations_path, :method => 'get' do %>
- Find a place to <%= select_tag :types, types(params[:types]) %>  near 
- <br/><%= text_field_tag :search, @search, :id => "searchTextField", :size => 50 %>  
-  
-  <%= submit_tag "Search", :name => nil %>
-<% end %>
-</searchbox></span>

@@ -31,7 +31,7 @@
 
   <p>
     <b>Phone:</b>
-    <%= @location.phone %>
+    <%= number_to_phone @location.phone_number, :area_code => true %>
   </p>
 
   <p>

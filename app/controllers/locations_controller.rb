@@ -40,7 +40,7 @@ class LocationsController < ApplicationController
     cookies[:address] = { :value => coordinates, :expires => 1.year.from_now }
     
     category = params[:types].blank? ? LocationCategory::EatDrink : LocationCategory.find_by_name(params[:types])
-    @locations = Location.near(coordinates, 2, :order => :distance).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
+    @locations = Location.near(coordinates, 2, :order => :distance).where(:general_type => category.name ) 
     @locations.reject! {|l| l.reference.nil? } # TODO: Remove this once reference can be gauranteed
 
     @places = Place.find_by_geocode(coordinates, category.types)
@@ -133,6 +133,7 @@ class LocationsController < ApplicationController
     render :partial => 'business_name', :layout => false, :results => @results
   end
   
+  # Ajax load of deals onto index page
   def load_deals
     @deals = Deal.find_by_geocode( geocode_from_cookie )
     render :partial => 'deals', :layout => false
@@ -177,8 +178,9 @@ class LocationsController < ApplicationController
   # POST /locations
   # POST /locations.xml
   def create
-    @location = Location.new(params[:location])    
-    # transale address into lat/long
+    @location = Location.new(params[:location])
+
+    # translate address into lat/long
     lat, long = Geocoder.coordinates(@location.full_address)     
     
     response = get_place_report(params[:location], long, lat)
@@ -203,7 +205,7 @@ class LocationsController < ApplicationController
     @location = Location.find(params[:id])
     
     full_address = "#{params[:location][:address]} #{params[:location][:city]}, #{params[:location][:state]}"
-    # transale address into lat/long
+    # translate address into lat/long
     lat, long = Geocoder.coordinates(full_address)    
     response = get_place_report(params[:location], long, lat)    
     @location.reference = response["reference"] unless response["reference"].blank?
@@ -281,18 +283,6 @@ class LocationsController < ApplicationController
   end
   
 
-  def types(general_type)
-    results = ""
-    if general_type.eql?("Eat/Drink")
-      results = eat_drink
-    elsif general_type.eql?("Relax/Care")
-      results = relax_care
-    elsif general_type.eql?("Shop/Find")
-      results = shop_find
-    end
-    results
-  end
-    
   def get_general_type(type)    
     return "Eat/Drink" if eat_drink.include?(type)
     return "Relax/Care" if relax_care.include?(type)
@@ -385,17 +375,5 @@ class LocationsController < ApplicationController
       "pharmacy", "shoe store", "shopping mall", "store"]
   end
   
-  def get_types(types)
-    results = ""
-    if types.eql?("Eat/Drink")
-      results = "bar%7Ccafe%7Crestaurant%7Cfood"
-    elsif types.eql?("Relax/Care")
-      results = "aquarium%7Cart_gallery%7Cbeauty_salon%7Cbowling_alley," +
-        "casino%7Cgym%7Cmovie_theater%7Cmuseum%7Cnight_club%7Cpark%7Cspa"
-    elsif types.eql?("Shop/Find")
-      results = "clothing_store%7Cshoe_store%7Cconvenience_store"
-    end
-    results
-  end
 end 
 

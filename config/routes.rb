@@ -7,7 +7,6 @@ LocationDB::Application.routes.draw do
   post "locations/index"
   get "search" => "locations#search"
   get "/signup" => "locations#new"
-  get  "locations" => "locations#viewresults"
   get "locations/new" => "locations#new"
   get "details/:reference" => "locations#details", :as => :locations_details
   get "details/:id" => "locations#details", :as => :locations_details  

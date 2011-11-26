@@ -34,20 +34,17 @@
       <div class="span-24" >
         <% unless params[:action].eql?("details") %>
           <div id= "header-logo" class="span-24"style="margin-left: 7px">
-          	<img src='/images/Nearbythis_Logo.png' />
-           </div>  
-            <div id = "HeaderInfo" classs="span-24"> 
-           	 <br/>
-               <div class="span-23" style="background: #00aad2; color: white; margin-bottom: 7px; padding-left: 40px" ><span><span><b><searchbox>
-			 <%= form_tag locations_path, :method => 'get' do %>
- Find a place to <%= select_tag :types, types(params[:types]) %>  near 
+            <img src='/images/Nearbythis_Logo.png' />
+          </div>  
+          <div id = "HeaderInfo" classs="span-24"> 
+            <br/>
+            <div class="span-23" style="background: #00aad2; color: white; margin-bottom: 7px; padding-left: 40px" ><span id='searchbox'>
+              <%= form_tag locations_path, :method => 'get' do %>
+ Find a place to <%= select_tag :types, options_for_select(LocationCategory.all.map(&:name), params[:types]) %>  near 
 <%= text_field_tag :search, @search, :id => "searchTextField", :size => 50 %>  
-  
   <%= submit_tag "Search", :name => nil %>
-<% end %>
-</searchbox></span>
-           	</span>
-           </b></div>	<br/></div>     
+<% end %></span>
+            </div><br/></div>     
         <% end %>
         <%= yield %>
       </div>

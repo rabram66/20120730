@@ -273,5 +273,8 @@ hr.space {background:#fff;color:#fff;visibility:hidden;}
         top: 250px;
 }
 #header-logo {margin-bottom: 15px;}
-span searchbox {margin-top:-100px;}
+span#searchbox {
+  font-weight: bold;
+  margin-top:-100px;
+}
 .auth a{  color: #6791bf; font-weight: bold; text-decoration: none;padding-top:7px;}

@@ -12,7 +12,7 @@ class Place
 
   def initialize(result)
     @name = result['name']
-    @vicinity = result['vicinity']
+    @vicinity = result['vicinity'] unless result['vicinity'].blank?
     @reference = result['reference']
     @geo_code = [ result['geometry']['location']['lat'].to_f,
                  result['geometry']['location']['lng'].to_f ]

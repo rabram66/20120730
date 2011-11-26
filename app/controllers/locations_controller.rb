@@ -3,20 +3,22 @@ require 'json'
 require 'open-uri'
 
 class LocationsController < ApplicationController
-  before_filter :role, :except => [:load_deals, :details, :index,:delete_place, :save_place, :iphone, :xml_res, :load_business]
+  before_filter :role, :except => [:load_deals, :details, :index, :delete_place, :save_place, :iphone, :xml_res, :load_business]
   before_filter :redirect_mobile_request
   
   respond_to :html, :xml, :json, :js
   
   RADIUS = '750'  
-  DEFAULT_LOCATION = 'Atlanta, GA' 
+  DEFAULT_LOCATION = 'Atlanta, GA'
+
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
   
 
   def index
-    types = params[:types].blank? ? get_types("Eat/Drink") : get_types(params[:types])
+
+    # TODO: Clean up
     @search = params[:search] unless params[:search].blank?
-    unless @search.blank?      
+    unless @search.blank?
       @latlng = Geocoder.coordinates(@search)
       session[:search] = @latlng unless @latlng.blank?
     else      
@@ -28,6 +30,7 @@ class LocationsController < ApplicationController
       end
     end
   
+    # TODO: Clean up
     @latlng = Geocoder.coordinates(DEFAULT_LOCATION) if @latlng.blank? &&  session[:search].blank?    
     coordinates = @latlng.blank? ? session[:search] : @latlng  
     if coordinates.blank?
@@ -35,24 +38,16 @@ class LocationsController < ApplicationController
       coordinates = @latlng
     end
     cookies[:address] = { :value => coordinates, :expires => 1.year.from_now }
-  
-    begin
-      @near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-    rescue
-    end
-  
-    begin
-      @locations = Location.near(coordinates, 2, :order => :distance).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
-    rescue
-    end
     
-    # Remove duplicates from near_your_locations
-    remove_duplicate_locations
+    category = params[:types].blank? ? LocationCategory::EatDrink : LocationCategory.find_by_name(params[:types])
+
+    @locations = Location.near(coordinates, 2, :order => :distance).where(:general_type => params[:types].blank? ? "Eat/Drink" : params[:types] ) 
+    @locations.reject! {|l| l.reference.nil? } # TODO: Remove this once reference can be gauranteed
+
+    @places = Place.find_by_geocode(coordinates, category.types)
+    remove_duplicate_places unless @places.empty? || @locations.empty?
   
-    begin     
-      @events = Event.near(coordinates, 2)
-    rescue
-    end
+    @events = Event.near(coordinates, 2)
   end
   
   # TODO
@@ -262,25 +257,17 @@ class LocationsController < ApplicationController
     redirect_to :controller => 'mobile', :action => 'index' if is_mobile_device?
   end
   
-  def remove_duplicate_locations
-    if @near_your_locations
-      @near_your_locations['results'].each_with_index do |place, ndx|
-        @near_your_locations['results'][ndx] = nil if exclude_place?(place)
-      end
-      @near_your_locations['results'].compact!
+  def remove_duplicate_places
+    @places.reject! do |place| 
+      exclude_place? place
     end
   end
-  
+
   def exclude_place?(place)
-    # Exclude the place if the name is blank, 
-    # or there is a place with the same name, address, or lat-lng in @locations
-    return true if place['name'].blank?
-    return false if @locations.nil?
-    @locations.any? do |location|
-      ( place['name'] == location.name ) ||
-        ( place['vicinity'] && place['vicinity'].include?(location.address) ) ||
-        ( place['geometry']['location']['lat'] == location.latitude && 
-          place['geometry']['location']['lng'] == location.longitude )
+    @locations.any? do |location| 
+      place.name == location.name ||
+      (place.vicinity && place.vicinity.include?(location.address)) ||
+      place.geo_code == location.geo_code
     end
   end
   

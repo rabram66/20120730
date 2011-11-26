@@ -31,6 +31,10 @@ class Location < ActiveRecord::Base
   def twitter_status
     Tweet.latest(twitter_name) if twitter_name
   end
+  
+  def tweets(count=10)
+    twitter_name ? Tweet.latest(twitter_name,count) : []
+  end
 
   def twitter_mentions
     twitter_name ? Tweet.search(twitter_name) : []
@@ -38,6 +42,10 @@ class Location < ActiveRecord::Base
   
   def facebook_status
     WallPost.latest(facebook_page_id) if facebook_page_id
+  end
+
+  def facebook_posts(count=10)
+    facebook_page_id ? WallPost.feed(facebook_page_id,count) : []
   end
   
   def geo_code

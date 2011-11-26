@@ -29,20 +29,12 @@ module ApplicationHelper
     end
   end
   
-  def twitter_feed
-    str = ""
-    unless @last_tweet.blank?      
-      str += @last_tweet.first["text"].gsub("\n", " ").gsub(/"/, "");
-    end
-    str
+  def format_tweet_for_map(tweet)
+    tweet.text.gsub("\n", " ").gsub(/"/, "")
   end
-  
-  def facebook_feed
-    str = ""
-    unless @last_post.blank?
-      str += @last_post.gsub("\n", " ")
-    end
-    str
+
+  def format_wall_post_for_map(wall_post)
+    wall_post.text.gsub("\n", " ")
   end
-  
+
 end

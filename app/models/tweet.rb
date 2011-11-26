@@ -14,14 +14,12 @@ class Tweet
 
     def latest(screen_name, count=1)
       api(USER_TIMELINE_URL, screen_name, count) do |response|
-        result = response.first
-        Tweet.new( :name              => result['user']['name'],
-                   :screen_name       => result['user']['screen_name'],
-                   :text              => result['text'],
-                   :created_at        => DateTime.parse( result['created_at'] ),
-                   :profile_image_url => result['user']['profile_image_url'],
-                   :tweet_id          => result['id_str']
-        )
+        if count == 1
+          result = response.first
+          transform_result result
+        else
+          response.map { |result| transform_result( result ) }
+        end
       end
     end
     
@@ -40,6 +38,16 @@ class Tweet
     end
 
     private
+    
+    def transform_result(result)
+      Tweet.new( :name              => result['user']['name'],
+                 :screen_name       => result['user']['screen_name'],
+                 :text              => result['text'],
+                 :created_at        => DateTime.parse( result['created_at'] ),
+                 :profile_image_url => result['user']['profile_image_url'],
+                 :tweet_id          => result['id_str']
+      )
+    end
     
     def api(url, *args)
       response = HTTParty.get( format(url, *args) )

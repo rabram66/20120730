@@ -1,14 +1,15 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  name: Bangles R Us
+  name: Waffle House
   address: 2578 Binghamton Drive
   city: Dunwoody
   state: GA
   latitude: 33.7489954
   longitude: -84.3879824
-  reference: 111
+  reference: CkQxAAAArz9vJIHLTxCNB6kt_95L0uVcnXK9YzeKuiAp2cw57zt6HSHKVYOvE4WjBvDFRP75KVACvPg05ilfQvGv6IdnkhIQK_T0BsGxeAOfZYfivT9FQRoUjq-MvFBFqdhhg_gqMQxInAkin2
   types: restaurant
+  twitter_name: wafflehouse
 
 two:
   name: Baubles R Us

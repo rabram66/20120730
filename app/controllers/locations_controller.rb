@@ -69,8 +69,8 @@ class LocationsController < ApplicationController
 
     
     unless @location.blank?
-      @last_tweet = get_last_tweet(@location.twitter_name)    
-      @last_post = get_last_post(@location)      
+      @last_tweet = @location.twitter_status    
+      @last_post = @location.facebook_status      
       @user_saying = get_tweet_search(@location.twitter_name)
     end
     business_name = ""
@@ -139,12 +139,9 @@ class LocationsController < ApplicationController
     render :partial => 'deals', :layout => false
   end
    
+  # Used by location owner or admin ("details" provides the public view)
   def show
     @location = Location.find(params[:id])
-    
-    @feed = get_facebook_feed(@location.facebook_page_id)
-    @tweet = get_twitter_feed(@location.twitter_name)
-    
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @location }
@@ -302,15 +299,6 @@ class LocationsController < ApplicationController
     end    
   end
   
-  def get_twitter_feed(twitter_name)
-    begin
-      twitter_link = "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=#{twitter_name}"
-      timeline = RestClient.get twitter_link
-      return ActiveSupport::JSON.decode(timeline)
-    rescue
-    end
-  end
-  
   def get_place_report(location, long, lat)    
     myarray = {:location => {:lat => lat.to_f, :lng => long.to_f},
       :accuracy => 50, :name => location[:name], 
@@ -324,39 +312,9 @@ class LocationsController < ApplicationController
     HTTParty.get("https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=true&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
   end
   
-  def get_last_post(location)    
-    unless location.facebook_page_id.blank?
-      # convert real name to id  
-      id = location.facebook_page_id
-      if is_real_name(location.facebook_page_id)
-        res_page = RestClient.get "https://graph.facebook.com/#{location.facebook_page_id}"
-        result_page = ActiveSupport::JSON.decode(res_page) 
-        id = result_page["id"]
-      end
-      
-      facebook_link = "http://www.facebook.com/feeds/page.php?id=#{id}&format=json"
-      res = RestClient.get facebook_link
-      results = ActiveSupport::JSON.decode(res)
-      
-      return results["entries"].first["title"] unless results["entries"].blank?
-    end
-  end
-  
-  def get_last_tweet(user_name)
-    begin
-    timeline = RestClient.get "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=#{user_name}&count=1"
-    return ActiveSupport::JSON.decode(timeline)    
-    rescue
-    end
-  end
-  
   def get_tweet_search(bussiness_name) 
     tweet = RestClient.get  "http://search.twitter.com/search.json?q=@#{bussiness_name.gsub(" ", "+")}&count=10"    
     ActiveSupport::JSON.decode(tweet)    
-  end
-  
-  def is_real_name(name)
-    name.to_i == 0? true : false
   end
   
   def eat_drink

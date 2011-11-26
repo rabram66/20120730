@@ -24,14 +24,14 @@
       var contentString  = "<b><%= raw business_name %></b> <%= rating_info %> \n";
 
 
-  <% unless twitter_feed.blank? %> 
+  <% if @last_tweet %> 
       contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/twitter-logo.jpg'/></td>";
-      contentString += "<td><%= twitter_feed.html_safe %>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"http://twitter.com/<%= @last_tweet.first['user']['screen_name'] unless @last_tweet.blank? %>/status/<%= @last_tweet.first['id'] unless @last_tweet.blank? %>\" target=\"_blank\">follow</a></td></tr></table>";
+      contentString += "<td><%= format_tweet_for_map(@last_tweet) %>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"http://twitter.com/<%= @last_tweet.screen_name %>/status/<%= @last_tweet.tweet_id %>\" target=\"_blank\">follow</a></td></tr></table>";
   <% end %>
 
-  <% unless facebook_feed.blank? %> 
+  <% if @last_post %> 
       contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/facebook-logo.png'/></td>"
-      contentString += "<td><%= facebook_feed.html_safe %>&nbsp;&nbsp;&nbsp;&nbsp;<a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id  unless @location.blank? %>'>visit page</a></td></tr></table>";
+      contentString += "<td><%= format_wall_post_for_map(@last_post).html_safe %>&nbsp;&nbsp;&nbsp;&nbsp;<a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id %>'>visit page</a></td></tr></table>";
   <% end %>
     
     var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});

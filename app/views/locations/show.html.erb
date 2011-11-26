@@ -40,13 +40,13 @@
   </p>
 
   <p class="tweet"> 
-    <% unless @tweet.blank? %>
+    <% if @location.twitter_name %>
       <b>Twitter Tweet
         (<%= link_to @location.twitter_name, "http://twitter.com/#{@location.twitter_name}", :target => "_blank" %>) 
         - <%= link_to "Edit", "#twitter_name", :rel => "facebox"  %>:</b><br/>
-      <% @tweet.first(10).each do |tweet| %>    
+      <% @location.tweets.each do |tweet| %>    
           <%= link_to @location.twitter_name, "http://twitter.com/#{@location.twitter_name}", :target => "_blank" %>: 
-          <%= tweet["text"].html_safe %> 
+          <%= tweet.text.html_safe %> 
         <br/>
         <br/>
       <% end %>
@@ -56,17 +56,14 @@
   </p>
 
   <p class="feed">
-    <% unless @feed.blank? %>
-      <b>Facebook Page Feed 
-        (<%= link_to @feed["entries"][0]["author"]["name"], "http://www.facebook.com/#{@location.facebook_page_id}" unless @feed["entries"].blank? %>) 
+    <% if @location.facebook_page_id -%>
+      <b>Facebook Page Feed
+        (<%= link_to( @location.facebook_status.author_name, "http://www.facebook.com/#{@location.facebook_page_id}" ) if @location.facebook_status %>)
         - <%= link_to "Edit", "#facebook_page", :rel => "facebox" %>
         :</b><br/>
-      <% @feed["entries"].first(10).each do |feed| %>
-        <% unless feed["title"].blank? %>
-            <%= link_to feed["author"]["name"], "http://www.facebook.com/#{@location.facebook_page_id}" %>:
-          <%= feed["title"].html_safe %><br/><br/>
-        <% end %>
-      <% end %>
+      <% @location.facebook_posts.each do |wall_post| -%>
+        <%= link_to wall_post.author_name, "http://www.facebook.com/#{@location.facebook_page_id}" %>: <%= wall_post.text.html_safe %><br/><br/>
+      <% end -%>
     <% else %>
       <%= link_to "Edit Facebook Page", "#facebook_page", :rel => "facebox" %>
     <% end %>
@@ -77,9 +74,9 @@
   <%= render "edit_facebook" %>
 
   <ul>
-    <% for location in @location.nearbys(20)%>
+    <% for location in @location.nearbys(20) -%>
       <li><%= link_to location.address, location %> <%= location.distance %></li>
-    <% end %>
+    <% end -%>
   </ul>
 
   <%= link_to 'Edit', edit_location_path(@location) %> |

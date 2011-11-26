@@ -3,42 +3,29 @@ class WallPost
 
   FEED_URL = "http://www.facebook.com/feeds/page.php?format=json&id=%s"
 
-  attr_accessor :text, :facebook_post_url
+  attr_accessor :text, :facebook_post_url, :author_name
   
-  def initialize(text, facebook_post_url)
-    @text, @facebook_post_url = text, facebook_post_url
+  def initialize(attrs={})
+    attrs.each do |k,v|
+      instance_variable_set("@#{k}", v)
+    end
   end
 
   class << self
-    
+
     def latest(facebook_id)
-      posts = feed(facebook_id)
+      posts = feed(facebook_id,1)
       posts.first unless posts.blank?
     end
 
-    def feed(facebook_id)
-      results = []
-
-      url = format(FEED_URL, facebook_id) 
-      response = RestClient.get( url )
-
-      if response.code == 200
-        begin
-          result = ActiveSupport::JSON.decode(response.body)
-          if result['link'].nil? || result['entries'].nil?
-            Rails.logger.error "Unexpected response body: (#{result}) #{url}"
-          else
-            results = result['entries'].reject{|e| e['title'].strip.blank?}.map do |entry|
-              WallPost.new(entry['title'].strip, entry['alternate'])
-            end
-          end
-        rescue MultiJson::DecodeError => e
-          Rails.logger.error "Exception: #{e}: #{url}"
-        end
-      else
-        Rails.logger.error "Unable to retrieve Facebook feed: (#{response.code}) #{url}"
+    def feed(facebook_id,count=10)
+      FacebookApi.feed(facebook_id,count) do |entry|
+        WallPost.new( 
+          :text              => entry['title'].strip, 
+          :facebook_post_url => entry['alternate'],
+          :author_name       => entry['author']['name']
+        )
       end
-      results
     end
 
   end

@@ -9,10 +9,12 @@
       </ul>
     </div>
   <% end %>
+
   <div class="field" id="bus_name">
     <%= f.label :name, "Business name" %><br />
     <%= f.text_field :name, "data-pre" => params[:action].eql?("edit") ? @pages.to_json : @pages.to_json %>
   </div>
+
   <div class="field">
     <%= f.label :address, "Street Address" %><br />
     <%= f.text_field :address %>
@@ -53,7 +55,12 @@
     <%= f.hidden_field :user_id, :value => current_user.id %>
   </div>
 
+  <div class='field' id='reference'>
+    <%= f.label :reference, "Google Places Reference ID" %><br/>
+    <%= f.text_area :reference, :disabled => true %>
+  </div>
 
   <div class="actions">
-    <input value="Create Location" type="button" />
+    <input value="<%= "#{params[:action] == 'edit' ? 'Update' : 'Create'} Location"%>" type="button" />
+  </div>
 <% end %>

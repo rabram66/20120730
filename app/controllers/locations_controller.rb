@@ -173,6 +173,8 @@ class LocationsController < ApplicationController
     # translate address into lat/long
     lat, long = Geocoder.coordinates(@location.full_address)     
     
+    response = get_place_report(params[:location], long, lat)
+    @location.reference = response["reference"]
     @location.types = "grocery_or_supermarket" if params[:location][:types].eql?("grocery")
     @location.general_type = get_general_type(params[:location][:types])
     respond_to do |format|
@@ -192,11 +194,11 @@ class LocationsController < ApplicationController
   def update
     @location = Location.find(params[:id])
     
-    full_address = "#{params[:location][:address]} #{params[:location][:city]}, #{params[:location][:state]}"
-    # translate address into lat/long
-    lat, long = Geocoder.coordinates(full_address)    
-    response = get_place_report(params[:location], long, lat)    
-    @location.reference = response["reference"] unless response["reference"].blank?
+    # full_address = "#{params[:location][:address]} #{params[:location][:city]}, #{params[:location][:state]}"
+    # # translate address into lat/long
+    # lat, long = Geocoder.coordinates(full_address)    
+    # response = get_place_report(params[:location], long, lat)    
+    # @location.reference = response["reference"] unless response["reference"].blank?
     @location.general_type = get_general_type(params[:location][:types]) unless params[:location][:types].blank?
     respond_to do |format|
       if @location.update_attributes(params[:location])

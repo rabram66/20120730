@@ -300,3 +300,8 @@ div#maps {
  height: 200px;
  float:right;
 }
+
+textarea#location_reference {
+  width: 400px;
+  height: 50px;
+}

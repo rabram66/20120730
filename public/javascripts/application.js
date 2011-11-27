@@ -13,7 +13,8 @@ $(document).ready(function() {
         }
         return false;
     })
-    
+
+    // TODO: Why implement form submit this way? to prevent double-post?
     $(".actions input[type='button']").live('click', function() {
         $(this).attr("disabled","true");
         document.location_name.submit();

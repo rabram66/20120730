@@ -9,6 +9,8 @@ class LocationTest < ActiveSupport::TestCase
   test "should not geocode when non-geographic attributes are changed" do
     @location.email = 'foo@bar.com'
     @location.expects(:geocode).never
+    Place.expects(:delete).never
+    Place.expects(:add).never
     @location.save!
   end
   
@@ -16,6 +18,8 @@ class LocationTest < ActiveSupport::TestCase
     test "should geocode when '#{attr}' changed" do
       @location.send("#{attr}=", 'test')
       @location.expects(:geocode).once
+      Place.expects(:delete).once
+      Place.expects(:add).once
       @location.save!
     end
   end

@@ -18,5 +18,8 @@ gem "devise"
 gem "mobile-fu"
 gem "faster_haversine", "~> 0.1.3" # Calculating distance between geocodes
 gem 'stamp'
-#gem 'ruby-debug19'
+
+group :development, :test do
+  gem 'mocha'
+end
 

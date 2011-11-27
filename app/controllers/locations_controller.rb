@@ -169,14 +169,9 @@ class LocationsController < ApplicationController
   # POST /locations.xml
   def create
     @location = Location.new(params[:location])
-
-    # translate address into lat/long
-    lat, long = Geocoder.coordinates(@location.full_address)     
-    
-    response = get_place_report(params[:location], long, lat)
-    @location.reference = response["reference"]
     @location.types = "grocery_or_supermarket" if params[:location][:types].eql?("grocery")
     @location.general_type = get_general_type(params[:location][:types])
+
     respond_to do |format|
       if @location.save 
         format.html { redirect_to(@location, :notice => 'Location was successfully created.') }
@@ -193,13 +188,8 @@ class LocationsController < ApplicationController
   # PUT /locations/1.xml
   def update
     @location = Location.find(params[:id])
-    
-    # full_address = "#{params[:location][:address]} #{params[:location][:city]}, #{params[:location][:state]}"
-    # # translate address into lat/long
-    # lat, long = Geocoder.coordinates(full_address)    
-    # response = get_place_report(params[:location], long, lat)    
-    # @location.reference = response["reference"] unless response["reference"].blank?
     @location.general_type = get_general_type(params[:location][:types]) unless params[:location][:types].blank?
+
     respond_to do |format|
       if @location.update_attributes(params[:location])
         format.html { redirect_to(@location, :notice => 'Location was successfully updated.') }
@@ -276,15 +266,6 @@ class LocationsController < ApplicationController
     return "Eat/Drink" if eat_drink.include?(type)
     return "Relax/Care" if relax_care.include?(type)
     return "Shop/Find" if shop_find.include?(type)
-  end
-  
-  def get_place_report(location, long, lat) 
-    myarray = {:location => {:lat => lat.to_f, :lng => long.to_f},
-      :accuracy => 50, :name => location[:name], 
-      :types => [location[:types]], :language => "en-AU"}
-    json_string = myarray.to_json()    
-    res = RestClient.post "https://maps.googleapis.com/maps/api/place/add/json?sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc", json_string, :content_type => :json, :accept => :json    
-    ActiveSupport::JSON.decode(res)
   end
   
   def eat_drink

@@ -28,8 +28,13 @@ class Location < ActiveRecord::Base
 
   geocoded_by :full_address
 
-  # Must be geo-coded before updating the reference
-  before_validation :geocode, :update_reference
+  before_validation do
+    # Geocode and update the places reference only if a geographic attribute changed
+    unless (['city','state','address','latitude','longitude'] & changes.keys).empty?
+      geocode
+      update_reference
+    end
+  end
 
   class << self
     def find_by_geocode(coordinates)
@@ -68,7 +73,7 @@ class Location < ActiveRecord::Base
   private
   
   def update_reference
-    Place.delete self
+    Place.delete(self) if attribute_present?(:reference)
     Place.add self
   end
     

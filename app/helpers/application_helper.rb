@@ -4,11 +4,8 @@ module ApplicationHelper
     link_to name, "http://www.facebook.com/pages/#{name.gsub(" ", "-")}/#{page_id}",:target => "_blank"
   end
   
-  def rating_info
-    begin
-      "Rating #{@details['result']['rating']} out of 5" unless @details['result']['rating'].blank?
-    rescue
-    end
+  def rating_info(place)
+    "Rating #{place.rating} out of 5" unless place.rating.blank?
   end
   
   def format_tweet_for_map(tweet)

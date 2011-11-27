@@ -9,6 +9,7 @@ class Location < ActiveRecord::Base
   validates :city,  :presence => true  
   validates :state,  :presence => true
   validates :types,  :presence => true
+  validates :reference, :presence => true
   
   belongs_to :user
   
@@ -21,8 +22,20 @@ class Location < ActiveRecord::Base
   attr_accessible :name, :address, :city, :state, :twitter, 
                   :phone, :latitude, :longitude, :reference, :email, 
                   :types, :twitter_name, :facebook_page_id, :user_id
+                  
+  # Rating as implemented in Location, here, returns nil (no-op) for Place compatability
+  attr_accessor :rating # virtual; not persisted
+
   geocoded_by :full_address
-  after_validation :geocode
+
+  # Must be geo-coded before updating the reference
+  before_validation :geocode, :update_reference
+
+  class << self
+    def find_by_geocode(coordinates)
+      self.near(coordinates, 2, :order => :distance)
+    end
+  end
 
   def categories
     [LocationCategory.find_by_name(general_type)]
@@ -51,13 +64,12 @@ class Location < ActiveRecord::Base
   def geo_code
     [latitude, longitude]
   end
-
-  class << self
-    
-    def find_by_geocode(coordinates)
-      self.near(coordinates, 2, :order => :distance)
-    end
-
+  
+  private
+  
+  def update_reference
+    Place.delete self
+    Place.add self
   end
     
   

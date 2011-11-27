@@ -173,8 +173,6 @@ class LocationsController < ApplicationController
     # translate address into lat/long
     lat, long = Geocoder.coordinates(@location.full_address)     
     
-    response = get_place_report(params[:location], long, lat)
-    @location.reference = response["reference"]
     @location.types = "grocery_or_supermarket" if params[:location][:types].eql?("grocery")
     @location.general_type = get_general_type(params[:location][:types])
     respond_to do |format|
@@ -278,17 +276,13 @@ class LocationsController < ApplicationController
     return "Shop/Find" if shop_find.include?(type)
   end
   
-  def get_place_report(location, long, lat)    
+  def get_place_report(location, long, lat) 
     myarray = {:location => {:lat => lat.to_f, :lng => long.to_f},
       :accuracy => 50, :name => location[:name], 
       :types => [location[:types]], :language => "en-AU"}
     json_string = myarray.to_json()    
     res = RestClient.post "https://maps.googleapis.com/maps/api/place/add/json?sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc", json_string, :content_type => :json, :accept => :json    
     ActiveSupport::JSON.decode(res)
-  end
-  
-  def get_place_response(reference)    
-    HTTParty.get("https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=true&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
   end
   
   def eat_drink

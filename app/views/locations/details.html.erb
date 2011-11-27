@@ -21,7 +21,7 @@
             
       //marker = new google.maps.Marker({position: bussiness_address, map: map, title: 'Click me' });
   
-      var contentString  = "<b><%= raw @location.name %></b> <%= rating_info %> \n";
+      var contentString  = "<b><%= raw @location.name %></b> <%= rating_info(@location) %> \n";
 
 
   <% if @last_tweet %> 

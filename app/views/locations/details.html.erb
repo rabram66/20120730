@@ -104,20 +104,20 @@
             <% end %>
           </h3></td>
       </tr>
-      <% unless @user_saying.blank? %>
-        <% @user_saying['results'].first(8).each do |user_say| %>
+      <% unless @user_saying.empty? %>
+        <% @user_saying.each do |user_say| %>
           <tr>
             <td>
-              <a href="http://twitter.com/<%= user_say['from_user'] %>" target="_blank">
-                <img src="<%= user_say["profile_image_url"] %>" />
+              <a href="http://twitter.com/<%= user_say.screen_name %>" target="_blank">
+                <img src="<%= user_say.profile_image_url %>" />
               </a>
             </td>
             <td>              
-              <%= user_say["text"].html_safe %>
-              <a href="http://twitter.com/<%= user_say['from_user'] %>/status/<%= user_say['id_str'] %>" target="_blank">
+              <%= user_say.text.html_safe %>
+              <a href="http://twitter.com/<%= user_say.screen_name %>/status/<%= user_say.tweet_id %>" target="_blank">
                 follow
               </a><br/>
-              <%= time_ago_in_words(user_say['created_at']) %> ago
+              <%= time_ago_in_words user_say.created_at %> ago
             </td>
           </tr>          
         <% end %>   

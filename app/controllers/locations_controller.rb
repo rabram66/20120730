@@ -71,7 +71,7 @@ class LocationsController < ApplicationController
     unless @location.blank?
       @last_tweet = @location.twitter_status    
       @last_post = @location.facebook_status      
-      @user_saying = get_tweet_search(@location.twitter_name)
+      @user_saying = @location.twitter_mentions(8)
     end
     business_name = ""
     unless @location.blank? 
@@ -286,19 +286,6 @@ class LocationsController < ApplicationController
     return "Shop/Find" if shop_find.include?(type)
   end
   
-  def get_facebook_feed(facebook_page_id)
-    begin
-      # convert real name to id
-      res_page = RestClient.get "https://graph.facebook.com/#{facebook_page_id}"
-      result_page = ActiveSupport::JSON.decode(res_page) 
-      
-      facebook_link = "http://www.facebook.com/feeds/page.php?id=#{result_page["id"]}&format=json"
-      res = RestClient.get facebook_link
-      return ActiveSupport::JSON.decode(res)
-    rescue
-    end    
-  end
-  
   def get_place_report(location, long, lat)    
     myarray = {:location => {:lat => lat.to_f, :lng => long.to_f},
       :accuracy => 50, :name => location[:name], 
@@ -310,11 +297,6 @@ class LocationsController < ApplicationController
   
   def get_place_response(reference)    
     HTTParty.get("https://maps.googleapis.com/maps/api/place/details/json?reference=#{reference}&sensor=true&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-  end
-  
-  def get_tweet_search(bussiness_name) 
-    tweet = RestClient.get  "http://search.twitter.com/search.json?q=@#{bussiness_name.gsub(" ", "+")}&count=10"    
-    ActiveSupport::JSON.decode(tweet)    
   end
   
   def eat_drink

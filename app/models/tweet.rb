@@ -25,13 +25,14 @@ class Tweet
     
     def search(screen_name, count=10)
       api(SEARCH_URL, CGI.escape("@#{screen_name}"), count) do |response|
-        response['results'].map do |result|
-          Tweet.new( :name              => result['from_user_name'],
-                     :screen_name       => result['from_user'],
-                     :text              => result['text'],
-                     :created_at        => DateTime.parse( result['created_at'] ),
-                     :profile_image_url => result['profile_image_url'],
-                     :tweet_id          => result['id_str']
+        response['results'][0,count].map do |result|
+          Tweet.new(
+            :name              => result['from_user_name'],
+            :screen_name       => result['from_user'],
+            :text              => result['text'],
+            :created_at        => DateTime.parse( result['created_at'] ),
+            :profile_image_url => result['profile_image_url'],
+            :tweet_id          => result['id_str']
           )
         end
       end

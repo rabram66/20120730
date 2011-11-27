@@ -36,8 +36,8 @@ class Location < ActiveRecord::Base
     twitter_name ? Tweet.latest(twitter_name,count) : []
   end
 
-  def twitter_mentions
-    twitter_name ? Tweet.search(twitter_name) : []
+  def twitter_mentions(count=10)
+    twitter_name ? Tweet.search(twitter_name,count) : []
   end
   
   def facebook_status

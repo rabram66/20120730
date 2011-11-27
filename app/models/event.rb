@@ -3,8 +3,12 @@ class Event < ActiveRecord::Base
   validates :name,  :presence => true
   validates :address,  :presence => true
   validates :description,  :presence => true
+
   geocoded_by :address
-  after_validation :geocode
+
+  after_validation do 
+    geocode if changes.keys.include?('address')
+  end
 
   def geo_code
     [latitude, longitude]

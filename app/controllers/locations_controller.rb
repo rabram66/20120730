@@ -60,26 +60,19 @@ class LocationsController < ApplicationController
     @ad_tracking.ip_address = request.ip
     @ad_tracking.save
     
-    reference = params[:reference]    
-    @details = get_place_response(reference)    
-    @location = Location.find_by_reference(reference)        
+    reference = params[:reference]
+    @location = Location.find_by_reference(reference) || Place.find_by_reference(reference)
     @origin_address = params[:address]
     
-    @advertise = get_logo(@details, @location)
+    @advertise = get_logo(@location)
 
-    
-    unless @location.blank?
+    if Location === @location
       @last_tweet = @location.twitter_status    
       @last_post = @location.facebook_status      
       @user_saying = @location.twitter_mentions(8)
     end
-    business_name = ""
-    unless @location.blank? 
-      business_name = @location.name 
-    else 
-      business_name = @details['result']['name'] 
-    end 
-    @ad_tracking.business_name = business_name
+
+    @ad_tracking.business_name = @location.name
     @ad_tracking.advertise_id = @advertise.id unless @advertise.blank?
     @ad_tracking.save
   end
@@ -255,25 +248,24 @@ class LocationsController < ApplicationController
     end
   end
   
-  def get_logo(details, location)   
+  def get_logo(location)   
     adv = nil
-    unless location.blank?      
+    if Location === location      
       adv = Advertise.where("address_name like ? and business_name like ?", "%#{location.city}, #{location.state}%", "%#{location.name}%").first();      
       adv = Advertise.where("business_name like ? ", "%#{location.name}%").first() if adv.blank?
       adv = Advertise.where("address_name like ?", "%#{location.city}, #{location.state}%").first() if adv.blank?
       adv = Advertise.where("business_type = '#{location.types}'").first() if adv.blank?
     else
-      loc = details['result']       
-      if loc['vicinity'] != nil && loc['name'] != nil
+      if location.vicinity && location.name
         # Some places only have city
-        if loc['vicinity'].include? ','
-          add, city = loc['vicinity'].split(",")
+        if location.vicinity.include? ','
+          add, city = location.vicinity.split(",")
         else
           add = ''
-          city = loc['vicinity']
+          city = location.vicinity
         end
-        adv = Advertise.where("(address_name like ? or address_name like ? ) and business_name like ? ", "%#{city.strip}%", "%#{add.strip}%", "%#{loc['name']}%").first()
-        adv = Advertise.where("business_name like ? ", "%#{loc['name']}%").first() if adv.blank?          
+        adv = Advertise.where("(address_name like ? or address_name like ? ) and business_name like ? ", "%#{city.strip}%", "%#{add.strip}%", "%#{location.name}%").first()
+        adv = Advertise.where("business_name like ? ", "%#{location.name}%").first() if adv.blank?          
       end      
     end
     return adv

@@ -8,8 +8,8 @@
     var bussiness_address;
     function initialize() {
       directionsDisplay = new google.maps.DirectionsRenderer();
-      var latlng = new google.maps.LatLng(<%= location[0] %> , <%= location[1] %>);
-      bussiness_address = new google.maps.LatLng(<%= location[0] %> , <%= location[1] %>);
+      var latlng = new google.maps.LatLng(<%= @location.geo_code.first %> , <%= @location.geo_code.last %>);
+      bussiness_address = latlng;
       var myOptions = {
         zoom:10,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -21,7 +21,7 @@
             
       //marker = new google.maps.Marker({position: bussiness_address, map: map, title: 'Click me' });
   
-      var contentString  = "<b><%= raw business_name %></b> <%= rating_info %> \n";
+      var contentString  = "<b><%= raw @location.name %></b> <%= rating_info %> \n";
 
 
   <% if @last_tweet %> 
@@ -97,14 +97,10 @@
     <table id="metions_id" class="tweet_result">
       <tr>
         <td colspan="2"><h3>What people are saying about 
-            <% unless @location.blank? %>
               <%= @location.name %>
-            <% else %>
-              <%= @details['result']['name'] %>
-            <% end %>
           </h3></td>
       </tr>
-      <% unless @user_saying.empty? %>
+      <% unless @user_saying.blank? %>
         <% @user_saying.each do |user_say| %>
           <tr>
             <td>

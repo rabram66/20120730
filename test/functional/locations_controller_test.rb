@@ -18,6 +18,12 @@ class LocationsControllerTest < ActionController::TestCase
     assert_response :success
     assert_template :details
   end
+  
+  test "should get details for place" do
+    get :details, :reference => "CnRlAAAA2ffQcM3KlWgJpTl9JMGMDEiigid16ZX-IFPsm_FujEP7grL7YvGERZimBcHwHLg6CK9y0oNUkHrrXm57zyEky-YQWejxLfVlORoXpAhvRuWGYaFbqMLROC0_Renf4zBG1QHfkPeMu0VU9dMG0H4DtRIQwQUubtpqcFICzkXzlogoOxoUDJxhFN9H1sCOlkCLhEiqMl-eMOQ"
+    assert_response :success
+    assert_template :details
+  end
 
   test "should get new" do
     get :new

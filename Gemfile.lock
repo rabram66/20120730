@@ -40,6 +40,7 @@ GEM
     bcrypt-ruby (2.1.4-x86-mingw32)
     builder (3.0.0)
     cocaine (0.2.0)
+    crack (0.1.8)
     devise (1.4.2)
       bcrypt-ruby (~> 2.1.2)
       orm_adapter (~> 0.0.3)
@@ -149,6 +150,9 @@ GEM
     tzinfo (0.3.30)
     warden (1.0.6)
       rack (>= 1.0)
+    webmock (1.6.2)
+      addressable (>= 2.2.2)
+      crack (>= 0.1.7)
     xml-simple (1.1.1)
 
 PLATFORMS
@@ -174,3 +178,4 @@ DEPENDENCIES
   sqlite3
   stamp
   twitter
+  webmock

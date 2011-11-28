@@ -18,6 +18,7 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test "should create event" do
+    Event.any_instance.expects(:geocode).once
     assert_difference('Event.count') do
       post :create, event: @event.attributes
     end

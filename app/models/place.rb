@@ -12,19 +12,21 @@ class Place
   ADD_PLACE_URL       = "https://maps.googleapis.com/maps/api/place/add/json?sensor=false&key=#{API_KEY}"
   DELETE_PLACE_URL    = "https://maps.googleapis.com/maps/api/place/delete/json?sensor=false&key=#{API_KEY}"
 
-  def initialize(result)
-    @name = result['name']
-    @rating = result['rating']
-    @vicinity = result['vicinity'] unless result['vicinity'].blank?
-    @reference = result['reference']
-    @geo_code = [ result['geometry']['location']['lat'].to_f,
-                 result['geometry']['location']['lng'].to_f ]
-    @types = result['types']
-    @categories = LocationCategory.find_all_by_types(@types)
-    if result['address_components'] # detail
-      @phone_number = result['formatted_phone_number']
-      @website = result['website']
-      @full_address = result['formatted_address']
+  def initialize(result=nil)
+    if result
+      @name = result['name']
+      @rating = result['rating']
+      @vicinity = result['vicinity'] unless result['vicinity'].blank?
+      @reference = result['reference']
+      @geo_code = [ result['geometry']['location']['lat'].to_f,
+                   result['geometry']['location']['lng'].to_f ]
+      @types = result['types']
+      @categories = LocationCategory.find_all_by_types(@types)
+      if result['address_components'] # detail
+        @phone_number = result['formatted_phone_number']
+        @website = result['website']
+        @full_address = result['formatted_address']
+      end
     end
   end
 

@@ -41,6 +41,8 @@ class AdvertisesControllerTest < ActionController::TestCase
   end
 
   test "should destroy advertise" do
+    stub_request(:any, %r{^http://s3\.amazonaws\.com/nearbythisdevelopment/photos/980190962/(original|medium|thumb)/MyString$}).
+      to_return(:status => 200, :body => "", :headers => {})
     assert_difference('Advertise.count', -1) do
       delete :destroy, :id => @advertise.to_param
     end

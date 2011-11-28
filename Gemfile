@@ -21,5 +21,6 @@ gem 'stamp'
 
 group :development, :test do
   gem 'mocha'
+  gem 'webmock'
 end
 

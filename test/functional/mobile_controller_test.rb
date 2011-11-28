@@ -21,18 +21,23 @@ class MobileControllerTest < ActionController::TestCase
   end
 
   test "should get list" do
+    Place.expects(:find_by_geocode).returns([])
+    Deal.expects(:find_by_geocode).returns([])
     get :list
     assert_response :success
     assert_template :list
   end
 
   test "should get detail" do
+    Tweet.expects(:latest).returns(nil)
+    Tweet.expects(:search).returns([])
     get :detail, :id => @location.reference
     assert_response :success
     assert_template :detail
   end
   
   test "should get deals" do
+    Deal.expects(:find_by_geocode).returns([])
     get :deals
     assert_response :success
     assert_template :deals

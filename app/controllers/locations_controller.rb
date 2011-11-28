@@ -3,7 +3,7 @@ require 'json'
 require 'open-uri'
 
 class LocationsController < ApplicationController
-  before_filter :role, :except => [:load_deals, :details, :index, :delete_place, :save_place, :iphone, :xml_res, :load_business]
+  before_filter :role, :except => [:load_deals, :details, :index, :delete_place, :load_business]
   before_filter :redirect_mobile_request
   
   respond_to :html, :xml, :json, :js
@@ -14,6 +14,7 @@ class LocationsController < ApplicationController
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
   
 
+  # GET / (/locations/index)
   def index
 
     # TODO: Clean up
@@ -55,6 +56,7 @@ class LocationsController < ApplicationController
     redirect_to locations_path
   end
   
+  # GET /details/QUIOUREIOWFI-FJSDJFII38427387 (reference)
   def details
     @ad_tracking = AdTracking.new
     @ad_tracking.ip_address = request.ip
@@ -77,6 +79,7 @@ class LocationsController < ApplicationController
     @ad_tracking.save
   end
   
+  # XHR GET /delete_place/FKDASJFKJIWRIRU-4RJ3IWRJWI (Places reference)
   def delete_place    
     myarray = {:reference => params[:id]}
     myarray = ActiveSupport::JSON.encode(myarray) 
@@ -84,15 +87,6 @@ class LocationsController < ApplicationController
     res = ActiveSupport::JSON.decode(result)
     
     if res['status'].eql?("OK")
-      render :text => "1"
-    else
-      render :text => "2"
-    end
-  end
-  
-  def save_place
-    cookies[:address] = { :value => params[:address], :expires => 1.year.from_now }    
-    unless cookies[:address].blank?
       render :text => "1"
     else
       render :text => "2"
@@ -126,13 +120,13 @@ class LocationsController < ApplicationController
     render :partial => 'business_name', :layout => false, :results => @results
   end
   
-  # Ajax load of deals onto index page
+  # XHR GET /load_deals
   def load_deals
     @deals = Deal.find_by_geocode( geocode_from_cookie )
     render :partial => 'deals', :layout => false
   end
    
-  # Used by location owner or admin ("details" provides the public view)
+  # GET /locations/1
   def show
     @location = Location.find(params[:id])
     respond_to do |format|
@@ -152,7 +146,8 @@ class LocationsController < ApplicationController
     end
   end
   
-  def load_page  
+  # XHR /load_page
+  def load_page
     results = RestClient.get "https://graph.facebook.com/search?q=#{params[:q].gsub(" ", "+")}&limit=5&type=page"
     res = ActiveSupport::JSON.decode(results)    
     

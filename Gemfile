@@ -19,7 +19,7 @@ gem "mobile-fu"
 gem "faster_haversine", "~> 0.1.3" # Calculating distance between geocodes
 gem 'stamp'
 
-group :development, :test do
+group :test do
   gem 'mocha'
   gem 'webmock'
 end

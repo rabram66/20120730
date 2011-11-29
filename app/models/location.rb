@@ -1,9 +1,5 @@
 class Location < ActiveRecord::Base
 
-  include HTTParty
-
-  base_uri 'https://maps.googleapis.com/maps/api/place/add/json?sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc1'
-
   validates :name,  :presence => true
   validates :address,  :presence => true  
   validates :city,  :presence => true  
@@ -27,13 +23,13 @@ class Location < ActiveRecord::Base
   attr_accessor :rating # virtual; not persisted
 
   geocoded_by :full_address
+  
+  GEO_ATTRS = %w(city state address latitude longitude) # Geocode on change
+  REF_ATTRS = GEO_ATTRS + %w(name types) # Update Places reference on change
 
   before_validation do
-    # Geocode and update the places reference only if a geographic attribute changed
-    unless (['city','state','address','latitude','longitude'] & changes.keys).empty?
-      geocode
-      update_reference
-    end
+    geocode unless (GEO_ATTRS & changes.keys).empty?
+    update_reference unless (REF_ATTRS & changes.keys).empty?
   end
 
   class << self

@@ -22,7 +22,7 @@
         <ul data-role='listview' data-inset='true'>
           <li id='mobile-twitter-status'>
             <img src='/images/twitter_newbird_blue.png' class='ul-li-thumb'/>
-            <%= @twitter_status.text %>
+            <%= raw @twitter_status.text %>
           </li>
         </ul>
       <% end -%>
@@ -44,7 +44,7 @@
           <ul data-role='listview' data-inset='true'>
             <li>
               <img src="<%= tweet.profile_image_url %>" class="ul-li-thumb"/>
-              <p class='tweet-text ul-li-desc'><%= tweet.text %></p>
+              <p class='tweet-text ul-li-desc'><%= raw tweet.text %></p>
               <p class='tweeted-at ul-li-desc'><%= time_ago_in_words(tweet.created_at) %> ago</p>
             </li>
           </ul>

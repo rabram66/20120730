@@ -31,6 +31,8 @@ class Location < ActiveRecord::Base
     geocode unless (GEO_ATTRS & changes.keys).empty?
     update_reference unless (REF_ATTRS & changes.keys).empty?
   end
+  
+  before_destroy :delete_reference
 
   class << self
     def find_by_geocode(coordinates)
@@ -69,9 +71,16 @@ class Location < ActiveRecord::Base
   private
   
   def update_reference
-    Place.delete(self) if attribute_present?(:reference)
+    delete_reference
+    add_reference
+  end
+
+  def add_reference
     Place.add self
   end
-    
+
+  def delete_reference
+    Place.delete(self) if attribute_present?(:reference)
+  end
   
 end

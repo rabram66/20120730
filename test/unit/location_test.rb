@@ -23,5 +23,10 @@ class LocationTest < ActiveSupport::TestCase
       @location.save!
     end
   end
+
+  test "should delete reference when destroyed" do
+    Place.expects(:delete).once
+    @location.destroy
+  end
   
 end

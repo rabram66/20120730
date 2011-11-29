@@ -51,12 +51,12 @@ class Tweet
     end
     
     def api(url, *args)
-      response = HTTParty.get( format(url, *args) )
+      response = RestClient.get( format(url, *args) )
       case response.code
       when 200
-        yield response.parsed_response
+        yield ActiveSupport::JSON.decode(response)
       else
-        Rails.logger.info("Twitter API failure: (#{response.code}) #{response.request}")
+        Rails.logger.info("Twitter API failure: (#{response.code}) #{response.args[:url]}")
         nil
       end
     end

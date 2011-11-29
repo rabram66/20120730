@@ -1,9 +1,65 @@
+Mobile Interface
+-----------------
+- Investigate case where page "repeats"
+- &quot in tweets
+
+WebSite Enhancements
+--------------------
+- Fixed height on tweet column to match map height
+- Pagination (up to 100 tweets)
+- Investigate limiting retweets (improve signal-to-noise ratio)
+- Get map to center on point B (maybe move )
+- Time ago for tweet in map bubble on details
+- JavaScript for ad needs to be pushed
+- Add highlight to listing with recent tweet
+- Take out Ad Tracking
+- Future/current events need to show display date and need to be filtered by
+date
+- Consider pulling from EventBrite and Facebook Events
+- Soft private beta on Saturday
+
+
+General Issues
+--------------
+1. Problem with oDesk screenshots (still working to resolve)
+2. Have not deployed to Heroku lately due to major mods; but needs to be done
+3. Problems after deployment need to be monitored
+  3.1 We should consider something like GetExceptional or Airbrake
+
 - LocationsController is too fat (too much logic in #index)
-- What is the production db? mysql? postgres? sqlite?
-Process for display
--------------------
-1. Identify location (default based on browser location)
-2. Find Google Places near lat/lng
-3. Find Locations near lat/lng
-4. Merge the results 
- 4.1 If a place is the same as a location, exclude the place
+  BS: This is being improved by me
+  BS: iPhone controller suffers from same bloat; it will be refactored once LocationsController is done (within reason)
+  BS: On a related note; there may not be a need for a separate iPhone controller; its possible that the locations controller could be made to handle this
+  BS: I suggest separating the public-facing aspects of LocationController into its own controller (e.g. #index, #details, and various XHR actions)
+  
+- Development database should be PostgreSQL
+  BS: I mentioned this to Khanh but have not had a response; I will reach out to him again
+  
+- Please explain the get_general_types function in LocationsController; why are all the event types listed here; but, for place searches, only a subset is requested
+
+Programming Suggestions:
+-----------------------
+- Move role handling into something like Can-Can
+  - Administrator (register)
+  - Promoter (events)
+  - Consumer (unauthenticated)
+  - Consumer (authenticated/personalization)
+
+New Questions:
+-------------
+- How is ad tracking supposed to work? Why the crazy ad tracking behavior in the #details action? (Basically -- creation of 2 tracking records)
+In addition, what if we (as we should) implement caching? Server-side ad tracking than will not work
+
+- What is newstuffs?
+
+- When a Location is deleted, the corresponding Place record is not deleted. Should it be?
+
+
+Features to consider:
+---------------------
+- Show deals and events on details page? 
+ - Investigate how to do this
+   - (matching deals to name? or more explicit tie-ins?)
+ - Events tied to Location
+
+

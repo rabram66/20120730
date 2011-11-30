@@ -10,29 +10,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111130131841) do
+ActiveRecord::Schema.define(:version => 20111130225511) do
 
   create_table "addresses", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "advertises", :force => true do |t|
-    t.string   "business_type"
-    t.string   "photo_file_name"
-    t.string   "photo_content_type"
-    t.integer  "photo_file_size"
-    t.datetime "photo_updated_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "address_name"
-    t.string   "business_name"
-  end
-
-  create_table "advertises_locations", :id => false, :force => true do |t|
-    t.integer "advertise_id"
-    t.integer "location_id"
   end
 
   create_table "events", :force => true do |t|

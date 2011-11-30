@@ -5,16 +5,16 @@ Mobile Interface
 
 WebSite Enhancements
 --------------------
-- Delete the place when the Location is deleted
+- FIXED: Delete the place when the Location is deleted
 - Add application header (but not search bar) to top of details page
 - Fixed height on tweet column to match map height
 - Pagination (up to 100 tweets)
 - Investigate limiting retweets (improve signal-to-noise ratio)
 - Get map to center on point B (maybe move )
 - Time ago for tweet in map bubble on details
-- JavaScript for ad needs to be verfied as working
+- JavaScript for ad needs to add geographic targeting
 - Add highlight to listing with recent tweet
-- ASSIGNED TO KHANH: Take out Ad Tracking
+- ASSIGNED TO KHANH: Remove out Ad Tracking
 - Future/current events need to show display date and need to be filtered by
 date
 - Soft private beta on Saturday
@@ -23,7 +23,7 @@ date
 General Issues
 --------------
 1. Problem with oDesk screenshots (still working to resolve)
-2. Have not deployed to Heroku lately due to major mods; but needs to be done
+DONE: 2. Have not deployed to Heroku lately due to major mods; but needs to be done
 3. Problems after deployment need to be monitored
   3.1 We should consider something like GetExceptional or Airbrake
 
@@ -37,6 +37,8 @@ General Issues
   BS: I mentioned this to Khanh but have not had a response; I will reach out to him again
   
 - Please explain the get_general_types function in LocationsController; why are all the event types listed here; but, for place searches, only a subset is requested
+  - TODO: Remove the get_general_types function and use the LocationCategory
+  - TODO: Display improved 'types' drop-down on Location input form
 
 Programming Suggestions:
 -----------------------

@@ -1,6 +1,7 @@
 class Tweet
   USER_TIMELINE_URL = "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=%s&count=%d"
   SEARCH_URL = "http://search.twitter.com/search.json?q=%s&count=%d"
+  FOLLOW_URL = "http://twitter.com/%s/status/%s"  
 
   attr_reader :name, :screen_name, :text, :created_at, :profile_image_url, :tweet_id
 
@@ -8,6 +9,10 @@ class Tweet
     attrs.each do |k,v|
       instance_variable_set("@#{k}", v)
     end
+  end
+
+  def follow_url
+    format(FOLLOW_URL, screen_name, tweet_id)
   end
   
   class << self

@@ -21,63 +21,32 @@
             
       //marker = new google.maps.Marker({position: bussiness_address, map: map, title: 'Click me' });
   
-      var contentString  = "<b><%= raw @location.name %></b> <%= rating_info(@location) %> \n";
-
-
-  <% if @last_tweet %> 
-      contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/twitter-logo.jpg'/></td>";
-      contentString += "<td><%= format_tweet_for_map(@last_tweet) %>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"http://twitter.com/<%= @last_tweet.screen_name %>/status/<%= @last_tweet.tweet_id %>\" target=\"_blank\">follow</a></td></tr></table>";
-  <% end %>
-
-  <% if @last_post %> 
-      contentString += "<table style='width:400px;margin-bottom:0px !important;'><tr><td style='padding:0px;width:20px;'><img src='/images/facebook-logo.png'/></td>"
-      contentString += "<td><%= format_wall_post_for_map(@last_post).html_safe %>&nbsp;&nbsp;&nbsp;&nbsp;<a target='_blank' href='http://www.facebook.com/<%= @location.facebook_page_id %>'>visit page</a></td></tr></table>";
-  <% end %>
+      var contentString  = "<b><%= raw @location.name %></b><%= rating_info(@location) %>";
     
-    var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng});
-        
-    infowindow.open(map, marker); 
+      var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng, maxWidth: 50});        
+      //infowindow.open(map, marker); 
       
-      
-    var request = {
-      origin: "<%= cookies[:address].gsub("&", ",") unless cookies[:address].blank? %>",
-      destination: bussiness_address,
-      travelMode: google.maps.DirectionsTravelMode.WALKING
-    };
-    directionsService.route(request, function(response, status) {
-      if (status == google.maps.DirectionsStatus.OK) {
-        directionsDisplay.setDirections(response);
-      }
+      var request = {
+        origin: "<%= cookies[:address].gsub("&", ",") unless cookies[:address].blank? %>",
+        destination: bussiness_address,
+        travelMode: google.maps.DirectionsTravelMode.WALKING
+      };
+      directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          directionsDisplay.setDirections(response);
+        }
     });
-      
-    //directionsDisplay.setMap(map);
   }
   
-  function calcRoute() {
-    marker.setMap(null);
-    var start = document.getElementById('start').value;
-      
-    var end = document.getElementById('end').value;
-    if (end == "") {
-      end = bussiness_address;
-    }
-    var request = {
-      origin: start,
-      destination: end,
-      travelMode: google.maps.DirectionsTravelMode.WALKING
-    };
-    directionsService.route(request, function(response, status) {
-      if (status == google.maps.DirectionsStatus.OK) {
-        directionsDisplay.setDirections(response);
-      }
-    });
-  }    
   google.maps.event.addDomListener(window, 'load', initialize);
   </script>
 <% end %>
 
 <div id='detail-heading-wrapper'>
-  <h2><%= @location.name %></h2>
+  <div id='detail-headings'>
+    <h2><%= @location.name %></h2><br/>
+    <h3><%= @location.full_address %></h3>
+  </div>
   <%= link_to 'Back', locations_path %>
 </div>
 
@@ -92,6 +61,14 @@
     <div id='last-tweet'>
       <%= image_tag @last_tweet.profile_image_url %>
       <span><%= @last_tweet.text %></span>
+      <%= link_to 'follow', @last_tweet.follow_url, :class => 'follow-link', :target => '_blank' %>
+    </div>
+  <% end -%>
+  <% if @last_post -%>
+    <div id='last-post'>
+      <img src='/images/f_logo.png'/>
+      <span><%= @last_post.text %></span>
+      <%= link_to 'visit page', @location.facebook_page_url, :class => 'visit-link', :target => '_blank' %>
     </div>
   <% end -%>
   <div id="map_canvas"></div>

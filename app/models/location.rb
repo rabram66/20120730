@@ -64,6 +64,10 @@ class Location < ActiveRecord::Base
     facebook_page_id ? WallPost.feed(facebook_page_id,count) : []
   end
   
+  def facebook_page_url
+    "http://www.facebook.com/#{facebook_page_id}" if facebook_page_id
+  end
+  
   def geo_code
     [latitude, longitude]
   end

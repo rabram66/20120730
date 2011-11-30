@@ -215,10 +215,24 @@ div#detail-heading-wrapper {
   display: inline;
 }
 
-div#detail-heading-wrapper h2{
+div#detail-headings {
   display:inline;
-  margin-top: 15px;
+  margin-top: 10px;
   margin-left: 20px;
+  float:left;
+}
+
+div#detail-headings h2 {
+  display:inline;
+  float:left;
+}
+
+div#detail-headings h3 {
+  display:inline;
+  font-style: italic;
+  font-size: 1.0em;
+  margin-top: -20px;
+  margin-left: 10px;
   float:left;
 }
 
@@ -230,7 +244,7 @@ div#detail-heading-wrapper a{
 
 div#last-tweet {
   float:left;
-  width: 550px;
+  width: 544px;
   border: 2px solid #DDDDDD;
   padding: 7px;
   margin-bottom: 10px;
@@ -241,5 +255,24 @@ div#last-tweet img {
   margin-right: 20px;
 }
 div#last-tweet span {
+  font-weight: bold;
+}
+
+div#last-post {
+  float:right;
+  border: 2px solid #DDDDDD;
+  padding: 7px;
+  margin-bottom: 10px;
+  width: 322px;
+  height: 48px;
+}
+
+div#last-post img {
+  float: left;
+  margin-right: 20px;
+  height: 48px;
+}
+
+div#last-post span {
   font-weight: bold;
 }

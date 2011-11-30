@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111130005716) do
+ActiveRecord::Schema.define(:version => 20111130131841) do
 
   create_table "addresses", :force => true do |t|
     t.string   "name"
@@ -66,13 +66,6 @@ ActiveRecord::Schema.define(:version => 20111130005716) do
     t.string   "facebook_page_id"
     t.string   "general_type"
     t.integer  "user_id"
-  end
-
-  create_table "newstuffs", :force => true do |t|
-    t.string   "mystuff"
-    t.string   "yourstuff"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "roles", :force => true do |t|

@@ -6,7 +6,7 @@ Mobile Interface
 WebSite Enhancements
 --------------------
 - FIXED: Delete the place when the Location is deleted
-- Add application header (but not search bar) to top of details page
+- FIXED: Add application header (but not search bar) to top of details page
 - Fixed height on tweet column to match map height
 - Pagination (up to 100 tweets)
 - Investigate limiting retweets (improve signal-to-noise ratio)

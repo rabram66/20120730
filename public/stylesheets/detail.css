@@ -39,11 +39,6 @@ body {font-size:75%;color:#222;background:none !important;font-family:"Helvetica
     width:910px; margin:0 auto;
 }
 
-.back_index {
-    text-align: right;
-    padding-bottom: 10px;
-}
-
 
 #directions {
     float: left;
@@ -210,4 +205,41 @@ td {
   vertical-align: top;
 }
 
+div#header-logo {
+  display:inline;
+  float:left;
+  margin-left: 7px;
+}
 
+div#detail-heading-wrapper {
+  display: inline;
+}
+
+div#detail-heading-wrapper h2{
+  display:inline;
+  margin-top: 15px;
+  margin-left: 20px;
+  float:left;
+}
+
+div#detail-heading-wrapper a{
+  margin-top: 28px;
+  margin-right: 5px;
+  float: right;
+}
+
+div#last-tweet {
+  float:left;
+  width: 550px;
+  border: 2px solid #DDDDDD;
+  padding: 7px;
+  margin-bottom: 10px;
+}
+
+div#last-tweet img {
+  float:left;
+  margin-right: 20px;
+}
+div#last-tweet span {
+  font-weight: bold;
+}

@@ -76,16 +76,24 @@
   </script>
 <% end %>
 
-<div>  
+<div id='detail-heading-wrapper'>
+  <h2><%= @location.name %></h2>
+  <%= link_to 'Back', locations_path %>
+</div>
+
+<div style="display:none">
   <input type="hidden" id="end" value="<%= @origin_address %>" />  
   <input type="hidden" id="start" value="<%= cookies[:address].gsub("&", ",") unless cookies[:address].blank? %>"/>  
   <input type="hidden" id="route" />
 </div>  
 
-<div id="detail">  
-  <br/><br/>
-  <div class="back_index"><%= link_to 'Back', locations_path %></div>
-
+<div id="detail" style="clear:both">
+  <% if @last_tweet -%>
+    <div id='last-tweet'>
+      <%= image_tag @last_tweet.profile_image_url %>
+      <span><%= @last_tweet.text %></span>
+    </div>
+  <% end -%>
   <div id="map_canvas"></div>
   <div id="people_saying">
     <div>

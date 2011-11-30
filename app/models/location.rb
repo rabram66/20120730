@@ -5,7 +5,6 @@ class Location < ActiveRecord::Base
   validates :city,  :presence => true  
   validates :state,  :presence => true
   validates :types,  :presence => true
-  validates :reference, :presence => true
   
   belongs_to :user
   
@@ -27,7 +26,7 @@ class Location < ActiveRecord::Base
   GEO_ATTRS = %w(city state address latitude longitude) # Geocode on change
   REF_ATTRS = GEO_ATTRS + %w(name types) # Update Places reference on change
 
-  before_validation do
+  before_save do
     geocode unless (GEO_ATTRS & changes.keys).empty?
     update_reference unless (REF_ATTRS & changes.keys).empty?
   end

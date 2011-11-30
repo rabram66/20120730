@@ -9,23 +9,23 @@
       </ul>
     </div>
   <% end %>
-
+  
   <div class="field" id="bus_name">
-    <%= f.label :name, "Business name" %><br />
+    * <%= f.label :name, "Business name" %><br />
     <%= f.text_field :name, "data-pre" => params[:action].eql?("edit") ? @pages.to_json : @pages.to_json %>
   </div>
 
   <div class="field">
-    <%= f.label :address, "Street Address" %><br />
+    * <%= f.label :address, "Street Address" %><br />
     <%= f.text_field :address %>
   </div>
   <div class="field">
-    <%= f.label :city %><br />
+    * <%= f.label :city %><br />
     <%= f.text_field :city %>
   </div>
 
   <div class="field">
-    <%= f.label :state %><br />
+    * <%= f.label :state %><br />
     <%= f.text_field :state %>
   </div>
 
@@ -40,7 +40,7 @@
   </div>
 
   <div class="field">
-    <%= f.label :types %><br/>
+    * <%= f.label :types %><br/>
     <%= f.select :types, %w[restaurant grocery store bar cafe], {:include_blank => true} %>
   </div>
 

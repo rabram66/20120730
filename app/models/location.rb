@@ -45,27 +45,27 @@ class Location < ActiveRecord::Base
   end
   
   def twitter_status
-    Tweet.latest(twitter_name) if twitter_name
+    Tweet.latest(twitter_name) unless twitter_name.blank?
   end
   
   def tweets(count=10)
-    twitter_name ? Tweet.latest(twitter_name,count) : []
+    !twitter_name.blank? ? Tweet.latest(twitter_name,count) : []
   end
 
   def twitter_mentions(count=10)
-    twitter_name ? Tweet.search(twitter_name,count) : []
+    !twitter_name.blank? ? Tweet.search(twitter_name,count) : []
   end
   
   def facebook_status
-    WallPost.latest(facebook_page_id) if facebook_page_id
+    WallPost.latest(facebook_page_id) unless facebook_page_id.blank?
   end
 
   def facebook_posts(count=10)
-    facebook_page_id ? WallPost.feed(facebook_page_id,count) : []
+    !facebook_page_id.blank? ? WallPost.feed(facebook_page_id,count) : []
   end
   
   def facebook_page_url
-    "http://www.facebook.com/#{facebook_page_id}" if facebook_page_id
+    "http://www.facebook.com/#{facebook_page_id}" unless facebook_page_id.blank?
   end
   
   def geo_code

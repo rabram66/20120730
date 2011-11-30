@@ -18,8 +18,7 @@
           <% if current_user.role == "Promoter" or current_user.role == "Admin" %>
             <%= link_to "Events", "/events" %> &nbsp;  
           <% end %>
-          <% if current_user.role == "Admin" %>&nbsp;
-            <%= link_to "Ad Tracking", "/ad_trackings" %>
+          <% if current_user.role == "Admin" %>&nbsp;            
             <%= link_to "Advertise", "/advertises" %> || 
             <%= link_to "Users", "/users" %> &nbsp;  
           <% end %>

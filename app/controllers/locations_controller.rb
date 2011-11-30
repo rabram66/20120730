@@ -58,25 +58,15 @@ class LocationsController < ApplicationController
   
   # GET /details/QUIOUREIOWFI-FJSDJFII38427387 (reference)
   def details
-    @ad_tracking = AdTracking.new
-    @ad_tracking.ip_address = request.ip
-    @ad_tracking.save
-    
     reference = params[:reference]
     @location = Location.find_by_reference(reference) || Place.find_by_reference(reference)
     @origin_address = params[:address]
     
-    @advertise = get_logo(@location)
-
     if Location === @location
       @last_tweet = @location.twitter_status    
       @last_post = @location.facebook_status      
       @user_saying = @location.twitter_mentions(8)
     end
-
-    @ad_tracking.business_name = @location.name
-    @ad_tracking.advertise_id = @advertise.id unless @advertise.blank?
-    @ad_tracking.save
   end
   
   # XHR GET /delete_place/FKDASJFKJIWRIRU-4RJ3IWRJWI (Places reference)
@@ -233,30 +223,6 @@ class LocationsController < ApplicationController
     end
   end
   
-  def get_logo(location)   
-    adv = nil
-    if Location === location      
-      adv = Advertise.where("address_name like ? and business_name like ?", "%#{location.city}, #{location.state}%", "%#{location.name}%").first();      
-      adv = Advertise.where("business_name like ? ", "%#{location.name}%").first() if adv.blank?
-      adv = Advertise.where("address_name like ?", "%#{location.city}, #{location.state}%").first() if adv.blank?
-      adv = Advertise.where("business_type = '#{location.types}'").first() if adv.blank?
-    else
-      if location.vicinity && location.name
-        # Some places only have city
-        if location.vicinity.include? ','
-          add, city = location.vicinity.split(",")
-        else
-          add = ''
-          city = location.vicinity
-        end
-        adv = Advertise.where("(address_name like ? or address_name like ? ) and business_name like ? ", "%#{city.strip}%", "%#{add.strip}%", "%#{location.name}%").first()
-        adv = Advertise.where("business_name like ? ", "%#{location.name}%").first() if adv.blank?          
-      end      
-    end
-    return adv
-  end
-  
-
   def get_general_type(type)    
     return "Eat/Drink" if eat_drink.include?(type)
     return "Relax/Care" if relax_care.include?(type)

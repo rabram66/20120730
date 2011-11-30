@@ -10,15 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111122032428) do
-
-  create_table "ad_trackings", :force => true do |t|
-    t.string   "ip_address"
-    t.string   "business_name"
-    t.integer  "advertise_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+ActiveRecord::Schema.define(:version => 20111130005716) do
 
   create_table "addresses", :force => true do |t|
     t.string   "name"
@@ -107,6 +99,7 @@ ActiveRecord::Schema.define(:version => 20111122032428) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "user_roles",                            :default => "User"
     t.string   "role",                                  :default => "User"
   end
 

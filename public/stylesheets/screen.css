@@ -305,3 +305,24 @@ textarea#location_reference {
   width: 400px;
   height: 50px;
 }
+
+ul.event-details li {
+  border-bottom: none;
+  margin-left: -17px;
+}
+
+ul.event-details li.event-desc {
+  margin-top: -10px;
+  font-style: italic;
+  font-size: 1.1em; 
+}
+
+ul.event-details .event-date {
+  font-style:italic;
+}
+
+ul.event-details .event-distance {
+  float: right;
+  font-style: italic;
+  font-size: 0.9em;
+}

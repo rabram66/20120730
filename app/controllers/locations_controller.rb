@@ -46,7 +46,7 @@ class LocationsController < ApplicationController
 
     @places = Place.find_by_geocode(coordinates, category.types)
     remove_duplicate_places unless @places.empty? || @locations.empty?
-    @events = Event.near(coordinates, 2)
+    @events = Event.upcoming_near(coordinates)
   end
   
   # TODO

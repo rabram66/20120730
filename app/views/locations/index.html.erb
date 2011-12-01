@@ -54,8 +54,13 @@
     <% unless @events.blank? %>
       <% @events.each do |event| %>
         <div class='event_item'>
-          <p class='event_title'><%= event.name %> - <%= event.address %></p>
-          <p class='event_desc'><%= event.description %></p>
+          <h3><%= event.name %></h3>
+          <ul class='event-details'>
+            <li class='event-desc'><%= event.description %></li>
+            <li class='event-dates'>From <span class='event-date'><%= event.start_date.stamp("Jan 1 at 01:00 am") %></span> to <span class='event-date'><%= event.end_date.stamp("Jan 1 at 01:00 am") %></span></li>
+            <li class='event-address'><%= event.address %></li>
+            <li class='event-distance'>(<%=  number_with_precision(event.distance, :precision => 1) %> miles from here)</li>
+          </ul>
         </div>
       <% end -%>
     <% else -%>

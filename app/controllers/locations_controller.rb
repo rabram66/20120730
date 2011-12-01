@@ -65,7 +65,7 @@ class LocationsController < ApplicationController
     if Location === @location
       @last_tweet = @location.twitter_status    
       @last_post = @location.facebook_status      
-      @user_saying = @location.twitter_mentions(8)
+      @user_saying = @location.twitter_mentions(5)
     end
   end
   

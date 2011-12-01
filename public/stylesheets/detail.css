@@ -21,14 +21,18 @@ body { height: 100%; margin: 0; padding: 0; }
 }
 
 #people_saying {
-    float: right;
-    width: 340px;    
+  float: right;
+  width: 332px;
+  height: 542px;
+  overflow: hidden;
+  border: 2px solid #DDDDDD;
+  padding: 2px;
 }
 
 #people_saying .tweet_result {
-    border: 2px solid #DDDDDD;
+/*    border: 2px solid #DDDDDD;
     padding:7px;
-}
+*/}
 
 body {line-height:1.5;background:none !important;}
 

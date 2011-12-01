@@ -51,7 +51,7 @@
   <div id="maps"></div>
   <div class="events_index">
     <h2 class='header'>Events</h2>
-    <% unless @events.blank? %>
+    <% unless @events.length == 0 %>
       <% @events.each do |event| %>
         <div class='event_item'>
           <h3><%= event.name %></h3>

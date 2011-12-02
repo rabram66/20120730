@@ -315,13 +315,18 @@ div#mentions-container ul.content {
   padding-bottom: 10px;
 }
 
-.page_navigation a, .alt_page_navigation a{
+div.page_navigation a, div.alt_page_navigation a{
   padding:3px 5px;
   margin:2px;
-  color:white !important;
+  color:white;
   text-decoration:none;
   float: left;
   font-family: Tahoma;
   font-size: 12px;
   background-color:#DB5C04;
 }
+
+.active_page{
+  background-color:white !important;
+  color:black !important;
+}	

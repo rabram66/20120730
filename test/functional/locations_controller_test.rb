@@ -16,7 +16,7 @@ class LocationsControllerTest < ActionController::TestCase
 
   test "should get details for location" do
     Tweet.expects(:latest).with(@location.twitter_name).returns(nil)
-    Tweet.expects(:search).with(@location.twitter_name,8).returns([])
+    Tweet.expects(:search).with(@location.twitter_name,20).returns([])
     get :details, :reference => @location.reference
     assert_response :success
     assert_template :details

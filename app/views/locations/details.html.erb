@@ -82,26 +82,30 @@
     <div class='mentions_id' class='tweet_result'>
       <h3>What people are saying about <%= @location.name %></h3>
       <div id='mentions-container'>
-        <ul class='content'>
-          <% @user_saying.each do |user_say| -%>
-            <li class='twitter-mention'>
-              <div class='img-wrapper'>
-                <a href="http://twitter.com/<%= user_say.screen_name %>" target="_blank">
-                  <img class='twitter-mention' src="<%= user_say.profile_image_url %>" />
-                </a>
-              </div>
-              <p>
-                <%= user_say.text.html_safe %>
-                <a href="http://twitter.com/<%= user_say.screen_name %>/status/<%= user_say.tweet_id %>" target="_blank">
-                  follow
-                </a><br/>
-                <%= time_ago_in_words user_say.created_at %> ago
-              </p>
-              <div class='clear'></div>
-            </li>
-          <% end -%>
-        </ul>
+        <% unless @user_saying.blank? %>
+          <ul class='content'>
+            <% @user_saying.each do |user_say| -%>
+              <li class='twitter-mention'>
+                <div class='img-wrapper'>
+                  <a href="http://twitter.com/<%= user_say.screen_name %>" target="_blank">
+                    <img class='twitter-mention' src="<%= user_say.profile_image_url %>" />
+                  </a>
+                </div>
+                <p>
+                  <%= user_say.text.html_safe %>
+                  <a href="http://twitter.com/<%= user_say.screen_name %>/status/<%= user_say.tweet_id %>" target="_blank">
+                    follow
+                  </a><br/>
+                  <%= time_ago_in_words user_say.created_at %> ago
+                </p>
+                <div class='clear'></div>
+              </li>
+            <% end -%>
+          </ul>
         <div class='page_navigation'></div>
+        <% else %>
+          <p>No tweets</p>
+        <% end %>
       </div>
     </div>
   </div>

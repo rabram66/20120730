@@ -28,9 +28,8 @@ class FacebookApi
       
       if facebook_id
         url = format(FEED_URL, facebook_id) 
-        response = RestClient.get( url )
-
-        if response.code == 200
+        begin
+          response = RestClient.get( url )
           begin
             result = ActiveSupport::JSON.decode(response.body)
             if result['link'].nil? || result['entries'].nil?
@@ -43,8 +42,8 @@ class FacebookApi
           rescue MultiJson::DecodeError => e
             Rails.logger.error "Exception: #{e}: #{url}"
           end
-        else
-          Rails.logger.error "Unable to retrieve Facebook feed: (#{response.code}) #{url}"
+        rescue RestClient::Exception => e
+          Rails.logger.error "Unable to retrieve Facebook feed: (#{e}) #{url}"
         end
       end
       

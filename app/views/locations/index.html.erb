@@ -19,7 +19,7 @@
     <div id="locations">
       <% @locations.each do |location| %>
         <ul class="<%= location.reference %>">
-          <li class="alternate"><%= link_to location.name, :action => 'details', :address => location.full_address,  :bizname => location.name , :reference => location.reference %> -  <%= location.address %><img src="/images/twitter-logo.jpg" width='12'/>
+          <li class="alternate"><%= link_to location.name, :action => 'details', :address => location.full_address,  :bizname => location.name , :type => location.types, :reference => location.reference %> -  <%= location.address %><img src="/images/twitter-logo.jpg" width='12'/>
             <% unless current_user.blank? %>
               <% if current_user.role.eql? "Admin" or current_user.id.eql?(location.user_id) %>
                 <%= link_to 'Edit', edit_location_path(location) %>

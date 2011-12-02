@@ -330,3 +330,9 @@ ul.event-details .event-distance {
 li.recent_tweet_true {
   background-color: yellow;
 }
+
+p.tweeted-at {
+  float: right;
+  font-style: italic;
+}
+

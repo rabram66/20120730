@@ -62,6 +62,7 @@
       <%= image_tag @last_tweet.profile_image_url %>
       <span><%= @last_tweet.text %></span>
       <%= link_to 'follow', @last_tweet.follow_url, :class => 'follow-link', :target => '_blank' %>
+      <p class='tweeted-at'><%= time_ago_in_words @last_tweet.created_at %> ago</p>
     </div>
   <% end -%>
   <% if @last_post -%>

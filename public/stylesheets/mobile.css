@@ -39,7 +39,7 @@ ul#events-list span.event-date {
   font-size: 0.9em;
 }
 
-div.mobile-twitter-mention p.tweeted-at {
+p.tweeted-at {
   float: right;
   font-style: italic;
 }

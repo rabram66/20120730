@@ -154,8 +154,6 @@ class LocationsController < ApplicationController
   # POST /locations.xml
   def create
     @location = Location.new(params[:location])
-    @location.types = "grocery_or_supermarket" if params[:location][:types].eql?("grocery")
-    @location.general_type = get_general_type(params[:location][:types])
 
     respond_to do |format|
       if @location.save 
@@ -173,7 +171,6 @@ class LocationsController < ApplicationController
   # PUT /locations/1.xml
   def update
     @location = Location.find(params[:id])
-    @location.general_type = get_general_type(params[:location][:types]) unless params[:location][:types].blank?
 
     respond_to do |format|
       if @location.update_attributes(params[:location])
@@ -222,28 +219,6 @@ class LocationsController < ApplicationController
       place.geo_code == location.geo_code
     end
   end
-  
-  def get_general_type(type)    
-    return "Eat/Drink" if eat_drink.include?(type)
-    return "Relax/Care" if relax_care.include?(type)
-    return "Shop/Find" if shop_find.include?(type)
-  end
-  
-  def eat_drink
-    return ["bar", "cafe", "food", "restaurant"]
-  end
-  
-  def relax_care
-    ["amusement park", "aquarium", "art gallery", "beauty salon", "bowling alley",
-      "casino", "gym", "hair care", "health", "movie theater", "museum", "night club", "park", "spa", "zoo"]
-  end
-  
-  def shop_find
-    ["atm", "bank", "bicycle store", "book store", "bus station", "clothing store", "convenience store" ,
-      "department store", "electronics store", "establishment", "florist", "gas station", "grocery or supermarket",
-      "hardware store", "home goods store", "jewelry store", "library", "liquor store", "locksmith", "pet store",
-      "pharmacy", "shoe store", "shopping mall", "store"]
-  end
-  
+
 end 
 

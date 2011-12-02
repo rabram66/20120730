@@ -1,39 +1,17 @@
-Mobile Interface
------------------
-- FIXED: Investigate case where page "repeats"
-- FIXED: &quot in tweets
+- Soft private beta on Saturday, December 9
 
 WebSite Enhancements
 --------------------
 - Investigate limiting retweets (improve signal-to-noise ratio)
-
-- Add highlight to listing with recent tweet
-  - "Recent" defined as within the last day
-- Soft private beta on Saturday
-
-- LOW PRIORITY: Get map to center on point B (maybe move?) (is this still an issue w/o the info bubble)
-- N/A: Time ago for tweet in map bubble on details (tweet moved to top of page)
-
-
-General Issues
---------------
-1. Problem with oDesk screenshots (still working to resolve)
-DONE: 2. Have not deployed to Heroku lately due to major mods; but needs to be done
-3. Problems after deployment need to be monitored
-  3.1 We should consider something like GetExceptional or Airbrake
-
+- Problems after deployment need to be monitored
+  - We should consider something like GetExceptional or Airbrake
 - LocationsController is too fat (too much logic in #index)
-  BS: This is being improved by me
   BS: iPhone controller suffers from same bloat; it will be refactored once LocationsController is done (within reason)
   BS: On a related note; there may not be a need for a separate iPhone controller; its possible that the locations controller could be made to handle this
   BS: I suggest separating the public-facing aspects of LocationController into its own controller (e.g. #index, #details, and various XHR actions)
   
 - Development database should be PostgreSQL
   BS: I mentioned this to Khanh but have not had a response; I will reach out to him again
-  
-- Please explain the get_general_types function in LocationsController; why are all the event types listed here; but, for place searches, only a subset is requested
-  - TODO: Remove the get_general_types function and use the LocationCategory
-  - TODO: Display improved 'types' drop-down on Location input form
 
 Programming Suggestions:
 -----------------------

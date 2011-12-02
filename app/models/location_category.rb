@@ -42,7 +42,7 @@ class LocationCategory
 
   ShopFind = LocationCategory.new(
     'Shop/Find',
-    %w(clothing_store shoe_store convenience_store)
+    %w(clothing_store shoe_store convenience_store grocery_or_supermarket)
   )
 
 end

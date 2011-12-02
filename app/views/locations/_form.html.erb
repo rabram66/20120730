@@ -41,7 +41,9 @@
 
   <div class="field">
     * <%= f.label :types %><br/>
-    <%= f.select :types, %w[restaurant grocery store bar cafe], {:include_blank => true} %>
+    <%= grouped_collection_select(
+      :location, :types, LocationCategory.all, :types, :name, :to_s, :humanize,
+      {:include_blank => true}, html_options = {}) %>
   </div>
 
   <div class="field">

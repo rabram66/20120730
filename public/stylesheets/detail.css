@@ -307,6 +307,10 @@ li.twitter-mention p {
   margin: 0 0 0.5em;
 }
 
+li.twitter-mention span.mentioner {
+  font-weight: bold;
+}
+
 div#mentions-container ul.content {
   height: 428px;
 }

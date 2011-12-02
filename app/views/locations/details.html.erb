@@ -92,6 +92,7 @@
                   </a>
                 </div>
                 <p>
+                  <span class='mentioner'><%= user_say.screen_name %></span><br/>
                   <%= user_say.text.html_safe %>
                   <a href="http://twitter.com/<%= user_say.screen_name %>/status/<%= user_say.tweet_id %>" target="_blank">
                     follow

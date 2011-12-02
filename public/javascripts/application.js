@@ -62,7 +62,7 @@ $(document).ready(function() {
     }) 
   
     $('#mentions-container').pajinate({
-      items_per_page: 5
+      items_per_page: 4
     });
        
 })

@@ -11,7 +11,7 @@
 <div data-role='content'>
   <ul id='locations-list' data-role="listview">
     <% for location in @locations -%>
-      <li class='<%= category_class_names(location)%>' style='display:none'>
+      <li class='<%= category_class_names(location) %> recent_tweet_<%= location.recent_tweet? %>' style='display:none'>
         <a href="<%=mobile_detail_path(location.reference) %>">
           <img src='/images/twitter-logo.jpg' class='ui-li-icon twitter-icon'/>
           <b><%= location.name %></b> - <%= number_with_precision(location.distance, :precision => 1) %> miles

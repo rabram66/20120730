@@ -326,3 +326,7 @@ ul.event-details .event-distance {
   font-style: italic;
   font-size: 0.9em;
 }
+
+li.recent_tweet_true {
+  background-color: yellow;
+}

@@ -21,6 +21,10 @@ ul#locations-list img.twitter-icon {
   top: 0.6em;
 }
 
+ul#locations-list li.recent_tweet_true {
+  background: yellow;
+}
+
 ul#events-list p.event-desc {
   font-weight: bold;
   font-style: italic;

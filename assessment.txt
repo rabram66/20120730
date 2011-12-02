@@ -5,11 +5,8 @@ Mobile Interface
 
 WebSite Enhancements
 --------------------
-- Fixed height on tweet column to match map height
-- Pagination (up to 100 tweets)
 - Investigate limiting retweets (improve signal-to-noise ratio)
 
-- JavaScript for ad needs to add geographic targeting
 - Add highlight to listing with recent tweet
   - "Recent" defined as within the last day
 - Soft private beta on Saturday

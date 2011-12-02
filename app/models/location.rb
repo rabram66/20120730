@@ -47,6 +47,10 @@ class Location < ActiveRecord::Base
     Tweet.latest(twitter_name) unless twitter_name.blank?
   end
   
+  def recent_tweet?(within=1.day)
+    (Time.now - twitter_status.created_at).abs < within if twitter_status
+  end
+  
   def tweets(count=10)
     !twitter_name.blank? ? Tweet.latest(twitter_name,count) : []
   end

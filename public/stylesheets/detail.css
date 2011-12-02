@@ -280,3 +280,48 @@ div#last-post img {
 div#last-post span {
   font-weight: bold;
 }
+
+li.twitter-mention {
+  border-bottom: none;
+  margin-bottom: 4px;
+  padding: 4px 4px 2px 4px;
+}
+
+div#mentions-container ul.content {
+  height: 418px;
+  overflow: hidden;
+}
+
+ul.content li.twitter-mention:nth-child(odd) { background:#e5ecf9; }
+
+li.twitter-mention div.img-wrapper {
+  width: 48;
+  margin-right: 4px;
+  float:left;
+}
+
+li.twitter-mention p {
+  display:inline;
+  float:left;
+  width: 236px;
+  margin: 0 0 0.5em;
+}
+
+div#mentions-container ul.content {
+  height: 428px;
+}
+
+.page_navigation, .alt_page_navigation{
+  padding-bottom: 10px;
+}
+
+.page_navigation a, .alt_page_navigation a{
+  padding:3px 5px;
+  margin:2px;
+  color:white !important;
+  text-decoration:none;
+  float: left;
+  font-family: Tahoma;
+  font-size: 12px;
+  background-color:#DB5C04;
+}

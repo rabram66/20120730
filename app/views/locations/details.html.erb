@@ -79,36 +79,31 @@
     <div id="directions-panel">
       <%= @origin_address %>
     </div>
-    <table id="metions_id" class="tweet_result">
-      <tr>
-        <td colspan="2"><h3>What people are saying about 
-              <%= @location.name %>
-          </h3></td>
-      </tr>
-      <% unless @user_saying.blank? %>
-        <% @user_saying.each do |user_say| %>
-          <tr>
-            <td>
-              <a href="http://twitter.com/<%= user_say.screen_name %>" target="_blank">
-                <img src="<%= user_say.profile_image_url %>" />
-              </a>
-            </td>
-            <td>              
-              <%= user_say.text.html_safe %>
-              <a href="http://twitter.com/<%= user_say.screen_name %>/status/<%= user_say.tweet_id %>" target="_blank">
-                follow
-              </a><br/>
-              <%= time_ago_in_words user_say.created_at %> ago
-            </td>
-          </tr>          
-        <% end %>   
-        <tr>
-          <td colspan="2"><a href="http://twitter.com/search?q=%40<%= @location.twitter_name %>" target="_blank">more tweets</a></td>
-        </tr>
-      <% else %>
-        <tr><td colspan="2">No tweets</td></tr>
-      <% end %>
-    </table>    
+    <div class='mentions_id' class='tweet_result'>
+      <h3>What people are saying about <%= @location.name %></h3>
+      <div id='mentions-container'>
+        <ul class='content'>
+          <% @user_saying.each do |user_say| -%>
+            <li class='twitter-mention'>
+              <div class='img-wrapper'>
+                <a href="http://twitter.com/<%= user_say.screen_name %>" target="_blank">
+                  <img class='twitter-mention' src="<%= user_say.profile_image_url %>" />
+                </a>
+              </div>
+              <p>
+                <%= user_say.text.html_safe %>
+                <a href="http://twitter.com/<%= user_say.screen_name %>/status/<%= user_say.tweet_id %>" target="_blank">
+                  follow
+                </a><br/>
+                <%= time_ago_in_words user_say.created_at %> ago
+              </p>
+              <div class='clear'></div>
+            </li>
+          <% end -%>
+        </ul>
+        <div class='page_navigation'></div>
+      </div>
+    </div>
   </div>
   <div>
     <!--/* OpenX Javascript Tag v2.8.6-rc2 */-->

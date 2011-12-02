@@ -1,14 +1,14 @@
 $(document).ready(function() {
     
     $("#direction_id").live('click', function() {
-        if ($('#metions_id').css("display") != "none") {
+        if ($('#mentions_id').css("display") != "none") {
             $("#direction_id").text("Tweets");
-            $("#metions_id").hide();
+            $("#mentions_id").hide();
             $("#directions-panel").show();            
         }
         else {
             $("#direction_id").text("Directions");
-            $("#metions_id").show();
+            $("#mentions_id").show();
             $("#directions-panel").hide();
         }
         return false;
@@ -60,5 +60,9 @@ $(document).ready(function() {
         });
     //$("#ajax_load").hide();
     }) 
+  
+    $('#mentions-container').pajinate({
+      items_per_page: 5
+    });
        
 })

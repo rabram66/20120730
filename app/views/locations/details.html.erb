@@ -60,7 +60,7 @@
   <% if @last_tweet -%>
     <div id='last-tweet'>
       <%= image_tag @last_tweet.profile_image_url %>
-      <span><%= @last_tweet.text %></span>
+      <span><%= @last_tweet.text.html_safe %></span>
       <%= link_to 'follow', @last_tweet.follow_url, :class => 'follow-link', :target => '_blank' %>
       <p class='tweeted-at'><%= time_ago_in_words @last_tweet.created_at %> ago</p>
     </div>
@@ -68,7 +68,7 @@
   <% if @last_post -%>
     <div id='last-post'>
       <img src='/images/f_logo.png'/>
-      <span><%= @last_post.text %></span>
+      <span><%= @last_post.text.html_safe %></span>
       <%= link_to 'visit page', @location.facebook_page_url, :class => 'visit-link', :target => '_blank' %>
     </div>
   <% end -%>

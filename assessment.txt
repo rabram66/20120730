@@ -2,9 +2,12 @@
 
 WebSite Enhancements
 --------------------
-- Investigate limiting retweets (improve signal-to-noise ratio)
+- Investigate filtering out retweets of retweets (improve signal-to-noise ratio)
 - Problems after deployment need to be monitored
   - We should consider something like GetExceptional or Airbrake
+    - Get Khanh to transfer Heroku ownership to Ray
+    - Get Ray to add Airbrake add-on
+    - Get Ray to add Memcache add-on
 - LocationsController is too fat (too much logic in #index)
   BS: iPhone controller suffers from same bloat; it will be refactored once LocationsController is done (within reason)
   BS: On a related note; there may not be a need for a separate iPhone controller; its possible that the locations controller could be made to handle this

@@ -29,7 +29,7 @@ class Tweet
     end
     
     def search(screen_name, count=10)
-      api(SEARCH_URL, CGI.escape("@#{screen_name}"), count) do |response|
+      tweets = api(SEARCH_URL, CGI.escape("@#{screen_name}"), count) do |response|
         response['results'][0,count].map do |result|
           Tweet.new(
             :name              => result['from_user_name'],
@@ -45,16 +45,6 @@ class Tweet
 
     private
     
-    def transform_result(result)
-      Tweet.new( :name              => result['user']['name'],
-                 :screen_name       => result['user']['screen_name'],
-                 :text              => result['text'],
-                 :created_at        => DateTime.parse( result['created_at'] ),
-                 :profile_image_url => result['user']['profile_image_url'],
-                 :tweet_id          => result['id_str']
-      )
-    end
-    
     def api(url, *args)
       begin
         response = RestClient.get( format(url, *args) )
@@ -64,7 +54,17 @@ class Tweet
         nil
       end
     end
-      
-  end
+    
+    def transform_result(result)
+      Tweet.new( :name              => result['user']['name'],
+                 :screen_name       => result['user']['screen_name'],
+                 :text              => result['text'],
+                 :created_at        => DateTime.parse( result['created_at'] ),
+                 :profile_image_url => result['user']['profile_image_url'],
+                 :tweet_id          => result['id_str']
+      )
+    end
 
+  end
+  
 end

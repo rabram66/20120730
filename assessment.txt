@@ -2,7 +2,6 @@
 
 WebSite Enhancements
 --------------------
-- Investigate filtering out retweets of retweets (improve signal-to-noise ratio)
 - Problems after deployment need to be monitored
   - We should consider something like GetExceptional or Airbrake
     - Get Khanh to transfer Heroku ownership to Ray

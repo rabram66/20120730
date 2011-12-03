@@ -61,7 +61,7 @@ class Location < ActiveRecord::Base
     else
       # Tweet.search(twitter_name,count)
       tweets = Tweet.search(twitter_name, count*2) # Fetch 2 times the count requested
-      filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(4) ).filter(tweets)
+      filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(tweets)
       filtered[0,count]
     end
   end

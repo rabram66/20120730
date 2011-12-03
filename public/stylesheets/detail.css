@@ -27,6 +27,7 @@ body { height: 100%; margin: 0; padding: 0; }
   overflow: hidden;
   border: 2px solid #DDDDDD;
   padding: 2px;
+  margin-bottom: 10px;
 }
 
 #people_saying .tweet_result {
@@ -325,6 +326,7 @@ div#mentions-container ul.content {
 
 .page_navigation, .alt_page_navigation{
   padding-bottom: 10px;
+  margin-top: -6px;
 }
 
 div.page_navigation a, div.alt_page_navigation a{
@@ -342,3 +344,8 @@ div.page_navigation a, div.alt_page_navigation a{
   background-color:white !important;
   color:black !important;
 }	
+
+div.ad-container {
+  clear: both;
+  margin-left: 54px;
+}

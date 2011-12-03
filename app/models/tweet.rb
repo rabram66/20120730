@@ -21,7 +21,7 @@ class Tweet
       api(USER_TIMELINE_URL, screen_name, count) do |response|
         if count == 1
           result = response.first
-          transform_result result
+          transform_result( result ) if result
         else
           response.map { |result| transform_result( result ) }
         end

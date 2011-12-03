@@ -303,8 +303,14 @@ li.twitter-mention div.img-wrapper {
 li.twitter-mention p {
   display:inline;
   float:left;
-  width: 236px;
+  width: 260px;
   margin: 0 0 0.5em;
+}
+
+li.twitter-mention span.tweeted-at {
+  float: right;
+  font-style: italic;
+  font-size: 0.9em;
 }
 
 li.twitter-mention span.mentioner {
@@ -312,6 +318,8 @@ li.twitter-mention span.mentioner {
 }
 
 div#mentions-container ul.content {
+  margin: 0 0.5em 1.5em 0;
+  padding-left: 0.5em;
   height: 428px;
 }
 

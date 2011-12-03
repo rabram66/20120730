@@ -98,7 +98,7 @@
                   <a href="http://twitter.com/<%= user_say.screen_name %>/status/<%= user_say.tweet_id %>" target="_blank">
                     follow
                   </a><br/>
-                  <%= time_ago_in_words user_say.created_at %> ago
+                  <span class='tweeted-at'><%= time_ago_in_words user_say.created_at %> ago</span>
                 </p>
                 <div class='clear'></div>
               </li>

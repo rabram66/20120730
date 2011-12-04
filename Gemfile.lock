@@ -62,6 +62,9 @@ GEM
       rubyzip
       term-ansicolor (~> 1.0.5)
     hike (1.2.1)
+    hoptoad_notifier (2.4.11)
+      activesupport
+      builder
     httparty (0.8.1)
       multi_json
       multi_xml
@@ -166,6 +169,7 @@ DEPENDENCIES
   geocoder
   geokit
   heroku
+  hoptoad_notifier
   httparty
   jquery-rails
   mobile-fu

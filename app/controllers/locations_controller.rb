@@ -41,7 +41,7 @@ class LocationsController < ApplicationController
     cookies[:address] = { :value => coordinates, :expires => 1.year.from_now }
     
     category = params[:types].blank? ? LocationCategory::EatDrink : LocationCategory.find_by_name(params[:types])
-    @locations = Location.near(coordinates, 2, :order => :distance).where(:general_type => category.name ) 
+    @locations = Location.find_by_geocode_and_category(coordinates, category)
     @locations.reject! {|l| l.reference.nil? } # TODO: Remove this once reference can be gauranteed
 
     @places = Place.find_by_geocode(coordinates, category.types)

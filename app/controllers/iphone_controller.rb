@@ -8,7 +8,7 @@ class IphoneController < ApplicationController
   respond_to :xml
   layout false
   
-  before_filter :set_coordinates, :only => [:index, :deals]
+  before_filter :set_coordinates, :only => [:index, :deals, :events]
   
   RADIUS = '750'  
   DEFAULT_LOCATION = 'Atlanta, GA' 
@@ -31,32 +31,33 @@ class IphoneController < ApplicationController
   end
 
   def events
-    coordinates = ""
-    if !params[:lat].blank? && !params[:lng].blank?
-      coordinates = [params[:lat].to_f, params[:lng].to_f]
-    elsif !params[:address].blank?
-      coordinates = Geocoder.coordinates(params[:address])
-    elsif coordinates.blank?
-      coordinates = Geocoder.coordinates(DEFAULT_LOCATION)
-    end
-    
-    events = Event.near(coordinates, 2)
-    @output = ""
-    builder = Builder::XmlMarkup.new(:target=> @output, :indent=>1)
-    builder.Result {|r|
-      r.Events {|e| 
-        events.each do |ev|
-          e.Event { |eve|
-            eve.name(ev.name)
-            eve.address(ev.address)
-            eve.description(ev.description)
-          }
-        end
-      }
-    }
-    xml_res = builder.to_xml.gsub("<to_xml/>", "")
-     
-    render :xml => xml_res  
+    @events = Event.upcoming_near(@coordinates)
+    # coordinates = ""
+    # if !params[:lat].blank? && !params[:lng].blank?
+    #   coordinates = [params[:lat].to_f, params[:lng].to_f]
+    # elsif !params[:address].blank?
+    #   coordinates = Geocoder.coordinates(params[:address])
+    # elsif coordinates.blank?
+    #   coordinates = Geocoder.coordinates(DEFAULT_LOCATION)
+    # end
+    # 
+    # events = Event.near(coordinates, 2)
+    # @output = ""
+    # builder = Builder::XmlMarkup.new(:target=> @output, :indent=>1)
+    # builder.Result {|r|
+    #   r.Events {|e| 
+    #     events.each do |ev|
+    #       e.Event { |eve|
+    #         eve.name(ev.name)
+    #         eve.address(ev.address)
+    #         eve.description(ev.description)
+    #       }
+    #     end
+    #   }
+    # }
+    # xml_res = builder.to_xml.gsub("<to_xml/>", "")
+    #  
+    # render :xml => xml_res  
   end
  
   def iphone_details
@@ -69,9 +70,6 @@ class IphoneController < ApplicationController
       details = get_place_response(reference) 
       name, lat, lng, address, mentions, lastest_tweet, lastest_post= get_place_details(details)
     end
-    
-    advertise = get_logo(details, location)  
-    advertise_url = advertise.blank? ? nil : advertise.photo.url(:medium)
     
     @output = ""
     builder = Builder::XmlMarkup.new(:target=> @output, :indent=>1)
@@ -95,7 +93,7 @@ class IphoneController < ApplicationController
         end
       }
       lastest_tweet = lastest_tweet.first["text"].gsub("\n", " ") unless lastest_tweet.blank?
-      business.advertise_url advertise_url
+      business.advertise_url ''
       business.lastest_tweet lastest_tweet
       business.lastest_post lastest_post      
     }
@@ -156,43 +154,6 @@ class IphoneController < ApplicationController
       (place.vicinity && place.vicinity.include?(location.address)) ||
       place.geo_code == location.geo_code
     end
-  end
-  
-  def get_logo(details, location)   
-    adv = nil
-    unless location.blank?      
-      adv = Advertise.where("address_name like ? and business_name like ?", "%#{location.city}, #{location.state}%", "%#{location.name}%").first();      
-      adv = Advertise.where("business_name like ? ", "%#{location.name}%").first() if adv.blank?
-      adv = Advertise.where("address_name like ?", "%#{location.city}, #{location.state}%").first() if adv.blank?
-      adv = Advertise.where("business_type = '#{location.types}'").first() if adv.blank?
-    else
-      loc = details['result']       
-      if loc['vicinity'] != nil && loc['name'] != nil
-        add, city = loc['vicinity'].split(",")          
-        adv = Advertise.where("(address_name like ? or address_name like ? ) and business_name like ? ", "%#{city.strip}%", "%#{add.strip}%", "%#{loc['name']}%").first()
-        adv = Advertise.where("business_name like ? ", "%#{loc['name']}%").first() if adv.blank?          
-      end      
-    end
-    return adv
-  end
-  
-
-  def types(general_type)
-    results = ""
-    if general_type.eql?("Eat/Drink")
-      results = eat_drink
-    elsif general_type.eql?("Relax/Care")
-      results = relax_care
-    elsif general_type.eql?("Shop/Find")
-      results = shop_find
-    end
-    results
-  end
-    
-  def get_general_type(type)    
-    return "Eat/Drink" if eat_drink.include?(type)
-    return "Relax/Care" if relax_care.include?(type)
-    return "Shop/Find" if shop_find.include?(type)
   end
   
   def get_facebook_feed(facebook_page_id)

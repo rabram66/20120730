@@ -10,7 +10,7 @@ class IphoneController < ApplicationController
   
   before_filter :set_coordinates, :only => [:index, :deals, :events]
   
-  RADIUS = '750'  
+  RADIUS = '750'
   DEFAULT_LOCATION = 'Atlanta, GA' 
   DEFAULT_COORDINATES = [33.7489954, -84.3879824] # Atlanta, GA
   
@@ -23,41 +23,16 @@ class IphoneController < ApplicationController
     remove_duplicate_places unless @places.empty? || @locations.empty?
 
     @events = Event.upcoming_near(@coordinates)
-    @deals = Deal.find_by_geocode(@coordinates)    
+    @deals = Deal.find_by_geocode(@coordinates)
+    respond_with @places, @locations, @events, @deals, @coordinates
   end
 
   def deals
-    @deals = Deal.find_by_geocode(@coordinates)    
+    respond_with(@deals = Deal.find_by_geocode(@coordinates))
   end
 
   def events
-    @events = Event.upcoming_near(@coordinates)
-    # coordinates = ""
-    # if !params[:lat].blank? && !params[:lng].blank?
-    #   coordinates = [params[:lat].to_f, params[:lng].to_f]
-    # elsif !params[:address].blank?
-    #   coordinates = Geocoder.coordinates(params[:address])
-    # elsif coordinates.blank?
-    #   coordinates = Geocoder.coordinates(DEFAULT_LOCATION)
-    # end
-    # 
-    # events = Event.near(coordinates, 2)
-    # @output = ""
-    # builder = Builder::XmlMarkup.new(:target=> @output, :indent=>1)
-    # builder.Result {|r|
-    #   r.Events {|e| 
-    #     events.each do |ev|
-    #       e.Event { |eve|
-    #         eve.name(ev.name)
-    #         eve.address(ev.address)
-    #         eve.description(ev.description)
-    #       }
-    #     end
-    #   }
-    # }
-    # xml_res = builder.to_xml.gsub("<to_xml/>", "")
-    #  
-    # render :xml => xml_res  
+    respond_with(@events = Event.upcoming_near(@coordinates))
   end
  
   def iphone_details

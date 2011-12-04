@@ -37,6 +37,9 @@ class Location < ActiveRecord::Base
     def find_by_geocode(coordinates)
       self.near(coordinates, 2, :order => :distance)
     end
+    def find_by_geocode_and_category(coordinates,category=LocationCategory::EatDrink )
+      find_by_geocode(coordinates).where(:general_type => category.name)
+    end
   end
 
   def categories

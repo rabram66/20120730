@@ -5,120 +5,31 @@ require 'builder'
 
 class IphoneController < ApplicationController
   
-  respond_to :html, :xml, :json, :js
+  respond_to :xml
   layout false
+  
+  before_filter :set_coordinates, :only => [:index, :deals]
   
   RADIUS = '750'  
   DEFAULT_LOCATION = 'Atlanta, GA' 
+  DEFAULT_COORDINATES = [33.7489954, -84.3879824] # Atlanta, GA
   
-  def iphone
-    coordinates = ""
-    if !params[:lat].blank? && !params[:lng].blank?
-      coordinates = [params[:lat].to_f, params[:lng].to_f]
-    elsif !params[:address].blank?
-      coordinates = Geocoder.coordinates(params[:address])
-    elsif coordinates.blank?
-      coordinates = Geocoder.coordinates(DEFAULT_LOCATION)
-    end
-    t = ""
-    unless params[:types].blank?      
-      t = "Eat/Drink" if params[:types].eql? "Foot"
-      t = "Relax/Care" if params[:types].eql? "Relax"
-      t = "Shop/Find" if params[:types].eql? "Shop"      
-    end
-    types = t.blank? ? get_types("Eat/Drink") : get_types(t)    
-    
-    locations = Location.near(coordinates, 2, :order => :distance).where(:general_type => t.blank? ? "Eat/Drink" : t ) 
-      
-    begin
-      near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{types}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-    rescue
-    end
-      
-      
-    begin
-      deals = RestClient.get "http://api.yipit.com/v1/deals/?key=zZnf9zms8Kxp6BPE&lat=#{coordinates[0]}&lon=#{coordinates[1]}"
-      deals = Hash.from_xml(deals).to_json
-      @deals = ActiveSupport::JSON.decode(deals)
-    rescue
-    end
-      
-    event_length = Event.near(coordinates, 2).length      
-    @output = ""
-    builder = Builder::XmlMarkup.new(:target=> @output, :indent=>1)
-    builder.instruct!
-    builder.Result {|r|
-      r.BusinessList { |business_list|
-        locations.each do |location|  
-          unless location.reference.blank?
-            business_list.Business {|business|            
-              business.name(location.name)
-              business.location(location.address)
-              business.distance(location.distance)
-              business.reference(location.reference)            
-            }
-          end
-        end         
-        near_your_locations['results'].each do |location|
-          distance = Geocoder::Calculations.distance_between(coordinates, [location['geometry']['location']['lat'].to_f, location['geometry']['location']['lng'].to_f])
-          business_list.Business {|business|
-            business.name(location['name'])
-            business.location(location['vicinity'])            
-            business.distance(distance)
-            business.reference(location['reference'])  
-          }
-        end                  
-      }
-      begin
-        r.deal_size @deals['root']['response']['deals']['list_item'].size.to_s unless @deals.blank?                 
-      rescue
-      end
-      r.event(event_length)
-      r.lat(coordinates[0].to_s)
-      r.lng(coordinates[1].to_s)
-    }
-      
-    xml_res = builder.to_xml.gsub("<to_xml/>", "")
-    render :xml => xml_res    
+  def index
+    category = params[:types].blank? ? LocationCategory::EatDrink : LocationCategory.find_by_name(params[:types])
+    @locations = Location.find_by_geocode_and_category(@coordinates, category)
+    @locations.reject! {|l| l.reference.nil? } # TODO: Remove this once reference can be gauranteed
+
+    @places = Place.find_by_geocode(@coordinates, category.types)
+    remove_duplicate_places unless @places.empty? || @locations.empty?
+
+    @events = Event.upcoming_near(@coordinates)
+    @deals = Deal.find_by_geocode(@coordinates)    
   end
-  
+
   def deals
-    coordinates = ""
-    if !params[:lat].blank? && !params[:lng].blank?
-      coordinates = [params[:lat].to_f, params[:lng].to_f]
-    elsif !params[:address].blank?
-      coordinates = Geocoder.coordinates(params[:address])
-    elsif coordinates.blank?
-      coordinates = Geocoder.coordinates(DEFAULT_LOCATION)
-    end
-    
-    #get deals from yipit
-    begin      
-      deals = RestClient.get "http://api.yipit.com/v1/deals/?key=zZnf9zms8Kxp6BPE&lat=#{coordinates[0]}&lon=#{coordinates[1]}"
-      deals = Hash.from_xml(deals).to_json
-      @deals = ActiveSupport::JSON.decode(deals)
-    rescue
-		end 
-    @output = ""
-    builder = Builder::XmlMarkup.new(:target=> @output, :indent=>1)
-   
-    unless @deals.blank?  
-      builder.Result {|r|
-        r.Deals { |d|
-          @deals['root']['response']['deals']['list_item'].each do |deal|
-            d.Deal { |de|
-              de.title(deal['yipit_title'])
-              de.link(deal['yipit_url'])
-            }            
-          end
-        }
-      }
-    end
-    xml_res = builder.to_xml.gsub("<to_xml/>", "")
-    
-    render :xml => xml_res
+    @deals = Deal.find_by_geocode(@coordinates)    
   end
-  
+
   def events
     coordinates = ""
     if !params[:lat].blank? && !params[:lng].blank?
@@ -221,24 +132,29 @@ class IphoneController < ApplicationController
   
   
   private
-  
-  def remove_duplicate_locations
-    @near_your_locations['results'].each_with_index do |place, ndx|
-      @near_your_locations['results'][ndx] = nil if exclude_place?(place)
+
+  def set_coordinates
+    @coordinates = case
+    when !params[:lat].blank? && !params[:lng].blank?
+      [params[:lat].to_f, params[:lng].to_f]
+    when !params[:address].blank?
+      Geocoder.coordinates(params[:address])
+    else
+      DEFAULT_COORDINATES
     end
-    @near_your_locations['results'].compact!
   end
-  
+
+  def remove_duplicate_places
+    @places.reject! do |place| 
+      exclude_place? place
+    end
+  end
+
   def exclude_place?(place)
-    # Exclude the place if the name is blank, 
-    # or there is a place with the same name, address, or lat-lng in @locations
-    return true if place['name'].blank?
-    return false if @locations.nil?
-    @locations.any? do |location|
-      ( place['name'] == location.name ) ||
-      ( place['vicinity'] && place['vicinity'].include?(location.address) ) ||
-      ( place['geometry']['location']['lat'] == location.latitude && 
-        place['geometry']['location']['lng'] == location.longitude )
+    @locations.any? do |location| 
+      place.name == location.name ||
+      (place.vicinity && place.vicinity.include?(location.address)) ||
+      place.geo_code == location.geo_code
     end
   end
   
@@ -362,16 +278,4 @@ class IphoneController < ApplicationController
       "pharmacy", "shoe store", "shopping mall", "store"]
   end
   
-  def get_types(types)
-    results = ""
-    if types.eql?("Eat/Drink")
-      results = "bar%7Ccafe%7Crestaurant%7Cfood"
-    elsif types.eql?("Relax/Care")
-      results = "aquarium%7Cart_gallery%7Cbeauty_salon%7Cbowling_alley," +
-        "casino%7Cgym%7Cmovie_theater%7Cmuseum%7Cnight_club%7Cpark%7Cspa"
-    elsif types.eql?("Shop/Find")
-      results = "clothing_store%7Cshoe_store%7Cconvenience_store"
-    end
-    results
-  end
 end

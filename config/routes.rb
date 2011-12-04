@@ -26,7 +26,7 @@ LocationDB::Application.routes.draw do
   get "/mobile/events"     => "mobile#events", :as => :mobile_events
   
   #---------------------------- Iphone ----------------------------
-  get "/iphone" => "iphone#iphone"
+  get "/iphone" => "iphone#index"
   get "/iphone_details" => "iphone#iphone_details"
   get "/iphone_delete_place/:reference" => "iphone#delete_place"
   get "/iphone_deals" => "iphone#deals"

@@ -19,6 +19,7 @@ gem "mobile-fu"
 gem "faster_haversine", "~> 0.1.3" # Calculating distance between geocodes
 gem 'stamp'
 gem 'hoptoad_notifier'
+gem 'spreadsheet'
 
 group :test do
   gem 'mocha'

@@ -1,6 +1,6 @@
 class Tweet
   USER_TIMELINE_URL = "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=%s&count=%d"
-  SEARCH_URL = "http://search.twitter.com/search.json?q=%s&count=%d"
+  SEARCH_URL = "http://search.twitter.com/search.json?q=%s&page=1&rpp=%d"
   FOLLOW_URL = "http://twitter.com/%s/status/%s"  
 
   attr_reader :name, :screen_name, :text, :created_at, :profile_image_url, :tweet_id

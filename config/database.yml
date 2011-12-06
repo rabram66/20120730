@@ -11,3 +11,4 @@ development:
 test:
   <<: *common
   database: nearbythis_test
+  min_messages: warning

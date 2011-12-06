@@ -336,3 +336,9 @@ p.tweeted-at {
   font-style: italic;
 }
 
+div#coordinate-fields {
+  border: 2px solid gray;
+  width: 50%;
+  padding: 10px;
+  margin-bottom: 10px;
+}

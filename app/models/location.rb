@@ -19,16 +19,17 @@ class Location < ActiveRecord::Base
 
   geocoded_by :full_address
   
-  GEO_ATTRS = %w(city state address latitude longitude) # Geocode on change
-  REF_ATTRS = GEO_ATTRS + %w(name types) # Update Places reference on change
+  ADDRESS_ATTRS = %w(city state address)
+  GEO_ATTRS = %w(latitude longitude) # Geocode on change
+  REF_ATTRS = ADDRESS_ATTRS + GEO_ATTRS + %w(name types) # Update Places reference on change
 
   before_validation do
     self.general_type = LocationCategory.find_by_type(types).name
   end
 
   before_save do
-    geocode unless (GEO_ATTRS & changes.keys).empty?
-    update_reference unless (REF_ATTRS & changes.keys).empty?
+    geocode if !(ADDRESS_ATTRS & changes.keys).empty? || latitude.blank? || longitude.blank?
+    update_reference if !(REF_ATTRS & changes.keys).empty?
   end
   
   before_destroy :delete_reference

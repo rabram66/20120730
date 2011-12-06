@@ -6,6 +6,7 @@ TODOs
 
 WebSite Enhancements
 --------------------
+- Improve layout of top header on details page
 - Separate the public-facing aspects of LocationController into its own controller (e.g. #index, #details, and various XHR actions)
 
 Programming Suggestions:
@@ -23,3 +24,32 @@ Features to consider:
    - (matching deals to name? or more explicit tie-ins?)
 - Events tied to Location
 - Consider events pulled from EventBrite and Facebook Events
+
+Twitter Status (Get latest tweet)
+-----------------------
+a. Twitter status tweets have a cache expiry of 24 hours
+b. Twitter status updates will be requested if the status in cache is more
+   than 2 (?) hours old.
+
+1. Search in Rails.cache for latest tweet for a given screen name
+2. If found in cache
+  2.1 Return cache value
+  2.2 If status is more than 2 hours old, schedule update (DJ)
+3. If not found in cache
+  2.1 Return nil
+  2.2 Schedule update (DJ)
+4. Details page may poll for latest status if current status is nil
+
+Twitter mentions
+-----------------------------
+a. Twitter mentions will be stored as a set in the cache and will have a
+   cache expiry of 1 hour
+1. Search in Rails.cache for mentions of screen name
+2. If found in cache return
+  2.1 Return cache value
+  2.2 If mention set is more than 30 minutes old, schedule update (DJ)
+3. If not found in cache
+  2.1 Return nil
+  2.2 Schedule update (DJ)
+4. Details page may poll for latest mentions if current set is empty
+ 

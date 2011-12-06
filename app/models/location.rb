@@ -34,10 +34,10 @@ class Location < ActiveRecord::Base
   before_destroy :delete_reference
 
   class << self
-    def find_by_geocode(coordinates)
-      self.near(coordinates, 2, :order => :distance)
+    def find_by_geocode(coordinates, radius_in_miles=20, limit=50)
+      self.near(coordinates, radius_in_miles, :order => :distance).limit(limit)
     end
-    def find_by_geocode_and_category(coordinates,category=LocationCategory::EatDrink )
+    def find_by_geocode_and_category(coordinates,category=LocationCategory::EatDrink)
       find_by_geocode(coordinates).where(:general_type => category.name)
     end
   end
@@ -52,7 +52,7 @@ class Location < ActiveRecord::Base
   
   def recent_tweet?(within=1.day)
     false
-    # (Time.now - twitter_status.created_at).abs < within if twitter_status
+    # ((Time.now - twitter_status.created_at).abs < within) if twitter_status
   end
   
   def tweets(count=10)

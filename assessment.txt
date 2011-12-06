@@ -2,11 +2,7 @@
 
 TODOs
 --------------------------
-- Local development on PostgreSQL
-- Adjust algorithm for finding locations (top 50 within 20 miles)
 - Come up with strategy/architecture for managing tweets
-- Investigate outstanding Airbrakes
-- Test loading of spreadsheet on Heroku
 
 WebSite Enhancements
 --------------------

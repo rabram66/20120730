@@ -342,3 +342,9 @@ div#coordinate-fields {
   padding: 10px;
   margin-bottom: 10px;
 }
+
+div#header-logo a:hover {
+  text-decoration:none;
+  color: #fff; 
+  background-color:#fff;
+}

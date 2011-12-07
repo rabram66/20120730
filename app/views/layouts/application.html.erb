@@ -29,9 +29,14 @@
       </div>
       <div class="span-24" >
         <div id= "header-logo">
-          <img src='/images/Nearbythis_Logo.png' />
+          <a href='/'>
+            <img src='/images/Nearbythis_Logo.png' />
+          </a>
         </div>
-        <%= yield %>
+        <%= yield :header %>
+        <div class='clear'>
+          <%= yield %>
+        </div>
       </div>
       <script type="text/javascript" charset="utf-8">
   var is_ssl = ("https:" == document.location.protocol);

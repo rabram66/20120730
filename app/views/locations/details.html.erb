@@ -42,13 +42,15 @@
   </script>
 <% end %>
 
-<div id='detail-heading-wrapper'>
-  <div id='detail-headings'>
-    <h2><%= @location.name %></h2><br/>
-    <h3><%= @location.full_address %></h3>
+<%= content_for :header do %>
+  <div id='detail-heading-wrapper'>
+    <div id='detail-headings'>
+      <h2><%= @location.name %></h2><br/>
+      <h3><%= @location.full_address %></h3>
+    </div>
+    <%= link_to 'Back', locations_path %>
   </div>
-  <%= link_to 'Back', locations_path %>
-</div>
+<% end -%>
 
 <div style="display:none">
   <input type="hidden" id="end" value="<%= @origin_address %>" />  

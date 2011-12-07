@@ -27,6 +27,24 @@ Features to consider:
 
 Twitter Status (Get latest tweet)
 -----------------------
+
+===== Solution without DJ ==========
+a. Twitter status tweets have a cache expiry of 2 hours +- 60 minutes
+
+1. Search in Rails.cache for latest tweet for a given screen name
+2. If found in cache
+  2.1 Return cache value
+3. If not found in cache
+  2.1 Get the Twitter REST API rate info from Rails.cache
+  2.2 If found and the current time is before the reset time and the rate limit remaining is zero:
+    2.2.1 Stop
+  2.3 Otherwise
+    2.1 Fetch latest status from twitter
+      2.1.1 If 200, store status in Rails.cache 
+            with expiry set to 2 hours +- 60 minutes
+      2.1.2 Store the Twitter REST API Rate Limit info in Rails cache
+
+===== Solution with DJ ==========
 a. Twitter status tweets have a cache expiry of 24 hours
 b. Twitter status updates will be requested if the status in cache is more
    than 2 (?) hours old.
@@ -53,3 +71,39 @@ a. Twitter mentions will be stored as a set in the cache and will have a
   2.2 Schedule update (DJ)
 4. Details page may poll for latest mentions if current set is empty
  
+ 
+ 
+Twitter Rate Limit
+=======================
+Headers
+-------
+Date: Tue, 06 Dec 2011 19:30:06 GMT
+Content-Encoding: gzip
+Status: 400 Bad Request
+X-RateLimit-Class: api
+Content-Length: 152
+X-Runtime: 0.00847
+Server: tfe
+X-RateLimit-Remaining: 0
+Content-Type: application/json; charset=utf-8
+Cache-Control: no-cache, max-age=300
+Vary: Accept-Encoding
+X-RateLimit-Reset: 1323202863
+X-RateLimit-Limit: 150
+Expires: Tue, 06 Dec 2011 19:35:06 GMT
+
+Body (on status 400)
+--------
+{
+    "error": "Rate limit exceeded. Clients may not make more than 150 requests per hour.",
+    "request": "/1/statuses/user_timeline.json?screen_name=Landons&count=1"
+}
+
+Body for http://api.twitter.com/1/account/rate_limit_status.json
+-------------------------------
+{
+    "hourly_limit": 150,
+    "remaining_hits": 150,
+    "reset_time": "Wed Dec 07 02:26:34 +0000 2011",
+    "reset_time_in_seconds": 1323224794
+}

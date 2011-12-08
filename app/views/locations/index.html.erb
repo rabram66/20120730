@@ -18,32 +18,29 @@
             
     <div id="locations">
       <% @locations.each do |location| %>
-        <ul class="<%= location.reference %>">
-          <li class="recent_tweet_<%= location.recent_tweet? %>">
-            <%= link_to location.name, :action => 'details', :address => location.full_address,  :bizname => location.name , :type => location.types, :reference => location.reference %> -  <%= location.address %><img src="/images/twitter-logo.jpg" width='12'/>
-            <% unless current_user.blank? %>
-              <% if current_user.role.eql? "Admin" or current_user.id.eql?(location.user_id) %>
-                <%= link_to 'Edit', edit_location_path(location) %>
-                <%= link_to 'Delete', location, :confirm => 'Are you sure?', :method => :delete %>
+        <ul>
+          <% if Location === location -%>
+            <li class="recent_tweet_<%= location.recent_tweet? %>">
+              <%= link_to location.name, :action => 'details', :address => location.full_address,  :bizname => location.name , :type => location.types, :reference => location.reference %> -  <%= location.address %><img src="/images/twitter-logo.jpg" width='12'/>
+              <% unless current_user.blank? %>
+                <% if current_user.role.eql? "Admin" or current_user.id.eql?(location.user_id) %>
+                  <%= link_to 'Edit', edit_location_path(location) %>
+                  <%= link_to 'Delete', location, :confirm => 'Are you sure?', :method => :delete %>
+                <% end %>
               <% end %>
-            <% end %>
-          </li>
+            </li>
+          <% else -%>
+            <li class='<%= location.reference %>'> 
+              <%= link_to location.name, :action => 'details', :reference => location.reference %> 
+              <%= "- #{location.vicinity}" if location.vicinity %>
+              <% if !current_user.blank? and current_user.role.eql? "Admin" %>
+                <%= link_to "Delete", "#", :class => "delete_location", :id => location.reference %>
+                <image src="/images/ajax-loader.gif" style="display: none;" class="img_<%= location.reference %>"/>
+                <span style="color:red;" class="error_<%= location.reference %>"></span>
+              <% end %>
+            </li>
+          <% end -%>
         </ul>
-      <% end %> 
-    </div>        
-    <div id="near_your_locations">
-      <% @places.each do |place| %>
-        <ul class="<%= place.reference %>">
-          <li> 
-            <%= link_to place.name, :action => 'details', :reference => place.reference %> 
-            <%= "- #{place.vicinity}" if place.vicinity %>
-            <% if !current_user.blank? and current_user.role.eql? "Admin" %>
-              <%= link_to "Delete", "#", :class => "delete_location", :id => place.reference %>
-              <image src="/images/ajax-loader.gif" style="display: none;" class="img_<%= place.reference %>"/>
-              <span style="color:red;" class="error_<%= place.reference %>"></span>
-            <% end %>
-          </li>
-        </ul>   
       <% end %>
     </div>
   </div>

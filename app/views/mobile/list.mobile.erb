@@ -22,17 +22,18 @@
   
   <ul id='locations-list' data-role="listview">
     <% for location in @locations -%>
-      <li class='<%= category_class_names(location) %> recent_tweet_<%= location.recent_tweet? %>' style='display:none'>
-        <a href="<%=mobile_detail_path(location.reference) %>">
-          <img src='/images/twitter-logo.jpg' class='ui-li-icon twitter-icon'/>
-          <b><%= location.name %></b> - <%= number_with_precision(location.distance, :precision => 1) %> miles
-        </a>
-      </li>
-    <% end -%>
-    <% for place in @places -%>
-      <li class='<%= category_class_names(place)%>' style='display:none'>
-        <%= link_to "<b>#{place.name}</b> - #{number_with_precision(place.distance_from(@geocode), :precision => 1)} miles".html_safe, mobile_detail_path(place.reference) %>
-      </li>
+      <% if Location === location -%>
+        <li class='<%= category_class_names(location) %> recent_tweet_<%= location.recent_tweet? %>' style='display:none'>
+          <a href="<%=mobile_detail_path(location.reference) %>">
+            <img src='/images/twitter-logo.jpg' class='ui-li-icon twitter-icon'/>
+            <b><%= location.name %></b> - <%= number_with_precision(location.distance, :precision => 1) %> miles
+          </a>
+        </li>
+      <% else -%>
+        <li class='<%= category_class_names(location)%>' style='display:none'>
+          <%= link_to "<b>#{location.name}</b> - #{number_with_precision(location.distance_from(@geocode), :precision => 1)} miles".html_safe, mobile_detail_path(location.reference) %>
+        </li>
+      <% end -%>
     <% end -%>
   </ul>
 </div>

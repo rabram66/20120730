@@ -30,6 +30,12 @@ class MobileController < ApplicationController
     @locations.reject! {|l| l.reference.nil? }
 
     remove_duplicate_places unless @places.length == 0 || @locations.length == 0
+    
+    # merge location and places
+    @locations = [@locations + @places].flatten.sort do |a,b|
+      a.distance_from(@geocode) <=> b.distance_from(@geocode)
+    end
+    
   end
   
   # GET the detail for a location/place

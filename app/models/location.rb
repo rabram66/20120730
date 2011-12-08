@@ -1,4 +1,6 @@
 class Location < ActiveRecord::Base
+  
+  include LocationPlace
 
   validates_presence_of :name, :address, :city, :state, :types, :general_type
   

@@ -1,4 +1,3 @@
-include Geokit::Geocoders
 require 'json'
 require 'open-uri'
 
@@ -24,10 +23,8 @@ class LocationsController < ApplicationController
       session[:search] = @latlng unless @latlng.blank?
     else      
       if session[:search].blank?
-        current_location = MultiGeocoder.geocode(request.remote_ip).to_json
-        if !current_location["Latitude"].blank? && !current_location["Longitude"].blank?
-          @latlng = [current_location["Latitude"].to_f, current_location["Longitude"].to_f]        
-        end
+        ip_coords = Geocoder.coordinates(request.remote_ip)
+        @latlng = ip_coords unless ip_coords.first == 0.0 && ip_coords.last == 0.0
       end
     end
   

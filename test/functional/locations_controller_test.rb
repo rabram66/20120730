@@ -7,6 +7,7 @@ class LocationsControllerTest < ActionController::TestCase
   end
 
   test "should get index" do
+    Geocoder.expects(:coordinates).returns([0.0,0.0])
     Tweet.expects(:latest).returns(nil)
     Place.expects(:find_by_geocode).with([33.7489954, -84.3879824],LocationCategory::EatDrink.types).returns([])
     Event.expects(:upcoming_near).returns([])

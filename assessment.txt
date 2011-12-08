@@ -6,8 +6,11 @@ TODOs
 
 WebSite Enhancements
 --------------------
-- Improve layout of top header on details page
+- FIXED: Fix problem with mobile scrolling
+- Co-mingle places with locations (distance sorted)
+- Improve layout of top header on details page (fix on IE)
 - Separate the public-facing aspects of LocationController into its own controller (e.g. #index, #details, and various XHR actions)
+- Add city, and state to event
 
 Programming Suggestions:
 -----------------------

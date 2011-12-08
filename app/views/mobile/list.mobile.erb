@@ -1,5 +1,7 @@
 <div data-role="header" data-id="category-selector" data-position="fixed">
-  <h1>Nearby This</h1>
+  <h1>
+    Nearby This
+  </h1>
   <div data-role="navbar">
     <ul id='category-selector'>
       <li><a href="#">Eat</a></li>
@@ -9,6 +11,15 @@
   </div>
 </div>
 <div data-role='content'>
+  <div id='event-and-deal-links'>
+    <%= ( link_to "#{pluralize(@deals.length, 'Daily Deal')}", 
+          mobile_deals_path(:lat => @geocode.first, :lng => @geocode.last), 
+          :"data-role" => 'button') if @deals.length > 0 %>
+    <%= ( link_to "#{pluralize(@events.length, 'Event')}",
+          mobile_events_path(:lat => @geocode.first, :lng => @geocode.last), 
+          :"data-role" => 'button') if @events.length > 0 %>
+  </div>
+  
   <ul id='locations-list' data-role="listview">
     <% for location in @locations -%>
       <li class='<%= category_class_names(location) %> recent_tweet_<%= location.recent_tweet? %>' style='display:none'>
@@ -24,13 +35,4 @@
       </li>
     <% end -%>
   </ul>
-  <div data-role='content'>
-    <%= ( link_to "#{pluralize(@deals.length, 'Daily Deal')}", 
-          mobile_deals_path(:lat => @geocode.first, :lng => @geocode.last), 
-          :"data-role" => 'button') if @deals.length > 0 %>
-    <%= ( link_to "#{pluralize(@events.length, 'Event')}",
-          mobile_events_path(:lat => @geocode.first, :lng => @geocode.last), 
-          :"data-role" => 'button') if @events.length > 0 %>
-  </div>
-
 </div>

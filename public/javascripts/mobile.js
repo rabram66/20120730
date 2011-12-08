@@ -1,8 +1,6 @@
 setLatLng = function(position) {
   $('#lat').val(position.coords.latitude);
   $('#lng').val(position.coords.longitude);
-  $('#search_form').submit();
-  // $.mobile.loadPage( '/mobile/list?'+$('form#search_form').serialize()+"&commit=Use+My+Location", { showLoadMsg: false } ); // preload the current location results
 };
 
 showCategory = function(event) {
@@ -12,7 +10,6 @@ showCategory = function(event) {
 };
 
 setCurrentPosition = function(event) {
-  event.preventDefault();
   window.navigator.geolocation.getCurrentPosition( setLatLng );
 };
 
@@ -76,6 +73,7 @@ toggleTwitterMention = function(from, to) {
 $('#mobile-content').live('pageinit', function(event) {
   // Autocomplete for index
   if ( $('#searchTextField').length > 0 ) {
+    if ($('#lat').val() == '' || $('#lng').val() == '') setCurrentPosition();
     $('#searchTextField').click( function() { $(this).val('');} );  // clear search field of prompt text
     var autocomplete = new google.maps.places.Autocomplete( $('#searchTextField')[0] );
   }
@@ -89,9 +87,6 @@ $('#mobile-content').live('pageinit', function(event) {
     mobileMap.showLocationWithDirections( $('#origin_lat').val(), $('#origin_lng').val(), $('#dest_lat').val(), $('#dest_lng').val(), $('#mobile-map') );
     $('#mobile-directions-button').click( function(event) { $('#mobile-directions').toggle(); } );
   }
-
-  // Use current location button on index
-  $('#use_my_location').click( setCurrentPosition );
 
   // Prev/Next controls for twitter mentions on details page
   if ( $('#mobile-twitter-mentions').length > 0 ) {

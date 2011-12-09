@@ -50,7 +50,7 @@ class Location < ActiveRecord::Base
   end
   
   def twitter_status
-    Tweet.latest(twitter_name) unless twitter_name.blank?
+    Tweet.user_status(twitter_name) unless twitter_name.blank?
   end
   
   def recent_tweet?(within=1.day)
@@ -66,7 +66,6 @@ class Location < ActiveRecord::Base
     if twitter_name.blank?
       []
     else
-      # Tweet.search(twitter_name,count)
       tweets = Tweet.search(twitter_name, count*2) # Fetch 2 times the count requested
       filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(tweets)
       filtered[0,count]

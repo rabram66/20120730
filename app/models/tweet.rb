@@ -16,7 +16,32 @@ class Tweet
   end
   
   class << self
+    
+    # 1. Search in Rails.cache for latest tweet for a given screen name
+    # 2. If found in cache
+    #   2.1 Return cache value
+    # 3. If not found in cache
+    #   2.1 Get the Twitter REST API rate info from Rails.cache
+    #   2.2 If found and the current time is before the reset time and the rate limit remaining is zero:
+    #     2.2.1 Stop
+    #   2.3 Otherwise
+    #     2.1 Fetch latest status from twitter
+    #       2.1.1 If 200, store status in Rails.cache 
+    #             with expiry set to 2 hours +- 60 minutes
+    #       2.1.2 Store the Twitter REST API Rate Limit info in Rails cache
 
+    def user_status(screen_name)
+      tweet = Rails.cache.read("twitter:status:#{screen_name}")
+      unless tweet
+        ratelimit = read_ratelimit(:api)
+        if !ratelimit || !ratelimit.exceeded?
+          tweet = latest(screen_name)
+          Rails.cache.write("twitter:status:#{screen_name}", tweet, :expires_in => 1.hour) if tweet
+        end
+      end
+      tweet
+    end
+    
     def latest(screen_name, count=1)
       api(USER_TIMELINE_URL, screen_name, count) do |response|
         if count == 1
@@ -29,16 +54,18 @@ class Tweet
     end
     
     def search(screen_name, count=10)
-      tweets = api(SEARCH_URL, CGI.escape("@#{screen_name}"), count) do |response|
-        response['results'][0,count].map do |result|
-          Tweet.new(
-            :name              => result['from_user_name'],
-            :screen_name       => result['from_user'],
-            :text              => result['text'],
-            :created_at        => DateTime.parse( result['created_at'] ),
-            :profile_image_url => result['profile_image_url'],
-            :tweet_id          => result['id_str']
-          )
+      tweets = Rails.cache.fetch("twitter:mentions:#{screen_name}", :expires_in => 30.minutes) do
+        api(SEARCH_URL, CGI.escape("@#{screen_name}"), count) do |response|
+          response['results'][0,count].map do |result|
+            Tweet.new(
+              :name              => result['from_user_name'],
+              :screen_name       => result['from_user'],
+              :text              => result['text'],
+              :created_at        => DateTime.parse( result['created_at'] ),
+              :profile_image_url => result['profile_image_url'],
+              :tweet_id          => result['id_str']
+            )
+          end
         end
       end
     end
@@ -46,14 +73,39 @@ class Tweet
     private
     
     def api(url, *args)
+      url = format(url, *args)
       begin
-        response = RestClient.get( format(url, *args) )
+        Rails.logger.info("Twitter fetch: #{url}")
+        response = RestClient.get(url)
+        write_ratelimit(response)
         yield ActiveSupport::JSON.decode(response)
       rescue RestClient::Exception => e
         Rails.logger.info("Twitter API failure: (#{e}) #{url}")
         nil
       end
     end
+
+    def write_ratelimit(response)
+      ratelimit = parse_ratelimit(response.headers)
+      Rails.cache.write("twitter:ratelimit:#{ratelimit.api_class}", ratelimit.to_hash) if ratelimit
+    end
+    
+    def read_ratelimit(api_class)
+      ratelimit = Rails.cache.read("twitter:ratelimit:#{api_class}")
+      Twitter::RateLimitStatus.new(ratelimit) if ratelimit
+    end
+    
+    def parse_ratelimit(headers)
+      unless headers[:x_ratelimit_class].blank?
+        Twitter::RateLimitStatus.new(
+          :api_class  => headers[:x_ratelimit_class].to_sym,
+          :limit      => headers[:x_ratelimit_limit].to_i,
+          :remaining  => headers[:x_ratelimit_remaining].to_i,
+          :reset_time => headers[:x_ratelimit_reset].to_i
+        )
+      end
+    end
+      
     
     def transform_result(result)
       Tweet.new( :name              => result['user']['name'],

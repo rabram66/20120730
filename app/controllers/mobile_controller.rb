@@ -1,7 +1,3 @@
-include Geokit::Geocoders
-require 'json'
-require 'open-uri'
-
 class MobileController < ApplicationController
   layout 'mobile'
 

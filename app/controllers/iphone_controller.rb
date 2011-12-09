@@ -1,4 +1,3 @@
-include Geokit::Geocoders
 require 'json'
 require 'open-uri'
 require 'builder'

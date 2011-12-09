@@ -51,7 +51,12 @@ p.tweeted-at {
 div.mobile-twitter-mention p.tweet-text {
   white-space: normal;
   font-weight: bold;
-  margin-left: -3em;
+  margin-left: 0em;
+}
+
+div.mobile-twitter-mention img {
+  width: 80px;
+  margin-left: -1px;
 }
 
 .center-wrapper{

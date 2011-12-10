@@ -30,11 +30,6 @@ body { height: 100%; margin: 0; padding: 0; }
   margin-bottom: 10px;
 }
 
-#people_saying .tweet_result {
-/*    border: 2px solid #DDDDDD;
-    padding:7px;
-*/}
-
 body {line-height:1.5;background:none !important;}
 
 body {font-size:75%;color:#222;background:none !important;font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;}
@@ -269,7 +264,7 @@ div#last-post {
   padding: 7px;
   margin-bottom: 10px;
   width: 322px;
-  height: 48px;
+  height: 56px;
 }
 
 div#last-post img {

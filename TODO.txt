@@ -11,6 +11,8 @@ WebSite Enhancements
 
 Programming Suggestions:
 -----------------------
+- Make Place, Event, and Location consistent with geographic attributes
+- Consider use of Twitter gem
 - Move role handling into something like Can-Can
   - Administrator (register)
   - Promoter (events)

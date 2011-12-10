@@ -1,6 +1,6 @@
 class Location < ActiveRecord::Base
   
-  include LocationPlace
+  include Address
 
   validates_presence_of :name, :address, :city, :state, :types, :general_type
   
@@ -8,10 +8,6 @@ class Location < ActiveRecord::Base
   
   alias_attribute :phone_number, :phone
 
-  def full_address
-    "#{address} #{city}, #{state}"
-  end
-  
   attr_accessible :name, :address, :city, :state, :twitter, 
                   :phone, :latitude, :longitude, :reference, :email, 
                   :types, :twitter_name, :facebook_page_id, :user_id

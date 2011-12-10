@@ -1,6 +1,6 @@
 class Event < ActiveRecord::Base
 
-  include LocationPlace
+  include Address
 
   ADDRESS_ATTRS = %w(city state address)
 
@@ -12,14 +12,6 @@ class Event < ActiveRecord::Base
 
   after_validation do 
     geocode if !(ADDRESS_ATTRS & changes.keys).empty? || latitude.blank? || longitude.blank?
-  end
-
-  def coordinates
-    [latitude, longitude]
-  end
-
-  def full_address
-    "#{address} #{city}, #{state}"
   end
 
   class << self

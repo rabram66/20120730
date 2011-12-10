@@ -26,8 +26,9 @@ class LocationsControllerTest < ActionController::TestCase
   end
   
   test "should get details for place" do
-    place = Place.new
-    place.vicinity  = '2578 Binghamton Drive, Atlanta'
+    place           = Place.new
+    place.address   = '2578 Binghamton Drive'
+    place.city      = 'Atlanta'
     place.latitude  = 33.7489954
     place.longitude = -84.3879824
     Place.expects(:find_by_reference).with('123').returns(place)

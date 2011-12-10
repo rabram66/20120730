@@ -218,7 +218,7 @@ class LocationsController < ApplicationController
   def exclude_place?(place)
     @locations.any? do |location| 
       place.name == location.name ||
-      (place.vicinity && place.vicinity.include?(location.address)) ||
+      (!place.address.blank? && place.address.include?(location.address)) ||
       place.coordinates == location.coordinates
     end
   end

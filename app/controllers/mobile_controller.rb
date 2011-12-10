@@ -85,7 +85,7 @@ class MobileController < ApplicationController
     # Exclude the place if there is a location with the same name, address, or lat-lng
     @locations.any? do |location|
       ( place.name == location.name ) ||
-      ( place.vicinity && place.vicinity.include?(location.address) ) ||
+      ( !place.address.blank? && place.address.include?(location.address) ) ||
       ( place.coordinates == location.coordinates )
     end
   end

@@ -1,9 +1,9 @@
 class Place
 
-  include LocationPlace
+  include Address
   
-  attr_accessor :name, :vicinity, :reference, :latitude, :longitude, :categories, :types,
-                :phone_number, :website, :full_address, :rating
+  attr_accessor :name, :reference, :latitude, :longitude, :categories, :types,
+                :phone_number, :website, :full_address, :rating, :city, :address, :state
 
   RADIUS = 750
   API_KEY = "AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc"
@@ -16,6 +16,10 @@ class Place
     if result
       @name = result['name']
       @rating = result['rating']
+      unless @vicinity.blank?
+        @city = @vicinity.split(',').last
+        @address = @vicinity.split(',')[0..-2].join(',')
+      end
       @vicinity = result['vicinity'] unless result['vicinity'].blank?
       @reference = result['reference']
       @latitude = result['geometry']['location']['lat'].to_f
@@ -71,10 +75,10 @@ class Place
       end
     end
 
-    def find_by_geocode(geocode, types = LocationCategory.all_types, radius = RADIUS)
+    def find_by_geocode(coordinates, types = LocationCategory.all_types, radius = RADIUS)
       types = CGI.escape(types.join('|'))
-      url = sprintf(SEARCH_REQUEST_URL, geocode.first, geocode.last, types, radius)
-      results = HTTParty.get(url)['results']
+      url = format(SEARCH_REQUEST_URL, coordinates.first, coordinates.last, types, radius)
+      results = ActiveSupport::JSON.decode( RestClient.get(url) )['results']
 
       # Remove empty names and duplicates
       results.reject! { |result| result['name'].blank? }

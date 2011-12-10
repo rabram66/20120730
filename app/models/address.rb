@@ -1,5 +1,4 @@
-# Things common to Location and Place
-module LocationPlace
+module Address
 
   MILES_PER_KILOMETER = 0.621371192
 
@@ -9,6 +8,14 @@ module LocationPlace
 
   def coordinates
     [latitude, longitude]
+  end
+  
+  def full_address
+    "#{address} #{city}, #{state}"
+  end
+
+  def vicinity
+    "#{address}, #{city}"
   end
 
 end

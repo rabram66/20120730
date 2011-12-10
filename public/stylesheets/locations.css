@@ -2,10 +2,6 @@
     text-align: right;
 }
 
-#new_location_form, #loc_information, #edit_location_form {
-    padding-left: 70px;
-}
-
 .tweet a, .tweet a:visited, .feed a, .feed a:visited {
     color: #0066CC
 }

@@ -16,4 +16,8 @@ module ApplicationHelper
     wall_post.text.gsub("\n", " ")
   end
 
+  def google_map_url(location)
+    "http://maps.google.com/maps?q=#{location.coordinates.join(',')}"
+  end
+
 end

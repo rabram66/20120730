@@ -4,8 +4,8 @@
 <div id='mobile-detail' data-role='content'>
   <%= hidden_field_tag :origin_lat, @geocode.first %>
   <%= hidden_field_tag :origin_lng, @geocode.last %>
-  <%= hidden_field_tag :dest_lat, @location.geo_code.first %>
-  <%= hidden_field_tag :dest_lng, @location.geo_code.last %>
+  <%= hidden_field_tag :dest_lat, @location.coordinates.first %>
+  <%= hidden_field_tag :dest_lng, @location.coordinates.last %>
   <div id='mobile-map'>MAP</div>
   <div data-role='controlgroup' data-type='horizontal' id='directions-and-phone-buttons' class='center-wrapper'>
     <a href='#' data-role='button' data-inline='true' id='mobile-directions-button'>Directions</a>

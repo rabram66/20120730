@@ -2,7 +2,9 @@
 
 one:
   name: Dunwoody Craft Fair
-  address: "5488 Chamblee Dunwoody Road, Dunwoody, GA"
+  address: 5488 Chamblee Dunwoody Road
+  city: Dunwoody
+  state: GA
   start_date: 2011-10-18 10:08:37
   end_date: 2011-10-18 10:08:37
   description: MyText
@@ -11,7 +13,9 @@ one:
 
 two:
   name: Stage Door Players
-  address: "1426 Dunwoody Village Parkway, Dunwoody, GA"
+  address: 1426 Dunwoody Village Parkway
+  city: Dunwoody
+  state: GA
   start_date: 2011-10-18 10:08:37
   end_date: 2011-10-18 10:08:37
   description: MyText

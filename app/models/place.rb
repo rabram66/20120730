@@ -2,7 +2,7 @@ class Place
 
   include LocationPlace
   
-  attr_accessor :name, :vicinity, :reference, :geo_code, :categories, :types,
+  attr_accessor :name, :vicinity, :reference, :latitude, :longitude, :categories, :types,
                 :phone_number, :website, :full_address, :rating
 
   RADIUS = 750
@@ -18,8 +18,8 @@ class Place
       @rating = result['rating']
       @vicinity = result['vicinity'] unless result['vicinity'].blank?
       @reference = result['reference']
-      @geo_code = [ result['geometry']['location']['lat'].to_f,
-                   result['geometry']['location']['lng'].to_f ]
+      @latitude = result['geometry']['location']['lat'].to_f
+      @longitude = result['geometry']['location']['lng'].to_f
       @types = result['types']
       @categories = LocationCategory.find_all_by_types(@types)
       if result['address_components'] # detail
@@ -39,7 +39,7 @@ class Place
     # Adds a Location to Google Places, and sets the generated reference on the location
     def add(location)
       body = {
-        :location => {:lat => location.geo_code.first.to_f, :lng => location.geo_code.last.to_f},
+        :location => {:lat => location.coordinates.first.to_f, :lng => location.coordinates.last.to_f},
         :accuracy => 50, #meters,
         :name     => location.name,
         :types    => [location.types],

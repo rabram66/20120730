@@ -15,10 +15,13 @@
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </div>
-  <div class="field">
-    <%= f.label :address %><br />
-    <%= f.text_field :address %>
-  </div>
+
+  <%= render :partial => 'shared/address_form', :locals => {:f => f} %>
+
+  <p>
+    <%= link_to( "Map Location", google_map_url(@event), :target => :new ) %>
+  </p>
+
   <div class="field">
     <%= f.label :start_date %><br />
     <%= f.datetime_select :start_date %>

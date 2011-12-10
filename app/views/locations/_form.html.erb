@@ -15,38 +15,11 @@
     <%= f.text_field :name, "data-pre" => params[:action].eql?("edit") ? @pages.to_json : @pages.to_json %>
   </div>
 
-  <div class="field">
-    * <%= f.label :address, "Street Address" %><br />
-    <%= f.text_field :address %>
-  </div>
-  <div class="field">
-    * <%= f.label :city %><br />
-    <%= f.text_field :city %>
-  </div>
+  <%= render :partial => 'shared/address_form', :locals => {:f => f} %>
 
-  <div class="field">
-    * <%= f.label :state %><br />
-    <%= f.text_field :state %>
-  </div>
-
-  <div id='coordinate-fields'>
-    <p>
-       <b>Use the fields below with care!!</b></br>
-       New values for latitude and longitude will override automatic geocoding. 
-       Enter the correct values here if the generated values are not correct.<br/>
-       By the same token, updating the location's street address, city, or state, or
-       clearing the latitude or longitude, will force automatic geocoding.
-    </p>
-    <div class="field">
-      <%= f.label :latitude %><br />
-      <%= f.text_field :latitude %>
-    </div>
-
-    <div class="field">
-      <%= f.label :longitude %><br />
-      <%= f.text_field :longitude %>
-    </div>
-  </div>
+  <p>
+    <%= link_to( "Map Location", google_map_url(@location), :target => :new ) %>
+  </p>
 
   <div class="field">
     <%= f.label :phone %><br/>

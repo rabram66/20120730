@@ -2,7 +2,6 @@
 
 TODOs
 --------------------------
-- Come up with strategy/architecture for managing tweets
 
 WebSite Enhancements
 --------------------
@@ -74,26 +73,6 @@ a. Twitter mentions will be stored as a set in the cache and will have a
   2.2 Schedule update (DJ)
 4. Details page may poll for latest mentions if current set is empty
  
- 
- 
-Twitter Rate Limit
-=======================
-Headers
--------
-Date: Tue, 06 Dec 2011 19:30:06 GMT
-Content-Encoding: gzip
-Status: 400 Bad Request
-X-RateLimit-Class: api
-Content-Length: 152
-X-Runtime: 0.00847
-Server: tfe
-X-RateLimit-Remaining: 0
-Content-Type: application/json; charset=utf-8
-Cache-Control: no-cache, max-age=300
-Vary: Accept-Encoding
-X-RateLimit-Reset: 1323202863
-X-RateLimit-Limit: 150
-Expires: Tue, 06 Dec 2011 19:35:06 GMT
 
 Body (on status 400)
 --------

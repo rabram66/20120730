@@ -1,17 +1,25 @@
 class Event < ActiveRecord::Base
 
-  validates_presence_of :name, :address, :description
+  include LocationPlace
 
-  geocoded_by :address
+  ADDRESS_ATTRS = %w(city state address)
+
+  validates_presence_of :name, :address, :city, :state, :description
+
+  geocoded_by :full_address
 
   scope :upcoming, where("(start_date ISNULL AND end_date ISNULL) OR (start_date >= :today OR end_date >= :today)", {:today => Date.today})  
 
   after_validation do 
-    geocode if changes.keys.include?('address')
+    geocode if !(ADDRESS_ATTRS & changes.keys).empty? || latitude.blank? || longitude.blank?
   end
 
-  def geo_code
+  def coordinates
     [latitude, longitude]
+  end
+
+  def full_address
+    "#{address} #{city}, #{state}"
   end
 
   class << self

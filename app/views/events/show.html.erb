@@ -1,4 +1,4 @@
-<div class='clear'>
+<div class='admin-content'>
   <p id="notice"><%= notice %></p>
 
   <p>
@@ -9,6 +9,30 @@
   <p>
     <b>Address:</b>
     <%= @event.address %>
+  </p>
+
+  <p>
+    <b>City:</b>
+    <%= @event.city %>
+  </p>
+
+  <p>
+    <b>State:</b>
+    <%= @event.state %>
+  </p>
+
+  <p>
+    <b>Latitude:</b>
+    <%= @event.latitude %>
+  </p>
+
+  <p>
+    <b>Longitude:</b>
+    <%= @event.longitude %>
+  </p>
+
+  <p>
+    <%= link_to "Map Current Location", google_map_url(@event), :target => :new %>
   </p>
 
   <p>

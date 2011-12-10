@@ -84,10 +84,6 @@ class Location < ActiveRecord::Base
     "http://www.facebook.com/#{facebook_page_id}" unless facebook_page_id.blank?
   end
   
-  def geo_code
-    [latitude, longitude]
-  end
-  
   private
   
   def update_reference

@@ -8,7 +8,7 @@
     var bussiness_address;
     function initialize() {
       directionsDisplay = new google.maps.DirectionsRenderer();
-      var latlng = new google.maps.LatLng(<%= @location.geo_code.first %> , <%= @location.geo_code.last %>);
+      var latlng = new google.maps.LatLng(<%= @location.coordinates.first %> , <%= @location.coordinates.last %>);
       bussiness_address = latlng;
       var myOptions = {
         zoom:10,

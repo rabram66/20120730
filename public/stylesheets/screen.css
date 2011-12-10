@@ -348,3 +348,7 @@ div#header-logo a:hover {
   color: #fff; 
   background-color:#fff;
 }
+
+div.admin-content {
+  margin-left: 50px;
+}

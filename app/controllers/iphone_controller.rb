@@ -126,7 +126,7 @@ class IphoneController < ApplicationController
     @locations.any? do |location| 
       place.name == location.name ||
       (place.vicinity && place.vicinity.include?(location.address)) ||
-      place.geo_code == location.geo_code
+      place.coordinates == location.coordinates
     end
   end
   

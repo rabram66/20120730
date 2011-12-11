@@ -3,7 +3,7 @@ module Address
   MILES_PER_KILOMETER = 0.621371192
 
   def distance_from(point)
-    FasterHaversine.distance(coordinates.first, coordinates.last, point.first, point.last) * LocationPlace::MILES_PER_KILOMETER
+    FasterHaversine.distance(coordinates.first, coordinates.last, point.first, point.last) * Address::MILES_PER_KILOMETER
   end
 
   def coordinates
@@ -15,7 +15,7 @@ module Address
   end
 
   def vicinity
-    "#{address}, #{city}"
+    [address, city].reject{|n| n.blank?}.join(', ')
   end
 
 end

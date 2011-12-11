@@ -16,11 +16,10 @@ class Place
     if result
       @name = result['name']
       @rating = result['rating']
-      unless @vicinity.blank?
-        @city = @vicinity.split(',').last
-        @address = @vicinity.split(',')[0..-2].join(',')
+      unless result['vicinity'].blank?
+        @city = result['vicinity'].split(',').last
+        @address = result['vicinity'].split(',')[0..-2].join(',')
       end
-      @vicinity = result['vicinity'] unless result['vicinity'].blank?
       @reference = result['reference']
       @latitude = result['geometry']['location']['lat'].to_f
       @longitude = result['geometry']['location']['lng'].to_f

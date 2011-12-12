@@ -11,6 +11,8 @@ class LocationsControllerTest < ActionController::TestCase
     Tweet.expects(:latest).returns(nil)
     Place.expects(:find_by_geocode).with([33.7489954, -84.3879824],LocationCategory::EatDrink.types).returns([])
     Event.expects(:upcoming_near).returns([])
+    Deal.expects(:find_by_geocode).with([33.7489954, -84.3879824]).returns(DealSet.new([]))
+    
     get :index
     assert_not_nil assigns(:locations)
     assert_response :success

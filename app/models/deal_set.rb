@@ -1,15 +1,23 @@
 class DealSet
-  
+  include Enumerable
   attr_accessor :deals
   
   def initialize(deals)
     @deals = deals
   end
 
-  def find_by_phone_number(phone_number)
-    phone_number.gsub!(/[^0-9]/,'')
+  def each
+    @deals.each{ |deal| yield deal }
+  end
+
+  def matching_deals?(location)
+    !matching_deals(location).empty?
+  end
+
+  def matching_deals(location)
     deals.select do |deal|
-      deal.locations.collect {|l| l.phone_number.gsub(/[^0-9]/,'') unless l.phone_number.blank?}.include?(phone_number)
+      deal.match?(location)
     end
   end
+
 end

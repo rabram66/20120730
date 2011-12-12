@@ -49,7 +49,12 @@ class LocationsController < ApplicationController
     @locations = [@locations + @places].flatten.sort do |a,b|
       a.distance_from(coordinates) <=> b.distance_from(coordinates)
     end
-      
+
+    @deals = Deal.find_by_geocode( coordinates )
+
+    @locations.each do |location|
+      location.matching_deal = @deals.matching_deals?(location)
+    end
   end
   
   # TODO

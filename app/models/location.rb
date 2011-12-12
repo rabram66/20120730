@@ -67,7 +67,15 @@ class Location < ActiveRecord::Base
       filtered[0,count]
     end
   end
+
+  def matching_deal=(match)
+    @matching_deal = match
+  end
   
+  def matching_deal?
+    @matching_deal
+  end
+
   def facebook_status
     WallPost.latest(facebook_page_id) unless facebook_page_id.blank?
   end

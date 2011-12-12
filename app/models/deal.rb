@@ -1,7 +1,8 @@
 class Deal
 
   API_KEY = "zZnf9zms8Kxp6BPE"
-  YIPIT_URL = "http://api.yipit.com/v1/deals/?key=#{API_KEY}&lat=%s&lon=%s"
+  YIPIT_URL = "http://api.yipit.com/v1/deals/?key=#{API_KEY}&lat=%s&lon=%s&radius=%s"
+  RADIUS = 2
 
   attr_reader :title, :description, :url, :mobile_url, :thumbnail_url, 
               :latitude, :longitude, :name, :locations
@@ -11,14 +12,15 @@ class Deal
       instance_variable_set("@#{k}", v)
     end
   end
+  
+  def match?(location)
+    name_match?(location) || locations_match?(location)
+  end
 
   class << self
 
-    def find_by_phone_number
-    end
-
-    def find_by_geocode(coordinates)
-      url = format(YIPIT_URL, coordinates.first, coordinates.last)
+    def find_by_geocode(coordinates,radius=RADIUS)
+      url = format(YIPIT_URL, coordinates.first, coordinates.last, radius)
       deals = []
       begin
         response = RestClient.get url, {:accept => :json}
@@ -48,9 +50,23 @@ class Deal
       rescue RestClient::Exception => e
         Rails.logger.info("Yipit API failure: (#{e}) #{url}")
       end
-      deals
+      DealSet.new(deals)
     end
 
+  end
+
+  private
+
+  def locations_match?(location)
+    locations.any? do |deal_location| 
+      deal_location.phone_match?(location) || deal_location.address_match?(location)
+    end
+  end
+  
+  def name_match?(location)
+    unless name.blank? || location.name.blank?
+      name.include? location.name
+    end
   end
 
 end

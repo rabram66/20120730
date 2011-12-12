@@ -21,7 +21,10 @@
         <ul>
           <% if Location === location -%>
             <li class="recent_tweet_<%= location.recent_tweet? %>">
-              <%= link_to location.name, :action => 'details', :address => location.full_address,  :bizname => location.name , :type => location.types, :reference => location.reference %> -  <%= location.vicinity %><img src="/images/twitter-logo.jpg" width='12'/>
+              <%= link_to location.name, :action => 'details', :address => location.full_address,  :bizname => location.name , :type => location.types, :reference => location.reference %> -  <%= location.vicinity %><img src="/images/twitter-logo.jpg" width='16'/>
+              <% if location.matching_deal? -%>
+                <img src="/images/yipit-logo.jpg" height='16'/>
+              <% end -%>
               <% unless current_user.blank? %>
                 <% if current_user.role.eql? "Admin" or current_user.id.eql?(location.user_id) %>
                   <%= link_to 'Edit', edit_location_path(location) %>
@@ -33,6 +36,9 @@
             <li class='<%= location.reference %>'> 
               <%= link_to location.name, :action => 'details', :reference => location.reference %> 
               <%= "- #{location.vicinity}" unless location.vicinity.blank? %>
+              <% if location.matching_deal? -%>
+                <img src="/images/yipit-logo.jpg" height='16'/>
+              <% end -%>
               <% if !current_user.blank? and current_user.role.eql? "Admin" %>
                 <%= link_to "Delete", "#", :class => "delete_location", :id => location.reference %>
                 <image src="/images/ajax-loader.gif" style="display: none;" class="img_<%= location.reference %>"/>
@@ -71,19 +77,24 @@
 
   <div class="deals">
     <h2 class='header'>Daily Deals</h2>
-    <div id="deal_ajax_load">
+    <!-- <div id="deal_ajax_load">
       <img src="/images/ajax-loader.gif" />
-    </div>
+    </div> -->
     <div id="yipit_deal">
+      <% @deals.each do |deal| %>
+        <div class='deal_link'>
+          <%= link_to deal.title, deal.url, :target => :blank %>
+        </div>
+      <% end -%>
     </div>    
   </div>
 
 </div>
 
 <script>  
-  $('#yipit_deal').load("/load_deals", function() {
-    $("#deal_ajax_load").hide();
-  });
+  // $('#yipit_deal').load("/load_deals", function() {
+  //   $("#deal_ajax_load").hide();
+  // });
 </script>
 
 

@@ -36,7 +36,15 @@ class Place
   def in_category?(category)
     categories.include? category
   end
+
+  def matching_deal=(match)
+    @matching_deal = match
+  end
   
+  def matching_deal?
+    @matching_deal
+  end
+
   class << self
     
     # Adds a Location to Google Places, and sets the generated reference on the location

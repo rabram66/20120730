@@ -5,6 +5,8 @@ class Event < ActiveRecord::Base
   ADDRESS_ATTRS = %w(city state address)
 
   validates_presence_of :name, :address, :city, :state, :description
+  attr_accessible :name, :address, :city, :state, :description, 
+                  :latitude, :longitude, :user_id
 
   geocoded_by :full_address
 

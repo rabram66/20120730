@@ -14,7 +14,7 @@
   <div id='event-and-deal-links'>
     <%= ( link_to "#{pluralize(@deals.length, 'Daily Deal')}", 
           mobile_deals_path(:lat => @geocode.first, :lng => @geocode.last), 
-          :"data-role" => 'button') if @deals.length > 0 %>
+          :"data-role" => 'button') if @deals.count > 0 %>
     <%= ( link_to "#{pluralize(@events.length, 'Event')}",
           mobile_events_path(:lat => @geocode.first, :lng => @geocode.last), 
           :"data-role" => 'button') if @events.length > 0 %>

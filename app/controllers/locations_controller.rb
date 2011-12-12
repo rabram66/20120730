@@ -2,7 +2,7 @@ require 'json'
 require 'open-uri'
 
 class LocationsController < ApplicationController
-  before_filter :role, :except => [:load_deals, :details, :index, :delete_place, :load_business]
+  before_filter :role, :except => [:details, :index, :delete_place, :load_business]
   before_filter :redirect_mobile_request
   
   respond_to :html, :xml, :json, :js
@@ -118,12 +118,6 @@ class LocationsController < ApplicationController
     render :partial => 'business_name', :layout => false, :results => @results
   end
   
-  # XHR GET /load_deals
-  def load_deals
-    @deals = Deal.find_by_geocode( geocode_from_cookie )
-    render :partial => 'deals', :layout => false
-  end
-   
   # GET /locations/1
   def show
     @location = Location.find(params[:id])

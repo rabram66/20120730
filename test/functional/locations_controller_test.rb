@@ -92,12 +92,4 @@ class LocationsControllerTest < ActionController::TestCase
     assert_redirected_to locations_path
   end
   
-  test 'should load deals' do
-    Deal.expects(:find_by_geocode).with([33.7489954, -84.3879824]).returns([Deal.new(:title => 'Test deal', :url => 'http://www.example.com')])
-    get :load_deals
-    assert_response :success
-    assert_template :deals
-    assert_select 'div.deal_link'
-  end
-
 end

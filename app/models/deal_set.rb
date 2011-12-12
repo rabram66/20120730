@@ -1,6 +1,8 @@
 class DealSet
   include Enumerable
   attr_accessor :deals
+
+  alias_attribute :length, :count
   
   def initialize(deals)
     @deals = deals

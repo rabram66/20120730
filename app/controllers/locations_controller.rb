@@ -30,27 +30,27 @@ class LocationsController < ApplicationController
   
     # TODO: Clean up
     @latlng = DEFAULT_LOCATION if @latlng.blank? && session[:search].blank?    
-    coordinates = @latlng.blank? ? session[:search] : @latlng  
-    if coordinates.blank?
+    @coordinates = @latlng.blank? ? session[:search] : @latlng  
+    if @coordinates.blank?
       @latlng = [33.7489954, -84.3879824] # DEFAULT_LOCATION = 'Atlanta, GA' 
-      coordinates = @latlng
+      @coordinates = @latlng
     end
-    cookies[:address] = { :value => coordinates, :expires => 1.year.from_now }
+    cookies[:address] = { :value => @coordinates, :expires => 1.year.from_now }
     
     category = params[:types].blank? ? LocationCategory::EatDrink : LocationCategory.find_by_name(params[:types])
-    @locations = Location.find_by_geocode_and_category(coordinates, category)
+    @locations = Location.find_by_geocode_and_category(@coordinates, category)
     @locations.reject! {|l| l.reference.nil? } # TODO: Remove this once reference can be gauranteed
 
-    @places = Place.find_by_geocode(coordinates, category.types)
+    @places = Place.find_by_geocode(@coordinates, category.types)
     remove_duplicate_places unless @places.empty? || @locations.empty?
-    @events = Event.upcoming_near(coordinates)
+    @events = Event.upcoming_near(@coordinates)
     
     # merge location and places
     @locations = [@locations + @places].flatten.sort do |a,b|
-      a.distance_from(coordinates) <=> b.distance_from(coordinates)
+      a.distance_from(@coordinates) <=> b.distance_from(@coordinates)
     end
 
-    @deals = Deal.find_by_geocode( coordinates )
+    @deals = Deal.find_by_geocode( @coordinates )
 
     @locations.each do |location|
       location.matching_deal = @deals.matching_deals?(location)

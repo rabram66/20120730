@@ -5,3 +5,9 @@
 .tweet a, .tweet a:visited, .feed a, .feed a:visited {
     color: #0066CC
 }
+
+span.distance-from{
+  font-style: italic;
+  font-size: 0.9em;
+  float: right;
+}

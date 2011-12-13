@@ -16,6 +16,7 @@ gem 'hoptoad_notifier'             # exception notification
 gem 'spreadsheet'                  # used for spreadsheet imports
 gem 'taps'                         # enables heroku db:push
 gem 'dalli'                        # memcached interface
+gem 'rinku'                        # autolink tweet and facebook text
 
 group :test do
   gem 'mocha'   # stubs objects

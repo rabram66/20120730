@@ -7,36 +7,17 @@ class LocationsController < ApplicationController
   
   respond_to :html, :xml, :json, :js
   
-  RADIUS = '750'  
-  DEFAULT_LOCATION = [33.7489954, -84.3879824] # Atlanta, GA
+  RADIUS = '750'
+  DEFAULT_COORDINATES = [33.7489954, -84.3879824] # Atlanta, GA
 
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
   
 
   # GET / (/locations/index)
   def index
-
-    # TODO: Clean up
-    @search = params[:search] unless params[:search].blank?
-    unless @search.blank?
-      @latlng = Geocoder.coordinates(@search)
-      session[:search] = @latlng unless @latlng.blank?
-    else      
-      if session[:search].blank?
-        ip_coords = Geocoder.coordinates(request.remote_ip)
-        @latlng = ip_coords unless ip_coords.first == 0.0 && ip_coords.last == 0.0
-      end
-    end
-  
-    # TODO: Clean up
-    @latlng = DEFAULT_LOCATION if @latlng.blank? && session[:search].blank?    
-    @coordinates = @latlng.blank? ? session[:search] : @latlng  
-    if @coordinates.blank?
-      @latlng = [33.7489954, -84.3879824] # DEFAULT_LOCATION = 'Atlanta, GA' 
-      @coordinates = @latlng
-    end
-    cookies[:address] = { :value => @coordinates, :expires => 1.year.from_now }
     
+    set_coordinates
+
     category = params[:types].blank? ? LocationCategory::EatDrink : LocationCategory.find_by_name(params[:types])
     @locations = Location.find_by_geocode_and_category(@coordinates, category)
     @locations.reject! {|l| l.reference.nil? } # TODO: Remove this once reference can be gauranteed
@@ -59,8 +40,8 @@ class LocationsController < ApplicationController
   
   # TODO
   def search
-    @latlng = [params[:latitude].to_f, params[:longitude].to_f]
-    session[:search] = @latlng
+    @coordinates = [params[:lat].to_f, params[:lng].to_f]
+    session[:search] = @coordinates
     redirect_to locations_path
   end
   
@@ -199,9 +180,31 @@ class LocationsController < ApplicationController
   end
   
   private
+  
+  def set_coordinates
+    search = params[:search]
+    lat,lng = params[:lat], params[:lng] 
+
+    @coordinates = case
+      when !lat.blank? && !lng.blank?; [lat.to_f, lng.to_f]
+      when !search.blank?; Geocoder.coordinates(search)
+      when session[:search]; session[:search]
+      when cookies[:address]; cookies[:address].split("&") 
+    end
+    
+    unless @coordinates
+      @coordinates = Geocoder.coordinates(request.remote_ip)
+      if @coordinates.first == 0.0 && @coordinates.last == 0.0
+        @coordinates = DEFAULT_COORDINATES
+      end
+    end
+
+    session[:search] = @coordinates
+    cookies[:address] = { :value => @coordinates, :expires => 1.year.from_now }
+  end
 
   def geocode_from_cookie
-    cookies[:address] ? cookies[:address].split("&") : DEFAULT_LOCATION
+    cookies[:address] ? cookies[:address].split("&") : DEFAULT_COORDINATES
   end
   
   def redirect_mobile_request

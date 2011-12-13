@@ -2,8 +2,8 @@
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
 <script>
   var map;
-  var latitude = <%= session[:search].blank? ? @latlng[0] : session[:search][0] %>;
-  var longitude = <%= session[:search].blank? ? @latlng[1] : session[:search][1] %>;
+  var latitude = <%= session[:search].blank? ? @coordinates[0] : session[:search][0] %>;
+  var longitude = <%= session[:search].blank? ? @coordinates[1] : session[:search][1] %>;
   function initialize() {    
     var mapOptions = {
       center: new google.maps.LatLng(latitude, longitude),
@@ -61,16 +61,16 @@
             // Success!
             longitude = position.coords.longitude;
             latitude = position.coords.latitude;
-            markOutLocation(position.coords.latitude, position.coords.longitude);                      
-            window.location = "/search?longitude=" + longitude + "&latitude=" + latitude ;
+            markOutLocation(position.coords.latitude, position.coords.longitude);
+            window.location = "/search?lng=" + longitude + "&lat=" + latitude ;
           }, 
           function () {            
-            markOutLocation(<%= @latlng[0] %>, <%= @latlng[1] %>);
+            markOutLocation(<%= @coordinates[0] %>, <%= @coordinates[1] %>);
           }        
         );      
         }
         else {             
-          markOutLocation(<%= @latlng[0] %>, <%= @latlng[1] %>);
+          markOutLocation(<%= @coordinates[0] %>, <%= @coordinates[1] %>);
         }
       <% end %>
       

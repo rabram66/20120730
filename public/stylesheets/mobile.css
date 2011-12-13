@@ -48,9 +48,13 @@ p.tweeted-at {
   font-style: italic;
 }
 
+div.mobile-twitter-mention .mentioner {
+  font-weight: bold;
+}
+
 div.mobile-twitter-mention p.tweet-text {
   white-space: normal;
-  font-weight: bold;
+  font-weight: normal;
   margin-left: 0em;
 }
 

@@ -45,7 +45,13 @@
           <ul data-role='listview' data-inset='true'>
             <li>
               <img src="<%= tweet.profile_image_url %>" class="ul-li-thumb"/>
-              <p class='tweet-text ul-li-desc'><%= raw tweet.text %></p>
+              <p class='tweeted-by ul-li-desc'>
+                <span class='mentioner'><%= tweet.screen_name%></span>
+                <a href="http://twitter.com/<%= tweet.screen_name %>/status/<%= tweet.tweet_id %>" target="_blank">
+                  follow
+                </a>
+              </p>
+              <p class='tweet-text ul-li-desc'><%= auto_link( tweet.text, :link => :urls, :html => {:target => :blank} ).html_safe %></p>
               <p class='tweeted-at ul-li-desc'><%= time_ago_in_words(tweet.created_at) %> ago</p>
             </li>
           </ul>

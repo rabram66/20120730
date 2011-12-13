@@ -9,7 +9,7 @@
   <div id='mobile-map'>MAP</div>
   <div data-role='controlgroup' data-type='horizontal' id='directions-and-phone-buttons' class='center-wrapper'>
     <a href='#' data-role='button' data-inline='true' id='mobile-directions-button'>Directions</a>
-    <% if @location.phone_number -%>
+    <% unless @location.phone_number.blank? -%>
       <a href="tel:<%= number_to_phone @location.phone_number, :area_code => true %>" data-role='button' data-inline='true'><%= number_to_phone @location.phone_number, :area_code => true %></a>
     <% end -%>
   </div>

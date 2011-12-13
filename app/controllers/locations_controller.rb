@@ -38,7 +38,7 @@ class LocationsController < ApplicationController
     end
   end
   
-  # TODO
+  # GET /search?lat=33.3lng=-84.5 # Called via ajax based on browser geo nav
   def search
     @coordinates = [params[:lat].to_f, params[:lng].to_f]
     session[:search] = @coordinates
@@ -189,7 +189,7 @@ class LocationsController < ApplicationController
       when !lat.blank? && !lng.blank?; [lat.to_f, lng.to_f]
       when !search.blank?; Geocoder.coordinates(search)
       when session[:search]; session[:search]
-      when cookies[:address]; cookies[:address].split("&") 
+      when cookies[:address]; cookies[:address].split("&").map(&:to_f) 
     end
     
     unless @coordinates

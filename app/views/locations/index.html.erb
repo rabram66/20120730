@@ -63,7 +63,14 @@
           <h3><%= event.name %></h3>
           <ul class='event-details'>
             <li class='event-desc'><%= event.description %></li>
-            <li class='event-dates'>From <span class='event-date'><%= event.start_date.stamp("Jan 1 at 01:00 am") %></span> to <span class='event-date'><%= event.end_date.stamp("Jan 1 at 01:00 am") %></span></li>
+            <li class='event-dates'>
+              <% if event.start_date -%>
+                from <span class='event-date'><%= event.start_date.stamp("Jan 1 at 01:00 am") if event.start_date %></span>
+              <% end -%>
+              <% if event.end_date -%>
+                 to <span class='event-date'><%= event.end_date.stamp("Jan 1 at 01:00 am") %></span>
+              <% end -%>
+            </li>
             <li class='event-address'><%= event.address %></li>
             <li class='event-distance'>(<%=  number_with_precision(event.distance, :precision => 1) %> miles from here)</li>
           </ul>

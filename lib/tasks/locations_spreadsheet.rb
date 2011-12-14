@@ -36,8 +36,10 @@ class LocationsSpreadsheet
 
   def category_to_type(category)
     case category.strip
-      when "Stores"; "clothing_store"
+      when /^store/i; "clothing_store"
       when "Relax"; "beauty_salon"
+      when /^spas/i; "spa"
+      when /^nightclub/i; "night_club" 
       else "restaurant"
     end
   end

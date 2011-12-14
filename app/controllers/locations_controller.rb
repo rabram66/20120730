@@ -194,7 +194,7 @@ class LocationsController < ApplicationController
     
     unless @coordinates
       @coordinates = Geocoder.coordinates(request.remote_ip)
-      if @coordinates.first == 0.0 && @coordinates.last == 0.0
+      if !@coordinates || (@coordinates.first == 0.0 && @coordinates.last == 0.0)
         @coordinates = DEFAULT_COORDINATES
       end
     end

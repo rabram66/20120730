@@ -54,6 +54,8 @@ div.mobile-twitter-mention .mentioner {
 
 #mobile-twitter-status p.tweet-text {
   font-weight: bold;
+  white-space: normal;
+  margin-left: 0em;
 }
 
 div.mobile-twitter-mention p.tweet-text {

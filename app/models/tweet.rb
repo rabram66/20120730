@@ -54,8 +54,10 @@ class Tweet
     end
     
     def search(screen_name, count=10)
-      tweets = Rails.cache.fetch("twitter:mentions:#{screen_name}", :expires_in => 30.minutes) do
-        api(SEARCH_URL, CGI.escape("@#{screen_name}"), count) do |response|
+      cache_key = "twitter:mentions:#{screen_name}"
+      cached_tweets = Rails.cache.read(cache_key)
+      unless cached_tweets
+        tweets = api(SEARCH_URL, CGI.escape("@#{screen_name}"), count) do |response|
           response['results'][0,count].map do |result|
             Tweet.new(
               :name              => result['from_user_name'],
@@ -67,7 +69,12 @@ class Tweet
             )
           end
         end
+        if tweets
+          Rails.cache.write(cache_key, tweets, :expires_in => 30.minutes)
+          cached_tweets = tweets
+        end
       end
+      cached_tweets || []
     end
 
     private

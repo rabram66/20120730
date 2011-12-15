@@ -22,7 +22,7 @@
         <ul data-role='listview' data-inset='true'>
           <li id='mobile-twitter-status'>
             <img src='/images/twitter_newbird_blue.png' class='ul-li-thumb'/>
-            <%= auto_link( @twitter_status.text, :link => :urls, :html => {:target => :blank} ).html_safe %>
+            <p class='tweet-text ul-li-desc'><%= auto_link( @twitter_status.text, :link => :urls, :html => {:target => :blank} ).html_safe %></p>
             <p class='tweeted-at ul-li-desc'><%= time_ago_in_words(@twitter_status.created_at) %> ago</p>
           </li>
         </ul>

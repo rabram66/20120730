@@ -2,7 +2,7 @@ require 'json'
 require 'open-uri'
 
 class LocationsController < ApplicationController
-  before_filter :role, :except => [:details, :index, :delete_place, :load_business]
+  before_filter :role, :except => [:details, :index, :delete_place]
   before_filter :redirect_mobile_request
   
   respond_to :html, :xml, :json, :js
@@ -71,34 +71,7 @@ class LocationsController < ApplicationController
       render :text => "2"
     end
   end
-  
-  def load_business
-    address = params[:address]    
-    category = params[:category]
-    coordinates= Geocoder.coordinates(address)  
-          
-    xml_res = Array.new
     
-    begin
-      near_your_locations = HTTParty.get("https://maps.googleapis.com/maps/api/place/search/json?location=#{coordinates.join(',')}&types=#{category}&radius=#{RADIUS}&sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc")
-      near_your_locations['results'].each do |location|
-        xml_res += [location['name']]
-      end
-    rescue
-    end
-    
-    begin      
-      locations = Location.near(coordinates, 2)
-      locations.each do |location|
-        xml_res += [location.name]
-      end
-    rescue
-    end
-    
-    @results = xml_res.sort    
-    render :partial => 'business_name', :layout => false, :results => @results
-  end
-  
   # GET /locations/1
   def show
     @location = Location.find(params[:id])
@@ -117,14 +90,6 @@ class LocationsController < ApplicationController
       format.html # new.html.erb
       format.xml  { render :xml => @location }
     end
-  end
-  
-  # XHR /load_page
-  def load_page
-    results = RestClient.get "https://graph.facebook.com/search?q=#{params[:q].gsub(" ", "+")}&limit=5&type=page"
-    res = ActiveSupport::JSON.decode(results)    
-    
-    render :json => res['data']
   end
   
   # GET /locations/1/edit

@@ -19,13 +19,6 @@ $(document).ready(function() {
         $(this).attr("disabled","true");
         document.location_name.submit();
     })
-
-    $("#location_facebook_page_id").tokenInput("/load_page", {
-        crossDomain: false,
-        prePopulate: $("#location_facebook_page_id").data("pre"),
-        theme: "facebook"
-    });
-  
   
     $('.delete_location').live('click', function() {
         var id = $(this).attr("id");
@@ -49,18 +42,9 @@ $(document).ready(function() {
     })
     
     $("#route").click(function(){
-        calcRoute();
+      calcRoute();
     })
     
-    
-    $("#advertise_address_name").live('change', function() {
-        $("#ajax_load").show();
-        $('#advertise_business_name').load("/load_business/" + $(this).val().replace(" ","%20").replace(", ",",%20")+ "?category=" + $("#advertise_business_type").val(), function() {
-            $("#ajax_load").hide();
-        });
-    //$("#ajax_load").hide();
-    }) 
-  
     $('#mentions-container').pajinate({
       items_per_page: 4
     });

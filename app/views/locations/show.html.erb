@@ -1,83 +1,53 @@
-<% content_for :stylesheets do  %>
-  <%= stylesheet_link_tag "facebox/facebox" %>
-<% end %>
-
-<% content_for :javascripts do  %>
-  <%= javascript_include_tag "facebox/jquery", "facebox/facebox" %>
-  <script type="text/javascript">
-    jQuery(document).ready(function($) {
-      $('a[rel*=facebox]').facebox({
-        loadingImage : '../images/facebox/loading.gif',
-        closeImage   : '../images/facebox/closelabel.png'
-      })
-    })
-  </script>
-<% end %>
-
 <div class='admin-content'>
   <p id="notice"><%= notice %></p>
-  <p>
-    Thank you for signing up with Nearbythis. Below is the information that we will display when someone clicks the link to your business. 
-  </p>
-
   <p>
     <b>Business Name:</b>
     <%= @location.name %>
   </p>
   <p>
-    <b>Address:</b>
+    <b>Street Address:</b>
     <%= @location.address %>
   </p>
-
+  <p>
+    <b>City:</b>
+    <%= @location.city %>
+  </p>
+  <p>
+    <b>State:</b>
+    <%= @location.state %>
+  </p>
   <p>
     <b>Phone:</b>
     <%= number_to_phone @location.phone_number, :area_code => true %>
   </p>
-
   <p>
-    <b>Status:</b>
-    <%= @location.reference.nil? ? "INVALID_REQUEST" : "OK" %>
+    <b>General Type:</b>
+    <%= @location.general_type %>
   </p>
-
-  <p class="tweet"> 
-    <% if @location.twitter_name %>
-      <b>Twitter Tweet
-        (<%= link_to @location.twitter_name, "http://twitter.com/#{@location.twitter_name}", :target => "_blank" %>) 
-        - <%= link_to "Edit", "#twitter_name", :rel => "facebox"  %>:</b><br/>
-      <% @location.tweets.each do |tweet| %>    
-          <%= link_to @location.twitter_name, "http://twitter.com/#{@location.twitter_name}", :target => "_blank" %>: 
-          <%= tweet.text.html_safe %> 
-        <br/>
-        <br/>
-      <% end %>
-    <% else %>
-      <%= link_to "Edit Twitter Name", "#twitter_name", :rel => "facebox"  %></b><br/>
-    <% end %>
+  <p>
+    <b>Specific Type:</b>
+    <%= @location.types %>
   </p>
-
-  <p class="feed">
-    <% if @location.facebook_page_id -%>
-      <b>Facebook Page Feed
-        (<%= link_to( @location.facebook_status.author_name, "http://www.facebook.com/#{@location.facebook_page_id}" ) if @location.facebook_status %>)
-        - <%= link_to "Edit", "#facebook_page", :rel => "facebox" %>
-        :</b><br/>
-      <% @location.facebook_posts.each do |wall_post| -%>
-        <%= link_to wall_post.author_name, "http://www.facebook.com/#{@location.facebook_page_id}" %>: <%= wall_post.text.html_safe %><br/><br/>
-      <% end -%>
-    <% else %>
-      <%= link_to "Edit Facebook Page", "#facebook_page", :rel => "facebox" %>
-    <% end %>
+  <p>
+    <b>Twitter Name:</b>
+    <%= @location.twitter_name || "UNKNOWN" %>
   </p>
-
-  <%= render "edit_twitter" %>
-
-  <%= render "edit_facebook" %>
-
-  <ul>
-    <% for location in @location.nearbys(20) -%>
-      <li><%= link_to location.address, location %> <%= location.distance %></li>
-    <% end -%>
-  </ul>
+  <p id='twitter-status'>
+    <b>Latest Twitter Status:</b>
+    <blockquote><%= @location.twitter_status.text if @location.twitter_status %></blockquote>
+  </p>
+  <p>
+    <b>Facebook Page:</b>
+    <%= @location.facebook_page_id || "UNKNOWN" %>
+  </p>
+  <p id='facebook-status'>
+    <b>Latest Facebook Post</b>
+    <blockquote><%= @location.facebook_status.text if @location.facebook_status %></blockquote>
+  </p>
+  <p>
+    <b>Google Places Reference ID:</b>
+    <blockquote><%= @location.reference %></blockquote>
+  </p>
 
   <%= link_to 'Edit', edit_location_path(@location) %> |
   <%= link_to 'Back', locations_path %>

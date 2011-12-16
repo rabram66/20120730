@@ -15,14 +15,18 @@ class LocationsSpreadsheet
         # COMPANY_NAME, ADDRESS, CITY, STATE, ZIP, Category, Twitter_Name
         begin
           next unless row[0] # Skip empty rows
-          Location.new(
-            :name         => row[0].strip,
-            :address      => row[1].strip,
-            :city         => row[2].strip,
-            :state        => row[3].strip,
-            :types        => category_to_type(row[5]),
-            :twitter_name => row[6].strip
-          ).save!
+          attrs = {
+            :name         => strip(row[0]),
+            :address      => strip(row[1]),
+            :city         => strip(row[2]),
+            :state        => strip(row[3]),
+            :twitter_name => strip(row[6]),
+            :types        => category_to_type(row[5])
+          }
+          attrs[:phone] = row[7].gsub(/[^0-9]/,'') unless row[7].blank?
+
+          Location.new(attrs).save!
+
           print '.'; $stdout.flush
         rescue
           puts "Error processing #{row.inspect}: #{$!}"
@@ -33,8 +37,12 @@ class LocationsSpreadsheet
   end
 
   private
+  
+  def strip(value)
+    value && value.strip
+  end
 
-  def category_to_type(category)
+  def category_to_type(category='')
     case category.strip
       when /^store/i; "clothing_store"
       when "Relax"; "beauty_salon"

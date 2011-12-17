@@ -30,7 +30,7 @@ class MobileControllerTest < ActionController::TestCase
 
   test "should get detail" do
     Tweet.expects(:latest).returns(nil)
-    Tweet.expects(:search).returns([])
+    Tweet.expects(:mentions).returns([])
     get :detail, :id => @location.reference
     assert_response :success
     assert_template :detail

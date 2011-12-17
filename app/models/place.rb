@@ -44,6 +44,12 @@ class Place
   def matching_deal?
     @matching_deal
   end
+  
+  def twitter_mentions(count=10)
+    tweets = Tweet.search(name, count*2) # Fetch 2 times the count requested
+    filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(tweets)
+    filtered[0,count]
+  end
 
   class << self
     

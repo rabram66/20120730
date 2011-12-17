@@ -51,10 +51,11 @@ class LocationsController < ApplicationController
     @location = Location.find_by_reference(reference) || Place.find_by_reference(reference)
     @origin_address = params[:address]
     
+    @user_saying = @location.twitter_mentions(20)
+
     if Location === @location
       @last_tweet = @location.twitter_status    
       @last_post = @location.facebook_status      
-      @user_saying = @location.twitter_mentions(20)
     end
   end
   

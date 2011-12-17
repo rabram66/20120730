@@ -2,6 +2,7 @@ class Tweet
   USER_TIMELINE_URL = "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=%s&count=%d"
   SEARCH_URL = "http://search.twitter.com/search.json?q=%s&page=1&rpp=%d"
   FOLLOW_URL = "http://twitter.com/%s/status/%s"  
+  RADIUS = 5 # radius of search in miles for tweets search
 
   attr_reader :name, :screen_name, :text, :created_at, :profile_image_url, :tweet_id
 
@@ -52,12 +53,16 @@ class Tweet
         end
       end
     end
+
+    def mentions(screen_name, count=10)
+      search("@#{screen_name}", count)
+    end
     
-    def search(screen_name, count=10)
-      cache_key = "twitter:mentions:#{screen_name}"
+    def search(query, count=10)
+      cache_key = "twitter:search:#{query}"
       cached_tweets = Rails.cache.read(cache_key)
       unless cached_tweets
-        tweets = api(SEARCH_URL, CGI.escape("@#{screen_name}"), count) do |response|
+        tweets = api(SEARCH_URL, CGI.escape(query), count) do |response|
           response['results'][0,count].map do |result|
             Tweet.new(
               :name              => result['from_user_name'],

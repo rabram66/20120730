@@ -46,9 +46,13 @@ class Place
   end
   
   def twitter_mentions(count=10)
-    tweets = Tweet.search(name, count*2) # Fetch 2 times the count requested
-    filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(tweets)
-    filtered[0,count]
+    if name.blank?
+      []
+    else
+      tweets = Tweet.search(name, count*2) # Fetch 2 times the count requested
+      filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(tweets)
+      filtered[0,count]
+    end
   end
 
   class << self

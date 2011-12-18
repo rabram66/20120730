@@ -19,7 +19,7 @@
             <%= link_to "Events", "/events" %> &nbsp;  
           <% end %>
           <% if current_user.role == "Admin" %>&nbsp;            
-            || <%= link_to "Users", "/users" %> &nbsp;  
+            || <%= link_to "Locations", locations_path %>&nbsp;<%= link_to "Users", "/users" %>&nbsp;
           <% end %>
           <% if current_user.role == "User" or current_user.role == "Admin" %>
             <%= link_to "Signup", "/signup" %> &nbsp; 

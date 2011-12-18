@@ -2,61 +2,21 @@ require 'json'
 require 'open-uri'
 
 class LocationsController < ApplicationController
-  before_filter :role, :except => [:details, :index, :delete_place]
-  before_filter :redirect_mobile_request
+  before_filter :role
   
   respond_to :html, :xml, :json, :js
   
-  RADIUS = '750'
-  DEFAULT_COORDINATES = [33.7489954, -84.3879824] # Atlanta, GA
-
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
   
 
   # GET / (/locations/index)
   def index
-    
-    set_coordinates
+    @address = params[:address]
+    @coordinates = Geocoder.coordinates(@address) unless @address.blank?
+    @name = params[:name] unless params[:name].blank?
+    @general_type = params[:general_type] unless params[:general_type].blank?
 
-    category = params[:types].blank? ? LocationCategory::EatDrink : LocationCategory.find_by_name(params[:types])
-    @locations = Location.find_by_geocode_and_category(@coordinates, category)
-    @locations.reject! {|l| l.reference.nil? } # TODO: Remove this once reference can be gauranteed
-
-    @places = Place.find_by_geocode(@coordinates, category.types)
-    remove_duplicate_places unless @places.empty? || @locations.empty?
-    @events = Event.upcoming_near(@coordinates)
-    
-    # merge location and places
-    @locations = [@locations + @places].flatten.sort do |a,b|
-      a.distance_from(@coordinates) <=> b.distance_from(@coordinates)
-    end
-
-    @deals = Deal.find_by_geocode( @coordinates )
-
-    @locations.each do |location|
-      location.matching_deal = @deals.matching_deals?(location)
-    end
-  end
-  
-  # GET /search?lat=33.3lng=-84.5 # Called via ajax based on browser geo nav
-  def search
-    @coordinates = [params[:lat].to_f, params[:lng].to_f]
-    session[:search] = @coordinates
-    redirect_to locations_path
-  end
-  
-  # GET /details/QUIOUREIOWFI-FJSDJFII38427387 (reference)
-  def details
-    reference = params[:reference]
-    @location = Location.find_by_reference(reference) || Place.find_by_reference(reference)
-    @origin_address = params[:address]
-    
-    @user_saying = @location.twitter_mentions(20)
-
-    if Location === @location
-      @last_tweet = @location.twitter_status    
-      @last_post = @location.facebook_status      
-    end
+    @locations = Location.all_by_filters(@general_type, @coordinates, @name)
   end
   
   # XHR GET /delete_place/FKDASJFKJIWRIRU-4RJ3IWRJWI (Places reference)
@@ -148,14 +108,10 @@ class LocationsController < ApplicationController
   private
   
   def set_coordinates
-    search = params[:search]
-    lat,lng = params[:lat], params[:lng] 
+    address = params[:address]
 
     @coordinates = case
-      when !lat.blank? && !lng.blank?; [lat.to_f, lng.to_f]
-      when !search.blank?; Geocoder.coordinates(search)
-      when session[:search]; session[:search]
-      when cookies[:address]; cookies[:address].split("&").map(&:to_f) 
+      when !address.blank?; Geocoder.coordinates(address)
     end
     
     unless @coordinates

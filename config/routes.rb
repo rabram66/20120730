@@ -7,7 +7,7 @@ LocationDB::Application.routes.draw do
   constraints(Subdomain) do
 
     devise_for :users
-    resources :users, :events, :advertises, :locations
+    resources :users, :events, :locations
 
     #------------------------ Consumer --------------------------
     root :to => "places#index"
@@ -17,11 +17,11 @@ LocationDB::Application.routes.draw do
     get "details/:id" => "places#details", :as => :locations_details
 
     #------------------------Website-----------------------------
-    post "locations/index"
-    get "/signup" => "locations#new"
-    get "locations/new" => "locations#new"
-    get "/delete_place/:id" => "locations#delete_place"
-    get "/xml_res" => "locations#xml_res"  
+    # post "locations/index"
+    # get "/signup" => "locations#new"
+    # get "locations/new" => "locations#new"
+    # get "/delete_place/:id" => "locations#delete_place"
+    # get "/xml_res" => "locations#xml_res"  
   
     #----------------------------- Mobile ---------------------------
     get "/mobile"            => "mobile#index",  :as => :mobile_index

@@ -17,8 +17,9 @@ class LocationsController < ApplicationController
 
     @coordinates = Geocoder.coordinates(@address) unless @address.blank?
     @name = params[:name] unless params[:name].blank?
+    @order = params[:order]
 
-    @locations = Location.all_by_filters(@general_type, @radius, @coordinates, @name).page(params[:page])
+    @locations = Location.all_by_filters(@general_type, @radius, @coordinates, @name, @order).page(params[:page])
   end
   
   # GET /locations/1

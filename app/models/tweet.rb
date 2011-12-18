@@ -68,8 +68,7 @@ class Tweet
       end
     end
     
-    
-    # TODO: Factor out caching
+    # TODO: Factor out caching as was done with #geosearch
     def search(query, count=10)
       cache_key = "twitter:search:#{query}"
       cached_tweets = Rails.cache.read(cache_key)

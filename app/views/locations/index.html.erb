@@ -5,8 +5,9 @@
       <%= form_tag locations_path, :method => 'get' do %>
         Find a place to <%= select_tag :general_type, options_for_select(LocationCategory.all.map(&:name), @general_type), :include_blank => true %>
         within <%= select_tag :radius, options_for_select([1,5,10,20], @radius), :include_blank => true %> miles
-        of <%= text_field_tag :address, @address, :size => 40 %>
-        named <%= text_field_tag :name, @name, :size => 40 %>
+        of <%= text_field_tag :address, @address, :size => 40 %><br/>
+        Named <%= text_field_tag :name, @name, :size => 40 %>
+        ordered by <%= select_tag :order, options_for_select([ ['Name','name'],['Distance','distance'],['Address','address'],['Twitter Name','twitter_name'],['Facebook Page','facebook_page_id'] ], @order) %>
         <%= submit_tag "Search" %>
       <% end %>
     </span>
@@ -18,6 +19,7 @@
   <table id="locations">
     <tr>
       <th>Name</th>
+      <th>Distance</th>
       <th>Address</th>
       <th>Type</th>
       <th>Twitter Name</th>
@@ -27,6 +29,7 @@
     <% @locations.each do |location| %>
       <tr>
         <td><%= link_to location.name, location_path(location) %></td>
+        <td><%= "#{number_with_precision(location.distance, :precision => 1)} miles" if location.respond_to?(:distance) %></td>
         <td><%= location.address %></td>
         <td><%= location.general_type %></td>
         <td><%= location.twitter_name %></td>

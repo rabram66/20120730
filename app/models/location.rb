@@ -39,11 +39,12 @@ class Location < ActiveRecord::Base
     def find_by_geocode_and_category(coordinates,category=LocationCategory::EatDrink)
       find_by_geocode(coordinates).where(:general_type => category.name)
     end
-    def all_by_filters(general_type=nil, coordinates=nil, name=nil, limit=100)
+    def all_by_filters(general_type=nil, radius=nil, coordinates=nil, name=nil, limit=100)
+      radius ||= 20
       relation = scoped
       relation = relation.where(:general_type => general_type) if general_type
       relation = relation.where(arel_table[:name].matches("%#{name}%")) if name
-      relation = relation.near(coordinates, 20) if coordinates
+      relation = relation.near(coordinates, radius) if coordinates
       relation = relation.limit(limit) if limit
       relation = relation.order(:name)
       relation

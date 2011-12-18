@@ -11,28 +11,16 @@ class LocationsController < ApplicationController
 
   # GET / (/locations/index)
   def index
+    @general_type = params[:general_type] unless params[:general_type].blank?
+    @radius = params[:radius].to_i unless params[:radius].blank?
     @address = params[:address]
+
     @coordinates = Geocoder.coordinates(@address) unless @address.blank?
     @name = params[:name] unless params[:name].blank?
-    @general_type = params[:general_type] unless params[:general_type].blank?
 
-    @locations = Location.all_by_filters(@general_type, @coordinates, @name)
+    @locations = Location.all_by_filters(@general_type, @radius, @coordinates, @name)
   end
   
-  # XHR GET /delete_place/FKDASJFKJIWRIRU-4RJ3IWRJWI (Places reference)
-  def delete_place    
-    myarray = {:reference => params[:id]}
-    myarray = ActiveSupport::JSON.encode(myarray) 
-    result = RestClient.post "https://maps.googleapis.com/maps/api/place/delete/json?sensor=false&key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc", myarray, :content_type => :json, :accept => :json
-    res = ActiveSupport::JSON.decode(result)
-    
-    if res['status'].eql?("OK")
-      render :text => "1"
-    else
-      render :text => "2"
-    end
-  end
-    
   # GET /locations/1
   def show
     @location = Location.find(params[:id])
@@ -105,47 +93,5 @@ class LocationsController < ApplicationController
     end
   end
   
-  private
-  
-  def set_coordinates
-    address = params[:address]
-
-    @coordinates = case
-      when !address.blank?; Geocoder.coordinates(address)
-    end
-    
-    unless @coordinates
-      @coordinates = Geocoder.coordinates(request.remote_ip)
-      if !@coordinates || (@coordinates.first == 0.0 && @coordinates.last == 0.0)
-        @coordinates = DEFAULT_COORDINATES
-      end
-    end
-
-    session[:search] = @coordinates
-    cookies[:address] = { :value => @coordinates, :expires => 1.year.from_now }
-  end
-
-  def geocode_from_cookie
-    cookies[:address] ? cookies[:address].split("&") : DEFAULT_COORDINATES
-  end
-  
-  def redirect_mobile_request
-    redirect_to :controller => 'mobile', :action => 'index' if is_mobile_device?
-  end
-  
-  def remove_duplicate_places
-    @places.reject! do |place| 
-      exclude_place? place
-    end
-  end
-
-  def exclude_place?(place)
-    @locations.any? do |location| 
-      place.name == location.name ||
-      (!place.address.blank? && place.address.include?(location.address)) ||
-      place.coordinates == location.coordinates
-    end
-  end
-
 end 
 

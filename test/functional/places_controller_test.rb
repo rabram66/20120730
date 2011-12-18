@@ -36,7 +36,7 @@ class PlacesControllerTest < ActionController::TestCase
     place.latitude  = 33.7489954
     place.longitude = -84.3879824
     Place.expects(:find_by_reference).with('123').returns(place)
-    Tweet.expects(:search).with(place.name,40).returns([])
+    Tweet.expects(:geosearch).with("\"#{place.name}\"",place.coordinates,5,40).returns([])
     get :details, :reference => "123"
     assert_response :success
     assert_template :details

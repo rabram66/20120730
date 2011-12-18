@@ -49,7 +49,8 @@ class Place
     if name.blank?
       []
     else
-      tweets = Tweet.search(name, count*2) # Fetch 2 times the count requested
+      # Search on the quoted name for a better match
+      tweets = Tweet.geosearch("\"#{name}\"", coordinates, 5, count*2) # Fetch 2 times the count requested
       filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(tweets)
       filtered[0,count]
     end

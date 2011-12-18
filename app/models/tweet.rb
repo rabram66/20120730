@@ -1,6 +1,7 @@
 class Tweet
   USER_TIMELINE_URL = "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=%s&count=%d"
   SEARCH_URL = "http://search.twitter.com/search.json?q=%s&page=1&rpp=%d"
+  GEOSEARCH_URL = "http://search.twitter.com/search.json?q=%s&geocode=%s&page=1&rpp=%d"
   FOLLOW_URL = "http://twitter.com/%s/status/%s"  
   RADIUS = 5 # radius of search in miles for tweets search
 
@@ -57,6 +58,24 @@ class Tweet
     def mentions(screen_name, count=10)
       search("@#{screen_name}", count)
     end
+
+    def geosearch(query, coordinates, radius=5, count=10)
+      cache_key = "twitter:search:#{query}"
+      cached_tweets = Rails.cache.read(cache_key)
+      geocode = "#{[coordinates.first, coordinates.last, radius].join(',')}mi"
+      unless cached_tweets
+        tweets = api(GEOSEARCH_URL, CGI.escape(query), geocode, count) do |response|
+          response['results'][0,count].map do |result|
+            transform_search_result result
+          end
+        end
+        if tweets
+          Rails.cache.write(cache_key, tweets, :expires_in => 30.minutes)
+          cached_tweets = tweets
+        end
+      end
+      cached_tweets || []
+    end
     
     def search(query, count=10)
       cache_key = "twitter:search:#{query}"
@@ -64,14 +83,7 @@ class Tweet
       unless cached_tweets
         tweets = api(SEARCH_URL, CGI.escape(query), count) do |response|
           response['results'][0,count].map do |result|
-            Tweet.new(
-              :name              => result['from_user_name'],
-              :screen_name       => result['from_user'],
-              :text              => result['text'],
-              :created_at        => DateTime.parse( result['created_at'] ),
-              :profile_image_url => result['profile_image_url'],
-              :tweet_id          => result['id_str']
-            )
+            transform_search_result
           end
         end
         if tweets
@@ -127,6 +139,17 @@ class Tweet
                  :created_at        => DateTime.parse( result['created_at'] ),
                  :profile_image_url => result['user']['profile_image_url'],
                  :tweet_id          => result['id_str']
+      )
+    end
+
+    def transform_search_result(result)
+      Tweet.new(
+        :name              => result['from_user_name'],
+        :screen_name       => result['from_user'],
+        :text              => result['text'],
+        :created_at        => DateTime.parse( result['created_at'] ),
+        :profile_image_url => result['profile_image_url'],
+        :tweet_id          => result['id_str']
       )
     end
 

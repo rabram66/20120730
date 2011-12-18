@@ -60,23 +60,16 @@ class Tweet
     end
 
     def geosearch(query, coordinates, radius=5, count=10)
-      cache_key = "twitter:search:#{query}"
-      cached_tweets = Rails.cache.read(cache_key)
-      geocode = "#{[coordinates.first, coordinates.last, radius].join(',')145}mi"
-      unless cached_tweets
-        tweets = api(GEOSEARCH_URL, CGI.escape(query), geocode, count) do |response|
-          response['results'][0,count].map do |result|
-            transform_search_result result
-          end
-        end
-        if tweets
-          Rails.cache.write(cache_key, tweets, :expires_in => 30.minutes)
-          cached_tweets = tweets
+      geocode = "#{[coordinates.first, coordinates.last, radius].join(',')}mi"
+      api(GEOSEARCH_URL, CGI.escape(query), geocode, count) do |response|
+        response['results'][0,count].map do |result|
+          transform_search_result result
         end
       end
-      cached_tweets || []
     end
     
+    
+    # TODO: Factor out caching
     def search(query, count=10)
       cache_key = "twitter:search:#{query}"
       cached_tweets = Rails.cache.read(cache_key)

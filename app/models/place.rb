@@ -49,11 +49,19 @@ class Place
     if name.blank?
       []
     else
-      # Search on the quoted name for a better match
-      tweets = Tweet.geosearch("\"#{name}\"", coordinates, 5, count*2) # Fetch 2 times the count requested
-      filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(tweets)
-      filtered[0,count]
+      tweets = cached_tweets
+      unless tweets
+        tweets = Tweet.geosearch("\"#{name}\"", coordinates, 5, count*2) # Fetch 2 times the count requested
+        filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(tweets)
+        filtered[0,count]
+        self.cached_tweets = tweets
+      end
+      tweets || []
     end
+  end
+  
+  def recent_tweet?
+    cached_tweets && !cached_tweets.empty?
   end
 
   class << self
@@ -111,6 +119,20 @@ class Place
       Place.new(result)
     end
 
+  end
+
+  private
+  
+  def twitter_search_cache_key
+    "twitter:search:#{name}"
+  end
+  
+  def cached_tweets
+    Rails.cache.read twitter_search_cache_key
+  end
+
+  def cached_tweets=(tweets)
+    Rails.cache.write(twitter_search_cache_key, tweets, :expires_in => 30.minutes) if tweets && !tweets.empty?
   end
 
 end

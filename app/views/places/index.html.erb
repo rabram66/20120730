@@ -37,6 +37,9 @@
             <li class='<%= location.reference %>'> 
               <%= link_to location.name, :action => 'details', :reference => location.reference %> 
               <%= "- #{location.address}" unless location.address.blank? %>
+              <% if location.recent_tweet? -%>
+                <img src="/images/twitter-logo.jpg" width='16'/>
+              <% end -%>
               <% if location.matching_deal? -%>
                 <img src="/images/yipit-logo.jpg" height='16'/>
               <% end -%>

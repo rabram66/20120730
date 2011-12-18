@@ -9,15 +9,17 @@ LocationDB::Application.routes.draw do
     devise_for :users
     resources :users, :events, :advertises, :locations
 
-    root :to => "locations#index"
+    #------------------------ Consumer --------------------------
+    root :to => "places#index"
+    get "/" => "places#index", :as => :places
+    get "search" => "places#search"
+    get "details/:reference" => "places#details", :as => :locations_details
+    get "details/:id" => "places#details", :as => :locations_details
 
     #------------------------Website-----------------------------
     post "locations/index"
-    get "search" => "locations#search"
     get "/signup" => "locations#new"
     get "locations/new" => "locations#new"
-    get "details/:reference" => "locations#details", :as => :locations_details
-    get "details/:id" => "locations#details", :as => :locations_details  
     get "/delete_place/:id" => "locations#delete_place"
     get "/xml_res" => "locations#xml_res"  
   

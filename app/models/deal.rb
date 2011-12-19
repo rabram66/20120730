@@ -81,7 +81,7 @@ class Deal
 
   def locations_match?(location)
     locations.any? do |deal_location| 
-      deal_location.phone_match?(location) || deal_location.address_match?(location)
+      deal_location.phone_match?(location)
     end
   end
   

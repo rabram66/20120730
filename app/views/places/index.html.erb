@@ -22,7 +22,7 @@
           <% if Location === location -%>
             <li class="recent_tweet_<%= location.recent_tweet? %>">
               <%= link_to location.name, :action => 'details', :address => location.full_address,  :bizname => location.name , :type => location.types, :reference => location.reference %> -  <%= location.address %><img src="/images/twitter-logo.jpg" width='16'/>
-              <% if location.matching_deal? -%>
+              <% if location.deals? -%>
                 <img src="/images/yipit-logo.jpg" height='16'/>
               <% end -%>
               <% unless current_user.blank? %>
@@ -40,7 +40,7 @@
               <% if location.recent_tweet? -%>
                 <img src="/images/twitter-logo.jpg" width='16'/>
               <% end -%>
-              <% if location.matching_deal? -%>
+              <% if location.deals? -%>
                 <img src="/images/yipit-logo.jpg" height='16'/>
               <% end -%>
               <% if !current_user.blank? and current_user.role.eql? "Admin" %>

@@ -26,7 +26,7 @@ class PlacesController < ApplicationController
     @deals = Deal.find_by_geocode( @coordinates )
 
     @locations.each do |location|
-      location.matching_deal = @deals.matching_deals?(location)
+      location.deals = @deals.matching_deals(location)
     end
   end
   
@@ -37,7 +37,7 @@ class PlacesController < ApplicationController
     redirect_to places_path
   end
   
-  # GET /places/details/QUIOUREIOWFI-FJSDJFII38427387 (reference)
+  # GET /details/QUIOUREIOWFI-FJSDJFII38427387 (reference)
   def details
     reference = params[:reference]
     @location = Location.find_by_reference(reference) || Place.find_by_reference(reference)

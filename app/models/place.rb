@@ -1,6 +1,7 @@
 class Place
 
   include Address
+  include DealHolder
   
   attr_accessor :name, :reference, :latitude, :longitude, :categories, :types,
                 :phone_number, :website, :full_address, :rating, :city, :address, :state
@@ -37,14 +38,6 @@ class Place
     categories.include? category
   end
 
-  def matching_deal=(match)
-    @matching_deal = match
-  end
-  
-  def matching_deal?
-    @matching_deal
-  end
-  
   def twitter_mentions(count=10)
     if name.blank?
       []
@@ -62,10 +55,6 @@ class Place
   
   def recent_tweet?
     cached_tweets && !cached_tweets.empty?
-  end
-
-  def deals
-    Deal.find_by_phone phone
   end
 
   class << self

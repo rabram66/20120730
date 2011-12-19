@@ -1,6 +1,7 @@
 class Location < ActiveRecord::Base
   
   include Address
+  include DealHolder
 
   validates_presence_of :name, :address, :city, :state, :types, :general_type
   
@@ -55,10 +56,6 @@ class Location < ActiveRecord::Base
     end
   end
 
-  def deals
-    Deal.find_by_phone phone
-  end
-
   def categories
     [LocationCategory.find_by_name(general_type)]
   end
@@ -84,14 +81,6 @@ class Location < ActiveRecord::Base
       filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(tweets)
       filtered[0,count]
     end
-  end
-
-  def matching_deal=(match)
-    @matching_deal = match
-  end
-  
-  def matching_deal?
-    @matching_deal
   end
 
   def facebook_status

@@ -61,7 +61,7 @@
 <div id="detail" style="clear:both">
   <% if @last_tweet -%>
     <div id='last-tweet'>
-      <%= image_tag @last_tweet.profile_image_url %>
+      <%= image_tag @last_tweet.profile_image_url, :height => 60 %>
       <span><%= auto_link( @last_tweet.text, :link => :urls, :html => {:target => :blank} ).html_safe %></span>
       <%= link_to 'follow', @last_tweet.follow_url, :class => 'follow-link', :target => '_blank' %>
       <p class='tweeted-at'><%= time_ago_in_words @last_tweet.created_at %> ago</p>
@@ -76,6 +76,16 @@
   <% end -%>
   <div id="map_canvas"></div>
   <div id="people_saying">
+    <% unless @location.deals.length == 0 -%>
+      <div id='location-deals'>
+        <h3>Today's Deal</h3>
+        <ul id='location-deals-list'>
+          <% for deal in @location.deals -%>
+            <li><%= link_to deal.title, deal.url, :target => :new %></li>
+          <% end -%>
+        </ul>
+      </div>
+    <% end -%>
     <div>
       <a href="#" id="direction_id">Directions</a>
     </div>

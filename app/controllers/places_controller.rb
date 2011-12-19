@@ -65,13 +65,16 @@ class PlacesController < ApplicationController
     end
     
     unless @coordinates
+      # Fallback to IP then Atlanta, GA
       @coordinates = Geocoder.coordinates(request.remote_ip)
       if !@coordinates || (@coordinates.first == 0.0 && @coordinates.last == 0.0)
         @coordinates = DEFAULT_COORDINATES
       end
+    else
+      # Only set when coordinates not from fallback (forces browser geonav)
+      session[:search] = @coordinates
     end
-
-    session[:search] = @coordinates
+    
     cookies[:address] = { :value => @coordinates, :expires => 1.year.from_now }
   end
 

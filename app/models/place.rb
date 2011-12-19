@@ -64,6 +64,10 @@ class Place
     cached_tweets && !cached_tweets.empty?
   end
 
+  def deals
+    Deal.find_by_phone phone
+  end
+
   class << self
     
     # Adds a Location to Google Places, and sets the generated reference on the location

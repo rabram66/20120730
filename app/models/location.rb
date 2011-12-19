@@ -26,6 +26,7 @@ class Location < ActiveRecord::Base
   end
 
   before_save do
+    self.phone = phone.gsub(/[^0-9]/,'') unless phone.blank?
     geocode if !(ADDRESS_ATTRS & changes.keys).empty? || latitude.blank? || longitude.blank?
     update_reference if !(REF_ATTRS & changes.keys).empty?
   end
@@ -52,7 +53,10 @@ class Location < ActiveRecord::Base
       end
       relation
     end
-      
+  end
+
+  def deals
+    Deal.find_by_phone phone
   end
 
   def categories

@@ -15,12 +15,13 @@
     <%= f.text_field :email %>
   </div>
 
-  <% ["User", "Promoter", "Admin"].each do |role_name| %>
-    <div>
-      <%= f.radio_button :role, role_name   %>    
-      <%= role_name %>
-    </div>
+  <%= f.label :roles %>
+  <% for role in User::ROLES %>
+    <%= check_box_tag "user[roles][]", role, @user.roles.include?(role) %>
+    <%= h role.humanize %>
   <% end %>
+  <%= hidden_field_tag "user[roles][]"%>
+  
   <div class="actions">
     <%= f.submit %>
   </div>

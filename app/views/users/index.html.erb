@@ -4,14 +4,17 @@
   <table>
     <tr>
       <th>Email</th>
+      <th>Roles</th>
+      <th>Last Signed In</th>
+      <th></th>
     </tr>
 
     <% @users.each do |user| %>
       <tr>
         <td><%= user.email %></td>      
-        <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
+        <td><%= user.roles.join(', ') %></td>      
+        <td><%= user.last_sign_in_at.stamp("Jan 1 at 01:00 am") %></td>      
+        <td><%= link_to 'Show', user %> | <%= link_to 'Edit', edit_user_path(user) %> | <%= link_to 'Delete', user, :confirm => 'Are you sure?', :method => :delete %></td>
       </tr>
     <% end %>
   </table>

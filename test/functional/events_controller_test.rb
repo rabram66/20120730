@@ -2,7 +2,7 @@ require 'test_helper'
 
 class EventsControllerTest < ActionController::TestCase
   setup do
-    sign_in users(:user1)
+    sign_in users(:admin)
     @event = events(:one)
   end
 

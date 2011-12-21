@@ -8,6 +8,7 @@ class Event < ActiveRecord::Base
   attr_accessible :name, :address, :city, :state, :description, 
                   :latitude, :longitude, :user_id
 
+  belongs_to :user
   geocoded_by :full_address
 
   scope :upcoming, where("(start_date ISNULL AND end_date ISNULL) OR (start_date >= :today OR end_date >= :today)", {:today => Date.today})  

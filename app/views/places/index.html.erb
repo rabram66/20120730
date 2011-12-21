@@ -26,9 +26,8 @@
                 <img src="/images/yipit-logo.jpg" height='16'/>
               <% end -%>
               <% unless current_user.blank? %>
-                <% if current_user.role.eql? "Admin" or current_user.id.eql?(location.user_id) %>
+                <% if current_user.role? :admin %>
                   <%= link_to 'Edit', edit_location_path(location) %>
-                  <%= link_to 'Delete', location, :confirm => 'Are you sure?', :method => :delete %>
                 <% end %>
               <% end %>
               <span class='distance-from'><%= number_with_precision(location.distance, :precision => 1) %> miles</span>
@@ -43,11 +42,6 @@
               <% if location.deals? -%>
                 <img src="/images/yipit-logo.jpg" height='16'/>
               <% end -%>
-              <% if !current_user.blank? and current_user.role.eql? "Admin" %>
-                <%= link_to "Delete", "#", :class => "delete_location", :id => location.reference %>
-                <image src="/images/ajax-loader.gif" style="display: none;" class="img_<%= location.reference %>"/>
-                <span style="color:red;" class="error_<%= location.reference %>"></span>
-              <% end %>
               <span class='distance-from'><%= number_with_precision(location.distance_from(@coordinates), :precision => 1) %> miles</span>
             </li>
           <% end -%>
@@ -81,9 +75,6 @@
       <% end -%>
     <% else -%>
       No events near you right now. 
-      <% if !current_user.blank? and current_user.role.eql? "Admin" -%>
-        <a href="/events/new"> Create an event </a>
-      <% end -%>
     <% end -%>
   </div>
 

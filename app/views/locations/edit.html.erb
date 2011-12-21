@@ -4,5 +4,6 @@
   <%= render 'form' %>
 
   <%= link_to 'Show', @location %> |
+  <%= link_to 'Delete', @location, :confirm => 'Are you sure?', :method => :delete %> |
   <%= link_to 'Back', locations_path %>
 </div>

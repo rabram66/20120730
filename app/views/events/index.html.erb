@@ -14,19 +14,17 @@
     </tr>
 
   <% @events.each do |event| %>
-    <% if (!current_user.blank? and current_user.role.eql? "Admin") or
-       (!current_user.blank? and current_user.id.eql? event.user_id)
-    %>
-    <tr>
-      <td><%= event.name %></td>
-      <td><%= event.address %></td>
-      <td><%= event.start_date %></td>
-      <td><%= event.end_date %></td>
-      <td><%= event.description %></td>
-      <td><%= link_to 'Show', event %></td>
-      <td><%= link_to 'Edit', edit_event_path(event) %></td>
-      <td><%= link_to 'Destroy', event, confirm: 'Are you sure?', method: :delete %></td>
-    </tr>
+    <% if event.user == current_user || current_user.role?(:admin) %>
+      <tr>
+        <td><%= event.name %></td>
+        <td><%= event.address %></td>
+        <td><%= event.start_date %></td>
+        <td><%= event.end_date %></td>
+        <td><%= event.description %></td>
+        <td><%= link_to 'Show', event %></td>
+        <td><%= link_to 'Edit', edit_event_path(event) %></td>
+        <td><%= link_to 'Destroy', event, confirm: 'Are you sure?', method: :delete %></td>
+      </tr>
     <% end %>
   <% end %>
   </table>

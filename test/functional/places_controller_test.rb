@@ -8,7 +8,6 @@ class PlacesControllerTest < ActionController::TestCase
 
   test "should get index" do
     Geocoder.expects(:coordinates).returns([0.0,0.0])
-    Tweet.expects(:latest).returns(nil)
     Place.expects(:find_by_geocode).with([33.7489954, -84.3879824],LocationCategory::EatDrink.types).returns([])
     Event.expects(:upcoming_near).returns([])
     Deal.expects(:find_by_geocode).with([33.7489954, -84.3879824]).returns(DealSet.new([]))
@@ -21,7 +20,6 @@ class PlacesControllerTest < ActionController::TestCase
 
   test "should get details for location" do
     Tweet.expects(:user_status).with(@location.twitter_name).returns(nil)
-    Tweet.expects(:latest).with(@location.twitter_name).returns(nil)
     Tweet.expects(:mentions).with(@location.twitter_name,40).returns([])
     get :details, :reference => @location.reference
     assert_response :success

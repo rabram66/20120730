@@ -3,27 +3,20 @@ class ApplicationController < ActionController::Base
   
   has_mobile_fu
 
-  def role    
-    if (params[:controller].eql?("locations") && params[:action].eql?("index")) or 
-        (params[:controller].eql?("locations") && params[:action].eql?("details")) or
-        (params[:controller].eql?("locations") && params[:action].eql?("search")) or
-        (params[:controller].eql?("devise/sessions")) or 
-        (params[:controller].eql?("devise/registrations")) or 
-        (params[:controller].eql?("devise/passwords"))
-      # do nothing
+  def role
+    if ['places', 'devise/sessions', 'devise/registrations', 'devise/passwords'].include? params[:controller]
+      # do nothing; no restrictions
     else
       unless current_user.blank?
-        permision = "access denied"
-        if current_user.role.eql? "Admin"
-          permision = "OK" 
-        elsif current_user.role.eql? "Promoter"
-          permision = params["controller"].eql?("events") ? "OK" : "access denied"      
-        elsif current_user.role.eql? "User"
-          permision = params["controller"].eql?("locations") ? "OK" : "access denied"    
+        permission = "access denied"
+        if current_user.role? :admin
+          permission = "OK"
+        elsif current_user.role? :promoter
+          permission = params["controller"] == 'events' ? "OK" : "access denied"
         end
-        redirect_to "/" if permision.eql?("access denied")
+        redirect_to root_url, :notice => permission if permission.eql?("access denied")
       else
-        redirect_to "/"
+        redirect_to root_url
       end
     end
   end

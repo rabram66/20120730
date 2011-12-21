@@ -30,7 +30,6 @@ class MobileControllerTest < ActionController::TestCase
 
   test "should get detail" do
     Tweet.expects(:user_status).with('wafflehouse').returns(Tweet.new(:text => 'foo', :created_at => Time.now))
-    Tweet.expects(:latest).returns(nil)
     Tweet.expects(:mentions).returns([])
     get :detail, :id => @location.reference
     assert_response :success

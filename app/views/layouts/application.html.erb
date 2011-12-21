@@ -11,20 +11,22 @@
   <body onload="<%= "initialize()" if @location %>" onunload="GUnload();">    
     <div class="container">
       <div class="auth">
+        <span id='notice'><%= flash[:notice] %></span>
         <%= link_to "Home", "/" %> &nbsp; 
         <% if current_user.blank? %>
           <%= link_to "Login", "/users/sign_in" %>
         <% else %>            
-          <% if current_user.role == "Promoter" or current_user.role == "Admin" %>
-            <%= link_to "Events", "/events" %> &nbsp;  
+          <% if current_user.role?(:promoter) || current_user.role?(:admin) %>
+            <%= link_to "Events", "/events" %> &nbsp;
           <% end %>
-          <% if current_user.role == "Admin" %>&nbsp;            
+          <% if current_user.role? :admin %>&nbsp;            
             || <%= link_to "Locations", locations_path %>&nbsp;<%= link_to "Users", "/users" %>&nbsp;
           <% end %>
-          <% if current_user.role == "User" or current_user.role == "Admin" %>
+          <% if current_user.role? :guest -%>
             <%= link_to "Signup", "/signup" %> &nbsp; 
-          <% end %>
-          <%= link_to "Logout", destroy_user_session_path, :method => :delete %>
+          <% else -%>
+            <%= link_to "Logout", destroy_user_session_path, :method => :delete %>
+          <% end -%>
         <% end %>
       </div>
       <div class="span-24" >

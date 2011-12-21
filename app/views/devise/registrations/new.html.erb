@@ -13,6 +13,10 @@
     <p><%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation %></p>
 
+    <p><%= f.label :roles, "Want to promote events on NearbyThis?" %>
+    <%= check_box_tag 'user[roles][]', 'promoter', false %></p>
+    <%= hidden_field_tag "user[roles][]" %>
+
     <p><%= f.submit "Sign up" %></p>
   <% end %>
 

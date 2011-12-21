@@ -21,6 +21,7 @@ gem 'taps'                         # enables heroku db:push
 gem 'dalli'                        # memcached interface
 gem 'rinku'                        # autolink tweet and facebook text
 gem 'will_paginate', '~> 3.0'      # pagination in admin pages
+gem 'cancan'                       # authorization
 
 group :test do
   gem 'shoulda' # better testing

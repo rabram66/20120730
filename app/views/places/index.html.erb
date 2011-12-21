@@ -25,10 +25,8 @@
               <% if location.deals? -%>
                 <img src="/images/yipit-logo.jpg" height='16'/>
               <% end -%>
-              <% unless current_user.blank? %>
-                <% if current_user.role? :admin %>
-                  <%= link_to 'Edit', edit_location_path(location) %>
-                <% end %>
+              <% if can? :update, location %>
+                <%= link_to 'Edit', edit_location_path(location) %>
               <% end %>
               <span class='distance-from'><%= number_with_precision(location.distance, :precision => 1) %> miles</span>
             </li>

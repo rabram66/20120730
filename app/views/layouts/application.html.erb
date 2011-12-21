@@ -12,21 +12,20 @@
     <div class="container">
       <div class="auth">
         <span id='notice'><%= flash[:notice] %></span>
-        <%= link_to "Home", "/" %> &nbsp; 
-        <% if current_user.blank? %>
-          <%= link_to "Login", "/users/sign_in" %>
-        <% else %>            
-          <% if current_user.role?(:promoter) || current_user.role?(:admin) %>
-            <%= link_to "Events", "/events" %> &nbsp;
+        <%= link_to "Home", root_path %> &nbsp; 
+        <% if !current_user %>
+          <%= link_to "Login", new_user_session_path %>
+        <% else %>
+          <% if can? :manage, Event %>
+            <%= link_to "Events", events_path %> &nbsp;
           <% end %>
-          <% if current_user.role? :admin %>&nbsp;            
-            || <%= link_to "Locations", locations_path %>&nbsp;<%= link_to "Users", "/users" %>&nbsp;
+          <% if can? :manage, Location %>
+            || <%= link_to "Locations", locations_path %>&nbsp;
           <% end %>
-          <% if current_user.role? :guest -%>
-            <%= link_to "Signup", "/signup" %> &nbsp; 
-          <% else -%>
-            <%= link_to "Logout", destroy_user_session_path, :method => :delete %>
-          <% end -%>
+          <% if can? :manage, User %>
+            <%= link_to "Users", users_path %>
+          <% end %>
+          <%= link_to "Logout", destroy_user_session_path, :method => :delete %>
         <% end %>
       </div>
       <div class="span-24" >

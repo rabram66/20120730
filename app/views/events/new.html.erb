@@ -1,54 +1,5 @@
-<div id='new-event' class='admin-content'>
-  <h1>Create Event</h1>
-  <%= form_for(@event) do |f| %>
-    <% if @event.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
-
-        <ul>
-        <% @event.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-        </ul>
-      </div>
-    <% end %>
-
-    <fieldset>
-      <legend>Event Details</legend>
-      <ol>
-        <li>
-          <span class='required'>*</span>
-          <%= f.label :name, 'Event Name:' %>
-          <%= f.text_field :name %>
-        </li>
-        <li>
-          <span class='required'>*</span>
-          <%= f.label :start_date, 'Date and Time:' %>
-          <%= f.datetime_select :start_date %>
-          <span id='add-end-time'><a href='javascript:void(0)'>Add end time</a></span>
-          <span class='end-date-and-time'>
-            <%= f.time_select :end_date %>
-          </span>
-        </li>
-        <li>
-          <%= f.label :venue, 'Location:' %>
-          <%= f.text_field :name %>
-        </li>
-        <li>
-          <%= f.label :full_address, 'Street:' %>
-          <%= f.text_field :full_address %>
-        </li>
-        <li>
-          <%= f.label :description, 'Details:' %>
-          <%= f.text_area :description %>
-        </li>
-        <li>
-          <%= f.label :tags, 'Tags:' %>
-          <%= f.text_field :tags %>
-        </li>
-      </ol>
-    </fieldset>
-    <%= f.submit %>
-  <% end %>
+<div class='admin-content'>
+  <h1>New event</h1>
+  <%= render 'form' %>
   <%= link_to 'Back', events_path %>
 </div>

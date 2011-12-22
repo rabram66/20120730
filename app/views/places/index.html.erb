@@ -72,7 +72,10 @@
         </div>
       <% end -%>
     <% else -%>
-      No events near you right now. 
+      No events near you right now.<br/>
+      <% if can? :create, Event -%>
+        <%= link_to 'Create an Event', new_event_path %>
+      <% end -%>
     <% end -%>
   </div>
 

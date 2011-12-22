@@ -11,7 +11,7 @@ module Address
   end
   
   def full_address
-    "#{address} #{city}, #{state}"
+    "#{address}, #{city}, #{state}"
   end
 
   def vicinity

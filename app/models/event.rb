@@ -30,15 +30,4 @@ class Event < ActiveRecord::Base
     end
   end
 
-  private
-  
-  def parse_full_address(value)
-    parts = value.split(',')
-    parts.map!{|p| p.strip }
-
-    self.state = parts.pop
-    self.city = parts.pop
-    self.address = parts.join(', ')
-  end
-
 end

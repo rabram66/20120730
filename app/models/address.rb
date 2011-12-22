@@ -11,11 +11,26 @@ module Address
   end
   
   def full_address
-    "#{address}, #{city}, #{state}"
+    [address, city, state].reject{|n| n.blank?}.join(', ')
+  end
+
+  def full_address=(value)
+    parse_full_address(value)
   end
 
   def vicinity
     [address, city].reject{|n| n.blank?}.join(', ')
+  end
+
+  private
+  
+  def parse_full_address(value)
+    parts = value.split(',')
+    parts.map!{|p| p.strip }
+
+    self.state = parts.pop
+    self.city = parts.pop
+    self.address = parts.join(', ')
   end
 
 end

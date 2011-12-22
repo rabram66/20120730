@@ -1,6 +1,8 @@
 class MobileController < ApplicationController
-  layout 'mobile'
 
+  has_mobile_fu
+
+  layout 'mobile'
   before_filter :set_geocode, :except => [:index, :list]
 
   # GET The main page with a field to input the address, city, state or to use current location

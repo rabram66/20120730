@@ -1,6 +1,8 @@
 class PlacesController < ApplicationController
+
+  has_mobile_fu
+
   before_filter :redirect_mobile_request
-  
   respond_to :html, :json, :js
   
   RADIUS = '750'

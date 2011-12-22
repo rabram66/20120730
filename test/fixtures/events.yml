@@ -1,6 +1,4 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
-
-one:
+anonymous:
   name: Dunwoody Craft Fair
   address: 5488 Chamblee Dunwoody Road
   city: Dunwoody
@@ -11,7 +9,7 @@ one:
   latitude: 33.7489954
   longitude: -84.3879824
 
-two:
+promoted:
   name: Stage Door Players
   address: 1426 Dunwoody Village Parkway
   city: Dunwoody
@@ -21,3 +19,4 @@ two:
   description: MyText
   latitude: 33.7489954
   longitude: -84.3879824
+  user: promoter

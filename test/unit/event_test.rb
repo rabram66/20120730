@@ -3,7 +3,7 @@ require 'test_helper'
 class EventTest < ActiveSupport::TestCase
 
   setup do
-    @event = events(:one)
+    @event = events(:anonymous)
   end
 
   test "should geocode when address changed" do

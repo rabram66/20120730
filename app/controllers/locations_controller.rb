@@ -1,15 +1,8 @@
-require 'json'
-require 'open-uri'
-
 class LocationsController < ApplicationController
-  before_filter :role
-  
   respond_to :html, :xml, :json, :js
-  
-  before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
-  
+  load_and_authorize_resource
 
-  # GET / (/locations/index)
+  # GET /locations
   def index
     @general_type = params[:general_type] unless params[:general_type].blank?
     @radius = params[:radius].to_i unless params[:radius].blank?
@@ -19,79 +12,46 @@ class LocationsController < ApplicationController
     @name = params[:name] unless params[:name].blank?
     @order = params[:order]
 
-    @locations = Location.all_by_filters(@general_type, @radius, @coordinates, @name, @order).page(params[:page])
+    @locations = @locations.all_by_filters(@general_type, @radius, @coordinates, @name, @order).page(params[:page])
+    respond_with @locations
   end
   
   # GET /locations/1
   def show
-    @location = Location.find(params[:id])
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @location }
-    end
+    respond_with @location
   end
 
   # GET /locations/new
-  # GET /locations/new.xml
   def new
-    @location = Location.new
-    @pages = {}
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @location }
-    end
+    respond_with @location
   end
   
   # GET /locations/1/edit
   def edit
-    @location = Location.find(params[:id])
-    @pages = [{id: @location.id, name: @location.name}]
+    respond_with @location
   end
 
   # POST /locations
-  # POST /locations.xml
   def create
-    @location = Location.new(params[:location])
-
-    respond_to do |format|
-      if @location.save 
-        format.html { redirect_to(@location, :notice => 'Location was successfully created.') }
-        format.xml  { render :xml => @location, :status => :created, :location => @location }        
-      else
-        @pages = {}
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @location.errors, :status => :unprocessable_entity }
-      end
-    end
+    if @location.save
+      flash[:notice] = "Successfully created location."  
+    end  
+    respond_with @location
   end
 
   # PUT /locations/1
-  # PUT /locations/1.xml
   def update
-    @location = Location.find(params[:id])
-
-    respond_to do |format|
-      if @location.update_attributes(params[:location])
-        format.html { redirect_to(@location, :notice => 'Location was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        @pages = [{id: @location.id, name: @location.name}]
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @location.errors, :status => :unprocessable_entity }
-      end
+    if @location.update_attributes(params[:location])
+      flash[:notice] = "Successfully updated location."
     end
+    respond_with @location
   end
 
   # DELETE /locations/1
-  # DELETE /locations/1.xml
   def destroy
-    @location = Location.find(params[:id])
     @location.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(locations_url) }
-      format.xml  { head :ok }
-    end
+    flash[:notice] = "Successfully destroyed location."
+    respond_with @location
   end
   
 end 

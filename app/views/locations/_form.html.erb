@@ -12,7 +12,7 @@
   
   <div class="field" id="bus_name">
     * <%= f.label :name, "Business name" %><br />
-    <%= f.text_field :name, "data-pre" => params[:action].eql?("edit") ? @pages.to_json : @pages.to_json %>
+    <%= f.text_field :name %>
   </div>
 
   <%= render :partial => 'shared/address_form', :locals => {:f => f} %>

@@ -2,11 +2,16 @@ require 'test_helper'
 
 class LocationsControllerTest < ActionController::TestCase
 
-  context 'as an unauthenticated user' do
+  setup do
+    @location = locations(:one)
+  end
+
+  context 'an unauthenticated user' do
     [:index, :new, :edit, :show, :create, :destroy].each do |action|
       should "be denied access to #{action}" do
-        get action, :id => 1
+        get action, id: @location.id
         assert_redirected_to root_url
+        assert_equal 'Access Denied', flash.notice
       end
     end
   end
@@ -15,7 +20,6 @@ class LocationsControllerTest < ActionController::TestCase
       
     setup do
       sign_in users(:admin)
-      @location = locations(:one)
     end
   
     should "get new" do

@@ -1,3 +1,28 @@
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
+<%= stylesheet_link_tag "ui-lightness/jquery-ui-1.8.16.custom.css" %>
+<%= javascript_include_tag "jquery-ui-1.8.16.custom.min.js","jquery-ui-timepicker-addon" %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    var input = $('#event_full_address')[0];
+    autocomplete = new google.maps.places.Autocomplete(input);
+    var picker_options = {
+      ampm: true,
+      timeFormat: 'h:mm tt',
+      stepMinute: 10
+    }
+    $('#event_start_date').datetimepicker(
+      jQuery.extend({minDate: new Date()},picker_options)
+    );
+    $('#event_end_date').timepicker(picker_options);
+    $('#event_end_date').hide();
+    $('#add-end-time').click( function() {
+      $('#event_end_date').show();
+      $('#event_end_date').focus();
+    });
+  });
+</script>
+
 <%= form_for(@event) do |f| %>
   <% if @event.errors.any? %>
     <div id="error_explanation">
@@ -11,31 +36,38 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-
-  <%= render :partial => 'shared/address_form', :locals => {:f => f} %>
-
-  <p>
-    <%= link_to( "Map Location", google_map_url(@event), :target => :new ) %>
-  </p>
-
-  <div class="field">
-    <%= f.label :start_date %><br />
-    <%= f.datetime_select :start_date %>
-  </div>
-  <div class="field">
-    <%= f.label :end_date %><br />
-    <%= f.datetime_select :end_date %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br />
-    <%= f.text_area :description %>
-    <%= f.hidden_field :user_id, :value => current_user.id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <fieldset id='event-detail-fieldset'>
+    <ol id='event-detail-fields'>
+      <li>
+        <%= f.label :name, '* Event Name:' %>
+        <%= f.text_field :name %>
+      </li>
+      <li>
+        <%= f.label :start_date, '* Date and Time:' %>
+        <%= f.text_field :start_date, :value => @event.start_date ? @event.start_date.localtime.stamp('05/10/2011 1:00 am') : '' %>
+        <a id='add-end-time' href='javascript:void(0)'>Add end time</a>
+        <span class='end-date-and-time'>
+          <%= f.text_field :end_date, :value => @event.end_date ? @event.end_date.localtime.stamp("1:00 am") : '' %>
+        </span>
+      </li>
+      <li>
+        <%= f.label :venue, 'Location:' %>
+        <%= f.text_field :venue %>
+      </li>
+      <li>
+        <%= f.label :full_address, '* Street:' %>
+        <%= f.text_field :full_address %>
+      </li>
+      <li>
+        <%= f.label :description, 'Details:' %>
+        <%= f.text_area :description %>
+      </li>
+      <li>
+        <%= f.label :tags, 'Tags:' %>
+        <%= f.text_field :tags %>
+      </li>
+    </ol>
+    <%= f.hidden_field :user_id %>
+  </fieldset>
+  <%= f.submit %>
 <% end %>

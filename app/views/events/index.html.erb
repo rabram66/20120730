@@ -1,8 +1,6 @@
 <div class='admin-content'>
-  <h1>Your Events</h1>
-
+  <h2>Your Events</h2>
   <table>
-
     <tr>
       <th>Name</th>
       <th>Address</th>
@@ -11,7 +9,6 @@
       <th>Description</th>
       <th>Actions</th>
     </tr>
-
     <% @events.each do |event| %>
       <tr>
         <td><%= event.name %></td>
@@ -19,13 +16,10 @@
         <td><%= event.start_date %></td>
         <td><%= event.end_date %></td>
         <td><%= event.description %></td>
-        <td><%= link_to 'Show', event %> | <%= link_to 'Edit', edit_event_path(event) %> | <%= link_to 'Destroy', event, confirm: 'Are you sure?', method: :delete %></td>
+        <td><%= link_to 'Show', event %> | <%= link_to 'Edit', edit_event_path(event) %> | <%= link_to 'Delete', event, confirm: 'Are you sure?', method: :delete %></td>
       </tr>
     <% end %>
-
   </table>
-
   <br />
-
   <%= link_to 'New Event', new_event_path %>
 </div>

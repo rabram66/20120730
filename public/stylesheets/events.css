@@ -1,3 +1,7 @@
+div.ui-datepicker{
+ font-size: 0.9em;
+}
+
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
 .ui-timepicker-div dl { text-align: left; }
@@ -5,3 +9,41 @@
 .ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
 .ui-timepicker-div td { font-size: 90%; }
 .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+
+/* event form */
+#event-detail-fields li {
+  border: none;
+}
+#event-detail-fields label {
+  width: 10em;
+  text-align: right;
+  float: left;
+  padding-top: 8px;
+  margin-right: 10px;
+}
+
+#event-detail-fieldset {
+  border: none;
+}
+
+#event-detail-fields textarea {
+  width: 400px;
+  height: 100px;
+}
+
+#event-detail-fields #event_name, 
+#event-detail-fields #event_venue,
+#event-detail-fields #event_full_address,
+#event-detail-fields #event_tags {
+  width: 400px;
+  padding: 4px;
+}
+
+#event-detail-fields #event_start_date {
+  width: 160px;
+  padding: 4px;
+}
+#event-detail-fields #event_end_date {
+  width: 60px;
+  padding: 4px;
+}

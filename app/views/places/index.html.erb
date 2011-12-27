@@ -1,73 +1,74 @@
-<%= content_for :banner do -%>
-  <div class="banner"><!--banner start-->
-    <div class="banner_area">
-        <form action="" method="get">
-            <label>Find a place to</label>
-              <select name="" class="list_menu"><option>Relax / Care</option></select>
-              <label>near</label>
-              <input name="" type="text" class="form_field" value="enter location"/>
-              <input name="" type="button" class="button" />
-          </form>
-      </div>
-  </div><!--banner end-->
-<% end -%>
-
-<%= content_for :content_left do -%>
-
-  <% @locations.each do |location| %>
-
-    <div class="block">
-      <p>
-
-        <% if Location === location -%>
-
-          <a href="<%= url_for(:action => 'details', :address => location.full_address,  :bizname => location.name , :type => location.types, :reference => location.reference)%>">
-            <%= location.name %><strong> - <%= location.address %></strong>
-            <img src="/images/img/twitter.jpg" alt="" />
-            <% if location.deals? -%>
-              <img src="/images/yipit-logo.jpg" height='16'/>
-            <% end -%>
-            <span class='distance-from'><%= number_with_precision(location.distance, :precision => 1) %> miles</span>
-          </a>
-
-          <% if can? :update, location %>
-            <%= link_to 'Edit', edit_location_path(location) %>
-          <% end %>
-
-
-        <% else -%>
-
-          <a href="<%= url_for(:action => 'details', :reference => location.reference)%>">
-            <%= location.name %><strong><%= " - #{location.address}" unless location.address.blank? %></strong>
-            <% if location.recent_tweet? -%>
-              <img src="/images/img/twitter.jpg" alt=""/>
-            <% end -%>
-            <% if location.deals? -%>
-              <img src="/images/yipit-logo.jpg" height='16'/>
-            <% end -%>
-            <span class='distance-from'><%= number_with_precision(location.distance_from(@coordinates), :precision => 1) %> miles</span>
-          </a>
-
-
-        <% end -%>
-
-      </p>
-    </div>
-
-  <% end -%>
-
-<% end -%>
-
-<%= content_for :sidebar do -%>
-  <div class="sidebar_top"><a href="#"><img src="/images/img/map_img2.jpg" alt="" /></a></div>
-  <div class="sidebar_txt">
-      <h3>Nearby Deals</h3>
-      <p>Five ($29) or Ten ($49) Fitness Classes, Including Hot Yoga, Zumba, and More</p>
-      <p>$20 for an express detailing or $40 for an economy detailing at your home or office</p>
-      <p>Small-Aircraft Ride for One or Four from Biplane Rides Over Atlanta Inc. (Up To 54% Off)</p>
-      <p>$129 for a Tandem Skydiving Session from Sportations (Up to $195 Value)</p>
-      <p>One G-Pass to a Harlem Globetrotters Game. Multiple Games and Seating Options Available.</p>
-      <p>BLT Steak Atlanta - Ticket to Cooking Class</p>
-      <p>50% off Firkin &amp; Crown in Cumming ($20 value)</p>
+<div class="banner"><!--banner start-->
+  <div class="banner_area">
+    <form action="" method="get">
+      <label>Find a place to</label>
+      <select name="" class="list_menu"><option>Relax / Care</option></select>
+      <label>near</label>
+      <input name="" type="text" class="form_field" value="enter location"/>
+      <input name="" type="button" class="button" />
+    </form>
   </div>
-<% end -%>
+</div><!--banner end-->
+
+<div class="content nopadd"><!--content start-->
+  <div class="content_left padd"><!--content_left start-->
+    <% @locations.each do |location| %>
+
+      <div class="block">
+        <p>
+
+          <% if Location === location -%>
+
+            <a href="<%= url_for(:action => 'details', :address => location.full_address,  :bizname => location.name , :type => location.types, :reference => location.reference)%>">
+              <%= location.name %><strong> - <%= location.address %></strong>
+              <img src="/images/img/twitter.jpg" alt="" />
+              <% if location.deals? -%>
+                <img src="/images/yipit-logo.jpg" height='16'/>
+              <% end -%>
+              <span class='distance-from'><%= number_with_precision(location.distance, :precision => 1) %> miles</span>
+            </a>
+
+            <% if can? :update, location %>
+              <%= link_to 'Edit', edit_location_path(location) %>
+            <% end %>
+
+
+          <% else -%>
+
+            <a href="<%= url_for(:action => 'details', :reference => location.reference)%>">
+              <%= location.name %><strong><%= " - #{location.address}" unless location.address.blank? %></strong>
+              <% if location.recent_tweet? -%>
+                <img src="/images/img/twitter.jpg" alt=""/>
+              <% end -%>
+              <% if location.deals? -%>
+                <img src="/images/yipit-logo.jpg" height='16'/>
+              <% end -%>
+              <span class='distance-from'><%= number_with_precision(location.distance_from(@coordinates), :precision => 1) %> miles</span>
+            </a>
+
+
+          <% end -%>
+
+        </p>
+      </div>
+
+    <% end -%>
+  </div><!--content_left end-->
+
+  <div class="sidebar"><!--sidebar start-->
+    <div class="sidebar_top"><a href="#"><img src="/images/img/map_img2.jpg" alt="" /></a></div>
+    <div class="sidebar_txt">
+        <h3>Nearby Deals</h3>
+        <p>Five ($29) or Ten ($49) Fitness Classes, Including Hot Yoga, Zumba, and More</p>
+        <p>$20 for an express detailing or $40 for an economy detailing at your home or office</p>
+        <p>Small-Aircraft Ride for One or Four from Biplane Rides Over Atlanta Inc. (Up To 54% Off)</p>
+        <p>$129 for a Tandem Skydiving Session from Sportations (Up to $195 Value)</p>
+        <p>One G-Pass to a Harlem Globetrotters Game. Multiple Games and Seating Options Available.</p>
+        <p>BLT Steak Atlanta - Ticket to Cooking Class</p>
+        <p>50% off Firkin &amp; Crown in Cumming ($20 value)</p>
+    </div>
+  </div><!--sidebar end-->
+
+  <div class="clear"></div>
+
+</div><!--content end-->

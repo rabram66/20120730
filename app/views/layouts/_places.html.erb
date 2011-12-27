@@ -25,8 +25,17 @@
         <div class="clear"></div>
       </div><!--header end-->
 
-      <%= yield %>
-
+      <%= yield :banner %>
+                      
+      <div class="content nopadd"><!--content start-->
+        <div class="content_left padd"><!--content_left start-->
+          <%= yield :content_left %>
+        </div><!--content_left end-->
+        <div class="sidebar"><!--sidebar start-->
+          <%= yield :sidebar %>
+        </div><!--sidebar end-->
+        <div class="clear"></div>
+      </div><!--content end-->
     </div><!--wrapper end-->
   
     <%= render :partial => '/shared/feedback' %>

@@ -528,3 +528,74 @@ span.distance-from
   font-size: 0.9em;
   float: right;
 }
+
+.input_form
+{
+  width:847px;
+  margin:0 auto;
+  padding-left:17px;
+  padding-top:16px
+}
+
+.input_form h2
+{
+  line-height:41px;
+  color: #049DE5;
+  font-size:36px;
+  font-weight:bold;
+  padding-right:8px;
+  margin-bottom: 15px;
+}
+
+.input_form form
+{
+  border-top: 2px solid darkgray;
+  border-bottom: 2px solid darkgray;
+  padding-bottom: 10px;
+}
+
+.input_form label
+{
+  line-height:41px;
+  color:#979796;
+  font-size:24px;
+  font-weight:bold;
+  padding-right:8px;
+}
+
+.input_form .form_field
+{
+  margin-bottom: 20px;
+}
+
+.input_form .form_checkbox
+{
+  margin-bottom: 20px;
+}
+
+.input_form .checkbox_label
+{
+  margin-left: 10px;
+}
+
+.input_form .submit_button
+{
+  color:black;
+}
+
+.sign_in_links
+{
+  margin-top: 10px;  
+}
+
+.sign_in_links li
+{
+  padding-top: 10px;
+}
+
+.sign_in_links li a
+{
+  text-decoration:underline;
+  font-size:18px;
+  color:#979796;
+}

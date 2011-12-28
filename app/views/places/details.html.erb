@@ -42,124 +42,114 @@
   </script>
 <% end %>
 
-<%= content_for :header do %>
-  <div id='detail-heading-wrapper'>
-    <div id='detail-headings'>
-      <h2><%= @location.name %></h2><br/>
-      <h3><%= @location.full_address %></h3>
-    </div>
-    <%= link_to 'Back', places_path %>
-  </div>
-<% end -%>
-
 <div style="display:none">
   <input type="hidden" id="end" value="<%= @origin_address %>" />  
   <input type="hidden" id="start" value="<%= cookies[:address].gsub("&", ",") unless cookies[:address].blank? %>"/>  
   <input type="hidden" id="route" />
 </div>  
 
-<div id="detail" style="clear:both">
-  <% if @last_tweet -%>
-    <div id='last-tweet'>
-      <%= image_tag @last_tweet.profile_image_url, :height => 60 %>
-      <span><%= auto_link( @last_tweet.text, :link => :urls, :html => {:target => :blank} ).html_safe %></span>
-      <%= link_to 'follow', @last_tweet.follow_url, :class => 'follow-link', :target => '_blank' %>
-      <p class='tweeted-at'><%= time_ago_in_words @last_tweet.created_at %> ago</p>
+<div class="content"><!--content start-->
+  <div class="content_left"><!--content_left start-->
+    <div class="left_top">
+      <h2><%= @location.name %>
+        <% if @location.twitter? %>
+          <span>
+            <%= link_to image_tag('img/twitter.jpg', :alt => 'Twitter'), @location.twitter_page_url, :target => :new %>
+          </span>
+        <% end -%>
+        <% if @location.facebook? %>
+          <strong>
+            <%= link_to image_tag('img/facebook.jpg', :alt => 'Facebook'), @location.facebook_page_url, :target => :new %>
+          </strong>
+        <% end -%>
+      </h2>
+      <h3><%= @location.vicinity %> -<a href="javascript:void(0)" id="direction_id">Get Directions</a></h3>
     </div>
-  <% end -%>
-  <% if @last_post -%>
-    <div id='last-post'>
-      <img src='/images/f_logo.png'/>
-      <span><%= auto_link( @last_post.text, :link => :urls, :html => {:target => :blank} ).html_safe %></span>
-      <%= link_to 'visit page', @location.facebook_page_url, :class => 'visit-link', :target => '_blank' %>
+            
+    <div id='twitter-status' class="top_box">
+      <% if @last_tweet -%>
+        <%= link_to image_tag(@last_tweet.profile_image_url, :alt => 'Twitter'), @location.twitter_page_url, :target => :new %>
+        <p>
+          <%= auto_link( @last_tweet.text, :link => :urls, :html => {:target => :new} ).html_safe %>
+          <span class='tweeted-at'>&nbsp;-&nbsp;<%= time_ago_in_words @last_tweet.created_at %> ago</span>
+          <span class='follow-link'><%= link_to 'follow', @last_tweet.follow_url, :class => 'follow-link', :target => '_blank' %></span>
+        </p>
+      <% end -%>
+      <div class="clear"></div>
     </div>
-  <% end -%>
-  <div id="map_canvas"></div>
-  <div id="people_saying">
-    <% unless @location.deals.length == 0 -%>
-      <div id='location-deals'>
-        <h3>Today's Deal</h3>
-        <ul id='location-deals-list'>
-          <% for deal in @location.deals -%>
-            <li><%= link_to deal.title, deal.url, :target => :new %></li>
-          <% end -%>
-        </ul>
-      </div>
-    <% end -%>
-    <div>
-      <a href="#" id="direction_id">Directions</a>
+            
+    <div id='facebook-status' class="threed_box">
+      <% if @last_post -%>
+        <%= link_to image_tag('img/fb.jpg', :alt => 'Facebook'), @location.facebook_page_url, :target => :new %>
+        <p>
+          <%= auto_link( @last_post.text, :link => :urls, :html => {:target => :new} ).html_safe %>
+          <span class='follow-link'><%= link_to 'visit page', @location.facebook_page_url, :class => 'follow-link', :target => :new %></span>
+        </p>
+      <% end -%>
+      <div class="clear"></div>
     </div>
-    <div id="directions-panel">
-      <%= @origin_address %>
-    </div>
-    <div id='mentions_id' class='tweet_result'>
-      <h3>What people are saying about <%= @location.name %></h3>
-      <div id='mentions-container'>
-        <% unless @user_saying.blank? %>
-          <ul class='content'>
-            <% @user_saying.each do |user_say| -%>
-              <li class='twitter-mention'>
-                <div class='img-wrapper'>
-                  <a href="http://twitter.com/<%= user_say.screen_name %>" target="_blank">
-                    <img class='twitter-mention' src="<%= user_say.profile_image_url %>" />
-                  </a>
-                </div>
-                <p>
-                  <span class='mentioner'><%= user_say.screen_name %></span><br/>
-                  <%= auto_link( user_say.text, :link => :urls, :html => {:target => :blank} ).html_safe %>
-                  <a href="http://twitter.com/<%= user_say.screen_name %>/status/<%= user_say.tweet_id %>" target="_blank">
-                    follow
-                  </a><br/>
-                  <span class='tweeted-at'><%= time_ago_in_words user_say.created_at %> ago</span>
-                </p>
-                <div class='clear'></div>
-              </li>
-            <% end -%>
-          </ul>
-        <div class='page_navigation'></div>
-        <% else %>
-          <p>No tweets</p>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  <div class='ad-container'>
-    <!--/* OpenX Javascript Tag v2.8.6-rc2 */-->
-    <!--/*
-      * The backup image section of this tag has been generated for use on a
-      * non-SSL page. If this tag is to be placed on an SSL page, change the
-      *   'http://d1.openx.org/...'
-      * to
-      *   'https://d1.openx.org/...'
-      *
-      * This noscript section of this tag only shows image banners. There
-      * is no width or height in these banners, so if you want these tags to
-      * allocate space for the ad before it shows, you will need to add this
-      * information to the <img> tag.
-      *
-      * If you do not want to deal with the intricities of the noscript
-      * section, delete the tag (from <noscript>... to </noscript>). On
-      * average, the noscript tag is called from less than 1% of internet
-      * users.
-      */-->
 
-    <script type='text/javascript'><!--//<![CDATA[
-       var m3_u = (location.protocol=='https:'?'https://d1.openx.org/ajs.php':'http://d1.openx.org/ajs.php');
-       var m3_r = Math.floor(Math.random()*99999999999);
-       if (!document.MAX_used) document.MAX_used = ',';
-       document.write ("<scr"+"ipt type='text/javascript' src='"+m3_u);
-       document.write ("?zoneid=239053");
-       document.write ('&amp;cb=' + m3_r);
-       if (document.MAX_used != ',') document.write ("&amp;exclude=" + document.MAX_used);
-       document.write (document.charset ? '&amp;charset='+document.charset : (document.characterSet ? '&amp;charset='+document.characterSet : ''));
-       document.write ("&amp;loc=" + escape(window.location));
-       if (document.referrer) document.write ("&amp;referer=" + escape(document.referrer));
-       if (document.context) document.write ("&context=" + escape(document.context));
-       if (document.mmm_fo) document.write ("&amp;mmm_fo=1");
-       document.write ("'><\/scr"+"ipt>");
-    //]]>--></script><noscript><a href='http://d1.openx.org/ck.php?n=a912c611&amp;cb=4532' target='_blank'><img src='http://d1.openx.org/avw.php?zoneid=239053&amp;cb=4532&amp;n=a912c611' border='0' alt='' /></a></noscript>
-  </div>
-</div>
-<script>
-  $("#route").click();
-</script>
+    <div class="map_area">
+      <div id='map_canvas'></div>
+      <div class="black_pic">
+        <%= render :partial => 'shared/ad_container' %>
+      </div>
+    </div>
+
+  </div><!--content_left end-->
+
+  <div class="sidebar"><!--sidebar start-->
+    <h2>What People Are Saying</h2>
+    <div class="twitter_box">
+      <div class="twitter_box_pic">
+        <a href="#"><img src="img/img2.jpg" alt="" /></a>
+      </div>
+                    <div class="twitter_box_txt">
+                      <h3>Annabanna Says:</h3>
+                      <p>RT @carenwestpr: Get your tix to the classiest NYE celebration at @CafeCirca. 
+                         3 course din &amp; rooftop champagne toast included.<a href="#">http://t.co/FcuXGkND </a></p>
+                        <span>about 5 hours ago</span>
+                    </div>
+                  <div class="clear"></div>
+                </div>
+                
+                <div class="twitter_box">
+                  <div class="twitter_box_pic"><a href="#"><img src="img/img2.jpg" alt="" /></a></div>
+                    <div class="twitter_box_txt">
+                      <h3>Annabanna Says:</h3>
+                      <p>RT @carenwestpr: Get your tix to the classiest NYE celebration at @CafeCirca. 
+                         3 course din &amp; rooftop champagne toast included.<a href="#">http://t.co/FcuXGkND </a></p>
+                        <span>about 5 hours ago</span>
+                    </div>
+                  <div class="clear"></div>
+                </div>
+                
+                <div class="twitter_box">
+                  <div class="twitter_box_pic"><a href="#"><img src="img/img2.jpg" alt="" /></a></div>
+                    <div class="twitter_box_txt">
+                      <h3>Annabanna Says:</h3>
+                      <p>RT @carenwestpr: Get your tix to the classiest NYE celebration at @CafeCirca. 
+                         3 course din &amp; rooftop champagne toast included.<a href="#">http://t.co/FcuXGkND </a></p>
+                        <span>about 5 hours ago</span>
+                    </div>
+                  <div class="clear"></div>
+                </div>
+                
+                
+                <div class="pagination_area">
+                  <div class="pagination">
+                      <ul>
+                          <li><a href="#">1</a></li>
+                            <li class="active"><a href="#">2</a></li>
+                            <li><a href="#">3...</a></li>
+                            <li><a href="#">9</a></li>
+                        </ul>
+                        
+                        <div class="left_arrow"><a href="#"><img src="img/left_arrow.jpg" alt="" /></a></div>
+                        <div class="right_arrow"><a href="#"><img src="img/right_arrow.jpg" alt="" /></a></div>
+                    </div>
+                 <div class="clear"></div>
+             </div>
+        </div><!--sidebar end-->
+    <div class="clear"></div>
+</div><!--content end-->

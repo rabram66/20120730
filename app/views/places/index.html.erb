@@ -20,6 +20,10 @@
 
           <% if Location === location -%>
 
+            <% if can? :update, location %>
+              <%= link_to 'Edit', edit_location_path(location), :class => 'inline' %>
+            <% end %>
+
             <a href="<%= url_for(:action => 'details', :address => location.full_address,  :bizname => location.name , :type => location.types, :reference => location.reference)%>">
               <%= location.name %><strong> - <%= location.address %></strong>
               <img src="/images/img/twitter.jpg" alt="" />
@@ -28,11 +32,6 @@
               <% end -%>
               <span class='distance-from'><%= number_with_precision(location.distance, :precision => 1) %> miles</span>
             </a>
-
-            <% if can? :update, location %>
-              <%= link_to 'Edit', edit_location_path(location), :class => 'inline' %>
-            <% end %>
-
 
           <% else -%>
 
@@ -47,7 +46,6 @@
               <span class='distance-from'><%= number_with_precision(location.distance_from(@coordinates), :precision => 1) %> miles</span>
             </a>
 
-
           <% end -%>
 
         </p>
@@ -60,16 +58,26 @@
     <div class="sidebar_top">
       <div id="maps"></div>
     </div>
-    <div class="sidebar_txt">
-        <h3>Nearby Deals</h3>
-        <p>Five ($29) or Ten ($49) Fitness Classes, Including Hot Yoga, Zumba, and More</p>
-        <p>$20 for an express detailing or $40 for an economy detailing at your home or office</p>
-        <p>Small-Aircraft Ride for One or Four from Biplane Rides Over Atlanta Inc. (Up To 54% Off)</p>
-        <p>$129 for a Tandem Skydiving Session from Sportations (Up to $195 Value)</p>
-        <p>One G-Pass to a Harlem Globetrotters Game. Multiple Games and Seating Options Available.</p>
-        <p>BLT Steak Atlanta - Ticket to Cooking Class</p>
-        <p>50% off Firkin &amp; Crown in Cumming ($20 value)</p>
-    </div>
+      <% unless @events.length == 0 %>
+        <div class='sidebar_block sidebar_txt'>
+          <h3>Nearby Events</h3>
+          <% @events.each do |event| %>
+            <p>
+              <%= link_to event.name, event %>
+            </p>
+          <% end -%>
+        </div>
+      <% end -%>
+      <% unless @deals.length == 0 %>
+        <div class='sidebar_block sidebar_txt'>
+          <h3>Nearby Deals</h3>
+          <% @deals.each do |deal| %>
+            <p>
+              <%= link_to deal.title, deal.url, :target => :blank %>
+            </p>
+          <% end -%>
+        </div>
+      <% end -%>
   </div><!--sidebar end-->
 
   <div class="clear"></div>

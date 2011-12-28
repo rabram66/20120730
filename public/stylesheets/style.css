@@ -205,6 +205,7 @@ body {
   font-style:italic;
   line-height:18px;
   padding-top:8px;
+  margin-right: 10px;
 }
 
 .top_box p a
@@ -423,7 +424,7 @@ body {
   width:236px;
   float:left;
   font-size:24px;
-  color:#b1e8fe;
+  color:#049DE5;
   font-weight:bold;
   padding:0 10px;
   line-height:41px;
@@ -522,6 +523,24 @@ body {
 
 
 /* Custom additions */
+.sidebar_block
+{
+  border-bottom:#e0dfdf solid 1px;
+}
+
+.sidebar_txt a
+{
+  font-size:14px;
+  color:#33afea;
+  line-height:18px;
+  padding-bottom:18px;
+}
+
+.sidebar_txt a:hover
+{
+  color:#ee941f;
+}
+
 span.distance-from
 {
   font-style: italic;
@@ -610,3 +629,33 @@ div#maps {
  width: 322px; 
  height: 332px;
 }
+
+.pac-item
+{
+  color:#049DE5;
+}
+
+#twitter-status .follow-link {
+  float: right;
+  font-style: normal;
+  font-size: 1.0em;
+}
+
+#twitter-status .follow-link a {
+  text-decoration: underline;
+  color: gray;
+}
+
+#twitter-status .tweeted-at {
+  font-style: normal;
+  font-size: 1.0em;
+}
+
+#map_canvas {
+  width: 560px;
+  height: 550px;
+  margin-bottom: 20px;
+  float: left;
+}
+
+

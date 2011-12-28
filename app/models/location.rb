@@ -59,9 +59,17 @@ class Location < ActiveRecord::Base
   def categories
     [LocationCategory.find_by_name(general_type)]
   end
+
+  def twitter?
+    !twitter_name.blank?
+  end
   
   def twitter_status
     Tweet.user_status(twitter_name) unless twitter_name.blank?
+  end
+
+  def twitter_page_url
+    "http://twitter.com/#{twitter_name}" unless twitter_name.blank?
   end
   
   def recent_tweet?(within=1.day)
@@ -81,6 +89,10 @@ class Location < ActiveRecord::Base
       filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(tweets)
       filtered[0,count]
     end
+  end
+
+  def facebook?
+    !facebook_page_id.blank?
   end
 
   def facebook_status

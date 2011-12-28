@@ -1,21 +1,17 @@
-<div id ="HeaderInfo" classs="span-24"> 
-  <br/>
-  <div class="span-23" style="background: #00aad2; color: white; margin-bottom: 7px; padding-left: 40px" >
-    <span id='searchbox'>
-      <%= form_tag locations_path, :method => 'get' do %>
-        Find a place to <%= select_tag :general_type, options_for_select(LocationCategory.all.map(&:name), @general_type), :include_blank => true %>
-        within <%= select_tag :radius, options_for_select([1,5,10,20], @radius), :include_blank => true %> miles
-        of <%= text_field_tag :address, @address, :size => 40 %><br/>
-        Named <%= text_field_tag :name, @name, :size => 40 %>
-        ordered by <%= select_tag :order, options_for_select([ ['Name','name'],['Distance','distance'],['Address','address'],['Twitter Name','twitter_name'],['Facebook Page','facebook_page_id'] ], @order) %>
-        <%= submit_tag "Search" %>
-      <% end %>
-    </span>
+<div class='content'>
+  <div class='input_form'>
+    <%= form_tag locations_path, :method => 'get' do %>
+      Find a place to <%= select_tag :general_type, options_for_select(LocationCategory.all.map(&:name), @general_type), :include_blank => true %>
+      within <%= select_tag :radius, options_for_select([1,5,10,20], @radius), :include_blank => true %> miles
+      of <%= text_field_tag :address, @address, :size => 40 %><br/>
+      Named <%= text_field_tag :name, @name, :size => 40 %>
+      ordered by <%= select_tag :order, options_for_select([ ['Name','name'],['Distance','distance'],['Address','address'],['Twitter Name','twitter_name'],['Facebook Page','facebook_page_id'] ], @order) %>
+      <%= submit_tag "Search" %>
+    <% end %>
   </div>
-  <br/>
 </div>
 
-<div>
+<div class='content'>
   <table id="locations">
     <tr>
       <th>Name</th>
@@ -42,5 +38,5 @@
     <% end -%>
   </table>
   <%= will_paginate @locations %>
+  <%= link_to 'New Location', new_location_path %>
 </div>
-<%= link_to 'New Location', new_location_path %>

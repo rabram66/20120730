@@ -1,11 +1,12 @@
+<%= render "script" %>
 <div class="banner"><!--banner start-->
   <div class="banner_area">
     <form action="" method="get">
       <label>Find a place to</label>
-      <select name="" class="list_menu"><option>Relax / Care</option></select>
+      <%= select_tag :types, options_for_select(LocationCategory.all.map(&:name), params[:types]), :class => 'list_menu' %>
       <label>near</label>
-      <input name="" type="text" class="form_field" value="enter location"/>
-      <input name="" type="button" class="button" />
+      <%= text_field_tag :search, @search, :id => "searchTextField", :class => 'form_field' %>
+      <%= submit_tag "", :name => nil, :class => 'button' %>
     </form>
   </div>
 </div><!--banner end-->
@@ -29,7 +30,7 @@
             </a>
 
             <% if can? :update, location %>
-              <%= link_to 'Edit', edit_location_path(location) %>
+              <%= link_to 'Edit', edit_location_path(location), :class => 'inline' %>
             <% end %>
 
 
@@ -56,7 +57,9 @@
   </div><!--content_left end-->
 
   <div class="sidebar"><!--sidebar start-->
-    <div class="sidebar_top"><a href="#"><img src="/images/img/map_img2.jpg" alt="" /></a></div>
+    <div class="sidebar_top">
+      <div id="maps"></div>
+    </div>
     <div class="sidebar_txt">
         <h3>Nearby Deals</h3>
         <p>Five ($29) or Ten ($49) Fitness Classes, Including Hot Yoga, Zumba, and More</p>

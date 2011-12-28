@@ -1,5 +1,6 @@
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
 <%= stylesheet_link_tag "ui-lightness/jquery-ui-1.8.16.custom.css" %>
+<%= stylesheet_link_tag "events.css" %>
 <%= javascript_include_tag "jquery-ui-1.8.16.custom.min.js","jquery-ui-timepicker-addon" %>
 
 <script type="text/javascript">
@@ -23,51 +24,51 @@
   });
 </script>
 
-<%= form_for(@event) do |f| %>
-  <% if @event.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
+  <%= form_for(@event) do |f| %>
+    <% if @event.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
 
-      <ul>
-      <% @event.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
+        <ul>
+        <% @event.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <fieldset id='event-detail-fieldset'>
+      <ul id='event-detail-fields'>
+        <li>
+          <%= f.label :name, '* Event Name' %><br/>
+          <%= f.text_field :name, :class => 'form_field' %>
+        </li>
+        <li>
+          <%= f.label :start_date, '* Date and Time' %></br>
+          <%= f.text_field :start_date, :value => @event.start_date ? @event.start_date.localtime.stamp('05/10/2011 1:00 am') : '', :class => 'form_field' %>
+          <a id='add-end-time' href='javascript:void(0)'>Add end time</a>
+          <span class='end-date-and-time'>
+            <%= f.text_field :end_date, :value => @event.end_date ? @event.end_date.localtime.stamp("1:00 am") : '', :class => 'form_field' %>
+          </span>
+        </li>
+        <li>
+          <%= f.label :venue, 'Location' %><br/>
+          <%= f.text_field :venue, :class => 'form_field' %>
+        </li>
+        <li>
+          <%= f.label :full_address, '* Street' %>
+          <%= f.text_field :full_address, :class => 'form_field' %>
+        </li>
+        <li>
+          <%= f.label :description, 'Details' %>
+          <%= f.text_area :description %>
+        </li>
+        <li>
+          <%= f.label :tags, 'Tags' %>
+          <%= f.text_field :tags, :class => 'form_field' %>
+        </li>
+      </ol>
+      <%= f.hidden_field :user_id %>
+    </fieldset>
+    <%= f.submit %>
   <% end %>
-
-  <fieldset id='event-detail-fieldset'>
-    <ol id='event-detail-fields'>
-      <li>
-        <%= f.label :name, '* Event Name:' %>
-        <%= f.text_field :name %>
-      </li>
-      <li>
-        <%= f.label :start_date, '* Date and Time:' %>
-        <%= f.text_field :start_date, :value => @event.start_date ? @event.start_date.localtime.stamp('05/10/2011 1:00 am') : '' %>
-        <a id='add-end-time' href='javascript:void(0)'>Add end time</a>
-        <span class='end-date-and-time'>
-          <%= f.text_field :end_date, :value => @event.end_date ? @event.end_date.localtime.stamp("1:00 am") : '' %>
-        </span>
-      </li>
-      <li>
-        <%= f.label :venue, 'Location:' %>
-        <%= f.text_field :venue %>
-      </li>
-      <li>
-        <%= f.label :full_address, '* Street:' %>
-        <%= f.text_field :full_address %>
-      </li>
-      <li>
-        <%= f.label :description, 'Details:' %>
-        <%= f.text_area :description %>
-      </li>
-      <li>
-        <%= f.label :tags, 'Tags:' %>
-        <%= f.text_field :tags %>
-      </li>
-    </ol>
-    <%= f.hidden_field :user_id %>
-  </fieldset>
-  <%= f.submit %>
-<% end %>

@@ -13,6 +13,7 @@ div.ui-datepicker{
 /* event form */
 #event-detail-fields li {
   border: none;
+  clear: both;
 }
 #event-detail-fields label {
   width: 10em;

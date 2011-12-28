@@ -5,7 +5,7 @@
     <%= stylesheet_link_tag 'style' %>
     <%= yield :stylesheets %>  
     <%= javascript_include_tag :defaults, "jquery.pajinate.min", "jquery.cookies.2.2.0.min" %>
-    <%= yield :javascripts %>  
+    <%= yield :javascripts %>
     <%= csrf_meta_tag %>
   </head>
   <body onload="<%= "initialize()" if @location %>" onunload="GUnload();">    
@@ -15,11 +15,20 @@
           <div class="top_nav">
             <ul>
               <li><%= link_to "HOME", root_path %></li>
-              <% if !current_user -%>
+              <% if !current_user %>
                 <li><%= link_to "LOGIN", new_user_session_path %></li>
-              <% else -%>
+              <% else %>
+                <% if can? :manage, Event %>
+                  <li><%= link_to "EVENTS", events_path %></li>
+                <% end %>
+                <% if can? :manage, Location %>
+                  <li><%= link_to "LOCATIONS", locations_path %></li>
+                <% end %>
+                <% if can? :manage, User %>
+                  <li><%= link_to "USERS", users_path %></li>
+                <% end %>
                 <li><%= link_to "LOGOUT", destroy_user_session_path, :method => :delete %></li>
-              <% end -%>
+              <% end %>
             </ul>
           </div>
         <div class="clear"></div>

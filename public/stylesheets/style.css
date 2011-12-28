@@ -599,3 +599,14 @@ span.distance-from
   font-size:18px;
   color:#979796;
 }
+
+.block p a.inline
+{
+  float: right;
+  color: #ee941f;
+}
+
+div#maps {
+ width: 322px; 
+ height: 332px;
+}

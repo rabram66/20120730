@@ -5,7 +5,7 @@
     <span id='searchbox'>
       <%= form_tag places_path, :method => 'get' do %>
         Find a place to <%= select_tag :types, options_for_select(LocationCategory.all.map(&:name), params[:types]) %>  near 
-        <%= text_field_tag :search, @search, :id => "searchTextField", :size => 50 %>  
+        <%= text_field_tag :search, @search, :id => "searchTextField", :size => 50 %>
         <%= submit_tag "Search", :name => nil %>
       <% end %>
     </span>

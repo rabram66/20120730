@@ -1,16 +1,16 @@
-<div class="field">
+<p>
   * <%= f.label :address, "Street Address" %><br />
-  <%= f.text_field :address %>
-</div>
-<div class="field">
+  <%= f.text_field :address, :class => 'input_form_field' %>
+</p>
+<p>
   * <%= f.label :city %><br />
-  <%= f.text_field :city %>
-</div>
+  <%= f.text_field :city, :class => 'input_form_field' %>
+</p>
 
-<div class="field">
+<p>
   * <%= f.label :state %><br />
-  <%= f.text_field :state %>
-</div>
+  <%= f.text_field :state, :class => 'input_form_field' %>
+</p>
 
 <div id='coordinate-fields'>
   <p>
@@ -20,14 +20,14 @@
      By the same token, updating the location's street address, city, or state, or
      clearing the latitude or longitude, will force automatic geocoding.
   </p>
-  <div class="field">
+  <p>
     <%= f.label :latitude %><br />
-    <%= f.text_field :latitude %>
-  </div>
+    <%= f.text_field :latitude, :class => 'input_form_field' %>
+  </p>
 
-  <div class="field">
+  <p>
     <%= f.label :longitude %><br />
-    <%= f.text_field :longitude %>
-  </div>
+    <%= f.text_field :longitude, :class => 'input_form_field' %>
+  </p>
 </div>
 

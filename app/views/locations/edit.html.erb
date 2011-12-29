@@ -1,9 +1,11 @@
-<div class='admin-content'>
-  <h1>Editing location</h1>
+<div class='content'>
+  <div class='input_form'>
+    <h2>Edit Location</h2>
 
-  <%= render 'form' %>
+    <%= render 'form' %>
 
-  <%= link_to 'Show', @location %> |
-  <%= link_to 'Delete', @location, :confirm => 'Are you sure?', :method => :delete %> |
-  <%= link_to 'Back', locations_path %>
+    <%= link_to 'Show', @location %> |
+    <%= link_to 'Delete', @location, :confirm => 'Are you sure?', :method => :delete %> |
+    <%= link_to 'Back', locations_path %>
+  </div>
 </div>

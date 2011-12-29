@@ -12,7 +12,7 @@
   
   <div class="field" id="bus_name">
     * <%= f.label :name, "Business name" %><br />
-    <%= f.text_field :name %>
+    <%= f.text_field :name, :class => 'input_form_field' %>
   </div>
 
   <%= render :partial => 'shared/address_form', :locals => {:f => f} %>
@@ -21,39 +21,39 @@
     <%= link_to( "Map Location", google_map_url(@location), :target => :new ) %>
   </p>
 
-  <div class="field">
+  <p>
     <%= f.label :phone %><br/>
-    <%= f.text_field :phone %>
-  </div>
+    <%= f.text_field :phone, :class => 'input_form_field' %>
+  </p>
 
-  <div class="field">
+  <p>
     <%= f.label :email %><br/>
-    <%= f.text_field :email %>
-  </div>
+    <%= f.text_field :email, :class => 'input_form_field' %>
+  </p>
 
-  <div class="field">
+  <p>
     * <%= f.label :types %><br/>
     <%= grouped_collection_select(
       :location, :types, LocationCategory.all, :types, :name, :to_s, :humanize,
       {:include_blank => true}, html_options = {}) %>
-  </div>
+  </p>
 
-  <div class="field">
+  <p>
     <%= f.label :twitter_name %><br />
-    <%= f.text_field :twitter_name %>
-  </div>
+    <%= f.text_field :twitter_name, :class => 'input_form_field' %>
+  </p>
 
-  <div class="field">
+  <p>
     <%= f.label :facebook_page_id %><br />
-    <%= f.text_field :facebook_page_id %>
-  </div>
+    <%= f.text_field :facebook_page_id, :class => 'input_form_field' %>
+  </p>
 
-  <div class='field' id='reference'>
+  <p id='reference'>
     <%= f.label :reference, "Google Places Reference ID" %><br/>
-    <%= f.text_area :reference, :disabled => true %>
-  </div>
+    <%= f.text_area :reference, :disabled => true, :class => 'input_form_field' %>
+  </p>
 
-  <div class="actions">
+  <p class="actions">
     <input value="<%= "#{params[:action] == 'edit' ? 'Update' : 'Create'} Location"%>" type="button" />
-  </div>
+  </p>
 <% end %>

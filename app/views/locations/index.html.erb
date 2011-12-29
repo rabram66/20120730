@@ -1,17 +1,17 @@
-<div class='content'>
+<div class='content list'>
+  <h2>Locations</h2>
+
   <div class='input_form'>
     <%= form_tag locations_path, :method => 'get' do %>
       Find a place to <%= select_tag :general_type, options_for_select(LocationCategory.all.map(&:name), @general_type), :include_blank => true %>
       within <%= select_tag :radius, options_for_select([1,5,10,20], @radius), :include_blank => true %> miles
-      of <%= text_field_tag :address, @address, :size => 40 %><br/>
+      of <%= text_field_tag :address, @address, :size => 40 %><br/><br/>
       Named <%= text_field_tag :name, @name, :size => 40 %>
       ordered by <%= select_tag :order, options_for_select([ ['Name','name'],['Distance','distance'],['Address','address'],['Twitter Name','twitter_name'],['Facebook Page','facebook_page_id'] ], @order) %>
       <%= submit_tag "Search" %>
     <% end %>
   </div>
-</div>
 
-<div class='content'>
   <table id="locations">
     <tr>
       <th>Name</th>
@@ -24,14 +24,15 @@
     </tr>
     <% @locations.each do |location| %>
       <tr>
-        <td><%= link_to location.name, location_path(location) %></td>
+        <td><%= location.name %></td>
         <td><%= "#{number_with_precision(location.distance, :precision => 1)} miles" if location.respond_to?(:distance) %></td>
         <td><%= location.address %></td>
         <td><%= location.general_type %></td>
         <td><%= location.twitter_name %></td>
         <td><%= location.facebook_page_id %></td>
-        <td>
-          <%= link_to "Edit", edit_location_path(location) %>&nbsp;
+        <td class='actions'>
+          <%= link_to "Show", location_path(location) %>&nbsp;|&nbsp;
+          <%= link_to "Edit", edit_location_path(location) %>&nbsp;|&nbsp;
           <%= link_to "Delete", location_path(location), :method => :delete, :confirm => "Are you sure you want to delete this location?" %>
         </td>
       </tr>

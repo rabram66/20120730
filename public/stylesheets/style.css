@@ -753,6 +753,7 @@ div#maps {
 
 .list table
 {
+  margin: auto;
   border: 1px solid darkgray;
 }
 
@@ -793,4 +794,22 @@ div#maps {
   font-weight:bold;
   padding-right:8px;
   margin-bottom: 15px;
+}
+
+.list .input_form form
+{
+  font-size: 16px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.list .pagination
+{
+  text-align: center;
+  margin: 10px auto 10px auto;
+}
+
+.list .pagination a
+{
+  margin: 10px;
 }

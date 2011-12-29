@@ -63,31 +63,31 @@
           </strong>
         <% end -%>
       </h2>
-      <h3><%= @location.vicinity %> -<a href="javascript:void(0)" id="direction_id">Get Directions</a></h3>
+      <h3><%= @location.vicinity %><span id='get-directions-link'> - <a href="javascript:void(0)" id="direction_id">Get Directions</a></span></h3>
     </div>
             
-    <div id='twitter-status' class="top_box">
-      <% if @last_tweet -%>
+    <% if @last_tweet -%>
+      <div id='twitter-status' class="top_box">
         <%= link_to image_tag(@last_tweet.profile_image_url, :alt => 'Twitter'), @location.twitter_page_url, :target => :new %>
         <p>
           <%= auto_link( @last_tweet.text, :link => :urls, :html => {:target => :new} ).html_safe %>
           <span class='tweeted-at'>&nbsp;-&nbsp;<%= time_ago_in_words @last_tweet.created_at %> ago</span>
           <span class='follow-link'><%= link_to 'follow', @last_tweet.follow_url, :class => 'follow-link', :target => '_blank' %></span>
         </p>
-      <% end -%>
-      <div class="clear"></div>
-    </div>
-            
-    <div id='facebook-status' class="threed_box">
-      <% if @last_post -%>
+        <div class="clear"></div>
+      </div>
+    <% end -%>
+
+    <% if @last_post -%>
+      <div id='facebook-status' class="threed_box">
         <%= link_to image_tag('img/fb.jpg', :alt => 'Facebook'), @location.facebook_page_url, :target => :new %>
         <p>
           <%= auto_link( @last_post.text, :link => :urls, :html => {:target => :new} ).html_safe %>
           <span class='follow-link'><%= link_to 'visit page', @location.facebook_page_url, :class => 'follow-link', :target => :new %></span>
         </p>
-      <% end -%>
-      <div class="clear"></div>
-    </div>
+        <div class="clear"></div>
+      </div>
+    <% end -%>
 
     <div class="map_area">
       <div id='map_canvas'></div>
@@ -113,30 +113,32 @@
         <% end -%>
       </div>
     <% end -%>
-    <div id='mentions-panel'>
-      <h2>What People Are Saying</h2>
-      <ul class='content'>
-      <% @user_saying.each do |tweet| -%>
-      <li>
-        <div class="twitter_box">
-          <div class="twitter_box_pic">
-            <%= link_to image_tag(tweet.profile_image_url, :alt => 'Twitter'), tweet.twitter_page_url, :target => :new %>
+    <% unless @user_saying.length == 0 -%>
+      <div id='mentions-panel'>
+        <h2>What People Are Saying</h2>
+        <ul class='content'>
+        <% @user_saying.each do |tweet| -%>
+        <li>
+          <div class="twitter_box">
+            <div class="twitter_box_pic">
+              <%= link_to image_tag(tweet.profile_image_url, :alt => 'Twitter'), tweet.twitter_page_url, :target => :new %>
+            </div>
+            <div class="twitter_box_txt">
+              <h3><%= tweet.screen_name.titleize %> Says:</h3>
+              <p>
+                <%= auto_link( tweet.text, :link => :urls, :html => {:target => :blank} ).html_safe %>
+              </p>
+              <span class='tweeted-at'><%= time_ago_in_words tweet.created_at %> ago</span>
+              <span class='follow-link'><%= link_to 'follow', tweet.follow_url, :class => 'follow-link', :target => '_blank' %></span>
+            </div>
+            <div class="clear"></div>
           </div>
-          <div class="twitter_box_txt">
-            <h3><%= tweet.screen_name.titleize %> Says:</h3>
-            <p>
-              <%= auto_link( tweet.text, :link => :urls, :html => {:target => :blank} ).html_safe %>
-            </p>
-            <span class='tweeted-at'><%= time_ago_in_words tweet.created_at %> ago</span>
-            <span class='follow-link'><%= link_to 'follow', tweet.follow_url, :class => 'follow-link', :target => '_blank' %></span>
-          </div>
-          <div class="clear"></div>
-        </div>
-      </li>
-      <% end -%>
-      </ul>
-      <div class='page_navigation'></div>
-    </div>
+        </li>
+        <% end -%>
+        </ul>
+        <div class='page_navigation'></div>
+      </div>
+    <% end -%>
     <div class="clear"></div>
   </div><!--sidebar end-->
   <div class="clear"></div>

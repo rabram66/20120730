@@ -1,20 +1,24 @@
 $(document).ready(function() {
-    
+
+  if ($('#mentions-panel').length || $('#deal-panel').length) {
     $("#direction_id").live('click', function() {
-        if ($('#mentions-panel').css("display") != "none") {
-            $("#direction_id").text("Tweets");
-            $("#deal-panel").hide();
-            $("#mentions-panel").hide();
-            $("#directions-sidebar").show();            
-        }
-        else {
-            $("#direction_id").text("Directions");
-            $("#deal-panel").show();
-            $("#mentions-panel").show();
-            $("#directions-sidebar").hide();
-        }
-        return false;
-    })
+      if ($('#mentions-panel').css("display") != "none") {
+        $("#direction_id").text("Tweets");
+        $("#deal-panel").hide();
+        $("#mentions-panel").hide();
+        $("#directions-sidebar").show();            
+      } else {
+        $("#direction_id").text("Directions");
+        $("#deal-panel").show();
+        $("#mentions-panel").show();
+        $("#directions-sidebar").hide();
+      }
+      return false;
+    });
+  } else {
+    $("#directions-sidebar").show();
+    $("#get-directions-link").hide();
+  }
 
     // TODO: Why implement form submit this way? to prevent double-post?
     $(".actions input[type='button']").live('click', function() {

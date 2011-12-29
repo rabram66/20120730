@@ -625,9 +625,15 @@ div#maps {
   float: left;
 }
 
-#directions-panel
+#directions-sidebar
 {
   display: none;
+}
+
+#directions-panel-detail
+{
+  font-size: 14px;
+  color: #979796;
 }
 
 #mentions-panel ul.content
@@ -659,4 +665,33 @@ div#maps {
 .page_navigation a.previous_link, .page_navigation a.next_link
 {
   font-weight: bold;
+}
+
+#deal-panel p
+{
+  line-height:18px;
+  padding-bottom:18px;
+}
+
+#deal-panel p a
+{
+  padding: 20px 42px 18px 20px;
+  font-size:14px;
+  color:#33afea;
+}
+
+#deal-panel a:hover
+{
+  color:#ee941f;
+}
+
+#deal-panel h2
+{
+  border-bottom: none;
+}
+
+#deal-panel
+{
+  border-bottom: #E0DFDF 1px solid;
+  margin-bottom: 10px;
 }

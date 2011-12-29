@@ -14,43 +14,23 @@
 <div class="content nopadd"><!--content start-->
   <div class="content_left padd"><!--content_left start-->
     <% @locations.each do |location| %>
-
       <div class="block">
         <p>
-
-          <% if Location === location -%>
-
-            <% if can? :update, location %>
-              <%= link_to 'Edit', edit_location_path(location), :class => 'inline' %>
-            <% end %>
-
-            <a href="<%= url_for(:action => 'details', :address => location.full_address,  :bizname => location.name , :type => location.types, :reference => location.reference)%>">
-              <%= location.name %><strong> - <%= location.address %></strong>
-              <img src="/images/img/twitter.jpg" alt="" />
-              <% if location.deals? -%>
-                <img src="/images/yipit-logo.jpg" height='16'/>
-              <% end -%>
-              <span class='distance-from'><%= number_with_precision(location.distance, :precision => 1) %> miles</span>
-            </a>
-
-          <% else -%>
-
-            <a href="<%= url_for(:action => 'details', :reference => location.reference)%>">
-              <%= location.name %><strong><%= " - #{location.address}" unless location.address.blank? %></strong>
-              <% if location.recent_tweet? -%>
-                <img src="/images/img/twitter.jpg" alt=""/>
-              <% end -%>
-              <% if location.deals? -%>
-                <img src="/images/yipit-logo.jpg" height='16'/>
-              <% end -%>
-              <span class='distance-from'><%= number_with_precision(location.distance_from(@coordinates), :precision => 1) %> miles</span>
-            </a>
-
-          <% end -%>
-
+          <% if Location === location && can?(:update, location) %>
+            <%= link_to 'Edit', edit_location_path(location), :class => 'inline' %>
+          <% end %>
+          <a href="<%= url_for(:action => 'details', :address => location.full_address,  :bizname => location.name , :type => location.types, :reference => location.reference)%>">
+            <%= location.name %><strong><%= " - #{location.address}" unless location.address.blank? %></strong>
+            <% if location.twitter? || location.recent_tweet? -%>
+              <img src="/images/img/twitter.jpg" alt=""/>
+            <% end -%>
+            <% if location.deals? -%>
+              <img src="/images/yipit-logo.jpg" height='16'/>
+            <% end -%>
+            <span class='distance-from'><%= number_with_precision(location.distance_from(@coordinates), :precision => 1) %> miles</span>
+          </a>
         </p>
       </div>
-
     <% end -%>
   </div><!--content_left end-->
 

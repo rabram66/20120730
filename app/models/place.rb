@@ -34,6 +34,14 @@ class Place
     end
   end
 
+  def facebook?
+    false
+  end
+
+  def twitter?
+    false
+  end
+
   def in_category?(category)
     categories.include? category
   end

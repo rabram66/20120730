@@ -3,13 +3,15 @@ $(document).ready(function() {
     $("#direction_id").live('click', function() {
         if ($('#mentions-panel').css("display") != "none") {
             $("#direction_id").text("Tweets");
+            $("#deal-panel").hide();
             $("#mentions-panel").hide();
-            $("#directions-panel").show();            
+            $("#directions-sidebar").show();            
         }
         else {
             $("#direction_id").text("Directions");
+            $("#deal-panel").show();
             $("#mentions-panel").show();
-            $("#directions-panel").hide();
+            $("#directions-sidebar").hide();
         }
         return false;
     })

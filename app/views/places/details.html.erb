@@ -99,10 +99,20 @@
   </div><!--content_left end-->
 
   <div class="sidebar"><!--sidebar start-->
-    <div id='directions-panel'>
+    <div id='directions-sidebar'>
       <h2>Walking Directions</h2>
       <div id='directions-panel-detail'></div>
     </div>
+    <% unless @location.deals.length == 0 %>
+      <div id='deal-panel'>
+        <h2>Today's Deal</h2>
+        <% @location.deals.each do |deal| %>
+          <p>
+            <%= link_to deal.title, deal.url, :target => :new %>
+          </p>
+        <% end -%>
+      </div>
+    <% end -%>
     <div id='mentions-panel'>
       <h2>What People Are Saying</h2>
       <ul class='content'>

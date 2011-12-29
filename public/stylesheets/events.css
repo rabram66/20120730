@@ -1,5 +1,5 @@
 div.ui-datepicker{
- font-size: 0.9em;
+ font-size: 1.0em;
 }
 
 /* css for timepicker */
@@ -19,7 +19,7 @@ div.ui-datepicker{
   width: 10em;
   text-align: right;
   float: left;
-  padding-top: 8px;
+  padding-top: 20px;
   margin-right: 10px;
 }
 
@@ -28,7 +28,7 @@ div.ui-datepicker{
 }
 
 #event-detail-fields textarea {
-  width: 400px;
+  width: 506px;
   height: 100px;
 }
 
@@ -36,15 +36,26 @@ div.ui-datepicker{
 #event-detail-fields #event_venue,
 #event-detail-fields #event_full_address,
 #event-detail-fields #event_tags {
-  width: 400px;
+  width: 500px;
   padding: 4px;
 }
 
 #event-detail-fields #event_start_date {
-  width: 160px;
+  width: 228px;
   padding: 4px;
 }
 #event-detail-fields #event_end_date {
-  width: 60px;
+  width: 90px;
   padding: 4px;
+  float: none;
+}
+
+#add-end-time
+{
+  color: gray;
+  float: left;
+  font-size: 14px;
+  line-height: 36px;
+  margin-right: 10px;
+  text-decoration: underline;
 }

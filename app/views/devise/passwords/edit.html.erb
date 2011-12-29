@@ -7,10 +7,10 @@
       <%= f.hidden_field :reset_password_token %>
 
       <p><%= f.label :password, "New password" %><br />
-      <%= f.password_field :password %></p>
+      <%= f.password_field :password, :class => 'input_form_field'  %></p>
 
       <p><%= f.label :password_confirmation, "Confirm new password" %><br />
-      <%= f.password_field :password_confirmation %></p>
+      <%= f.password_field :password_confirmation, :class => 'input_form_field'  %></p>
 
       <p><%= f.submit "Change my password" %></p>
     <% end %>

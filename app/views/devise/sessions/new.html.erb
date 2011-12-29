@@ -1,19 +1,16 @@
 <div class='content'>
   <div class='input_form'>
-    <h2>Sign in</h2>
+    <h2>Sign In</h2>
     <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
       <p><%= f.label :email %><br />
-      <%= f.email_field :email, :class => 'form_field' %></p>
-      <div class='clear'></div>
+      <%= f.email_field :email, :class => 'input_form_field' %></p>
 
       <p><%= f.label :password %><br />
-      <%= f.password_field :password, :class => 'form_field' %></p>
-      <div class='clear'></div>
+      <%= f.password_field :password, :class => 'input_form_field' %></p>
 
       <% if devise_mapping.rememberable? -%>
         <p><%= f.check_box :remember_me, :class => 'form_checkbox' %><%= f.label :remember_me, :class => 'checkbox_label' %></p>
       <% end -%>
-      <div class='clear'></div>
 
       <p><%= f.submit "Sign in", :class => 'submit_button' %></p>
     <% end %>

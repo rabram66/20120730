@@ -522,6 +522,11 @@ span.distance-from
   padding-bottom: 10px;
 }
 
+.input_form p
+{
+  clear: both;
+}
+
 .input_form label
 {
   line-height:41px;
@@ -695,4 +700,45 @@ div#maps {
 {
   border-bottom: #E0DFDF 1px solid;
   margin-bottom: 10px;
+}
+
+/* Alternative form fields without background url needed */
+
+.input_form_field
+{
+  height: 36px;
+  width: 236px;
+  float: left;
+  font-size:24px;
+  color:#049DE5;
+  font-weight:bold;
+  padding:0 10px;
+  line-height:36px;
+  margin-right:10px;
+  margin-bottom: 10px;
+}
+
+.input_yes_no_field
+{
+  font-size:24px;
+  color:#049DE5;
+  height: 36px;
+  float: none;
+  font-weight:bold;
+  padding:0 10px;
+  line-height:36px;
+  margin-right:10px;
+  margin-bottom: 10px;
+}
+
+#error_explanation
+{
+  border-bottom: 2px solid darkgray;
+  padding-bottom: 5px;
+}
+
+#error_explanation li
+{
+  color: red;
+  font-size: 14px;
 }

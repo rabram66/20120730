@@ -6,7 +6,7 @@
       <%= devise_error_messages! %>
 
       <p><%= f.label :email %><br />
-      <%= f.email_field :email %></p>
+      <%= f.email_field :email, :class => 'input_form_field'  %></p>
 
       <p><%= f.submit "Resend confirmation instructions" %></p>
     <% end %>

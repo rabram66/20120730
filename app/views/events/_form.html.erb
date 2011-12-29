@@ -41,31 +41,31 @@
       <ul id='event-detail-fields'>
         <li>
           <%= f.label :name, '* Event Name' %><br/>
-          <%= f.text_field :name, :class => 'form_field' %>
+          <%= f.text_field :name, :class => 'input_form_field' %>
         </li>
         <li>
           <%= f.label :start_date, '* Date and Time' %></br>
-          <%= f.text_field :start_date, :value => @event.start_date ? @event.start_date.localtime.stamp('05/10/2011 1:00 am') : '', :class => 'form_field' %>
+          <%= f.text_field :start_date, :value => @event.start_date ? @event.start_date.localtime.stamp('05/10/2011 1:00 am') : '', :class => 'input_form_field' %>
           <a id='add-end-time' href='javascript:void(0)'>Add end time</a>
           <span class='end-date-and-time'>
-            <%= f.text_field :end_date, :value => @event.end_date ? @event.end_date.localtime.stamp("1:00 am") : '', :class => 'form_field' %>
+            <%= f.text_field :end_date, :value => @event.end_date ? @event.end_date.localtime.stamp("1:00 am") : '', :class => 'input_form_field' %>
           </span>
         </li>
         <li>
-          <%= f.label :venue, 'Location' %><br/>
-          <%= f.text_field :venue, :class => 'form_field' %>
+          <%= f.label :venue, 'Venue / Location' %><br/>
+          <%= f.text_field :venue, :class => 'input_form_field' %>
         </li>
         <li>
-          <%= f.label :full_address, '* Street' %>
-          <%= f.text_field :full_address, :class => 'form_field' %>
+          <%= f.label :full_address, '* Address' %><br/>
+          <%= f.text_field :full_address, :class => 'input_form_field' %>
         </li>
         <li>
-          <%= f.label :description, 'Details' %>
-          <%= f.text_area :description %>
+          <%= f.label :description, 'Description' %><br/>
+          <%= f.text_area :description, :class => 'input_form_field' %>
         </li>
         <li>
-          <%= f.label :tags, 'Tags' %>
-          <%= f.text_field :tags, :class => 'form_field' %>
+          <%= f.label :tags, 'Tags' %><br/>
+          <%= f.text_field :tags, :class => 'input_form_field' %>
         </li>
       </ol>
       <%= f.hidden_field :user_id %>

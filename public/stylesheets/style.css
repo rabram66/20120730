@@ -742,3 +742,55 @@ div#maps {
   color: red;
   font-size: 14px;
 }
+
+/* Styles used for table lists */
+.list
+{
+  color:#049DE5;
+  font-size: 12px;
+  padding: 10px;
+}
+
+.list table
+{
+  border: 1px solid darkgray;
+}
+
+.list table th
+{
+  color: white;
+  background-color:#ee941f;
+}
+
+.list table td
+{
+  padding: 10px;
+  border: 1px dotted darkgray;
+}
+
+.list table th
+{
+  padding: 10px;
+  border: 1px solid darkgray;
+}
+
+.list a
+{
+  color: gray;
+  text-decoration: underline;
+}
+
+.list td.actions
+{
+  white-space: nowrap;
+}
+
+.list h2
+{
+  line-height:41px;
+  color: #049DE5;
+  font-size:36px;
+  font-weight:bold;
+  padding-right:8px;
+  margin-bottom: 15px;
+}

@@ -1,4 +1,4 @@
-<div class='admin-content'>
+<div class='content list'>
   <h2>Your Events</h2>
   <table>
     <tr>
@@ -16,7 +16,7 @@
         <td><%= event.start_date %></td>
         <td><%= event.end_date %></td>
         <td><%= event.description %></td>
-        <td><%= link_to 'Show', event %> | <%= link_to 'Edit', edit_event_path(event) %> | <%= link_to 'Delete', event, confirm: 'Are you sure?', method: :delete %></td>
+        <td class='actions'><%= link_to 'Show', event %> | <%= link_to 'Edit', edit_event_path(event) %> | <%= link_to 'Delete', event, confirm: 'Are you sure?', method: :delete %></td>
       </tr>
     <% end %>
   </table>

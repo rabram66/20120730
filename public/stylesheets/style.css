@@ -813,3 +813,18 @@ div#maps {
 {
   margin: 10px;
 }
+
+.input_form .role_label
+{
+  font-size: 16px;
+}
+
+.input_form .role_checkbox
+{
+  margin: auto 10px 14px 10px;
+}
+
+.input_form #user_email
+{
+  width: 400px;
+}

@@ -1,28 +1,33 @@
-<%= form_for(@user) do |f| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+<div class='input_form'>
+  <%= form_for(@user) do |f| %>
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
 
-      <ul>
-        <% @user.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.text_field :email %>
-  </div>
+        <ul>
+          <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <p>
+      <%= f.label :email %><br />
+      <%= f.text_field :email, :class => 'input_form_field' %>
+    </p>
 
-  <%= f.label :roles %>
-  <% for role in User::ROLES %>
-    <%= check_box_tag "user[roles][]", role, @user.roles.include?(role) %>
-    <%= h role.humanize %>
+    <p>
+      <%= f.label :roles %>
+    </p>
+    <% for role in User::ROLES %>
+      <p>
+        <%= check_box_tag "user[roles][]", role, @user.roles.include?(role), :class => 'role_checkbox' %>
+        <%= f.label role.humanize, :class => 'role_label' %>
+      </p>
+    <% end %>
+    <%= hidden_field_tag "user[roles][]"%>
+    <p>
+      <%= f.submit %>
+    </p>
   <% end %>
-  <%= hidden_field_tag "user[roles][]"%>
-  
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>

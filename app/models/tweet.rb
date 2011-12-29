@@ -16,6 +16,10 @@ class Tweet
   def follow_url
     format(FOLLOW_URL, screen_name, tweet_id)
   end
+
+  def twitter_page_url
+    "http://twitter.com/#{screen_name}"
+  end
   
   class << self
     

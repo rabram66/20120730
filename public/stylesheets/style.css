@@ -307,63 +307,12 @@ body {
   text-decoration:none;
 }
 
-.twitter_box_txt span
+.twitter_box_txt span.tweeted-at
 {
   color:#cecece;
   font-size:12px;
   padding-top:3px;
   display:block;
-}
-
-.pagination_area
-{
-  padding: 16px 30px 12px 0;
-  border-bottom:#e0dfdf 1px solid;
-}
-
-.pagination
-{
-  width:105px;
-  float:right;
-  position:relative;
-}
-
-.pagination ul
-{
-}
-
-.pagination ul li
-{
-  float:left;
-  font-size:14px;
-  color:#9e9e9d;
-}
-
-.pagination ul li a
-{
-  color:#9e9e9d;
-  padding:0 5px;
-  text-decoration:none;
-}
-
-.pagination ul li a:hover, .pagination ul li.active a
-{
-  color:#38b6e8;
-  text-decoration:underline;
-}
-
-.left_arrow
-{
-  position:absolute;
-  left:-12px;
-  top:2px;
-}
-
-.right_arrow
-{
-  position:absolute;
-  right:7px;
-  top:2px;
 }
 
 /*******************************************************************inner1*************************************************/
@@ -658,4 +607,56 @@ div#maps {
   float: left;
 }
 
+.twitter_box .follow-link
+{
+  color: #CECECE;
+  float: right;
+}
 
+.twitter_box .follow-link a
+{
+  color: #CECECE;
+  text-decoration: underline;
+  float: right;
+}
+
+.twitter_box .tweeted-at
+{
+  float: left;
+}
+
+#directions-panel
+{
+  display: none;
+}
+
+#mentions-panel ul.content
+{
+  padding: 0;
+  border: none;
+}
+
+.page_navigation
+{
+  padding: 16px 30px 12px 0;
+  border-bottom: #E0DFDF 1px solid;
+  text-align: right;
+}
+
+.page_navigation a
+{
+  font-size:14px;
+  color:#9e9e9d;
+  padding:0 5px;
+}
+
+.page_navigation a:hover, .page_navigation a.active_page
+{
+  color:#38b6e8;
+  text-decoration:underline;
+}
+
+.page_navigation a.previous_link, .page_navigation a.next_link
+{
+  font-weight: bold;
+}

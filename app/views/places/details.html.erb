@@ -17,7 +17,7 @@
       }
       map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
       directionsDisplay.setMap(map);
-      directionsDisplay.setPanel(document.getElementById('directions-panel'));
+      directionsDisplay.setPanel(document.getElementById('directions-panel-detail'));
             
       //marker = new google.maps.Marker({position: bussiness_address, map: map, title: 'Click me' });
   
@@ -99,57 +99,35 @@
   </div><!--content_left end-->
 
   <div class="sidebar"><!--sidebar start-->
-    <h2>What People Are Saying</h2>
-    <div class="twitter_box">
-      <div class="twitter_box_pic">
-        <a href="#"><img src="img/img2.jpg" alt="" /></a>
-      </div>
-                    <div class="twitter_box_txt">
-                      <h3>Annabanna Says:</h3>
-                      <p>RT @carenwestpr: Get your tix to the classiest NYE celebration at @CafeCirca. 
-                         3 course din &amp; rooftop champagne toast included.<a href="#">http://t.co/FcuXGkND </a></p>
-                        <span>about 5 hours ago</span>
-                    </div>
-                  <div class="clear"></div>
-                </div>
-                
-                <div class="twitter_box">
-                  <div class="twitter_box_pic"><a href="#"><img src="img/img2.jpg" alt="" /></a></div>
-                    <div class="twitter_box_txt">
-                      <h3>Annabanna Says:</h3>
-                      <p>RT @carenwestpr: Get your tix to the classiest NYE celebration at @CafeCirca. 
-                         3 course din &amp; rooftop champagne toast included.<a href="#">http://t.co/FcuXGkND </a></p>
-                        <span>about 5 hours ago</span>
-                    </div>
-                  <div class="clear"></div>
-                </div>
-                
-                <div class="twitter_box">
-                  <div class="twitter_box_pic"><a href="#"><img src="img/img2.jpg" alt="" /></a></div>
-                    <div class="twitter_box_txt">
-                      <h3>Annabanna Says:</h3>
-                      <p>RT @carenwestpr: Get your tix to the classiest NYE celebration at @CafeCirca. 
-                         3 course din &amp; rooftop champagne toast included.<a href="#">http://t.co/FcuXGkND </a></p>
-                        <span>about 5 hours ago</span>
-                    </div>
-                  <div class="clear"></div>
-                </div>
-                
-                
-                <div class="pagination_area">
-                  <div class="pagination">
-                      <ul>
-                          <li><a href="#">1</a></li>
-                            <li class="active"><a href="#">2</a></li>
-                            <li><a href="#">3...</a></li>
-                            <li><a href="#">9</a></li>
-                        </ul>
-                        
-                        <div class="left_arrow"><a href="#"><img src="img/left_arrow.jpg" alt="" /></a></div>
-                        <div class="right_arrow"><a href="#"><img src="img/right_arrow.jpg" alt="" /></a></div>
-                    </div>
-                 <div class="clear"></div>
-             </div>
-        </div><!--sidebar end-->
+    <div id='directions-panel'>
+      <h2>Walking Directions</h2>
+      <div id='directions-panel-detail'></div>
+    </div>
+    <div id='mentions-panel'>
+      <h2>What People Are Saying</h2>
+      <ul class='content'>
+      <% @user_saying.each do |tweet| -%>
+      <li>
+        <div class="twitter_box">
+          <div class="twitter_box_pic">
+            <%= link_to image_tag(tweet.profile_image_url, :alt => 'Twitter'), tweet.twitter_page_url, :target => :new %>
+          </div>
+          <div class="twitter_box_txt">
+            <h3><%= tweet.screen_name.titleize %> Says:</h3>
+            <p>
+              <%= auto_link( tweet.text, :link => :urls, :html => {:target => :blank} ).html_safe %>
+            </p>
+            <span class='tweeted-at'><%= time_ago_in_words tweet.created_at %> ago</span>
+            <span class='follow-link'><%= link_to 'follow', tweet.follow_url, :class => 'follow-link', :target => '_blank' %></span>
+          </div>
+          <div class="clear"></div>
+        </div>
+      </li>
+      <% end -%>
+      </ul>
+      <div class='page_navigation'></div>
+    </div>
     <div class="clear"></div>
+  </div><!--sidebar end-->
+  <div class="clear"></div>
 </div><!--content end-->

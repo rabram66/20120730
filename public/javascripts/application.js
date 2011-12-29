@@ -1,14 +1,14 @@
 $(document).ready(function() {
     
     $("#direction_id").live('click', function() {
-        if ($('#mentions_id').css("display") != "none") {
+        if ($('#mentions-panel').css("display") != "none") {
             $("#direction_id").text("Tweets");
-            $("#mentions_id").hide();
+            $("#mentions-panel").hide();
             $("#directions-panel").show();            
         }
         else {
             $("#direction_id").text("Directions");
-            $("#mentions_id").show();
+            $("#mentions-panel").show();
             $("#directions-panel").hide();
         }
         return false;
@@ -45,8 +45,12 @@ $(document).ready(function() {
       calcRoute();
     })
     
-    $('#mentions-container').pajinate({
-      items_per_page: 4
+    $('#mentions-panel').pajinate({
+      items_per_page: 4,
+      num_page_links_to_display: 2,
+      show_first_last: false,
+      nav_label_prev: '&lang;',
+      nav_label_next: '&rang;'
     });
        
 })

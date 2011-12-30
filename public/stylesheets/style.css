@@ -80,7 +80,7 @@ a, img a, img, a img {border:0; outline:0; text-decoration:none;}
 
 /* MAIN */
 body {
-  background:url(/images/img/body_bg.jpg) repeat;
+  background:url(/images/body_bg.jpg) repeat;
   font-family:'Helvetica';
   font-size:12px;
   font-weight:normal;
@@ -99,7 +99,7 @@ body {
 
 .header
 {
-  background:url(/images/img/header_bg.jpg) repeat-x left top;
+  background:url(/images/header_bg.jpg) repeat-x left top;
   height:38px;
   padding:10px 0 0 20px;
 }
@@ -319,7 +319,7 @@ body {
 
 .banner
 {
-  background:url(/images/img/banner_bg.jpg) repeat-x left top;
+  background:url(/images/banner_bg.jpg) repeat-x left top;
   border-top:#fff 1px solid;
   border-bottom:#e0dfdf 1px solid;
   height:73px;
@@ -328,7 +328,7 @@ body {
 
 .banner_area
 {
-  background:url(/images/img/banner_area_bg.png) no-repeat left top;
+  background:url(/images/banner_area_bg.png) no-repeat left top;
   width:847px;
   height:58px;
   margin:0 auto;
@@ -368,7 +368,7 @@ body {
 
 .form_field
 {
-  background:url(/images/img/form_field_bg.png) no-repeat left top;
+  background:url(/images/form_field_bg.png) no-repeat left top;
   height:41px;
   width:236px;
   float:left;
@@ -383,7 +383,7 @@ body {
 
 .button
 {
-  background:url(/images/img/button.png) no-repeat left top;
+  background:url(/images/button.png) no-repeat left top;
   height:38px;
   width:120px;
   border:none;
@@ -441,7 +441,7 @@ body {
 .block p a:hover, .block p a.active
 {
   color:#ee941f;
-  background:#fff1df url(/images/img/hover_bg.jpg) no-repeat right top;
+  background:#fff1df url(/images/hover_bg.jpg) no-repeat right top;
 }
 
 .sidebar_top

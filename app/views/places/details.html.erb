@@ -54,12 +54,12 @@
       <h2><%= @location.name %>
         <% if @location.twitter? %>
           <span>
-            <%= link_to image_tag('img/twitter.jpg', :alt => 'Twitter'), @location.twitter_page_url, :target => :new %>
+            <%= link_to image_tag('twitter.jpg', :alt => 'Twitter'), @location.twitter_page_url, :target => :new %>
           </span>
         <% end -%>
         <% if @location.facebook? %>
           <strong>
-            <%= link_to image_tag('img/facebook.jpg', :alt => 'Facebook'), @location.facebook_page_url, :target => :new %>
+            <%= link_to image_tag('facebook.jpg', :alt => 'Facebook'), @location.facebook_page_url, :target => :new %>
           </strong>
         <% end -%>
       </h2>
@@ -80,7 +80,7 @@
 
     <% if @last_post -%>
       <div id='facebook-status' class="threed_box">
-        <%= link_to image_tag('img/fb.jpg', :alt => 'Facebook'), @location.facebook_page_url, :target => :new %>
+        <%= link_to image_tag('fb.jpg', :alt => 'Facebook'), @location.facebook_page_url, :target => :new %>
         <p>
           <%= auto_link( @last_post.text, :link => :urls, :html => {:target => :new} ).html_safe %>
           <span class='follow-link'><%= link_to 'visit page', @location.facebook_page_url, :class => 'follow-link', :target => :new %></span>

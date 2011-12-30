@@ -56,12 +56,12 @@ class PlacesController < ApplicationController
   private
   
   def set_coordinates
-    search = params[:search]
+    @search = params[:search]
     lat,lng = params[:lat], params[:lng] 
 
     @coordinates = case
       when !lat.blank? && !lng.blank?; [lat.to_f, lng.to_f]
-      when !search.blank?; Geocoder.coordinates(search)
+      when !@search.blank?; Geocoder.coordinates(@search)
       when session[:search]; session[:search]
       when cookies[:address]; cookies[:address].split("&").map(&:to_f) 
     end

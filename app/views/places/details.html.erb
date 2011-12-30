@@ -63,7 +63,13 @@
           </strong>
         <% end -%>
       </h2>
-      <h3><%= @location.vicinity %><span id='get-directions-link'> - <a href="javascript:void(0)" id="direction_id">Get Directions</a></span></h3>
+      <h3>
+        <%= @location.vicinity %>
+        <span id='get-directions-link'> - <a href="javascript:void(0)" id="direction_id">Get Directions</a></span>
+        <% unless @location.phone_number.blank? %>
+          <span class='phone-number'><%= number_to_phone @location.phone_number, :area_code => true %></span>
+        <% end -%>
+      </h3>
     </div>
             
     <% if @last_tweet -%>

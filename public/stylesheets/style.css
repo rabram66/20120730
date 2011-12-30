@@ -186,6 +186,13 @@ body {
   text-decoration:underline;
 }
 
+.left_top h3 .phone-number
+{
+  color: #EE941F;
+  float: right;
+  margin-right: 20px;
+}
+
 .top_box
 {
   padding:10px 0 10px 20px;

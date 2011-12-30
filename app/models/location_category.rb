@@ -1,9 +1,10 @@
 class LocationCategory
   
-  attr_accessor :name, :types, :short_name
+  attr_accessor :name, :display_name, :types, :short_name
   
-  def initialize(name, types=[])
+  def initialize(name, types=[], display_name=nil)
     @name = name
+    @display_name = display_name || name
     @short_name = name.split('/').first
     @types = types
   end
@@ -32,17 +33,20 @@ class LocationCategory
 
   EatDrink = LocationCategory.new(
     'Eat/Drink',
-    %w(bar cafe restaurant food)
+    %w(bar cafe restaurant food),
+    'Eat & Drink'
   )
   
   RelaxCare = LocationCategory.new(
     'Relax/Care',
-    %w(aquarium art_gallery beauty_salon bowling_alley casino gym movie_theater museum night_club park spa)
+    %w(aquarium art_gallery beauty_salon bowling_alley casino gym movie_theater museum night_club park spa),
+    'Relax'
   )
 
   ShopFind = LocationCategory.new(
     'Shop/Find',
-    %w(clothing_store shoe_store convenience_store grocery_or_supermarket)
+    %w(clothing_store shoe_store convenience_store grocery_or_supermarket),
+    'Shop'
   )
 
 end

@@ -3,7 +3,7 @@
   <div class="banner_area">
     <form action="" method="get">
       <label>Find a place to</label>
-      <%= select_tag :types, options_for_select(LocationCategory.all.map(&:name), params[:types]), :class => 'list_menu' %>
+      <%= select_tag :types, options_for_select(LocationCategory.all.map{|lc| [lc.display_name, lc.name]}, params[:types]), :class => 'list_menu' %>
       <label>near</label>
       <%= text_field_tag :search, @search, :id => "searchTextField", :class => 'form_field' %>
       <%= submit_tag "", :name => nil, :class => 'button' %>

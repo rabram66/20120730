@@ -3,11 +3,13 @@ class Event < ActiveRecord::Base
   include Address
 
   ADDRESS_ATTRS = %w(city state address)
+  CATEGORIES =  %w(conference conventions entertainment fundraisers meetings other performances reunions sales seminars social sports tradeshows travel religion fairs food music recreation)
 
   validates_presence_of :name, :address, :city, :state, :description
   attr_accessible :name, :address, :city, :state, :description,
                   :latitude, :longitude, :user_id, :full_address, :start_date,
                   :tags, :end_date
+  validates :category, :inclusion => {:in => CATEGORIES, :allow_blank => true}
 
   belongs_to :user
   geocoded_by :full_address

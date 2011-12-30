@@ -739,6 +739,29 @@ div#maps {
   margin-bottom: 10px;
 }
 
+.input_list_menu
+{
+  height:36px;
+  width:190px;
+  float:left;
+  font-size:24px;
+  font-weight:bold;
+  line-height:36px;
+  padding-left:6px;
+  color:#31b2e5;
+  margin-right:8px;
+  margin-top: 8px;
+  background:#fff;
+  margin-right:8px;
+  position:relative;
+  border:#cccccc 1px solid;
+  -moz-border-radius:6px;
+  -webkit-border-radius:6px;
+  border-radius:6px;
+  behavior:url(PIE.htc);
+}
+
+
 #error_explanation
 {
   border-bottom: 2px solid darkgray;

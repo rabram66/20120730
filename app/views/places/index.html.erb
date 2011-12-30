@@ -41,7 +41,7 @@
       <% unless @events.length == 0 %>
         <div class='sidebar_block sidebar_txt'>
           <h3>Nearby Events</h3>
-          <% @events.eagit ch do |event| %>
+          <% @events.each do |event| %>
             <p>
               <%= link_to event.name, event %>
             </p>

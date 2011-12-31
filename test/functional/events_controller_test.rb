@@ -20,7 +20,7 @@ class EventsControllerTest < ActionController::TestCase
         @event = events(:anonymous)
       end
 
-      [:show, :edit, :destroy, :update].each do |action|
+      [:edit, :destroy, :update].each do |action|
         should "deny access to #{action}" do
           get action, id: @event.id
           assert_redirected_to root_url

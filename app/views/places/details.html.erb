@@ -1,51 +1,15 @@
 <% content_for :javascripts do %>
-  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>  
-  <script type="text/javascript">
-    var directionDisplay;
-    var directionsService = new google.maps.DirectionsService();
-    var map;
-    var marker;
-    var bussiness_address;
-    function initialize() {
-      directionsDisplay = new google.maps.DirectionsRenderer();
-      var latlng = new google.maps.LatLng(<%= @location.coordinates.first %> , <%= @location.coordinates.last %>);
-      bussiness_address = latlng;
-      var myOptions = {
-        zoom:10,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        center: bussiness_address
-      }
-      map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-      directionsDisplay.setMap(map);
-      directionsDisplay.setPanel(document.getElementById('directions-panel-detail'));
-            
-      //marker = new google.maps.Marker({position: bussiness_address, map: map, title: 'Click me' });
-  
-      var contentString  = "<b><%= raw @location.name %></b><%= rating_info(@location) %>";
-    
-      var infowindow = new google.maps.InfoWindow({ content: contentString, position: latlng, maxWidth: 50});        
-      //infowindow.open(map, marker); 
-      
-      var request = {
-        origin: "<%= cookies[:address].gsub("&", ",") unless cookies[:address].blank? %>",
-        destination: bussiness_address,
-        travelMode: google.maps.DirectionsTravelMode.WALKING
-      };
-      directionsService.route(request, function(response, status) {
-        if (status == google.maps.DirectionsStatus.OK) {
-          directionsDisplay.setDirections(response);
-        }
-    });
-  }
-  
-  google.maps.event.addDomListener(window, 'load', initialize);
-  </script>
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+  <script type="text/javascript" src="/javascripts/directions.js"></script>
 <% end %>
 
 <div style="display:none">
-  <input type="hidden" id="end" value="<%= @origin_address %>" />  
-  <input type="hidden" id="start" value="<%= cookies[:address].gsub("&", ",") unless cookies[:address].blank? %>"/>  
-  <input type="hidden" id="route" />
+  <% unless cookies[:address].blank? -%>
+    <%= hidden_field_tag :orig_lat, cookies[:address].split('&').first %>
+    <%= hidden_field_tag :orig_lng, cookies[:address].split('&').last %>
+  <% end -%>
+  <%= hidden_field_tag :dest_lat, @location.latitude %>
+  <%= hidden_field_tag :dest_lng, @location.longitude %>
 </div>  
 
 <div class="content"><!--content start-->

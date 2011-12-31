@@ -1,56 +1,83 @@
-<div class='content'>
-  <p id="notice"><%= notice %></p>
+<% content_for :javascripts do %>
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+  <script type="text/javascript" src="/javascripts/directions.js"></script>
+<% end %>
 
-  <p>
-    <b>Name:</b>
-    <%= @event.name %>
-  </p>
+<div style="display:none">
+  <% unless cookies[:address].blank? -%>
+    <%= hidden_field_tag :orig_lat, cookies[:address].split('&').first %>
+    <%= hidden_field_tag :orig_lng, cookies[:address].split('&').last %>
+  <% end -%>
+  <%= hidden_field_tag :dest_lat, @event.latitude %>
+  <%= hidden_field_tag :dest_lng, @event.longitude %>
+</div>  
 
-  <p>
-    <b>Address:</b>
-    <%= @event.address %>
-  </p>
+<div class="content"><!--content start-->
+  <div class="content_left"><!--content_left start-->
+    <div class="left_top">
+      <h2><%= @event.name %></h2>
+      <% unless @event.start_date.blank? -%>
+        <p class='event-date'>
+          <%= @event.start_date.stamp("January 1 at 6:30 pm") %>
+          <% if @event.end_date -%>
+            till <%= @event.end_date.stamp("7:00 pm")%>
+          <% end -%>
+        </p>
+      <% end -%>
+      <h3>
+        <%= @event.vicinity %>
+        <span id='get-directions-link'> - <a href="javascript:void(0)" id="direction_id">Get Directions</a></span>
+      </h3>
+    </div>
+            
+    <div id='event-description' class="top_box">
+      <p>
+        <%= auto_link( simple_format(@event.description), :link => :urls, :html => {:target => :new} ).html_safe %>
+      </p>
+      <div class="clear"></div>
+    </div>
 
-  <p>
-    <b>City:</b>
-    <%= @event.city %>
-  </p>
+    <div class="map_area">
+      <div id='map_canvas'></div>
+      <div class="black_pic">
+        <%= render :partial => 'shared/ad_container' %>
+      </div>
+    </div>
 
-  <p>
-    <b>State:</b>
-    <%= @event.state %>
-  </p>
+  </div><!--content_left end-->
 
-  <p>
-    <b>Latitude:</b>
-    <%= @event.latitude %>
-  </p>
-
-  <p>
-    <b>Longitude:</b>
-    <%= @event.longitude %>
-  </p>
-
-  <p>
-    <%= link_to "Map Current Location", google_map_url(@event), :target => :new %>
-  </p>
-
-  <p>
-    <b>Start date:</b>
-    <%= @event.start_date %>
-  </p>
-
-  <p>
-    <b>End date:</b>
-    <%= @event.end_date %>
-  </p>
-
-  <p>
-    <b>Description:</b>
-    <%= @event.description %>
-  </p>
-
-
-  <%= link_to 'Edit', edit_event_path(@event) %> |
-  <%= link_to 'Back', events_path %>
-</div>
+  <div class="sidebar"><!--sidebar start-->
+    <div id='directions-sidebar'>
+      <h2>Walking Directions</h2>
+      <div id='directions-panel-detail'></div>
+    </div>
+    <% if false -%>
+      <div id='mentions-panel'>
+        <h2>What People Are Saying</h2>
+        <ul class='content'>
+        <% @event.tweets.each do |tweet| -%>
+        <li>
+          <div class="twitter_box">
+            <div class="twitter_box_pic">
+              <%= link_to image_tag(tweet.profile_image_url, :alt => 'Twitter'), tweet.twitter_page_url, :target => :new %>
+            </div>
+            <div class="twitter_box_txt">
+              <h3><%= tweet.screen_name.titleize %> Says:</h3>
+              <p>
+                <%= auto_link( tweet.text, :link => :urls, :html => {:target => :blank} ).html_safe %>
+              </p>
+              <span class='tweeted-at'><%= time_ago_in_words tweet.created_at %> ago</span>
+              <span class='follow-link'><%= link_to 'follow', tweet.follow_url, :class => 'follow-link', :target => '_blank' %></span>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </li>
+        <% end -%>
+        </ul>
+        <div class='page_navigation'></div>
+      </div>
+    <% end -%>
+    <div class="clear"></div>
+  </div><!--sidebar end-->
+  <div class="clear"></div>
+</div><!--content end-->

@@ -865,3 +865,9 @@ div#maps {
   margin-top: -8px;
   width: 100px;
 }
+
+p.event-date
+{
+  font-weight: bold;
+  margin-bottom: 10px;
+}

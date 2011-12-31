@@ -26,6 +26,14 @@ class Event < ActiveRecord::Base
     parse_full_address(value)
   end
 
+  def tweets(count=10)
+    hashtags = tags.blank? ? [] : tags.split(/\W/).map{|t| t.starts_with?('#') ? t : "##{t}"}
+    query = (["\"#{name}\""] + hashtags).join ' OR '
+    tweets = Tweet.search(query, count*2)
+    filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(tweets)
+    filtered[0,count]
+  end
+
   class << self
     def find_by_geocode(coordinates)
       self.near(coordinates, 2, :order => :distance)

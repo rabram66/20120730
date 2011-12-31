@@ -51,7 +51,7 @@
       <h2>Walking Directions</h2>
       <div id='directions-panel-detail'></div>
     </div>
-    <% if false -%>
+    <% unless @event.tweets.empty? -%>
       <div id='mentions-panel'>
         <h2>What People Are Saying</h2>
         <ul class='content'>

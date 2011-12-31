@@ -773,7 +773,6 @@ div#maps {
   color: red;
   font-size: 14px;
 }
-
 /* Styles used for table lists */
 .list
 {
@@ -858,4 +857,11 @@ div#maps {
 .input_form #user_email
 {
   width: 400px;
+}
+
+#user_new .input_list_menu
+{
+  float: none;
+  margin-top: -8px;
+  width: 100px;
 }

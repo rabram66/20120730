@@ -43,6 +43,29 @@ module TweetFilter
 
   end
 
+  # Filter tweets that have a least a certain number of hashtags
+  class HashtagCount
+
+    include EachTweet
+    attr_reader :count, :except
+
+    def initialize(count, options={})
+      @except = options[:except]
+      @count = count
+    end
+
+    def filter(tweets)
+      apply(tweets) do |tweet|
+        hashtags = tweet.text.scan(/\#\w+/)
+        hashtags.reject! {|tag| tag.downcase == except.downcase} if except
+        hashtags.length >= count
+      end
+    end
+
+  end
+
+
+
   class DuplicateText
     def filter(tweets)
       Hash[ tweets.map { |tweet| [tweet.text, tweet] } ].values

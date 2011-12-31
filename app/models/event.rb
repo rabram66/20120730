@@ -16,8 +16,9 @@ class Event < ActiveRecord::Base
 
   scope :upcoming, where("(start_date ISNULL AND end_date ISNULL) OR (start_date >= :today OR end_date >= :today)", {:today => Date.today})
   
-  after_validation do 
+  after_validation do
     geocode if !(ADDRESS_ATTRS & changes.keys).empty? || latitude.blank? || longitude.blank?
+    normalize_tags unless tags.blank?
   end
 
   before_save :parse_dates
@@ -27,10 +28,10 @@ class Event < ActiveRecord::Base
   end
 
   def tweets(count=10)
-    hashtags = tags.blank? ? [] : tags.split(/\W/).map{|t| t.starts_with?('#') ? t : "##{t}"}
+    hashtags = tags.blank? ? [] : tags.split
     query = (["\"#{name}\""] + hashtags).join ' OR '
     tweets = Tweet.search(query, count*2)
-    filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(tweets)
+    filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::HashtagCount.new(5), TweetFilter::MentionCount.new(5), ).filter(tweets)
     filtered[0,count]
   end
 
@@ -51,6 +52,14 @@ class Event < ActiveRecord::Base
       # If only time was passed; set date to date of start_date
       date_to_parse = end_date_before_type_cast =~ /^\d?\d\:\d\d\s?(am|pm)$/i ? "#{self.start_date.to_date.to_s} #{end_date_before_type_cast}" : end_date_before_type_cast
       self.end_date = Chronic::parse(date_to_parse)
+    end
+  end
+
+  def normalize_tags
+    unless tags.blank?
+      # append hash character if needed
+      with_hash = tags.split(/[^#A-Za-z0-9]/).map{|t| t.starts_with?('#') ? t : "##{t}"}
+      self.tags = with_hash.join(' ')
     end
   end
 

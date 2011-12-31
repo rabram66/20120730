@@ -32,6 +32,7 @@ class EventsControllerTest < ActionController::TestCase
     context 'with an event that is mine' do
       setup do
         @event = events(:promoted)
+        Event.any_instance.stubs(:tweets).returns([])
       end
 
       [:show, :edit].each do |action|
@@ -60,6 +61,7 @@ class EventsControllerTest < ActionController::TestCase
     setup do
       sign_in users(:admin)
       @event = events(:anonymous)
+      Event.any_instance.stubs(:tweets).returns([])
     end
 
     should "get index" do

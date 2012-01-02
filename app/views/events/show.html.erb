@@ -18,11 +18,14 @@
       <h2><%= @event.name %></h2>
       <% unless @event.start_date.blank? -%>
         <p class='event-date'>
-          <%= @event.start_date.stamp("January 1 at 6:30 pm") %>
+          <%= @event.start_date.stamp("Sunday, January 1 at 6:30 pm") %>
           <% if @event.end_date -%>
             till <%= @event.end_date.stamp("7:00 pm")%>
           <% end -%>
         </p>
+      <% end -%>
+      <% unless @event.venue.blank? -%>
+        <h3 class='venue'><%= @event.venue %></h3>
       <% end -%>
       <h3>
         <%= @event.vicinity %>

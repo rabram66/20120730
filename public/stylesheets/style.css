@@ -871,3 +871,9 @@ p.event-date
   font-weight: bold;
   margin-bottom: 10px;
 }
+
+h3.venue
+{
+  font-weight: bold;
+  margin-bottom: 5px;
+}

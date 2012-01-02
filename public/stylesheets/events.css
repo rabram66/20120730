@@ -45,13 +45,14 @@ div.ui-datepicker{
   padding: 4px;
 }
 #event-detail-fields #event_end_date {
-  width: 90px;
+  width: 100px;
   padding: 4px;
   float: none;
 }
 
-#add-end-time
+#remove-end-time, #add-end-time
 {
+  display:none;
   color: gray;
   float: left;
   font-size: 14px;

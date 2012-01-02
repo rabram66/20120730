@@ -11,15 +11,36 @@
       ampm: true,
       timeFormat: 'h:mm tt',
       stepMinute: 10
-    }
+    };
     $('#event_start_date').datetimepicker(
       jQuery.extend({minDate: new Date()},picker_options)
     );
+    // $('#event_end_date').datetimepicker(
+    //   jQuery.extend({minDate: new Date()},picker_options)
+    // );
     $('#event_end_date').timepicker(picker_options);
-    $('#event_end_date').hide();
-    $('#add-end-time').click( function() {
+
+    if($('#event_end_date').val() == '') {
+      $('#add-end-time').show();
+      $('#remove-end-time').hide();
+      $('#event_end_date').hide();
+    } else {
+      $('#add-end-time').hide();
+      $('#remove-end-time').show();
       $('#event_end_date').show();
-      $('#event_end_date').focus();
+    }
+    
+    $('#add-end-time').click( function() {
+      $(this).hide();
+      $('#remove-end-time').show();
+      $('#event_end_date').fadeIn();
+    });
+
+    $('#remove-end-time').click( function() {
+      $(this).hide();
+      $('#add-end-time').show();
+      $('#event_end_date').fadeOut();
+      $('#event_end_date').val('');
     });
   });
 </script>
@@ -47,8 +68,9 @@
           <%= f.label :start_date, '* Date and Time' %></br>
           <%= f.text_field :start_date, :value => @event.start_date ? @event.start_date.localtime.stamp('05/10/2011 1:00 am') : '', :class => 'input_form_field' %>
           <a id='add-end-time' href='javascript:void(0)'>Add end time</a>
+          <a id='remove-end-time' href='javascript:void(0)'>Remove end time</a>
           <span class='end-date-and-time'>
-            <%= f.text_field :end_date, :value => @event.end_date ? @event.end_date.localtime.stamp("1:00 am") : '', :class => 'input_form_field' %>
+            <%= f.text_field :end_date, :value => @event.end_date ? @event.end_date.localtime.stamp("1:00 am").strip : '', :class => 'input_form_field' %>
           </span>
         </li>
         <li>

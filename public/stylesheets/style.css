@@ -237,9 +237,10 @@ body {
 {
   font-size:14px;
   height:48px;
-  line-height:48px; 
+  line-height:18px; 
   color:#979796;
   font-style:italic;
+  padding-top: 8px;
 }
 
 .map_area

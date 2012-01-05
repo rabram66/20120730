@@ -726,6 +726,12 @@ div#maps {
   margin-bottom: 10px;
 }
 
+textarea.input_form_field
+{
+  font-size: 18px;
+  line-height: 20px;
+}
+
 .input_yes_no_field
 {
   font-size:24px;

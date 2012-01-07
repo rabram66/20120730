@@ -1,11 +1,11 @@
 class Tweet
-  USER_TIMELINE_URL = "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=%s&count=%d"
-  SEARCH_URL = "http://search.twitter.com/search.json?q=%s&page=1&rpp=%d"
-  GEOSEARCH_URL = "http://search.twitter.com/search.json?q=%s&geocode=%s&page=1&rpp=%d"
+  USER_TIMELINE_URL = "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=%s&count=%d&include_entities=1"
+  SEARCH_URL = "http://search.twitter.com/search.json?q=%s&page=1&rpp=%d&include_entities=1"
+  GEOSEARCH_URL = "http://search.twitter.com/search.json?q=%s&geocode=%s&page=1&rpp=%d&include_entities=1"
   FOLLOW_URL = "http://twitter.com/%s/status/%s"  
   RADIUS = 5 # radius of search in miles for tweets search
 
-  attr_reader :name, :screen_name, :text, :created_at, :profile_image_url, :tweet_id
+  attr_reader :name, :screen_name, :text, :created_at, :profile_image_url, :tweet_id, :hashtags
 
   def initialize(attrs={})
     attrs.each do |k,v|
@@ -19,6 +19,11 @@ class Tweet
 
   def twitter_page_url
     "http://twitter.com/#{screen_name}"
+  end
+
+  # True if the status text contains a #deal hashtag
+  def deal?
+    hashtags.include? 'deal'
   end
   
   class << self
@@ -159,7 +164,8 @@ class Tweet
                  :text              => result['text'],
                  :created_at        => DateTime.parse( result['created_at'] ),
                  :profile_image_url => result['user']['profile_image_url'],
-                 :tweet_id          => result['id_str']
+                 :tweet_id          => result['id_str'],
+                 :hashtags          => result['entities']['hashtags'].map{|tag| tag['text']}
       )
     end
 
@@ -170,7 +176,8 @@ class Tweet
         :text              => result['text'],
         :created_at        => DateTime.parse( result['created_at'] ),
         :profile_image_url => result['profile_image_url'],
-        :tweet_id          => result['id_str']
+        :tweet_id          => result['id_str'],
+        :hashtags          => result['entities']['hashtags'].map{|tag| tag['text']}
       )
     end
 

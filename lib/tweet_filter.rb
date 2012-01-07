@@ -56,7 +56,7 @@ module TweetFilter
 
     def filter(tweets)
       apply(tweets) do |tweet|
-        hashtags = tweet.text.scan(/\#\w+/)
+        hashtags = tweet.hashtags
         hashtags.reject! {|tag| tag.downcase == except.downcase} if except
         hashtags.length >= count
       end

@@ -16,6 +16,9 @@
   <div class="content_left"><!--content_left start-->
     <div class="left_top">
       <h2><%= @event.name %></h2>
+      <% unless @event.flyer_url.blank? -%>
+        <p class='event-flyer-link'><%= link_to "View Event Flyer", @event.flyer_url, :target => :new %></p>
+      <% end -%>
       <% unless @event.start_date.blank? -%>
         <p class='event-date'>
           <%= @event.start_date.stamp("Sunday, January 1 at 6:30 pm") %>

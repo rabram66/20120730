@@ -45,7 +45,7 @@
   });
 </script>
 
-  <%= form_for(@event) do |f| %>
+  <%= form_for @event, :html => {:multipart => true} do |f| %>
     <% if @event.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
@@ -93,6 +93,23 @@
           <%= f.label :tags, 'Tags' %><br/>
           <%= f.text_field :tags, :class => 'input_form_field' %>
         </li>
+        <li class='event-flyer'>
+          <%= f.label :flyer, 'Flyer' %>
+          <%= f.file_field :flyer, :class => 'input_form_field' %>
+          <p>
+            <% unless @event.flyer_url.blank? %>
+              <%= link_to "Current Flyer", @event.flyer_url, :target => :new %>
+            <% else %>
+              No Current Flyer
+            <% end %>
+          </p>
+        </li>
+        <% unless @event.flyer_url.blank? %>
+          <li>
+            <%= f.label :remove_flyer, 'Remove Flyer?' %><br/>
+            <%= f.check_box :remove_flyer, :class => 'input_form_field' %>
+          </li>
+        <% end -%>
       </ol>
       <%= f.hidden_field :user_id %>
     </fieldset>

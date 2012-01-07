@@ -768,6 +768,26 @@ textarea.input_form_field
   behavior:url(PIE.htc);
 }
 
+#event_flyer {
+  width: 300px;
+  margin-top: 18px;
+}
+
+.event-flyer-link {
+  margin-bottom: 10px;
+}
+
+
+li.event-flyer p {
+  display:inline;
+  margin-right: 78px;
+  margin-top: -36px;
+  font-size: 18px;
+  float:right;
+}
+li.event-flyer p a {
+  text-decoration: underline;
+}
 
 #error_explanation
 {

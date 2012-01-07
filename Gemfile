@@ -23,6 +23,8 @@ gem 'dalli'                        # memcached interface
 gem 'rinku'                        # autolink tweet and facebook text
 gem 'will_paginate', '~> 3.0'      # pagination in admin pages
 gem 'cancan'                       # authorization
+gem 'carrierwave'                  # file uploads
+gem 'fog'                          # AWS/S3 upload storage
 
 group :test do
   gem 'shoulda' # better testing

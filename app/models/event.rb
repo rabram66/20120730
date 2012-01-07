@@ -8,11 +8,11 @@ class Event < ActiveRecord::Base
   validates_presence_of :name, :address, :city, :state, :description
   attr_accessible :name, :address, :city, :state, :description,
                   :latitude, :longitude, :user_id, :full_address, :start_date,
-                  :tags, :end_date, :venue, :category
-  validates :category, :inclusion => {:in => CATEGORIES, :allow_blank => true}
-
+                  :tags, :end_date, :venue, :category, :flyer, :remove_flyer
   belongs_to :user
+  mount_uploader :flyer, FlyerUploader
   geocoded_by :full_address
+  validates :category, :inclusion => {:in => CATEGORIES, :allow_blank => true}
 
   scope :upcoming, where("(start_date ISNULL AND end_date ISNULL) OR (start_date >= :today OR end_date >= :today)", {:today => Date.today})
 

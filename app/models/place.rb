@@ -38,6 +38,11 @@ class Place
     false
   end
 
+  def tweets?
+    !cached_tweets.empty?
+  end
+
+  # False because the twitter account for a Google place is unknown
   def twitter?
     false
   end
@@ -51,7 +56,7 @@ class Place
       []
     else
       tweets = cached_tweets
-      unless tweets
+      if tweets.empty?
         tweets = Tweet.geosearch("\"#{name}\"", coordinates, 5, count*2) # Fetch 2 times the count requested
         filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(tweets)
         filtered[0,count]
@@ -61,8 +66,12 @@ class Place
     end
   end
   
-  def recent_tweet?
-    cached_tweets && !cached_tweets.empty?
+  def recent_tweet?(within=1.day)
+    unless cached_tweets.empty?
+      cached_tweets.any? { |tweet| 
+        (Time.now - tweet.created_at).abs < within 
+      }
+    end
   end
 
   class << self
@@ -129,7 +138,7 @@ class Place
   end
   
   def cached_tweets
-    Rails.cache.read twitter_search_cache_key
+    Rails.cache.read(twitter_search_cache_key) || []
   end
 
   def cached_tweets=(tweets)

@@ -60,6 +60,12 @@ class Location < ActiveRecord::Base
     [LocationCategory.find_by_name(general_type)]
   end
 
+  # True if there any tweets (status or otherwise) for this location
+  def tweets?
+    twitter?
+  end
+
+  # True if this location has a twitter account
   def twitter?
     !twitter_name.blank?
   end
@@ -73,10 +79,22 @@ class Location < ActiveRecord::Base
   end
   
   def recent_tweet?(within=1.day)
-    false
-    # ((Time.now - twitter_status.created_at).abs < within) if twitter_status
+    # True if a cached twitter status or mention was made within last day
+    recent_twitter_status?(within) || recent_twitter_mention?(within)
   end
   
+  def recent_twitter_status?(within=1.day)
+    ((Time.now - cached_twitter_status.created_at).abs < within) if cached_twitter_status
+  end
+
+  def recent_twitter_mention?(within=1.day)
+    unless cached_twitter_mentions.empty?
+      cached_twitter_mentions.any? { |tweet| 
+        (Time.now - tweet.created_at).abs < within 
+      }
+    end
+  end
+
   def tweets(count=10)
     !twitter_name.blank? ? Tweet.latest(twitter_name,count) : []
   end
@@ -108,6 +126,14 @@ class Location < ActiveRecord::Base
   end
   
   private
+
+  def cached_twitter_status
+    twitter? ? Tweet.cached_user_status(twitter_name) : nil
+  end
+
+  def cached_twitter_mentions
+    twitter? ? (Tweet.cached_mentions(twitter_name) || []) : []
+  end
   
   def update_reference
     delete_reference

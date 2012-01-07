@@ -36,13 +36,26 @@ class Tweet
     #             with expiry set to 2 hours +- 60 minutes
     #       2.1.2 Store the Twitter REST API Rate Limit info in Rails cache
 
+    def cached_user_status(screen_name)
+      Rails.cache.read status_cache_key(screen_name)
+    end
+    
+    def cached_mentions(screen_name)
+      Rails.cache.read mention_cache_key(screen_name)
+    end
+    
+    def cached_searches(query)
+      Rails.cache.read search_cache_key(screen_name)
+    end
+
     def user_status(screen_name)
-      tweet = Rails.cache.read("twitter:status:#{screen_name}")
+      cache_key = status_cache_key(screen_name)
+      tweet = Rails.cache.read(cache_key)
       unless tweet
         ratelimit = read_ratelimit(:api)
         if !ratelimit || !ratelimit.exceeded?
           tweet = latest(screen_name)
-          Rails.cache.write("twitter:status:#{screen_name}", tweet, :expires_in => 1.hour) if tweet
+          Rails.cache.write(cache_key, tweet, :expires_in => 1.hour) if tweet
         end
       end
       tweet
@@ -91,6 +104,18 @@ class Tweet
     end
 
     private
+
+    def status_cache_key(screen_name)
+      "twitter:status:#{screen_name}"
+    end
+
+    def mention_cache_key(screen_name)
+      search_cache_key "@#{screen_name}"
+    end
+    
+    def search_cache_key(query)
+      "twitter:search:#{query}"
+    end
     
     def api(url, *args)
       url = format(url, *args)

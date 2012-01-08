@@ -480,6 +480,10 @@ body {
 
 
 /* Custom additions */
+span.twitter-deal {
+  color: green;
+}
+
 .sidebar_block
 {
   border-bottom:#e0dfdf solid 1px;

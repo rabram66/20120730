@@ -24,6 +24,9 @@
             <% if location.tweets? -%>
               <%= image_tag "twitter.jpg" %>
             <% end -%>
+            <% if location.twitter_deal? -%>
+              <span class='twitter-deal'>$</span>
+            <% end -%>
             <% if location.recent_tweet? -%>
               <%= image_tag "flame.png" %>
             <% end -%>

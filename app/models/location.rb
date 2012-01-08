@@ -74,6 +74,10 @@ class Location < ActiveRecord::Base
     Tweet.user_status(twitter_name) unless twitter_name.blank?
   end
 
+  def twitter_deal?
+    cached_twitter_status.deal? if cached_twitter_status
+  end
+
   def twitter_page_url
     "http://twitter.com/#{twitter_name}" unless twitter_name.blank?
   end

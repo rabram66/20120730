@@ -735,6 +735,14 @@ div#maps {
   width: 500px;
 }
 
+span.powered-by {
+  font-size: 14px;
+}
+
+span.powered-by img {
+  margin-bottom: -6px;
+}
+
 textarea.input_form_field
 {
   font-size: 18px;

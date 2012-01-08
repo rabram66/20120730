@@ -31,7 +31,7 @@
               <%= image_tag "flame.png" %>
             <% end -%>
             <% if location.deals? -%>
-              <%= image_tag "yipit-logo.jpg" %>
+              <%= image_tag "yipit-logo-small.jpg" %>
             <% end -%>
             <span class='distance-from'><%= number_with_precision(location.distance_from(@coordinates), :precision => 1) %> miles</span>
           </a>
@@ -56,7 +56,7 @@
       <% end -%>
       <% unless @deals.length == 0 %>
         <div class='sidebar_block sidebar_txt'>
-          <h3>Nearby Deals</h3>
+          <h3>Nearby Deals <span class='powered-by'>powered by <%= image_tag "yipit-logo-small.jpg"%></span></h3>
           <% @deals.each do |deal| %>
             <p>
               <%= link_to deal.title, deal.url, :target => :blank %>

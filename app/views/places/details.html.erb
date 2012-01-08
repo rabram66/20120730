@@ -75,7 +75,7 @@
     </div>
     <% unless @location.deals.length == 0 %>
       <div id='deal-panel'>
-        <h2>Today's Deal</h2>
+        <h2>Today's Deal <span class='powered-by'>powered by <%= image_tag "yipit-logo-small.jpg"%></span></h2>
         <% @location.deals.each do |deal| %>
           <p>
             <%= link_to deal.title, deal.url, :target => :new %>

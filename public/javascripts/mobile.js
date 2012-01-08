@@ -80,7 +80,7 @@ $('#mobile-content').live('pageinit', function(event) {
 
   // Eat/Drink/Relax top nav buttons
   $('ul#category-selector > li').click( showCategory );
-  $('ul#category-selector > li:first a').click();
+  $('ul#category-selector > li.first a').click();
 
   // Mobile map on details page
   if ( $('#mobile-map').length > 0 ) {

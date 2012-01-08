@@ -81,3 +81,34 @@ div.ui-header {
   background: url(/images/mobile/header-bg.jpg) repeat-x;
   color: #fff;
 }
+
+div.ui-navbar a {
+  background: url(/images/mobile/header-bg.jpg) repeat-x;
+  text-shadow: 1px 1px 1px #FEB95E;
+  color: #D37801;  
+}
+
+div.ui-navbar span.ui-btn-text {
+  font-size: 1.2em;
+}
+
+div.ui-navbar a:hover {
+  color: #FFF;  
+}
+
+li#navbar-logo {
+  width: 48px;
+}
+
+li#navbar-logo img {
+  margin-bottom: -18px;
+  margin-left: 10px;
+}
+
+.ui-bar-a {
+  border: 1px solid #D37801;
+}
+
+.ui-btn-up-a {
+  border: 1px solid #D37801;
+}

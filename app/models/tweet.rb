@@ -23,7 +23,7 @@ class Tweet
 
   # True if the status text contains a #deal hashtag
   def deal?
-    hashtags.include? 'deal'
+    hashtags.any?{ |tag| tag.downcase == 'deal' }
   end
   
   class << self

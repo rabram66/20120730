@@ -46,6 +46,10 @@ class Place
   def twitter?
     false
   end
+  
+  def twitter_deal?
+    false
+  end
 
   def in_category?(category)
     categories.include? category

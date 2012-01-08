@@ -75,3 +75,9 @@ div.mobile-twitter-mention img {
 .center-wrapper * {
   margin: 0 auto;
 }
+
+/* Mobile Makeover */
+div.ui-header {
+  background: url(/images/mobile/header-bg.jpg) repeat-x;
+  color: #fff;
+}

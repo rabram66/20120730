@@ -13,8 +13,7 @@ LocationDB::Application.routes.draw do
     root :to => "places#index"
     get "/" => "places#index", :as => :places
     get "search" => "places#search"
-    get "details/:reference" => "places#details", :as => :locations_details
-    get "details/:id" => "places#details", :as => :locations_details
+    get "details/:reference" => "places#details", :as => :location_details
 
     #------------------------Website-----------------------------
     # post "locations/index"

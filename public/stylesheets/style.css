@@ -731,6 +731,10 @@ div#maps {
   margin-bottom: 10px;
 }
 
+#location_form .input_form_field {
+  width: 500px;
+}
+
 textarea.input_form_field
 {
   font-size: 18px;

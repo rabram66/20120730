@@ -4,6 +4,7 @@ class Location < ActiveRecord::Base
   include DealHolder
 
   validates_presence_of :name, :address, :city, :state, :types, :general_type
+  validates_uniqueness_of :name, :scope => :address
   
   belongs_to :user
   

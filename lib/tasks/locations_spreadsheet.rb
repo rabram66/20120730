@@ -24,12 +24,14 @@ class LocationsSpreadsheet
             :types        => category_to_type(row[5])
           }
           attrs[:phone] = row[7].gsub(/[^0-9]/,'') unless row[7].blank?
+          
+          next if attrs[:twitter_name].blank?
 
           Location.new(attrs).save!
 
           print '.'; $stdout.flush
         rescue
-          puts "Error processing #{row.inspect}: #{$!}"
+          puts "Error processing #{row}: #{$!}"
         end
       end
     end

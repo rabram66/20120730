@@ -6,6 +6,18 @@ class LocationTest < ActiveSupport::TestCase
     @location = locations(:one)
   end
 
+  context 'relationships' do
+    should belong_to(:user)
+  end
+  
+  context 'validations' do
+    should validate_presence_of(:name)
+    should validate_presence_of(:address)
+    should validate_presence_of(:city)
+    should validate_presence_of(:state)
+    should validate_uniqueness_of(:name).scoped_to(:address)
+  end
+  
   context 'geocoding' do
     should "not geocode when non-geographic attributes are changed" do
       @location.email = 'foo@bar.com'

@@ -28,6 +28,7 @@ gem 'fog'                          # AWS/S3 upload storage
 
 group :test do
   gem 'shoulda' # better testing
+  gem 'shoulda-matchers' # better testing
   gem 'mocha'   # stubs objects
   gem 'webmock' # stubs web requests
 end

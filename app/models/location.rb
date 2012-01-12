@@ -24,7 +24,7 @@ class Location < ActiveRecord::Base
   REF_ATTRS = ADDRESS_ATTRS + GEO_ATTRS + %w(name types) # Update Places reference on change
 
   before_validation do
-    self.general_type = LocationCategory.find_by_type(types).name
+    self.general_type = LocationCategory.find_by_type(types).name unless types.blank?
   end
 
   before_save do

@@ -26,7 +26,13 @@ gem 'cancan'                       # authorization
 gem 'carrierwave'                  # file uploads
 gem 'fog'                          # AWS/S3 upload storage
 
+group :development, :test do
+  gem 'ansi'     # colorize turn output
+end
+
 group :test do
+  gem 'turn'     # test unit reporter
+  gem 'minitest' # undeclared dependency for turn
   gem 'shoulda' # better testing
   gem 'shoulda-matchers' # better testing
   gem 'mocha'   # stubs objects

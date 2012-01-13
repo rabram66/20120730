@@ -1,0 +1,32 @@
+list:
+  navbar
+    inactive-text: 
+      color: #D37801
+      text-shadow: 1 1 1 #FEB95E
+    active-text: 
+      color: white
+      text-shadow: 1 1 1 #DD8C23
+    
+    bg-image:
+     upper-half: rgb(253,172,66)  #FDAC42
+     lower-half: rgb(254,160,39)  #FEA027
+   
+  daily-deal
+    text (h1): #EE941F;
+    text-shadow: 1 1 1 white
+    bg: #FFF1DF;
+  
+  locations:
+    name:
+      text-color: #049DE5
+      font: 14px
+    distance:
+      text-color: #4D4D4D
+
+details:
+  button: 
+    background: #2EB0E4;
+    border: 1px solid #168BAA;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;

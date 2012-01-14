@@ -77,8 +77,8 @@ div.mobile-twitter-mention img {
 }
 
 /* Mobile Makeover */
-
 h1.ui-title img#logo {
+  float: left;
   margin-top: 8px;
 }
 
@@ -90,10 +90,6 @@ ul#category-selector li.home img {
   margin-top: -5px;
   margin-bottom: -8px;
   height: 24px;
-}
-
-div#mobile-map {
-  display:none;
 }
 
 /*div.ui-header {

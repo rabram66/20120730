@@ -77,6 +77,25 @@ div.mobile-twitter-mention img {
 }
 
 /* Mobile Makeover */
+
+h1.ui-title img#logo {
+  margin-top: 8px;
+}
+
+ul#category-selector li.home {
+  width: 42px;
+}
+
+ul#category-selector li.home img {
+  margin-top: -5px;
+  margin-bottom: -8px;
+  height: 24px;
+}
+
+div#mobile-map {
+  display:none;
+}
+
 /*div.ui-header {
   background: url(/images/mobile/header-bg.jpg) repeat-x;
   color: #fff;

@@ -1,7 +1,8 @@
 <div data-role="header" data-id="category-selector" data-position="fixed" data-theme='a'>
   <div data-role="navbar">
     <ul id='category-selector'>
-      <li><a href="#">EAT</a></li>
+      <li class='home'><a href='/'><img src="/images/mobile/logo-trans.png"/></a></li>
+      <li class='first'><a href="#">EAT</a></li>
       <li><a href="#">SHOP</a></li>
       <li><a href="#">RELAX</a></li>
     </ul>
@@ -17,7 +18,7 @@
           :"data-role" => 'button') if @events.length > 0 %>
   </div>
   
-  <ul id='locations-list' data-role="listview" data-theme='a'>
+  <ul id='locations-list' data-role="listview" data-theme='b'>
     <% for location in @locations -%>
       <% if Location === location -%>
         <li class='<%= category_class_names(location) %> recent_tweet_<%= location.recent_tweet? %>' style='display:none'>

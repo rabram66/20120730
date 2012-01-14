@@ -1,8 +1,7 @@
 <div data-role='header'>
-  <h1>NEARBY THIS</h1>
+  <h1><img id='logo' src='/images/logo.png' /></h1>
 </div>
 <div id='mobile-index' data-role='content'>
-	<img id='logo' src='/images/Nearbythis_Logo.png' />
   <%= form_tag mobile_list_path, :id => 'search_form', :method => :get do %>
     <%= text_field_tag :search, @search, :id => "searchTextField", :value=> t('mobile.search_prompt') %>
     <%= hidden_field_tag :lat, '', :id => 'lat'%>

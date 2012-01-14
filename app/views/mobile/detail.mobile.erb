@@ -6,15 +6,6 @@
   <%= hidden_field_tag :origin_lng, @geocode.last %>
   <%= hidden_field_tag :dest_lat, @location.coordinates.first %>
   <%= hidden_field_tag :dest_lng, @location.coordinates.last %>
-  <div id='mobile-map'>MAP</div>
-  <div data-role='controlgroup' data-type='horizontal' id='directions-and-phone-buttons' class='center-wrapper'>
-    <a href='#' data-role='button' data-inline='true' id='mobile-directions-button'>Directions</a>
-    <% unless @location.phone_number.blank? -%>
-      <a href="tel:<%= number_to_phone @location.phone_number, :area_code => true %>" data-role='button' data-inline='true'><%= number_to_phone @location.phone_number, :area_code => true %></a>
-    <% end -%>
-  </div>
-  <div id='mobile-directions'>
-  </div>
   <% if @twitter_status || @facebook_status %>
     <div id='mobile-social-status'>
       <h3 class='center-wrapper'>What They Are Saying</h3>
@@ -63,4 +54,13 @@
       </div>
     <% end -%>
   </div>
+  <div data-role='controlgroup' data-type='horizontal' id='directions-and-phone-buttons' class='center-wrapper'>
+    <a href='#' data-role='button' data-inline='true' id='mobile-directions-button'>Directions</a>
+    <% unless @location.phone_number.blank? -%>
+      <a href="tel:<%= number_to_phone @location.phone_number, :area_code => true %>" data-role='button' data-inline='true'><%= number_to_phone @location.phone_number, :area_code => true %></a>
+    <% end -%>
+  </div>
+  <div id='mobile-directions'>
+  </div>
+  <div id='mobile-map'>MAP</div>
 </div>

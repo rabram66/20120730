@@ -85,7 +85,7 @@ $('#mobile-content').live('pageinit', function(event) {
   // Mobile map on details page
   if ( $('#mobile-map').length > 0 ) {
     mobileMap.showLocationWithDirections( $('#origin_lat').val(), $('#origin_lng').val(), $('#dest_lat').val(), $('#dest_lng').val(), $('#mobile-map') );
-    $('#mobile-directions-button').click( function(event) { $('#mobile-directions').toggle(); } );
+    $('#mobile-directions-button').click( function(event) { $('#mobile-directions').toggle(); $('#mobile-map').toggle(); } );
   }
 
   // Prev/Next controls for twitter mentions on details page

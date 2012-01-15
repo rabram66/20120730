@@ -14,9 +14,6 @@
       <p><%= f.label :password_confirmation %><br />
       <%= f.password_field :password_confirmation, :class => 'input_form_field' %></p>
 
-      <p><%= f.label :roles, "Want to create events?" %>
-      <%= select_tag 'user[roles][]', options_for_select([['Yes','promoter'],['No','']]), :class => 'input_list_menu' %></p>
-
       <p><%= f.submit "Sign up" %></p>
     <% end %>
 

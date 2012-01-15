@@ -73,7 +73,8 @@ toggleTwitterMention = function(from, to) {
 $('#mobile-content').live('pageinit', function(event) {
   // Autocomplete for index
   if ( $('#searchTextField').length > 0 ) {
-    if ($('#lat').val() == '' || $('#lng').val() == '') setCurrentPosition();
+    // if ($('#lat').val() == '' || $('#lng').val() == '') 
+    setCurrentPosition();
     $('#searchTextField').click( function() { $(this).val('');} );  // clear search field of prompt text
     var autocomplete = new google.maps.places.Autocomplete( $('#searchTextField')[0] );
   }

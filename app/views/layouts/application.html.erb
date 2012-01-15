@@ -18,6 +18,7 @@
               <li><%= link_to "HOME", root_path %></li>
               <% if !current_user %>
                 <li><%= link_to "LOGIN", new_user_session_path %></li>
+                <li><%= link_to "SIGNUP", new_user_registration_path %></li>
               <% else %>
                 <% if can? :manage, Event %>
                   <li><%= link_to "EVENTS", events_path %></li>

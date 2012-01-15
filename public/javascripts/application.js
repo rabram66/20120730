@@ -45,5 +45,6 @@ $(document).ready(function() {
     nav_label_prev: '&lang;',
     nav_label_next: '&rang;'
   });
-       
+  
+  $('.fancybox').fancybox();
 })

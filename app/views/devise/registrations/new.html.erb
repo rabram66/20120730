@@ -8,11 +8,31 @@
       <p><%= f.label :email %><br />
       <%= f.email_field :email, :class => 'input_form_field' %></p>
 
-      <p><%= f.label :password %><br />
+      <div class='clear'/>
+
+      <p class='inline'><%= f.label :first_name %><br />
+      <%= f.text_field :first_name, :class => 'input_form_field' %></p>
+
+      <p class='inline'><%= f.label :last_name %><br />
+      <%= f.text_field :last_name, :class => 'input_form_field' %></p>
+      
+      <div class='clear'/>
+
+      <p class='inline'><%= f.label :city %><br />
+      <%= f.text_field :city, :class => 'input_form_field' %></p>
+
+      <p id='event-state' class='inline'><%= f.label :state %><br />
+      <%= f.select :state, options_for_select( [[ "Select a State", "" ]] + State::NAMES ), {}, :class => 'input_list_menu' %>
+
+      <div class='clear'/>
+
+      <p class='inline'><%= f.label :password %><br />
       <%= f.password_field :password, :class => 'input_form_field' %></p>
 
-      <p><%= f.label :password_confirmation %><br />
+      <p class='inline'><%= f.label :password_confirmation %><br />
       <%= f.password_field :password_confirmation, :class => 'input_form_field' %></p>
+
+      <div class='clear'/>
 
       <p><%= f.submit "Sign up" %></p>
     <% end %>

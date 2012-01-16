@@ -16,6 +16,9 @@ class PlacesController < ApplicationController
     @locations = Location.find_by_geocode_and_category(@coordinates, category)
     @locations.reject! {|l| l.reference.nil? } # TODO: Remove this once reference can be gauranteed
 
+    # Fire off a delayed job to update the twitter statuses
+    Jobs::TwitterStatusUpdate.new(@locations).delay.process
+
     @places = Place.find_by_geocode(@coordinates, category.types)
     remove_duplicate_places unless @places.empty? || @locations.empty?
     @events = Event.upcoming_near(@coordinates)

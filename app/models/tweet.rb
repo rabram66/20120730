@@ -130,7 +130,7 @@ class Tweet
         write_ratelimit(response)
         yield ActiveSupport::JSON.decode(response)
       rescue RestClient::Exception => e
-        HoptoadNotifier.notify e, :error_message => "Twitter API failure: (#{e}) #{url}"
+        # HoptoadNotifier.notify e, :error_message => "Twitter API failure: (#{e}) #{url}"
         Rails.logger.info("Twitter API failure: (#{e}) #{url}")
         nil
       end

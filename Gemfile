@@ -25,6 +25,7 @@ gem 'will_paginate', '~> 3.0'      # pagination in admin pages
 gem 'cancan'                       # authorization
 gem 'carrierwave'                  # file uploads
 gem 'fog'                          # AWS/S3 upload storage
+gem 'delayed_job_active_record'    # background job processor
 
 group :development, :test do
   gem 'ansi'     # colorize turn output

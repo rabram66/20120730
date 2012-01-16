@@ -11,7 +11,8 @@
       <%= submit_tag "Search" %>
     <% end %>
   </div>
-
+  
+  <%= will_paginate @locations %>
   <table id="locations">
     <tr>
       <th>Name</th>

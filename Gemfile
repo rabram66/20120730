@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 
+gem 'rake'
 gem 'rails', '3.1.0.rc5'
 gem 'rack', '1.3.3'
 

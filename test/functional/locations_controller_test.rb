@@ -41,14 +41,12 @@ class LocationsControllerTest < ActionController::TestCase
       assert_difference('Location.count') do
         post :create, :location => @location.attributes
       end
-      assert_redirected_to location_path(assigns(:location))
+      assert_redirected_to location_details_path(:reference => assigns(:location).reference)
     end
   
     should "show location" do
-      Tweet.expects(:user_status).twice.with(@location.twitter_name).returns(Tweet.new(:text => 'foo'))
       get :show, :id => @location.to_param
-      assert_response :success
-      assert_template :show
+      assert_redirected_to location_details_path(:reference => assigns(:location).reference)
     end
   
     should "get edit" do
@@ -59,7 +57,7 @@ class LocationsControllerTest < ActionController::TestCase
   
     should "update location" do
       put :update, :id => @location.to_param, :location => @location.attributes
-      assert_redirected_to location_path(assigns(:location))
+      assert_redirected_to location_details_path(:reference => assigns(:location).reference)
     end
 
     should "destroy location" do

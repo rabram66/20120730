@@ -18,7 +18,7 @@ class LocationsController < ApplicationController
   
   # GET /locations/1
   def show
-    respond_with @location
+    show_location
   end
 
   # GET /locations/new
@@ -35,8 +35,8 @@ class LocationsController < ApplicationController
   def create
     if @location.save
       flash[:notice] = "Successfully created location."  
-    end  
-    respond_with @location
+    end
+    show_location
   end
 
   # PUT /locations/1
@@ -44,7 +44,7 @@ class LocationsController < ApplicationController
     if @location.update_attributes(params[:location])
       flash[:notice] = "Successfully updated location."
     end
-    respond_with @location
+    show_location
   end
 
   # DELETE /locations/1
@@ -52,6 +52,14 @@ class LocationsController < ApplicationController
     @location.destroy
     flash[:notice] = "Successfully destroyed location."
     respond_with @location
+  end
+
+  private
+  
+  def show_location
+    respond_with(@location) do |format|
+      format.html { redirect_to location_details_url(:reference => @location.reference) }
+    end
   end
   
 end 

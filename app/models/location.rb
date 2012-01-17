@@ -89,15 +89,15 @@ class Location < ActiveRecord::Base
   end
   
   def recent_twitter_status?(within=1.day)
-    ((Time.now - cached_twitter_status.created_at).abs < within) if cached_twitter_status
+    !!(((Time.now - cached_twitter_status.created_at).abs < within) if cached_twitter_status)
   end
 
   def recent_twitter_mention?(within=1.day)
-    unless cached_twitter_mentions.empty?
+    !!(unless cached_twitter_mentions.empty?
       cached_twitter_mentions.any? { |tweet| 
         (Time.now - tweet.created_at).abs < within 
       }
-    end
+    end)
   end
 
   def tweets(count=10)

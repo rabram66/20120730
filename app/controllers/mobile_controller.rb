@@ -27,6 +27,9 @@ class MobileController < ApplicationController
     # TODO: Remove this CYA code once gaurantee of reference being set is handled
     @locations.reject! {|l| l.reference.nil? }
 
+    # Fire off a delayed job to update the twitter statuses
+    Jobs::TwitterStatusUpdate.new(@locations).delay.process
+
     remove_duplicate_places unless @places.length == 0 || @locations.length == 0
     
     # merge location and places

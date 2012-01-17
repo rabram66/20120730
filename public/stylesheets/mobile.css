@@ -22,7 +22,7 @@ ul#locations-list img.twitter-icon {
 }
 
 ul#locations-list li.recent_tweet_true {
-  background: yellow;
+  background: #FFF1DF;
 }
 
 ul#events-list p.event-desc {

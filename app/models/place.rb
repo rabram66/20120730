@@ -34,15 +34,13 @@ class Place
     end
   end
 
-  def facebook?
-    false
-  end
-
   def tweets?
     !cached_tweets.empty?
   end
 
-  # False because the twitter account for a Google place is unknown
+  # Location compatability methods 
+  # TODO: Move these to a base module
+
   def twitter?
     false
   end
@@ -50,6 +48,16 @@ class Place
   def twitter_deal?
     false
   end
+
+  def twitter_name
+    nil
+  end
+
+  def facebook?
+    false
+  end
+
+  # End compatability methods
 
   def in_category?(category)
     categories.include? category

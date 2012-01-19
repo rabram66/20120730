@@ -1,4 +1,36 @@
 <%= render "script" %>
+<script type='text/javascript'>
+  var twitterNames = [
+    <%= @locations.select{|l1| !l1.twitter_name.blank?}.map{|l2| "'#{l2.twitter_name}'"}.join(',') -%>
+  ];
+  
+  var fetchCount = 0;
+  var maxFetchCount = 3;
+  
+  $(function() {
+
+    function performStatusCheck() {
+      setTimeout(function() {
+        checkStatus(function(data) {
+          $.each(data, function(i,id) {
+            $('#'+id).fadeIn();
+          });
+          if (fetchCount < maxFetchCount) performStatusCheck();
+        });
+      }, 5000);
+    }
+
+    function checkStatus(callback) {
+      fetchCount++;
+      $.post("/recent_tweeters", { 'n[]': twitterNames }, function(data) {
+        callback(data);
+      });
+    }
+
+    performStatusCheck();
+  });
+  
+</script>
 <div class="banner"><!--banner start-->
   <div class="banner_area">
     <form action="" method="get" id='place_search'>
@@ -27,8 +59,10 @@
             <% if location.twitter_deal? -%>
               <span class='twitter-deal'>$</span>
             <% end -%>
-            <% if location.recent_tweet? -%>
-              <%= image_tag "flame.png" %>
+            <% if Location === location && !location.twitter_name.blank? -%>
+              <%= image_tag "flame.png", :id => location.twitter_name, 
+                                         :class => 'recent_tweet', 
+                                         :style => location.recent_tweet? ? "display:inline" : "display:none" -%>
             <% end -%>
             <% if location.deals? -%>
               <%= image_tag "yipit-logo-small.jpg" %>

@@ -55,6 +55,18 @@ class PlacesController < ApplicationController
       @last_post = @location.facebook_status      
     end
   end
+
+  # XHR GET returns the twitter names with cached statuses
+  def recent_tweeters
+    within = 1.day
+    now = Time.now
+    twitter_names = params['n']
+    recently_updated = twitter_names.select { |name|
+      status = Tweet.cached_user_status(name)
+      ((now - status.created_at).abs < within) if status
+    }
+    render :json => recently_updated
+  end
   
   private
   

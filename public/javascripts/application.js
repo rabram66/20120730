@@ -46,5 +46,5 @@ $(document).ready(function() {
     nav_label_next: '&rang;'
   });
   
-  $('.fancybox').fancybox();
+  if ($('.fancybox').length) $('.fancybox').fancybox();
 })

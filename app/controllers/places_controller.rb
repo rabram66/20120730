@@ -60,7 +60,7 @@ class PlacesController < ApplicationController
   def recent_tweeters
     within = 1.day
     now = Time.now
-    twitter_names = params['n']
+    twitter_names = params['n'] || []
     recently_updated = twitter_names.select { |name|
       status = Tweet.cached_user_status(name)
       ((now - status.created_at).abs < within) if status

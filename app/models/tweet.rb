@@ -138,11 +138,11 @@ class Tweet
 
     def write_ratelimit(response)
       ratelimit = parse_ratelimit(response.headers)
-      Rails.cache.write("twitter:ratelimit:#{ratelimit.api_class}", ratelimit.to_hash) if ratelimit
+      Rails.cache.write("twitter:ratelimit:#{ratelimit.api_class}:#{`hostname`.strip}", ratelimit.to_hash) if ratelimit
     end
     
     def read_ratelimit(api_class)
-      ratelimit = Rails.cache.read("twitter:ratelimit:#{api_class}")
+      ratelimit = Rails.cache.read("twitter:ratelimit:#{api_class}:#{`hostname`.strip}")
       Twitter::RateLimitStatus.new(ratelimit) if ratelimit
     end
     

@@ -131,7 +131,7 @@ class Tweet
         yield ActiveSupport::JSON.decode(response)
       rescue RestClient::Exception => e
         # HoptoadNotifier.notify e, :error_message => "Twitter API failure: (#{e}) #{url}"
-        Rails.logger.info("Twitter API failure: (#{e}) #{url}")
+        Rails.logger.info("Twitter API failure: (#{e}) #{url}: #{e.http_body}")
         nil
       end
     end

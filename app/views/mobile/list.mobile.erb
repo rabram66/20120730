@@ -9,8 +9,8 @@ var maxFetchCount = 3;
 function recentTweetUpdate() {
   setTimeout(function() {
     checkStatus(function(data) {
-      $.each(data, function(i,id) {
-        if ($('li#'+id).length) $('li#'+id).addClass('recent_tweet');
+      $.each(data, function(i,name) {
+        if ($('li.'+name).length) $('li.'+name).addClass('recent_tweet');
       });
       if (fetchCount < maxFetchCount) recentTweetUpdate();
     });
@@ -52,7 +52,7 @@ $(function() {
   <ul id='locations-list' data-role="listview" data-theme='b'>
     <% for location in @locations -%>
       <% if Location === location -%>
-        <li id='<%= location.twitter_name %>' class='<%= category_class_names(location) %> <%=location.recent_tweet? ? "recent_tweet" : "" %>' style='display:none'>
+        <li class='<%= location.twitter_name %> <%= category_class_names(location) %> <%=location.recent_tweet? ? "recent_tweet" : "" %>' style='display:none'>
           <a href="<%=mobile_detail_path(location.reference) %>">
             <img src='/images/twitter-logo.jpg' class='ui-li-icon twitter-icon'/>
             <b><%= location.name %></b> - <%= number_with_precision(location.distance, :precision => 1) %> miles

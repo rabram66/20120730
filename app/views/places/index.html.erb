@@ -11,8 +11,8 @@
   function recentTweetUpdate() {
     setTimeout(function() {
       checkStatus(function(data) {
-        $.each(data, function(i,id) {
-          $('#'+name).fadeIn();
+        $.each(data, function(i,name) {
+          $('img.'+name).fadeIn();
         });
         if (fetchCount < maxFetchCount) recentTweetUpdate();
       });
@@ -59,8 +59,7 @@
               <span class='twitter-deal'>$</span>
             <% end -%>
             <% if Location === location && !location.twitter_name.blank? -%>
-              <%= image_tag "flame.png", :id => location.twitter_name, 
-                                         :class => 'recent_tweet', 
+              <%= image_tag "flame.png", :class => "#{location.twitter_name} recent_tweet", 
                                          :style => location.recent_tweet? ? "display:inline" : "display:none" -%>
             <% end -%>
             <% if location.deals? -%>

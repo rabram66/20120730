@@ -2,7 +2,7 @@ class PlacesController < ApplicationController
 
   has_mobile_fu
 
-  before_filter :redirect_mobile_request
+  before_filter :redirect_mobile_request, :except => :recent_tweeters
   respond_to :html, :json, :js
   
   RADIUS = '750'

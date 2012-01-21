@@ -1,3 +1,34 @@
+<script type='text/javascript'>
+var twitterNames = [
+  <%= @locations.select{|l1| !l1.twitter_name.blank?}.map{|l2| "'#{l2.twitter_name}'"}.join(',') -%>
+];
+
+var fetchCount = 0;
+var maxFetchCount = 3;
+
+function recentTweetUpdate() {
+  setTimeout(function() {
+    checkStatus(function(data) {
+      $.each(data, function(i,id) {
+        if ($('li#'+id).length) $('li#'+id).addClass('recent_tweet');
+      });
+      if (fetchCount < maxFetchCount) recentTweetUpdate();
+    });
+  }, 5000);
+}
+
+function checkStatus(callback) {
+  fetchCount++;
+  $.post("/recent_tweeters", { 'n[]': twitterNames }, function(data) {
+    callback(data);
+  });
+}    
+
+$(function() {
+  recentTweetUpdate();
+});
+</script>
+
 <div data-role="header" data-id="category-selector" data-position="fixed" data-theme='a'>
   <div data-role="navbar">
     <ul id='category-selector'>
@@ -21,7 +52,7 @@
   <ul id='locations-list' data-role="listview" data-theme='b'>
     <% for location in @locations -%>
       <% if Location === location -%>
-        <li class='<%= category_class_names(location) %> recent_tweet_<%= location.recent_tweet? %>' style='display:none'>
+        <li id='<%= location.twitter_name %>' class='<%= category_class_names(location) %> <%=location.recent_tweet? ? "recent_tweet" : "" %>' style='display:none'>
           <a href="<%=mobile_detail_path(location.reference) %>">
             <img src='/images/twitter-logo.jpg' class='ui-li-icon twitter-icon'/>
             <b><%= location.name %></b> - <%= number_with_precision(location.distance, :precision => 1) %> miles

@@ -1,35 +1,34 @@
 <%= render "script" %>
+
 <script type='text/javascript'>
   var twitterNames = [
     <%= @locations.select{|l1| !l1.twitter_name.blank?}.map{|l2| "'#{l2.twitter_name}'"}.join(',') -%>
   ];
-  
+
   var fetchCount = 0;
   var maxFetchCount = 3;
-  
-  $(function() {
 
-    function performStatusCheck() {
-      setTimeout(function() {
-        checkStatus(function(data) {
-          $.each(data, function(i,id) {
-            $('#'+id).fadeIn();
-          });
-          if (fetchCount < maxFetchCount) performStatusCheck();
+  function recentTweetUpdate() {
+    setTimeout(function() {
+      checkStatus(function(data) {
+        $.each(data, function(i,id) {
+          $('#'+name).fadeIn();
         });
-      }, 5000);
-    }
-
-    function checkStatus(callback) {
-      fetchCount++;
-      $.post("/recent_tweeters", { 'n[]': twitterNames }, function(data) {
-        callback(data);
+        if (fetchCount < maxFetchCount) recentTweetUpdate();
       });
-    }
+    }, 5000);
+  }
 
-    performStatusCheck();
+  function checkStatus(callback) {
+    fetchCount++;
+    $.post("/recent_tweeters", { 'n[]': twitterNames }, function(data) {
+      callback(data);
+    });
+  }    
+
+  $(function() {
+    recentTweetUpdate();
   });
-  
 </script>
 <div class="banner"><!--banner start-->
   <div class="banner_area">

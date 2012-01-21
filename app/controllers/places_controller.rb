@@ -56,7 +56,7 @@ class PlacesController < ApplicationController
     end
   end
 
-  # XHR GET returns the twitter names with cached statuses
+  # XHR POST returns those twitter names with cached statuses
   def recent_tweeters
     within = 1.day
     now = Time.now

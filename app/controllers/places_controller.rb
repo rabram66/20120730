@@ -46,6 +46,7 @@ class PlacesController < ApplicationController
   def details
     reference = params[:reference]
     @location = Location.find_by_reference(reference) || Place.find_by_reference(reference)
+    
     @origin_address = params[:address]
     
     @user_saying = @location.twitter_mentions(20)

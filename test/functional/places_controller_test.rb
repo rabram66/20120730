@@ -31,7 +31,7 @@ class PlacesControllerTest < ActionController::TestCase
   end
   
   context 'GET details for Google place' do
-    should "succeed" do
+    should "succeed on valid reference" do
       place           = Place.new
       place.name      = 'Bozos'
       place.address   = '2578 Binghamton Drive'
@@ -44,6 +44,7 @@ class PlacesControllerTest < ActionController::TestCase
       assert_response :success
       assert_template :details
     end
+    
   end
   
   context 'XHR POST recent tweeters' do

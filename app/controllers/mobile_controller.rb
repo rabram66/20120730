@@ -43,7 +43,7 @@ class MobileController < ApplicationController
   def detail
     reference = params[:id]
     @location = Location.find_by_reference(reference) || Place.find_by_reference(reference)
-
+    
     @twitter_mentions = @location.twitter_mentions
     
     if Location === @location

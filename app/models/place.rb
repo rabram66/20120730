@@ -137,8 +137,12 @@ class Place
 
     def find_by_reference(reference)
       url = sprintf(DETAILS_REQUEST_URL, reference)
-      result = HTTParty.get(url)['result']
-      Place.new(result)
+      result = ActiveSupport::JSON.decode( RestClient.get(url) )['result']
+      if result.nil?
+        raise Places::Api::NotFound.new(reference)
+      else
+        Place.new(result)
+      end
     end
 
   end

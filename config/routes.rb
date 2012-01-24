@@ -29,6 +29,7 @@ LocationDB::Application.routes.draw do
     get "/mobile/detail/:id" => "mobile#detail", :as => :mobile_detail
     get "/mobile/deals"      => "mobile#deals",  :as => :mobile_deals
     get "/mobile/events"     => "mobile#events", :as => :mobile_events
+    get "/mobile/event/:id"  => "mobile#event",  :as => :mobile_event
   
     #---------------------------- Iphone ----------------------------
     get "/iphone" => "iphone#index"

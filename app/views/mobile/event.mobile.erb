@@ -1,0 +1,44 @@
+<div data-role='header'>
+  <h1><%= @event.name.titleize %></h1>
+</div>
+<div id='mobile-event-detail' data-role='content'>
+  <%= hidden_field_tag :origin_lat, @geocode.first %>
+  <%= hidden_field_tag :origin_lng, @geocode.last %>
+  <%= hidden_field_tag :dest_lat, @event.coordinates.first %>
+  <%= hidden_field_tag :dest_lng, @event.coordinates.last %>
+  <div id='mobile-event-info'>
+    <p><%= @event.description %></p>
+  </div>
+  <div id='mobile-twitter-mentions'>
+    <% unless @event.tweets.empty? -%>
+      <h3 class='center-wrapper'>What Others Are Saying</h3>
+      <% for tweet in @event.tweets -%>
+        <div class='mobile-twitter-mention' style="display:none">
+          <ul data-role='listview' data-inset='true'>
+            <li>
+              <img src="<%= tweet.profile_image_url %>" class="ul-li-thumb"/>
+              <p class='tweeted-by ul-li-desc'>
+                <span class='mentioner'><%= tweet.screen_name%></span>
+                <a href="http://twitter.com/<%= tweet.screen_name %>/status/<%= tweet.tweet_id %>" target="_blank">
+                  follow
+                </a>
+              </p>
+              <p class='tweet-text ul-li-desc'><%= auto_link( tweet.text, :link => :urls, :html => {:target => :blank} ).html_safe %></p>
+              <p class='tweeted-at ul-li-desc'><%= time_ago_in_words(tweet.created_at) %> ago</p>
+            </li>
+          </ul>
+        </div>
+      <% end -%>
+      <div id='twitter-mention-control' data-role='controlgroup' data-type='horizontal' class='center-wrapper'>
+        <a href='#' id='prev-tweet' data-role='button' data-icon='arrow-l'>Prev</a>
+        <a href='#' id='next-tweet' data-role='button' data-icon='arrow-r'>Next</a>
+      </div>
+    <% end -%>
+  </div>
+  <div data-role='controlgroup' data-type='horizontal' id='directions-and-phone-buttons' class='center-wrapper'>
+    <a href='#' data-role='button' data-inline='true' id='mobile-directions-button'>Directions</a>
+  </div>
+  <div id='mobile-directions'>
+  </div>
+  <div id='mobile-map'>MAP</div>
+</div>

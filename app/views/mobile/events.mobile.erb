@@ -2,20 +2,12 @@
   <h1>Events</h1>
 </div>
 <div data-role='content'>
-  <ul id='events-list' data-role="listview" data-theme="g" data-inset='true'>
+  <ul id='events-list' data-role="listview" data-theme="b" data-inset='true'>
     <% for event in @events -%>
       <li>
-        <h3><%= event.name %></h3>
-        <p class='ul-li-desc event-desc'><%= event.description %></p>
-        <p class='ul-li-desc'>
-          <% if event.start_date -%>
-            from <span class='event-date'><%= event.start_date.stamp("Jan 1 at 01:00 am") if event.start_date %></span>
-          <% end -%>
-          <% if event.end_date -%>
-             to <span class='event-date'><%= event.end_date.stamp("Jan 1 at 01:00 am") %></span>
-          <% end -%>
-        </p>
-        <p class='ul-li-desc'><%= event.address %> (<%=  number_with_precision(event.distance, :precision => 1) %> miles from here)</p>
+        <a href="<%= mobile_event_path(event) %>">
+          <b><%= event.name %></b> - <%= number_with_precision(event.distance_from(@geocode), :precision => 1) %> miles
+        </a>
       </li>
     <% end -%>
   </ul>

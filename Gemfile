@@ -33,7 +33,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'turn'     # test unit reporter
+  gem 'turn'     # generates unit testing output
   gem 'minitest' # undeclared dependency for turn
   gem 'shoulda' # better testing
   gem 'shoulda-matchers' # better testing

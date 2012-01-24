@@ -22,7 +22,7 @@ class MobileController < ApplicationController
     @locations = Location.find_by_geocode(@geocode)
     @places    = Place.find_by_geocode(@geocode)
     @deals     = Deal.find_by_geocode(@geocode)
-    @events    = Event.find_by_geocode(@geocode)
+    @events    = Event.upcoming_near(@geocode)
     
     # TODO: Remove this CYA code once gaurantee of reference being set is handled
     @locations.reject! {|l| l.reference.nil? }
@@ -57,7 +57,11 @@ class MobileController < ApplicationController
   end
   
   def events
-    @events = Event.find_by_geocode(@geocode)
+    @events = Event.upcoming_near(@geocode)
+  end
+
+  def event
+    @event = Event.find_by_id(params[:id])
   end
 
   private

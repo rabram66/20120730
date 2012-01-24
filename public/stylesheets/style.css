@@ -928,3 +928,7 @@ p#event-state {
   width: 258px;
   margin-top: -8px;
 }
+
+#tweet-about-this {
+  float:right;
+}

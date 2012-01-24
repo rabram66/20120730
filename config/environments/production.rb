@@ -46,4 +46,8 @@ LocationDB::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  # Configure host for mailers
+  config.action_mailer.default_url_options = { :host => 'preview.nearbythis.com' }
+
 end

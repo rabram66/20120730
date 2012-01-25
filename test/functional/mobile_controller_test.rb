@@ -14,39 +14,50 @@ class MobileControllerTest < ActionController::TestCase
     @location = locations(:one)
   end
 
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_template :index
-  end
+  context 'from a mobile browser' do
 
-  test "should get list" do
-    Place.expects(:find_by_geocode).returns([])
-    Deal.expects(:find_by_geocode).returns([])
-    get :list
-    assert_response :success
-    assert_template :list
-  end
+    should "get index" do
+      get :index
+      assert_response :success
+      assert_template :index
+    end
 
-  test "should get detail" do
-    Tweet.expects(:user_status).with('wafflehouse').returns(Tweet.new(:text => 'foo', :created_at => Time.now))
-    Tweet.expects(:mentions).returns([])
-    get :detail, :id => @location.reference
-    assert_response :success
-    assert_template :detail
-  end
+    should "get list" do
+      Place.expects(:find_by_geocode).returns([])
+      Deal.expects(:find_by_geocode).returns([])
+      get :list
+      assert_response :success
+      assert_template :list
+    end
+
+    should "get detail" do
+      Tweet.expects(:user_status).with('wafflehouse').returns(Tweet.new(:text => 'foo', :created_at => Time.now))
+      Tweet.expects(:mentions).returns([])
+      get :detail, :id => @location.reference
+      assert_response :success
+      assert_template :detail
+    end
   
-  test "should get deals" do
-    Deal.expects(:find_by_geocode).returns([])
-    get :deals
-    assert_response :success
-    assert_template :deals
-  end
+    should "get deals" do
+      Deal.expects(:find_by_geocode).returns([])
+      get :deals
+      assert_response :success
+      assert_template :deals
+    end
 
-  test "should get events" do
-    get :events, :lat => @geocode.first, :lng => @geocode.last
-    assert_response :success
-    assert_template :events
+    should "get events" do
+      get :events, :lat => @geocode.first, :lng => @geocode.last
+      assert_response :success
+      assert_template :events
+    end
+
+    should "get event" do
+      @event = events(:promoted)
+      get :events, :id => @event.id
+      assert_response :success
+      assert_template :event
+    end
+
   end
 
 end

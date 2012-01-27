@@ -14,8 +14,9 @@ class MobileController < ApplicationController
     @geocode = if params[:commit] == I18n.t('mobile.use_my_location_button') || params[:search].blank? || params[:search] == I18n.t('mobile.search_prompt')
       geocode_from_params
     else
-      Geocoder.coordinates(params[:search])
+      Geocoder.coordinates(params[:search]) || geocode_from_params
     end
+    
 
     cookies[:geocode] = { :value => @geocode, :expires => 1.year.from_now }
 

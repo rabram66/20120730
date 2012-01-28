@@ -23,12 +23,19 @@ class PlacesControllerTest < ActionController::TestCase
   context 'GET details for location' do
     should "succeed" do
       Tweet.expects(:user_status).with(@location.twitter_name).returns(nil)
-      Tweet.expects(:mentions).with(@location.twitter_name,40).returns([])
+      Tweet.expects(:geosearch).with("@#{@location.twitter_name}",@location.coordinates, 5, 40).returns([])
+      Tweet.expects(:geosearch).with("\"#{@location.name}\"",@location.coordinates, 5, 40).returns([])
+      Tweet.expects(:non_geosearch).with("@#{@location.twitter_name}", 40).returns([])
+      Tweet.expects(:non_geosearch).with("\"#{@location.name}\"", 40).returns([])
       get :details, :reference => @location.reference
       assert_response :success
       assert_template :details
     end
   end
+
+  # stub_request(:get, "http://search.twitter.com/search.json?geocode=33.7489954,-84.3879824,5mi&include_entities=1&page=1&q=@wafflehouse&rpp=40").
+  #           with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+  #           to_return(:status => 200, :body => "", :headers => {})
   
   context 'GET details for Google place' do
     should "succeed on valid reference" do

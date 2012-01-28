@@ -25,6 +25,16 @@ class Tweet
   def deal?
     hashtags.any?{ |tag| tag.downcase == 'deal' }
   end
+
+  def ==(other)
+    other.class == self.class && other.tweet_id  == self.tweet_id
+  end
+
+  alias :eql? :==
+
+  def hash
+    "#{self.class}:#{self.tweet_id}".hash
+  end
   
   class << self
     
@@ -89,7 +99,15 @@ class Tweet
         end
       end
     end
-    
+
+    def non_geosearch(query, count=10)
+      api(SEARCH_URL, CGI.escape(query), count) do |response|
+        response['results'][0,count].map do |result|
+          transform_search_result result
+        end
+      end
+    end
+
     # TODO: Factor out caching as was done with #geosearch
     def search(query, count=10)
       cache_key = "twitter:search:#{query}"

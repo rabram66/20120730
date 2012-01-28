@@ -114,6 +114,46 @@ class Location < ActiveRecord::Base
     end
   end
 
+  def twitter_mentions(count=10)
+    unless twitter?
+      []
+    else
+      mentions = cached_twitter_mentions
+      if mentions.empty?
+
+        # nearby mentions
+        mentions = Tweet.geosearch("@#{twitter_name}", coordinates, 5, count*2) # Fetch 2 times the count requested
+        filtered = TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(mentions)
+
+        # nearby with business name
+        if filtered.length < count
+          mentions = Tweet.geosearch( "\"#{name}\"", coordinates, 5, (count-filtered.length)*2 ) # Fetch 2 times the count requested
+          filtered += TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(mentions)
+          filtered.uniq!
+        end
+
+        # un-geo-tagged mentions
+        if filtered.length < count
+          mentions = Tweet.non_geosearch("@#{twitter_name}", (count-filtered.length)*2) # Fetch 2 times the count requested
+          filtered += TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(mentions)
+          filtered.uniq!
+        end
+
+        # un-geo-tagged by name
+        if filtered.length < count
+          mentions = Tweet.non_geosearch("\"#{name}\"", (count-filtered.length)*2) # Fetch 2 times the count requested
+          filtered += TweetFilter::Chain.new( TweetFilter::DuplicateText.new, TweetFilter::MentionCount.new(5) ).filter(mentions)
+          filtered.uniq!
+        end
+
+        filtered[0,count]
+        self.cached_twitter_mentions = filtered
+      end
+      mentions || []
+    end
+  end
+
+
   def facebook?
     !facebook_page_id.blank?
   end
@@ -136,8 +176,16 @@ class Location < ActiveRecord::Base
     twitter? ? Tweet.cached_user_status(twitter_name) : nil
   end
 
+  # def cached_twitter_mentions
+  #   twitter? ? (Tweet.cached_mentions(twitter_name) || []) : []
+  # end
+
   def cached_twitter_mentions
-    twitter? ? (Tweet.cached_mentions(twitter_name) || []) : []
+    twitter? ? (Rails.cache.read(twitter_mentions_cache_key) || []) : []
+  end
+
+  def cached_twitter_mentions=(tweets)
+    Rails.cache.write(twitter_mentions_cache_key, tweets, :expires_in => 30.minutes) if tweets && !tweets.empty?
   end
   
   def update_reference
@@ -151,6 +199,10 @@ class Location < ActiveRecord::Base
 
   def delete_reference
     Place.delete(self) if attribute_present?(:reference)
+  end
+
+  def twitter_mentions_cache_key
+    "twitter:mentions:#{twitter_name}"
   end
   
 end

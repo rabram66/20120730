@@ -1,4 +1,4 @@
-LocationDB::Application.configure do
+NearbyThis::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # In the development environment your application's code is reloaded on
@@ -24,5 +24,6 @@ LocationDB::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
   
   config.cache_store = :memory_store, { :expires_in => 5.minutes }
+
 end
 

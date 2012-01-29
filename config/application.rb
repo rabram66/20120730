@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
-module LocationDB
+module NearbyThis
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -39,5 +39,11 @@ module LocationDB
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+    # Custom config
+    config.app = ActiveSupport::OrderedOptions.new
+    
+    config.app.eventbrite_api_key = 12786977485170516153
+
   end
 end

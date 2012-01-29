@@ -1,10 +1,10 @@
 LocationDB::Application.routes.draw do
   
-  constraints(NoSubdomain) do
-    match '/' => 'pages#landing'
-  end
+  # constraints(NoSubdomain) do
+  #   match '/' => 'pages#landing'
+  # end
 
-  constraints(Subdomain) do
+  # constraints(Subdomain) do
 
     devise_for :users
     resources :users, :events, :locations
@@ -38,6 +38,6 @@ LocationDB::Application.routes.draw do
     get "/iphone_deals" => "iphone#deals"
     get "/iphone_events" => "iphone#events"
 
-  end
+  # end
     
 end

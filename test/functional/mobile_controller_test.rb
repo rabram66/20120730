@@ -32,7 +32,10 @@ class MobileControllerTest < ActionController::TestCase
 
     should "get detail" do
       Tweet.expects(:user_status).with('wafflehouse').returns(Tweet.new(:text => 'foo', :created_at => Time.now))
-      Tweet.expects(:mentions).returns([])
+      Tweet.expects(:geosearch).with("@#{@location.twitter_name}",@location.coordinates, 5, 20).returns([])
+      Tweet.expects(:geosearch).with("\"#{@location.name}\"",@location.coordinates, 5, 20).returns([])
+      Tweet.expects(:non_geosearch).with("@#{@location.twitter_name}", 20).returns([])
+      Tweet.expects(:non_geosearch).with("\"#{@location.name}\"", 20).returns([])
       get :detail, :id => @location.reference
       assert_response :success
       assert_template :detail

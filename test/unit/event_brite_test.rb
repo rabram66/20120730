@@ -7,7 +7,7 @@ class EventBriteTest < ActiveSupport::TestCase
   end
   
   def stub_api(body)
-    stub_request(:get, "https://www.eventbrite.com/json/event_search?app_key=#{Rails.application.config.app.eventbrite_app_key}&latitude=#{@coordinates.first}&longitude=#{@coordinates.last}&within=5").
+    stub_request(:get, "https://www.eventbrite.com/json/event_search?app_key=#{Rails.application.config.app.eventbrite_app_key}&latitude=#{@coordinates.first}&longitude=#{@coordinates.last}&within=2").
               with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
               to_return(:status => 200, :body => body, :headers => {})
   end
@@ -47,6 +47,7 @@ class EventBriteTest < ActiveSupport::TestCase
         assert_equal "music,entertainment", event.category
         assert_equal DateTime.parse("2012-02-10 20:00:00"), event.start_date
         assert_equal DateTime.parse("2012-02-11 00:00:00"), event.end_date
+        assert_equal "http://www.eventbrite.com/event/2800356943", event.url
       end
     end
 

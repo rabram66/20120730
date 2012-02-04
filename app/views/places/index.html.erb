@@ -81,7 +81,7 @@
           <h3>Nearby Events</h3>
           <% @events.each do |event| %>
             <p>
-              <%= link_to event.name, event %>
+              <%= (Event === event) ? link_to(content_tag(:strong, event.name), event) : link_to(event.name, event.url, :target => :new) %>
             </p>
           <% end -%>
         </div>

@@ -25,6 +25,7 @@ class MobileControllerTest < ActionController::TestCase
     should "get list" do
       Place.expects(:find_by_geocode).returns([])
       Deal.expects(:find_by_geocode).returns([])
+      EventBrite.expects(:geosearch).returns([])
       get :list
       assert_response :success
       assert_template :list
@@ -49,6 +50,7 @@ class MobileControllerTest < ActionController::TestCase
     end
 
     should "get events" do
+      EventBrite.expects(:geosearch).returns([])
       get :events, :lat => @geocode.first, :lng => @geocode.last
       assert_response :success
       assert_template :events
@@ -56,7 +58,8 @@ class MobileControllerTest < ActionController::TestCase
 
     should "get event" do
       @event = events(:promoted)
-      get :events, :id => @event.id
+      Tweet.expects(:search).returns([])
+      get :event, :id => @event.id
       assert_response :success
       assert_template :event
     end

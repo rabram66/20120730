@@ -11,6 +11,7 @@ class PlacesControllerTest < ActionController::TestCase
       Geocoder.expects(:coordinates).returns([0.0,0.0])
       Place.expects(:find_by_geocode).with([33.7489954, -84.3879824],LocationCategory::EatDrink.types).returns([])
       Event.expects(:upcoming_near).returns([])
+      EventBrite.expects(:geosearch).returns([])
       Deal.expects(:find_by_geocode).with([33.7489954, -84.3879824]).returns(DealSet.new([]))
     
       get :index

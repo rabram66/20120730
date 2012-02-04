@@ -5,8 +5,8 @@
   <ul id='events-list' data-role="listview" data-theme="b" data-inset='true'>
     <% for event in @events -%>
       <li>
-        <a href="<%= mobile_event_path(event) %>">
-          <b><%= event.name %></b> - <%= number_with_precision(event.distance_from(@geocode), :precision => 1) %> miles
+        <a href="<%= (Event === event) ? mobile_event_path(event) : event.url %>" <%= "target='new'" unless Event === event %>>
+          <%= (Event === event) ? content_tag(:i, event.name) : event.name %> - <%= number_with_precision(event.distance_from(@geocode), :precision => 1) %> miles
         </a>
       </li>
     <% end -%>

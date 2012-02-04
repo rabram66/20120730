@@ -1,6 +1,8 @@
 class EventBrite
 
-  GEOSEARCH_URL = "https://www.eventbrite.com/json/event_search?app_key=FMKOHYNE36ODPTPEDM&latitude=%s&longitude=%s&within=%s"
+  include Address
+
+  GEOSEARCH_URL = "https://www.eventbrite.com/json/event_search?app_key=#{Rails.application.config.app.eventbrite_app_key}&latitude=%s&longitude=%s&within=%s"
 
   attr_reader :event_id, :name, :description, :address, :city, :state, 
               :latitude, :longitude, :full_address,
@@ -16,8 +18,12 @@ class EventBrite
   class << self
     def geosearch(coordinates, radius=5, count=10)
       api(GEOSEARCH_URL, coordinates.first, coordinates.last, radius) do |response|
-        response['events'][1,count].map do |result| # Skip "summary" element
-          transform result['event']
+        if response['events'].present?
+          response['events'][1,count].map do |result| # Skip "summary" element
+            transform result['event']
+          end
+        else
+          []
         end
       end
     end

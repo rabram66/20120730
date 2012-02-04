@@ -18,14 +18,6 @@ class Event < ActiveRecord::Base
 
   before_save :parse_dates
   
-  # before_save do
-  #   puts "before_save: End date: #{self.end_date}"
-  # end
-  # 
-  # after_save do
-  #   puts "after_save: End date: #{self.end_date}"
-  # end
-  
   after_validation do
     geocode if !(ADDRESS_ATTRS & changes.keys).empty? || latitude.blank? || longitude.blank?
     normalize_tags unless tags.blank?

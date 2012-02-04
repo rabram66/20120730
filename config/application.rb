@@ -42,8 +42,8 @@ module NearbyThis
 
     # Custom config
     config.app = ActiveSupport::OrderedOptions.new
-    
-    config.app.eventbrite_api_key = 12786977485170516153
+    config.app.eventbrite_app_key = 'FMKOHYNE36ODPTPEDM'
+    config.app.default_coordinates = [33.7489954, -84.3879824] # Atlanta, GA
 
   end
 end

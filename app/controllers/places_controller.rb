@@ -6,7 +6,7 @@ class PlacesController < ApplicationController
   respond_to :html, :json, :js
   
   RADIUS = '750'
-  DEFAULT_COORDINATES = [33.7489954, -84.3879824] # Atlanta, GA
+  DEFAULT_COORDINATES = Rails.application.config.app.default_coordinates
 
   # GET / (/places)
   def index
@@ -21,7 +21,7 @@ class PlacesController < ApplicationController
 
     @places = Place.find_by_geocode(@coordinates, category.types)
     remove_duplicate_places unless @places.empty? || @locations.empty?
-    @events = Event.upcoming_near(@coordinates)
+    @events = EventLoader.upcoming_near(@coordinates)
     
     # merge location and places
     @locations = [@locations + @places].flatten.sort do |a,b|

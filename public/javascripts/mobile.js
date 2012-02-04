@@ -79,7 +79,7 @@ $('#mobile-content').live('pageinit', function(event) {
     var autocomplete = new google.maps.places.Autocomplete( $('#searchTextField')[0] );
   }
 
-  // Eat/Drink/Relax top nav buttons
+  // Category top nav buttons
   $('ul#category-selector > li').click( showCategory );
   $('ul#category-selector > li.first a').click();
 

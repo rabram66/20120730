@@ -11,7 +11,7 @@ class LocationCategory
 
   class << self
     def all 
-      [EatDrink, RelaxCare, ShopFind]
+      [EatDrink, ShopFind, Play, Spa]
     end
     
     def all_types
@@ -36,17 +36,22 @@ class LocationCategory
     %w(bar cafe restaurant food),
     'Eat & Drink'
   )
-  
-  RelaxCare = LocationCategory.new(
-    'Relax/Care',
-    %w(aquarium art_gallery beauty_salon bowling_alley casino gym movie_theater museum night_club park spa),
-    'Relax'
-  )
 
   ShopFind = LocationCategory.new(
     'Shop/Find',
     %w(clothing_store shoe_store convenience_store grocery_or_supermarket),
     'Shop'
   )
+    
+  Play = LocationCategory.new(
+    'Play',
+    %w(aquarium art_gallery bowling_alley casino gym movie_theater museum night_club park)
+  )
+
+  Spa = LocationCategory.new(
+    'Spa',
+    %w(beauty_salon spa)
+  )
+
 
 end

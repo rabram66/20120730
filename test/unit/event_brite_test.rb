@@ -30,8 +30,23 @@ class EventBriteTest < ActiveSupport::TestCase
       end
       should 'return an array of events' do
         events = EventBrite.geosearch @coordinates
-        assert !events.empty?, "events should not be empty"
+        assert_equal 2, events.length, "there should be an array of events"
         assert_kind_of EventBrite, events.first
+      end
+      should 'transform each event into a model' do
+        events = EventBrite.geosearch @coordinates
+        event = events.first
+        assert_equal 2800356943, event.event_id
+        assert_equal "Floco Torres, StereoMonster & Guests LIVE at The Masquerade", event.name
+        assert_equal "695 North Ave", event.address
+        assert_equal "Atlanta", event.city
+        assert_equal "GA", event.state
+        assert_equal "695 North Ave, Atlanta, GA", event.full_address
+        assert_equal "The Masquerade", event.venue
+        assert_equal [33.771038,-84.364801], event.coordinates
+        assert_equal "music,entertainment", event.category
+        assert_equal DateTime.parse("2012-02-10 20:00:00"), event.start_date
+        assert_equal DateTime.parse("2012-02-11 00:00:00"), event.end_date
       end
     end
 
@@ -52,7 +67,7 @@ class EventBriteTest < ActiveSupport::TestCase
 
   def with_events
     # GET https://www.eventbrite.com/json/event_search?app_key=FMKOHYNE36ODPTPEDM&latitude=33.7711135&longitude=-84.3667805&within=5
-    <<-END.gsub(/^ {6}/, '')
+    <<-END.gsub(/^ {6}/, '').gsub(/\r\n/m, '')
       {
           "events": [
               {
@@ -67,23 +82,6 @@ class EventBriteTest < ActiveSupport::TestCase
                       "num_showing": 10
                   }
               },
-              {
-                  "event": {
-                      "box_header_text_color": "677479",
-                      "link_color": "FFCC00",
-                      "box_background_color": "677479",
-                      "timezone": "US/Eastern",
-                      "box_border_color": "677479",
-                      "logo": "http://ebmedia.eventbrite.com/s3-s3/eventlogos/12519633/2800356943-2.jpg",
-                      "modified": "2012-01-20 05:37:38",
-                      "logo_ssl": "https://ebmedia.eventbrite.com/s3-s3/eventlogos/12519633/2800356943-2.jpg",
-                      "repeats": "no"
-                  }
-              }
-          ]
-      }
-    END
-=begin
               {
                   "event": {
                       "box_header_text_color": "677479",
@@ -107,7 +105,7 @@ class EventBriteTest < ActiveSupport::TestCase
                       "title": "Floco Torres, StereoMonster & Guests LIVE at The Masquerade",
                       "start_date": "2012-02-10 20:00:00",
                       "status": "Live",
-                      "description": "<P>Floco Torres makes his debut on The Masquerade stage as well as bringing along StereoMonster and some guests! This is a night of music you don't want to miss! </P>\r\n<P>Tickets are on sale now! 8$ in advance or 12$ at the door </P>\r\n<P> </P>\r\n<P>We have a limited number of advance tickets right here through Eventbrite! The first 5 will receive a custom made \"Ralph BIGhead\" mixtape from Floco & the second 5 will receive a custom made compilation cd from Floco.</P>\r\n<P>CD's can be picked up at the merch table the night of the show. Hope to see you!</P>",
+                      "description": "Floco Torres makes his debut on The Masquerade stage as well as bringing along StereoMonster and some guests! This is a night of music you don't want to miss!",
                       "end_date": "2012-02-11 00:00:00",
                       "tags": "Floco Torres, LIVE, Music, Nightlife, Atlanta, Georgia, Fun, ",
                       "text_color": "FFCC00",
@@ -175,7 +173,7 @@ class EventBriteTest < ActiveSupport::TestCase
                       "title": "Body Shape Boot Camp",
                       "start_date": "2012-02-04 13:00:00",
                       "status": "Live",
-                      "description": "<P><IMG SRC=\"https://evbdn.eventbrite.com/s3-s3/eventlogos/71025/bsbcflyercardcopy.jpg\" ALT=\"Body Shape Boot Camp Flyer\" WIDTH=\"600\" HEIGHT=\"408\"></P>",
+                      "description":"This is the part where we dance",
                       "end_date": "2013-02-28 16:00:00",
                       "tags": "affordable boot camp fitness 4- weeks atlanta nutrition counseling training",
                       "text_color": "FFCC00",
@@ -223,7 +221,6 @@ class EventBriteTest < ActiveSupport::TestCase
           ]
       }
     END
-=end
   end
 
 

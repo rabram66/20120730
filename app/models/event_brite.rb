@@ -5,7 +5,7 @@ class EventBrite
   GEOSEARCH_URL = "https://www.eventbrite.com/json/event_search?app_key=#{Rails.application.config.app.eventbrite_app_key}&latitude=%s&longitude=%s&within=%s"
 
   attr_reader :event_id, :name, :description, :address, :city, :state, 
-              :latitude, :longitude, :full_address,
+              :latitude, :longitude,
               :start_date, :end_date, :venue, :category
 
   def initialize(attrs={})

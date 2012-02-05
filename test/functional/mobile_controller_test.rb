@@ -5,6 +5,10 @@ class MobileController
   def set_request_format(force_mobile=false)
     force_mobile_format
   end
+
+  def mobile_device
+    'iphone'
+  end
 end
 
 class MobileControllerTest < ActionController::TestCase
@@ -12,6 +16,20 @@ class MobileControllerTest < ActionController::TestCase
   setup do
     @geocode = [33.7489954, -84.3879824]
     @location = locations(:one)
+  end
+
+  context 'from a non-mobile browser' do
+    setup do
+      def @controller.is_mobile_device?
+        false
+      end
+    end
+    
+    should 'redirect request for mobile detail page to non-mobile detail page' do
+      get :detail, :id => @location.reference
+      assert_response :redirect
+      assert_equal @request.url.gsub("mobile/detail/","details/"), @response.headers['Location']
+    end
   end
 
   context 'from a mobile browser' do

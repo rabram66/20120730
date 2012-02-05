@@ -3,6 +3,7 @@ class MobileController < ApplicationController
   has_mobile_fu
 
   layout 'mobile'
+  before_filter :redirect_nonmobile_request
   before_filter :set_geocode, :except => [:index, :list]
 
   # GET The main page with a field to input the address, city, state or to use current location
@@ -91,7 +92,7 @@ class MobileController < ApplicationController
       @places.compact!
     end
   end
-  
+
   def exclude_place?(place)
     # Exclude the place if there is a location with the same name, address, or lat-lng
     @locations.any? do |location|
@@ -100,7 +101,11 @@ class MobileController < ApplicationController
       ( place.coordinates == location.coordinates )
     end
   end
-  
-  
-    
+
+  def redirect_nonmobile_request
+    unless is_mobile_device?
+      redirect_to request.fullpath.gsub(%r{mobile/detail/},'details/') if request.fullpath =~ %r{mobile/detail/}
+    end
+  end
+
 end

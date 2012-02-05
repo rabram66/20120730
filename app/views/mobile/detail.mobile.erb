@@ -8,7 +8,10 @@
   <%= hidden_field_tag :dest_lng, @location.coordinates.last %>
   <% if @twitter_status || @facebook_status %>
     <div id='mobile-social-status'>
-      <h3 class='center-wrapper'>What They Are Saying</h3>
+      <h4 class='center-wrapper'><%= render :partial => 'shared/tweet_this' %></h4>
+      <h3 class='center-wrapper'>
+        What They Are Saying
+      </h3>
       <% if @twitter_status -%>
         <ul data-role='listview' data-inset='true'>
           <li id='mobile-twitter-status'>

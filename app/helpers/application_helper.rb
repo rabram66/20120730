@@ -12,4 +12,8 @@ module ApplicationHelper
     "http://maps.google.com/maps?q=#{location.coordinates.join(',')}"
   end
 
+  def title_tag
+    content_tag(:title, @title || 'Nearby restaurants, shops, salons - Nearbythis')
+  end
+
 end

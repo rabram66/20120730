@@ -22,6 +22,13 @@ module Address
     [address, city].reject{|n| n.blank?}.join(', ')
   end
 
+  def page_title
+    title = "#{name}"
+    title << " - #{city}" unless city.blank?
+    title << ", #{state}" unless state.blank?
+    title
+  end
+
   private
   
   def parse_full_address(value)

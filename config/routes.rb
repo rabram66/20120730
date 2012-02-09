@@ -31,5 +31,12 @@ NearbyThis::Application.routes.draw do
   get "/iphone_delete_place/:reference" => "iphone#delete_place"
   get "/iphone_deals" => "iphone#deals"
   get "/iphone_events" => "iphone#events"
+
+  #------------------------------ API ==----------------------------
+  namespace :api do
+    get "/" => "api#index"
+    get "/places" => "places#index"
+  end
+  
     
 end

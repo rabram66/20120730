@@ -1,0 +1,94 @@
+==============================================================================
+Discovery
+------------------------------------------------------------------------------
+http://nearbythis.com/api/
+
+Purpose:
+
+The Discovery URL provides an initial starting point for API access. Though not required, utilizing the Discovery URL to navigate to list URLS isolates the consuming service from API changes.
+
+==============================================================================
+Places List
+------------------------------------------------------------------------------
+Purpose:
+List of places based on a geographic coordinates
+
+Base URL: 
+http://nearbythis.com/api/places/
+
+Parameters (input):
+lat : Latitude (e.g. -84.8383)
+lng : Longitude (e.g 35.8484)
+
+Representation output:
+ {
+   "coordinates": {
+     "lat": 45.9494,
+     "lng": -95.4994,
+   },
+   "places": [
+    {
+      "links": {
+        "detail": "http://nearbythis.com/48753489758934589235892893",
+        "deals": "http://nearbythis.com/48753489758934589235892893/deals",
+        }
+      ],
+      "name": "FooBar",
+      "lat": 35.5544,
+      "lng": -85.43,
+      "distance": 5.4
+      "address": "2578 Binghamton Drive",
+      "city": "Atlanta",
+      "state": "GA",
+      "recent_tweet": true
+     },
+     {
+     
+     }
+  ],
+  "deals": [],
+  "events": []
+}
+     
+
+==============================================================================
+Places Details
+------------------------------------------------------------------------------
+Purpose:
+Base URL:
+http://nearbythis.com/api/places/:reference
+
+Parameters (input):
+  :reference -  the reference ID; a these URLs are at
+Representation output:
+
+==============================================================================
+Events List
+------------------------------------------------------------------------------
+Purpose:
+Base URL:
+http://nearbythis.com/api/events/:reference
+
+Parameters (input):
+Representation output:
+
+==============================================================================
+Event Details
+------------------------------------------------------------------------------
+Purpose:
+Base URL:
+Parameters (input):
+Representation output:
+
+==============================================================================
+Deals List
+------------------------------------------------------------------------------
+Purpose:
+Base URL:
+Parameters (input):
+Representation output:
+
+
+  
+
+  

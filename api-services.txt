@@ -102,6 +102,9 @@ Representation output:
 Places Details
 ------------------------------------------------------------------------------
 Purpose:
+Return complete details about a place including phone number, most recent
+twitter and facebook statuses, as well as the most recent twitter mentions.
+
 Base URL:
 http://nearbythis.com/api/places/:reference
 

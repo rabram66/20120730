@@ -1,3 +1,11 @@
+General Usage Notes
+===================
+The following API URLs can specify the accepted by content type using one of the following methods:
+
+1. By passing an Accept header with a value of 'application/json'
+2. By appending '.json' to the URL
+3. By adding a query parameter of 'format=json' to the URL
+
 ==============================================================================
 Discovery
 ------------------------------------------------------------------------------
@@ -9,7 +17,7 @@ The Discovery URL provides an initial starting point for API access. Though not 
 
 {
   "links":{
-    "places":"http://nearbythis.com/api/places",
+    "places":"http://nearbythis.com/api/places"
   }
 }
 
@@ -17,7 +25,16 @@ The Discovery URL provides an initial starting point for API access. Though not 
 Places List
 ------------------------------------------------------------------------------
 Purpose:
-List of places based on a geographic coordinates
+List of places based on a geographic coordinates. The representation is a JSON object containing two objects: 'coordinates' and 'places'. 'coordinates' lists the geographic coordinates used for the query. 'places' is an array of objects; each representing a place.
+
+Each place contains:
+  - links: A set of links; the link named 'place' provides a navigable URL to the place details
+  - source: The type of place 'Place' is an external place from Google places, 'Location' is an internal place from NearbyThis's database
+  - name: Name of the place
+  - categories: An array of categories that the location belongs; generally there is only one; but, in theory, there could be more than one. Possible values are Eat, Shop, Play, Spa
+  - recent_tweet: a boolean field indicating if there is a recent tweet for the place
+  - location: the street address, city, and state for the place; some of these fields may be null
+  - geography: the latitude and longitude of the place, along with the distance from the coordinates of search (in miles)
 
 Base URL: 
 http://nearbythis.com/api/places/
@@ -25,6 +42,9 @@ http://nearbythis.com/api/places/
 Parameters (input):
 lat : Latitude (e.g. -84.8383)
 lng : Longitude (e.g 35.8484)
+
+Example Full URL:
+http://nearbythis.com/api/places?lat=33.928797&lng=-84.281831
 
 Representation output:
 {

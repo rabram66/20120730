@@ -79,11 +79,11 @@ class Place
   end
   
   def recent_tweet?(within=1.day)
-    unless cached_tweets.empty?
+    !!(unless cached_tweets.empty?
       cached_tweets.any? { |tweet| 
         (Time.now - tweet.created_at).abs < within 
       }
-    end
+    end)
   end
 
   class << self

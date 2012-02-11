@@ -27,6 +27,7 @@ gem 'cancan'                       # authorization
 gem 'carrierwave'                  # file uploads
 gem 'fog'                          # AWS/S3 upload storage
 gem 'delayed_job_active_record'    # background job processor
+gem 'jsonify-rails'                # JSON views
 
 group :development, :test do
   gem 'ansi'     # colorize turn output

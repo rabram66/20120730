@@ -1,7 +1,10 @@
 module Api
   class ApiController < ApplicationController
+    layout false
+    respond_to :json
+    
     def index
-      render :text => 'eat more chicken'
+      respond_with( @links = {:places => api_places_url} )
     end
   end
 end

@@ -7,6 +7,12 @@ Purpose:
 
 The Discovery URL provides an initial starting point for API access. Though not required, utilizing the Discovery URL to navigate to list URLS isolates the consuming service from API changes.
 
+{
+  "links":{
+    "places":"http://nearbythis.com/api/places",
+  }
+}
+
 ==============================================================================
 Places List
 ------------------------------------------------------------------------------
@@ -21,35 +27,56 @@ lat : Latitude (e.g. -84.8383)
 lng : Longitude (e.g 35.8484)
 
 Representation output:
- {
-   "coordinates": {
-     "lat": 45.9494,
-     "lng": -95.4994,
-   },
-   "places": [
-    {
-      "links": {
-        "detail": "http://nearbythis.com/48753489758934589235892893",
-        "deals": "http://nearbythis.com/48753489758934589235892893/deals",
+{
+    "coordinates": {
+        "latitude": 33.928797,
+        "longitude": -84.281831
+    },
+    "places": [
+        {
+            "links": {
+                "place": "http://localhost:3000/api/places/CmRdAAAApr2AKr687nvCaOilWKeTeeY48h2HsitJrQAr-hJx_uLopXUsn7jtLmljpyzQkzT_eR3Nz0gtLWleyolk0-JZwE2ydEsDwcKfNbR-HZ8C0c04geDq9JkWdCLopDYWQNa9EhAsgPMD_xAxlTOfi5qEg7G7GhRIdeX2mtSRHHi3fCg7BtbjCfCxpw"
+            },
+            "source": "Place",
+            "name": "Bangles R Us",
+            "categories": [
+                "Eat"
+            ],
+            "recent_tweet": false,
+            "location": {
+                "address": null,
+                "city": null,
+                "state": null
+            },
+            "geography": {
+                "latitude": 33.928342,
+                "longitude": -84.2818489,
+                "distance": 0.031463081337843514
+            }
+        },
+        {
+            "links": {
+                "place": "http://localhost:3000/api/places/CkQxAAAAJRTc2vzxWLl6pkYoaI4U5YkgQ52xfC3AzbRjeGeWZDoUbU43NA29cjxGMmH2cLL7-JXrjFod-HHWKzTKbPhx5RIQVrIUVFDxR_JIoj2PRbo3ZhoUDGy37WKejQ7JAv_w5LHTH60CYD4"
+            },
+            "source": "Location",
+            "name": "Frugles R Us",
+            "categories": [
+                "Eat"
+            ],
+            "recent_tweet": false,
+            "location": {
+                "address": "2572 Binghamton Drive",
+                "city": "Dunwoody",
+                "state": "GA"
+            },
+            "geography": {
+                "latitude": 33.928393,
+                "longitude": -84.282146,
+                "distance": 0.03324590025829605
+            }
         }
-      ],
-      "name": "FooBar",
-      "lat": 35.5544,
-      "lng": -85.43,
-      "distance": 5.4
-      "address": "2578 Binghamton Drive",
-      "city": "Atlanta",
-      "state": "GA",
-      "recent_tweet": true
-     },
-     {
-     
-     }
-  ],
-  "deals": [],
-  "events": []
+    ]
 }
-     
 
 ==============================================================================
 Places Details
@@ -62,31 +89,6 @@ Parameters (input):
   :reference -  the reference ID; a these URLs are at
 Representation output:
 
-==============================================================================
-Events List
-------------------------------------------------------------------------------
-Purpose:
-Base URL:
-http://nearbythis.com/api/events/:reference
-
-Parameters (input):
-Representation output:
-
-==============================================================================
-Event Details
-------------------------------------------------------------------------------
-Purpose:
-Base URL:
-Parameters (input):
-Representation output:
-
-==============================================================================
-Deals List
-------------------------------------------------------------------------------
-Purpose:
-Base URL:
-Parameters (input):
-Representation output:
 
 
   

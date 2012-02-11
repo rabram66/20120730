@@ -21,24 +21,10 @@ class MobileController < ApplicationController
 
     cookies[:geocode] = { :value => @geocode, :expires => 1.year.from_now }
 
-    @locations = Location.find_by_geocode(@geocode)
-    @places    = Place.find_by_geocode(@geocode)
+    @locations = PlaceLoader.near(@geocode)
+
     @deals     = Deal.find_by_geocode(@geocode)
     @events    = EventLoader.upcoming_near(@geocode)
-    
-    # TODO: Remove this CYA code once gaurantee of reference being set is handled
-    @locations.reject! {|l| l.reference.nil? }
-
-    # Fire off a delayed job to update the twitter statuses
-    Jobs::TwitterStatusUpdate.new(@locations).delay.process
-
-    remove_duplicate_places unless @places.length == 0 || @locations.length == 0
-    
-    # merge location and places
-    @locations = [@locations + @places].flatten.sort do |a,b|
-      a.distance_from(@geocode) <=> b.distance_from(@geocode)
-    end
-    
   end
   
   # GET the detail for a location/place
@@ -69,7 +55,7 @@ class MobileController < ApplicationController
   private
   
   def set_geocode
-    @geocode = geocode_from_cookie || default_geocode
+    @geocode = geocode_from_cookie || Rails.application.config.app.default_coordinates
   end
     
   def geocode_from_params
@@ -78,28 +64,6 @@ class MobileController < ApplicationController
 
   def geocode_from_cookie
     cookies[:geocode] && cookies[:geocode].split('&').map{|v| v.to_f}
-  end
-
-  def default_geocode
-    [33.7489954, -84.3879824] # Atlanta, Georgia (center of our universe)
-  end
-
-  def remove_duplicate_places
-    if @places
-      @places.each_with_index do |place, ndx|
-        @places[ndx] = nil if exclude_place?(place)
-      end
-      @places.compact!
-    end
-  end
-
-  def exclude_place?(place)
-    # Exclude the place if there is a location with the same name, address, or lat-lng
-    @locations.any? do |location|
-      ( place.name == location.name ) ||
-      ( !place.address.blank? && place.address.include?(location.address) ) ||
-      ( place.coordinates == location.coordinates )
-    end
   end
 
   def redirect_nonmobile_request

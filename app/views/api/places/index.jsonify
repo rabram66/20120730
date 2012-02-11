@@ -1,0 +1,23 @@
+json.coordinates do
+  json.latitude @coordinates.first
+  json.longitude @coordinates.last
+end
+json.places @places do |place|
+  json.links do
+    json.place api_place_url(:reference => place.reference)
+  end
+  json.source place.class
+  json.name place.name
+  json.categories place.categories.map(&:short_name)
+  json.recent_tweet place.recent_tweet?
+  json.location do
+    json.address place.address
+    json.city place.city
+    json.state place.state
+  end
+  json.geography do
+    json.latitude place.latitude
+    json.longitude place.longitude
+    json.distance place.distance_from(@coordinates)
+  end
+end

@@ -1,0 +1,5 @@
+json.links do
+  @links.each do |name,url|
+    json.tag! name, url
+  end
+end

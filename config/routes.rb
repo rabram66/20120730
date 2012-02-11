@@ -35,7 +35,9 @@ NearbyThis::Application.routes.draw do
   #------------------------------ API ==----------------------------
   namespace :api do
     get "/" => "api#index"
-    get "/places" => "places#index"
+    # resources :places, :only => [:index, :show]
+    get "/places" => "places#index", :as => :places
+    get "/places/:reference" => "places#show", :as => :place
   end
   
     

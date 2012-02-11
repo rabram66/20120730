@@ -1,0 +1,37 @@
+json.place do
+  json.source @place.class
+  json.name @place.name
+  json.phone_number @place.phone_number
+  json.reference @place.reference
+  json.categories @place.categories.map(&:short_name)
+  json.recent_tweet @place.recent_tweet?
+  if Location === @place
+    if @place.twitter_status
+      json.twitter_status do
+        json.text @place.twitter_status.text
+        json.created_at @place.twitter_status.created_at
+        json.follow_url @place.twitter_status.follow_url
+      end
+    end
+    if @place.facebook_status
+      json.facebook_status do
+        json.text @place.facebook_status.text
+      end
+    end
+  end
+  json.location do
+    json.address @place.address
+    json.city @place.city
+    json.state @place.state
+  end
+  json.geography do
+    json.latitude @place.latitude
+    json.longitude @place.longitude
+  end
+  json.twitter_mentions(@place.twitter_mentions(20)) do |mention|
+    json.text mention.text
+    json.screen_name mention.screen_name.titleize
+    json.created_at mention.created_at
+    json.follow_url mention.follow_url
+  end
+end

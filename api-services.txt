@@ -107,9 +107,56 @@ http://nearbythis.com/api/places/:reference
 
 Parameters (input):
   :reference -  the reference ID; a these URLs are at
+
+Example URL:
+http://nearbythis.com/api/places/CkQxAAAAkxD6kpjvTUtWo0zD-NcD4WrGGcRT6As0eQZZDPcz26m0vftFkXCFeBJcCLxDC7QlhcFrKlxUS-9WbS93L5JIihIQ68J33vL_CxRFTWNR0BbJgBoUHBfOMfTvL5mMgeclfs3nqRCy-SE
+
+
 Representation output:
 
-
+{
+    "place": {
+        "source": "Location",
+        "name": "Mellow Mushroom Pizza Bakers",
+        "phone_number": "7709340909",
+        "reference": "CkQxAAAAkxD6kpjvTUtWo0zD-NcD4WrGGcRT6As0eQZZDPcz26m0vftFkXCFeBJcCLxDC7QlhcFrKlxUS-9WbS93L5JIihIQ68J33vL_CxRFTWNR0BbJgBoUHBfOMfTvL5mMgeclfs3nqRCy-SE",
+        "categories": [
+            "Eat"
+        ],
+        "recent_tweet": false,
+        "twitter_status": {
+            "text": "@ddmcbain @samblanton I almost spilled my drink reading this! Awesome!",
+            "created_at": "2012-02-10T23:32:38+00:00",
+            "follow_url": "http://twitter.com/MellowMushroom/status/168115185540792320"
+        },
+        "facebook_status": {
+          "text": "Eat at Mellow Mushroom"
+        },
+        "location": {
+            "address": "3201 Tucker Norcross Rd",
+            "city": "Tucker",
+            "state": "GA"
+        },
+        "geography": {
+            "latitude": 33.8835679,
+            "longitude": -84.218804
+        },
+        "twitter_mentions": [
+             {
+                 "text": "@troutbumtodd yes. Both beverage superstores and @MellowMushroom in Suwanee. General Admin only.",
+                 "screen_name": "Suwaneebeerfest",
+                 "created_at": "2012-02-10T17:33:42+00:00",
+                 "follow_url": "http://twitter.com/suwaneebeerfest/status/168024857957769216"
+             },
+             {
+                 "text": "It's basically drinking coffee, right?  — Drinking a Breakfast Stout by @foundersbrewing at @MellowMushroom  — http://t.co/8sWPUTAY",
+                 "screen_name": "Sean Eats Atla Nta",
+                 "created_at": "2012-02-10T16:46:51+00:00",
+                 "follow_url": "http://twitter.com/SeanEatsAtlaNta/status/168013068486459392"
+             }
+        ]
+    }
+}
 
   
 

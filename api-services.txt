@@ -1,6 +1,6 @@
 General Usage Notes
 ===================
-The following API URLs can specify the accepted by content type using one of the following methods:
+The following API URLs must specify the accepted by content type using one of the following methods:
 
 1. By passing an Accept header with a value of 'application/json'
 2. By appending '.json' to the URL

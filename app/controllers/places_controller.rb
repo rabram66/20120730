@@ -46,11 +46,7 @@ class PlacesController < ApplicationController
   def details
     reference = params[:reference]
 
-    if reference =~ /^[A-Z]/ # its a reference; not a slug
-      @location = Place.find_by_reference(reference)
-    else
-      @location = Location.find(reference)
-    end
+    @location = reference =~ /^[A-Z]/ ? Place.find_by_reference(reference) : Location.find(reference)
     
     @origin_address = params[:address]
     

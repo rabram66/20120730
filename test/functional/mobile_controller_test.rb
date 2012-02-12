@@ -55,7 +55,7 @@ class MobileControllerTest < ActionController::TestCase
       Tweet.expects(:geosearch).with("\"#{@location.name}\"",@location.coordinates, 5, 20).returns([])
       Tweet.expects(:non_geosearch).with("@#{@location.twitter_name}", 20).returns([])
       Tweet.expects(:non_geosearch).with("\"#{@location.name}\"", 20).returns([])
-      get :detail, :id => @location.reference
+      get :detail, :id => @location.slug
       assert_response :success
       assert_template :detail
     end

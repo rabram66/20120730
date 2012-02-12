@@ -30,7 +30,7 @@ class MobileController < ApplicationController
   # GET the detail for a location/place
   def detail
     reference = params[:id]
-    @location = Location.find_by_reference(reference) || Place.find_by_reference(reference)
+    @location = reference =~ /^[A-Z]/ ? Place.find_by_reference(reference) : Location.find(reference)
     
     @twitter_mentions = @location.twitter_mentions
     

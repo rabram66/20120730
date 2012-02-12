@@ -54,7 +54,7 @@ $(function() {
     <% for location in @locations -%>
       <% if Location === location -%>
         <li class='<%= location.twitter_name %> <%= category_class_names(location) %> <%=location.recent_tweet? ? "recent_tweet" : "" %>' style='display:none'>
-          <a href="<%=mobile_detail_path(location.reference) %>">
+          <a href="<%= path_for_mobile_detail(location) %>">
             <img src='/images/twitter-logo.jpg' class='ui-li-icon twitter-icon'/>
             <b><%= location.name %></b> - <%= number_with_precision(location.distance, :precision => 1) %> miles
           </a>

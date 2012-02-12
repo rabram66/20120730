@@ -36,7 +36,7 @@ class EventBriteTest < ActiveSupport::TestCase
       should 'transform each event into a model' do
         events = EventBrite.geosearch @coordinates
         event = events.first
-        assert_equal 2800356943, event.event_id
+        assert_equal "#{EventBrite::ID_PREFIX}2800356943", event.id
         assert_equal "Floco Torres, StereoMonster & Guests LIVE at The Masquerade", event.name
         assert_equal "695 North Ave", event.address
         assert_equal "Atlanta", event.city

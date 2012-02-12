@@ -2,10 +2,12 @@ class EventBrite
 
   include Address
 
-  GEOSEARCH_URL = "https://www.eventbrite.com/json/event_search?app_key=#{Rails.application.config.app.eventbrite_app_key}&latitude=%s&longitude=%s&within=%s"
+  EVENT_SEARCH_URL = "https://www.eventbrite.com/json/event_search?app_key=#{Rails.application.config.app.eventbrite_app_key}&latitude=%s&longitude=%s&within=%s"
+  EVENT_GET_URL    = "https://www.eventbrite.com/json/event_get?app_key=#{Rails.application.config.app.eventbrite_app_key}&id=%s"
+  ID_PREFIX        = 'EB'
 
-  attr_reader :event_id, :name, :description, :address, :city, :state, 
-              :latitude, :longitude, :url,
+  attr_reader :id, :name, :description, :address, :city, :state, 
+              :latitude, :longitude, :url, 
               :start_date, :end_date, :venue, :category
 
   def initialize(attrs={})
@@ -15,15 +17,31 @@ class EventBrite
     end
   end
 
+  # Event comptability
+  def flyer_url
+  end
+  def tweets
+    []
+  end
+
   class << self
     def geosearch(coordinates, radius=2, count=10)
-      api(GEOSEARCH_URL, coordinates.first, coordinates.last, radius) do |response|
+      api(EVENT_SEARCH_URL, coordinates.first, coordinates.last, radius) do |response|
         if response['events'].present?
           response['events'][1,count].map do |result| # Skip "summary" element
             transform result['event']
           end
         else
           []
+        end
+      end
+    end
+    
+    def find_by_id(id)
+      id.gsub!(/^#{ID_PREFIX}/,'')
+      api(EVENT_GET_URL, id) do |response|
+        if response['event'].present?
+          transform response['event']
         end
       end
     end
@@ -45,7 +63,7 @@ class EventBrite
 
     def transform(result)
       hash = {
-        :event_id  => result['id'],
+        :id        => "#{ID_PREFIX}#{result['id']}",
         :name      => result['title'],
         :category  => result['category'],
         :url       => result['url']

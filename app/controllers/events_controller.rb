@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   
   respond_to :html, :xml, :json, :js
-  load_and_authorize_resource
+  load_and_authorize_resource :except => :show
   
   # GET /events
   def index
@@ -10,7 +10,8 @@ class EventsController < ApplicationController
 
   # GET /events/1
   def show
-    respond_with @show
+    @event = (params[:id] =~ /^EB/) ? EventBrite.find_by_id(params[:id]) : Event.find(params[:id])
+    respond_with @event
   end
 
   # GET /events/new

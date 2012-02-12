@@ -28,6 +28,10 @@ class Event < ActiveRecord::Base
     normalize_tags unless tags.blank?
   end
 
+  # Placeholder method for external web page link
+  def url
+  end
+
   def name_and_city
     "#{name} #{city}"
   end

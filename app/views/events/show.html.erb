@@ -25,6 +25,9 @@
       <% unless @event.flyer_url.blank? -%>
         <p class='event-flyer-link'><%= link_to "View Event Flyer", @event.flyer_url, :title => @event.name, :class => :fancybox %></p>
       <% end -%>
+      <% unless @event.url.blank? -%>
+        <p class='event-flyer-link'><%= link_to "More Info ...", @event.url, :title => @event.name, :target => :new %></p>
+      <% end -%>
       <% unless @event.start_date.blank? -%>
         <p class='event-date'>
           <%= @event.start_date.stamp("Sunday, January 1 at 6:30 pm") %>

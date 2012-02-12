@@ -7,4 +7,9 @@ namespace :app do
       LocationsSpreadsheet.new(args).import
     end
   end
+
+  desc "Reset locations"
+  task :reset_locations => :environment do
+    Location.find_each(&:save)
+  end
 end

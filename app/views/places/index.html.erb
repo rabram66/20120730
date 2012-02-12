@@ -50,7 +50,7 @@
           <% if Location === location && can?(:update, location) %>
             <%= link_to 'Edit', edit_location_path(location), :class => 'inline' %>
           <% end %>
-          <a href="<%= url_for(:action => 'details', :address => location.full_address,  :bizname => location.name , :type => location.types, :reference => location.reference)%>">
+          <a href="<%= url_for_location_details(location) %>">
             <%= location.name %><strong><%= " - #{location.address}" unless location.address.blank? %></strong>
             <% if location.tweets? -%>
               <%= image_tag "twitter.jpg" %>

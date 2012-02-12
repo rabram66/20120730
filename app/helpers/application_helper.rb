@@ -16,4 +16,14 @@ module ApplicationHelper
     content_tag(:title, @title || 'Nearby restaurants, shops, salons - Nearbythis')
   end
 
+  def url_for_location_details(location)
+    options = {
+      :action => 'details', 
+      :address => location.full_address,  
+      :bizname => location.name, 
+      :type => location.types,
+      :reference => (Location === location) ? location.slug : location.reference
+    }
+    url_for options
+  end
 end

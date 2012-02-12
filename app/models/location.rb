@@ -1,4 +1,6 @@
 class Location < ActiveRecord::Base
+
+  extend FriendlyId
   
   include Address
   include DealHolder
@@ -16,6 +18,8 @@ class Location < ActiveRecord::Base
                   
   # Rating as implemented in Location, here, returns nil (no-op) for Place compatability
   attr_accessor :rating # virtual; not persisted
+  
+  friendly_id :name_and_city, :use => :history
 
   geocoded_by :full_address
   
@@ -55,6 +59,10 @@ class Location < ActiveRecord::Base
       end
       relation
     end
+  end
+
+  def name_and_city
+    "#{name} #{city}"
   end
 
   def categories

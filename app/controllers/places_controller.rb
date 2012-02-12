@@ -45,7 +45,12 @@ class PlacesController < ApplicationController
   # GET /details/QUIOUREIOWFI-FJSDJFII38427387 (reference)
   def details
     reference = params[:reference]
-    @location = Location.find_by_reference(reference) || Place.find_by_reference(reference)
+
+    if reference =~ /^[A-Z]/ # its a reference; not a slug
+      @location = Place.find_by_reference(reference)
+    else
+      @location = Location.find(reference)
+    end
     
     @origin_address = params[:address]
     

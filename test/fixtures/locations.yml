@@ -11,6 +11,7 @@ one:
   types: restaurant
   twitter_name: wafflehouse
   general_type: Eat/Drink
+  slug: waffle-house-dunwoody
 
 two:
   name: Baubles R Us
@@ -22,3 +23,4 @@ two:
   longitude: -84.3879824
   reference: 222
   general_type: Eat/Drink
+  slug: baubles-r-us-atlanta

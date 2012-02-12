@@ -72,6 +72,7 @@ GEM
       nokogiri (~> 1.5.0)
       ruby-hmac
     formatador (0.2.1)
+    friendly_id (4.0.0)
     heroku (2.9.0)
       launchy (>= 0.3.2)
       rest-client (~> 1.6.1)
@@ -205,6 +206,7 @@ DEPENDENCIES
   devise
   faster_haversine (~> 0.1.3)
   fog
+  friendly_id
   geocoder!
   heroku
   hoptoad_notifier

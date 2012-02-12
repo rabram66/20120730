@@ -28,7 +28,7 @@ class PlacesControllerTest < ActionController::TestCase
       Tweet.expects(:geosearch).with("\"#{@location.name}\"",@location.coordinates, 5, 40).returns([])
       Tweet.expects(:non_geosearch).with("@#{@location.twitter_name}", 40).returns([])
       Tweet.expects(:non_geosearch).with("\"#{@location.name}\"", 40).returns([])
-      get :details, :reference => @location.reference
+      get :details, :reference => @location.slug
       assert_response :success
       assert_template :details
     end
@@ -46,9 +46,9 @@ class PlacesControllerTest < ActionController::TestCase
       place.city      = 'Atlanta'
       place.latitude  = 33.7489954
       place.longitude = -84.3879824
-      Place.expects(:find_by_reference).with('123').returns(place)
+      Place.expects(:find_by_reference).with('CqHDHYDY63636').returns(place)
       Tweet.expects(:geosearch).with("\"#{place.name}\"",place.coordinates,5,40).returns([])
-      get :details, :reference => "123"
+      get :details, :reference => "CqHDHYDY63636"
       assert_response :success
       assert_template :details
     end

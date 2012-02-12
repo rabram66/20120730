@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120211214323) do
+ActiveRecord::Schema.define(:version => 20120212133041) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -45,7 +45,10 @@ ActiveRecord::Schema.define(:version => 20120211214323) do
     t.string   "tags"
     t.string   "category"
     t.string   "flyer"
+    t.string   "slug"
   end
+
+  add_index "events", ["slug"], :name => "index_events_on_slug", :unique => true
 
   create_table "friendly_id_slugs", :force => true do |t|
     t.string   "slug",                         :null => false

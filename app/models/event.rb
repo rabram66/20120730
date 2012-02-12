@@ -1,5 +1,7 @@
 class Event < ActiveRecord::Base
 
+  extend FriendlyId
+
   include Address
 
   ADDRESS_ATTRS = %w(city state address)
@@ -9,6 +11,9 @@ class Event < ActiveRecord::Base
   attr_accessible :name, :address, :city, :state, :description,
                   :latitude, :longitude, :user_id, :full_address, :start_date,
                   :tags, :end_date, :venue, :category, :flyer, :remove_flyer
+
+  friendly_id :name_and_city, :use => :history
+
   belongs_to :user
   mount_uploader :flyer, FlyerUploader
   geocoded_by :full_address
@@ -21,6 +26,10 @@ class Event < ActiveRecord::Base
   after_validation do
     geocode if !(ADDRESS_ATTRS & changes.keys).empty? || latitude.blank? || longitude.blank?
     normalize_tags unless tags.blank?
+  end
+
+  def name_and_city
+    "#{name} #{city}"
   end
 
   def full_address=(value)

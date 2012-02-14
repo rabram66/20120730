@@ -1,5 +1,7 @@
 class EventBrite
 
+  include DatedModel
+
   class Sanitizer
     include ActionView::Helpers::SanitizeHelper
 
@@ -28,7 +30,11 @@ class EventBrite
     end
   end
 
-  # Event comptability
+  def rank
+    10
+  end
+
+  # Event compatibility
   def flyer_url
   end
 

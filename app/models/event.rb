@@ -3,6 +3,7 @@ class Event < ActiveRecord::Base
   extend FriendlyId
 
   include Address
+  include DatedModel
 
   ADDRESS_ATTRS = %w(city state address)
   CATEGORIES =  %w(conference conventions entertainment fundraisers meetings other performances reunions sales seminars social sports tradeshows travel religion fairs food music recreation)
@@ -28,6 +29,10 @@ class Event < ActiveRecord::Base
     normalize_tags unless tags.blank?
   end
 
+  def rank
+    1
+  end
+  
   # Placeholder method for external web page link
   def url
   end

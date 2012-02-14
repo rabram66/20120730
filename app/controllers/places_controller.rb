@@ -21,7 +21,7 @@ class PlacesController < ApplicationController
 
     @places = Place.find_by_geocode(@coordinates, category.types)
     remove_duplicate_places unless @places.empty? || @locations.empty?
-    @events = EventLoader.upcoming_near(@coordinates)
+    @events = EventSet.upcoming_near(@coordinates)
     
     # merge location and places
     @locations = [@locations + @places].flatten.sort do |a,b|

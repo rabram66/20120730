@@ -24,7 +24,7 @@ class MobileController < ApplicationController
     @locations = PlaceLoader.near(@geocode)
 
     @deals     = Deal.find_by_geocode(@geocode)
-    @events    = EventLoader.upcoming_near(@geocode)
+    @events    = EventSet.upcoming_near(@geocode)
   end
   
   # GET the detail for a location/place
@@ -45,7 +45,7 @@ class MobileController < ApplicationController
   end
   
   def events
-    @events = EventLoader.upcoming_near(@geocode)
+    @events = EventSet.upcoming_near(@geocode)
   end
 
   def event

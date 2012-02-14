@@ -76,13 +76,24 @@
     <div class="sidebar_top">
       <div id="maps"></div>
     </div>
-      <% unless @events.length == 0 %>
+      <% unless @events.count == 0 %>
         <div class='sidebar_block sidebar_txt'>
           <h3>Nearby Events</h3>
-          <% @events.each do |event| %>
-            <p>
-              <%= (Event === event) ? link_to(content_tag(:strong, event.name), event) : link_to(event.name, event_path(event.id)) %>
-            </p>
+          <% unless @events.happening_now.count == 0 %>
+            <h4>Happening Today</h4>
+            <% @events.happening_now.each do |event| %>
+              <p>
+                <%= (Event === event) ? link_to(content_tag(:strong, event.name), event) : link_to(event.name, event_path(event.id)) %>
+              </p>
+            <% end -%>
+          <% end -%>
+          <% unless @events.coming_soon.count == 0 %>
+            <h4>Coming Soon</h4>
+            <% @events.coming_soon.each do |event| %>
+              <p>
+                <%= (Event === event) ? link_to(content_tag(:strong, event.name), event) : link_to(event.name, event_path(event.id)) %>
+              </p>
+            <% end -%>
           <% end -%>
         </div>
       <% end -%>

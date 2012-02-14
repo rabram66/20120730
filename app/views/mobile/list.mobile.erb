@@ -45,9 +45,9 @@ $(function() {
     <%= ( link_to "#{pluralize(@deals.length, 'Daily Deal')}", 
           mobile_deals_path(:lat => @geocode.first, :lng => @geocode.last), 
           :"data-role" => 'button') if @deals.count > 0 %>
-    <%= ( link_to "#{pluralize(@events.length, 'Event')}",
+    <%= ( link_to "#{pluralize(@events.count, 'Event')}",
           mobile_events_path(:lat => @geocode.first, :lng => @geocode.last), 
-          :"data-role" => 'button') if @events.length > 0 %>
+          :"data-role" => 'button') if @events.count > 0 %>
   </div>
   
   <ul id='locations-list' data-role="listview" data-theme='b'>

@@ -1,7 +1,18 @@
 class EventBrite
 
-  include Address
+  class Sanitizer
+    include ActionView::Helpers::SanitizeHelper
 
+    def strip(html)
+      strip_tags(html)
+    end
+
+  end
+
+  @sanitizer = Sanitizer.new
+
+  include Address
+  
   EVENT_SEARCH_URL = "https://www.eventbrite.com/json/event_search?app_key=#{Rails.application.config.app.eventbrite_app_key}&latitude=%s&longitude=%s&within=%s"
   EVENT_GET_URL    = "https://www.eventbrite.com/json/event_get?app_key=#{Rails.application.config.app.eventbrite_app_key}&id=%s"
   ID_PREFIX        = 'EB'
@@ -20,6 +31,7 @@ class EventBrite
   # Event comptability
   def flyer_url
   end
+
   def tweets
     []
   end
@@ -66,7 +78,8 @@ class EventBrite
         :id        => "#{ID_PREFIX}#{result['id']}",
         :name      => result['title'],
         :category  => result['category'],
-        :url       => result['url']
+        :url       => result['url'],
+        :description => @sanitizer.strip(result['description'])
       }
       unless result['venue'].blank?
         res = result['venue']

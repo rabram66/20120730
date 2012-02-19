@@ -8,8 +8,17 @@ namespace :app do
     end
   end
 
-  desc "Reset locations"
-  task :reset_locations => :environment do
-    Location.find_each(&:save)
+  namespace :locations do
+
+    desc "Resave"
+    task :resave => :environment do
+      Location.find_each(&:save)
+    end
+
+    desc "Verify using Google Places"
+    task :verify => :environment do
+    end
+
   end
+  
 end

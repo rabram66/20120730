@@ -14,7 +14,8 @@ class Location < ActiveRecord::Base
 
   attr_accessible :name, :address, :city, :state, :twitter, 
                   :phone, :latitude, :longitude, :reference, :email, 
-                  :types, :twitter_name, :facebook_page_id, :user_id
+                  :types, :twitter_name, :facebook_page_id, :user_id,
+                  :verified, :verified_on, :verified_by
                   
   # Rating as implemented in Location, here, returns nil (no-op) for Place compatability
   attr_accessor :rating # virtual; not persisted
@@ -33,6 +34,10 @@ class Location < ActiveRecord::Base
 
   before_save do
     self.phone = phone.gsub(/[^0-9]/,'') unless phone.blank?
+    unless verified?
+      self.verified_on = nil
+      self.verified_by = nil
+    end
     geocode if !(ADDRESS_ATTRS & changes.keys).empty? || latitude.blank? || longitude.blank?
     update_reference if !(REF_ATTRS & changes.keys).empty?
   end
@@ -46,10 +51,11 @@ class Location < ActiveRecord::Base
     def find_by_geocode_and_category(coordinates,category=LocationCategory::EatDrink)
       find_by_geocode(coordinates).where(:general_type => category.name)
     end
-    def all_by_filters(general_type=nil, radius=nil, coordinates=nil, name=nil, order='name')
+    def all_by_filters(general_type=nil, radius=nil, coordinates=nil, name=nil, order='name', to_verify=false)
       relation = scoped
       relation = relation.where(:general_type => general_type) if general_type
       relation = relation.where(arel_table[:name].matches(name)) if name
+      relation = relation.where(:verified => false) if to_verify
       if coordinates
         order = "#{order},distance" unless order == 'distance'
         radius ||= 20

@@ -749,6 +749,9 @@ div#maps {
   width: 500px;
 }
 
+#location_form p#reference textarea {
+  height: 90px;
+}
 span.powered-by {
   font-size: 14px;
 }
@@ -939,4 +942,8 @@ p#event-state {
 
 #tweet-this {
   float:right;
+}
+
+.centered {
+  text-align: center;
 }

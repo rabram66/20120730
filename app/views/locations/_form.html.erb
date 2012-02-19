@@ -22,7 +22,7 @@
   </p>
 
   <p>
-    <%= f.label :phone %><br/>
+    <%= f.label :phone %><br/>  
     <%= f.text_field :phone, :class => 'input_form_field' %>
   </p>
 
@@ -52,6 +52,17 @@
     <%= f.label :reference, "Google Places Reference ID" %><br/>
     <%= f.text_area :reference, :disabled => true, :class => 'input_form_field' %>
   </p>
+
+  <p id='verified'>
+    <%= f.label :verified %><%- if @location.verified? %>
+      by <%= @location.verified_by %> on <%= @location.verified_on %>
+    <%- end %>
+    <br/>
+    <%= f.check_box :verified, :class => 'input_form_field' %><br/>
+    <%= f.hidden_field :verified_on, :value => @location.verified_on || Date.today %>
+    <%= f.hidden_field :verified_by, :value => @location.verified_by || current_user.email %>
+  </p>
+
 
   <p class="actions">
     <input value="<%= "#{params[:action] == 'edit' ? 'Update' : 'Create'} Location"%>" type="button" />

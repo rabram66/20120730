@@ -10,9 +10,10 @@ class LocationsController < ApplicationController
 
     @coordinates = Geocoder.coordinates(@address) unless @address.blank?
     @name = params[:name] unless params[:name].blank?
-    @order = params[:order]
+    @order = params[:order] || 'name'
+    @to_verify = params[:to_verify] == 'true'
 
-    @locations = @locations.all_by_filters(@general_type, @radius, @coordinates, @name, @order).page(params[:page])
+    @locations = @locations.all_by_filters(@general_type, @radius, @coordinates, @name, @order, @to_verify).page(params[:page])
     respond_with @locations
   end
   
@@ -44,7 +45,7 @@ class LocationsController < ApplicationController
     if @location.update_attributes(params[:location])
       flash[:notice] = "Successfully updated location."
     end
-    show_location
+    redirect_to :action => :index
   end
 
   # DELETE /locations/1

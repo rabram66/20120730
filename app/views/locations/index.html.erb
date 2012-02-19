@@ -7,8 +7,9 @@
       within <%= select_tag :radius, options_for_select([1,5,10,20], @radius), :include_blank => true %> miles
       of <%= text_field_tag :address, @address, :size => 40 %><br/><br/>
       Named <%= text_field_tag :name, @name, :size => 40 %>
-      ordered by <%= select_tag :order, options_for_select([ ['Name','name'],['Distance','distance'],['Address','address'],['Twitter Name','twitter_name'],['Facebook Page','facebook_page_id'] ], @order) %>
-      <%= submit_tag "Search" %>
+      ordered by <%= select_tag :order, options_for_select([ ['Name','name'],['Distance','distance'],['Address','address'],['Twitter Name','twitter_name'],['Facebook Page','facebook_page_id'],['Verified On','verified_on'] ], @order) %><br/><br/>
+      needing verification <%= check_box_tag :to_verify, 'true' %>
+      <%= submit_tag "Search", :style => 'float:right' %>
     <% end %>
   </div>
   
@@ -19,8 +20,9 @@
       <th>Distance</th>
       <th>Address</th>
       <th>Type</th>
-      <th>Twitter Name</th>
-      <th>Facebook Page</th>
+      <th>Twitter</th>
+      <th>Facebook</th>
+      <th>Verified</th>
       <th>Actions</th>
     </tr>
     <% @locations.each do |location| %>
@@ -31,6 +33,7 @@
         <td><%= location.general_type %></td>
         <td><%= location.twitter_name %></td>
         <td><%= location.facebook_page_id %></td>
+        <td class='centered'><%= location.verified? ? "&#10004;".html_safe : '' %>
         <td class='actions'>
           <%= link_to "Show", location_details_path(:reference => location.reference) %>&nbsp;|&nbsp;
           <%= link_to "Edit", edit_location_path(location) %>&nbsp;|&nbsp;

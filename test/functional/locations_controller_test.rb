@@ -57,7 +57,7 @@ class LocationsControllerTest < ActionController::TestCase
   
     should "update location" do
       put :update, :id => @location.to_param, :location => @location.attributes
-      assert_redirected_to location_details_path(:reference => assigns(:location).reference)
+      assert_redirected_to locations_path
     end
 
     should "destroy location" do

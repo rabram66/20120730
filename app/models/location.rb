@@ -65,6 +65,9 @@ class Location < ActiveRecord::Base
       end
       relation
     end
+    def to_verify(older_than=60.days.ago)
+      where("(verified_on ISNULL AND verified = false) OR verified_on < ?", older_than)
+    end
   end
 
   def name_and_city
@@ -173,16 +176,26 @@ class Location < ActiveRecord::Base
   def facebook_page_url
     "http://www.facebook.com/#{facebook_page_id}" unless facebook_page_id.blank?
   end
-  
+
+  def verified!(verifier='GooglePlaces')
+    verify(true, verifier)
+  end
+
+  def unverified!(verifier='GooglePlaces')
+    verify(false, verifier)
+  end
+
   private
+
+  def verify(mark, verifier='GooglePlaces')
+    self.verified    = mark
+    self.verified_by = verifier
+    self.verified_on = Date.today
+  end
 
   def cached_twitter_status
     twitter? ? Tweet.cached_user_status(twitter_name) : nil
   end
-
-  # def cached_twitter_mentions
-  #   twitter? ? (Tweet.cached_mentions(twitter_name) || []) : []
-  # end
 
   def cached_twitter_mentions
     twitter? ? (Rails.cache.read(twitter_mentions_cache_key) || []) : []

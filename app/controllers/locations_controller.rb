@@ -52,7 +52,7 @@ class LocationsController < ApplicationController
   def destroy
     @location.destroy
     flash[:notice] = "Successfully destroyed location."
-    respond_with @location
+    redirect_to :action => :index
   end
 
   private

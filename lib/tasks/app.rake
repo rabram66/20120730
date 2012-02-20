@@ -1,4 +1,5 @@
-require File.join(File.dirname(__FILE__), '/locations_spreadsheet')
+require_relative 'locations_spreadsheet'
+require_relative 'locations_verifier'
 
 namespace :app do
   namespace :import do
@@ -17,6 +18,7 @@ namespace :app do
 
     desc "Verify using Google Places"
     task :verify => :environment do
+      LocationsVerifier.new.run
     end
 
   end

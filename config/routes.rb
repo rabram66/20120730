@@ -1,7 +1,12 @@
 NearbyThis::Application.routes.draw do
   
   devise_for :users
-  resources :users, :events, :locations
+  resources :users, :locations
+  resources :events do
+    member do
+      get :ical
+    end
+  end
 
   #------------------------ Consumer --------------------------
   root :to => "places#index"

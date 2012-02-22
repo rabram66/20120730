@@ -947,3 +947,8 @@ p#event-state {
 .centered {
   text-align: center;
 }
+
+a#add_to_calendar {
+  float:right;
+  margin-right: 20px;
+}

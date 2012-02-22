@@ -28,7 +28,8 @@ gem 'carrierwave'                  # file uploads
 gem 'fog'                          # AWS/S3 upload storage
 gem 'delayed_job_active_record'    # background job processor
 gem 'jsonify-rails'                # JSON views
-gem 'friendly_id'
+gem 'friendly_id'                  # SEO-friendly URLs
+gem 'ri_cal'                       # iCalendar events
 
 group :development, :test do
   gem 'ansi'     # colorize turn output

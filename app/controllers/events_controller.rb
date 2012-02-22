@@ -1,7 +1,8 @@
 class EventsController < ApplicationController
   
   respond_to :html, :xml, :json, :js
-  load_and_authorize_resource :except => :show
+  before_filter :load_event, :only => [:show, :ical]
+  load_and_authorize_resource :except => [:show, :ical]
   
   # GET /events
   def index
@@ -10,7 +11,6 @@ class EventsController < ApplicationController
 
   # GET /events/1
   def show
-    @event = (params[:id] =~ /^EB/) ? EventBrite.find_by_id(params[:id]) : Event.find(params[:id])
     respond_with @event
   end
 
@@ -46,4 +46,28 @@ class EventsController < ApplicationController
     flash[:notice] = "Successfully destroyed event."
     respond_with @event
   end
+  
+  def ical
+    render :text => to_ical(@event), :header => {'Content-Type'=>'text/calendar'}, :layout => false
+  end
+
+  private
+
+  def load_event
+    @event = (params[:id] =~ /^EB/) ? EventBrite.find_by_id(params[:id]) : Event.find(params[:id])
+  end
+
+  def to_ical(event)
+    RiCal.Calendar do |cal|
+      cal.event do |cal_event|
+        cal_event.summary = event.name
+        cal_event.dtstart = event.start_date if event.start_date
+        cal_event.dtend = event.end_date if event.end_date
+        cal_event.location = event.full_address
+        cal_event.url = event_url(event.id)
+      end
+    end
+  end
+  
+    
 end

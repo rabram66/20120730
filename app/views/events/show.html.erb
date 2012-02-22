@@ -31,6 +31,7 @@
           <% if @event.end_date -%>
             till <%= @event.end_date.stamp("7:00 pm")%>
           <% end -%>
+          <%= link_to 'Add to Calendar', ical_event_path(@event.id, :format => 'ics'), :id => 'add_to_calendar'%>
         </p>
       <% end -%>
       <% unless @event.venue.blank? -%>

@@ -952,3 +952,23 @@ a#add_to_calendar {
   float:right;
   margin-right: 20px;
 }
+
+div#places-list div.expanded {
+  display: none;
+}
+
+p#places-list-bottom {
+  margin: 20px 0px 0px 20px;
+}
+
+p#places-list-bottom a
+{
+  font-size: 14px;
+  font-weight: bold;
+  color:#31b2e5;
+  text-decoration: underline;
+}
+
+a#show-less-places {
+  display: none;
+}

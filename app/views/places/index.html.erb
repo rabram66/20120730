@@ -43,9 +43,9 @@
 </div><!--banner end-->
 
 <div class="content nopadd"><!--content start-->
-  <div class="content_left padd"><!--content_left start-->
-    <% @locations.each do |location| %>
-      <div class="block">
+  <div id="places-list" class="content_left padd"><!--content_left start-->
+    <% @locations.each_with_index do |location, index| %>
+      <div class='<%="block #{index < 25 ? 'initial' : 'expanded'}"-%>'>
         <p>
           <% if Location === location && can?(:update, location) %>
             <%= link_to 'Edit', edit_location_path(location), :class => 'inline' %>
@@ -70,6 +70,10 @@
         </p>
       </div>
     <% end -%>
+    <p id='places-list-bottom'>
+      <a id='show-more-places' class='show-more-less' href='javascript:void(0);'>More</a>
+      <a id='show-less-places' class='show-more-less' href='javascript:void(0);'>Less</a>
+    </p>
   </div><!--content_left end-->
 
   <div class="sidebar"><!--sidebar start-->

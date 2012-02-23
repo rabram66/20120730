@@ -7,6 +7,19 @@ $(document).ready(function() {
     });
   }
   
+  if ($('#places-list').length) {
+    $('#show-more-places').click(function() {
+      $('#show-more-places').hide();
+      $('#places-list div.expanded').fadeIn();
+      $('#show-less-places').show();
+    });
+    $('#show-less-places').click(function() {
+      $('#show-less-places').hide();
+      $('#places-list div.expanded').fadeOut();
+      $('#show-more-places').show();
+    });
+  }
+  
   // Toggle Directions display
   if ($('#mentions-panel').length || $('#deal-panel').length) {
     $("#direction_id").live('click', function() {

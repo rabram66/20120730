@@ -1,0 +1,8 @@
+<div data-role="header">
+  <h1><img id='logo' src='/images/logo.png' /></h1>
+</div>
+<div data-role='content'>
+  <% for area in @city.areas -%>
+    <%= link_to area.name, mobile_list_path(:search => area.search), :"data-role"=> 'button' %>
+  <% end -%>
+</div>

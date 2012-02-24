@@ -9,6 +9,11 @@ class MobileController < ApplicationController
   # GET The main page with a field to input the address, city, state or to use current location
   def index
   end
+
+  def city
+    @city = City.find(params[:city])
+    redirect_to :action => :index unless @city
+  end
   
   #GET the list of nearby locations using the search location
   def list

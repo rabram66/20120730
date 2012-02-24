@@ -102,7 +102,13 @@ class PlacesController < ApplicationController
   end
   
   def redirect_mobile_request
-    redirect_to :controller => 'mobile', :action => 'index' if is_mobile_device?
+    if is_mobile_device?
+      if request.fullpath =~ %r{details/}
+        redirect_to request.fullpath.gsub(%r{details/},'mobile/detail/')
+      else
+        redirect_to :controller => 'mobile', :action => 'index'
+      end
+    end
   end
   
   def remove_duplicate_places

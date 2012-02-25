@@ -19,7 +19,14 @@
     </form>
   </div>
 </div><!--banner end-->
-
 <div class="content nopadd"><!--content start-->
-  <p>Start</p>
+  <div id='start-splash'>
+    <div id='discover-button'>
+      <%= link_to image_tag('new_splash_screen_OrangeButton.png'), places_path(:search => 'Inman Park, Atlanta, GA') %>
+    </div>
+    <div id='splash-social-buttons'>
+      <%= link_to image_tag('facebook_button.png'), "http://www.facebook.com/nearbythis", :target => :new %>
+      <%= link_to image_tag('twitter_button.png'), "https://twitter.com/#!/nearbythis", :target => :new %>
+    </div>
+  </div>
 </div><!--content end-->

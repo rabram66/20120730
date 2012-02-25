@@ -104,6 +104,26 @@ body {
   padding:10px 0 0 20px;
 }
 
+div#start-splash {
+  background:url(/images/new_splash_screen_bkgd.png);
+  height: 371px;
+}
+
+div#discover-button {
+  text-align:center;
+  padding-top: 130px;
+}
+
+div#splash-social-buttons {
+  float:right;
+  padding-right: 90px;
+  padding-top: 78px;
+}
+
+div#splash-social-buttons a {
+  padding-left:10px;
+}
+
 .logo
 {
   float:left;

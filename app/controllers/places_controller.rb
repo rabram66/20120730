@@ -3,7 +3,7 @@ class PlacesController < ApplicationController
   has_mobile_fu
 
   before_filter :redirect_mobile_request, :except => :recent_tweeters
-  before_filter :redirect_to_start, :except => :start
+  before_filter :redirect_to_start, :only => :index
 
   respond_to :html, :json, :js
   

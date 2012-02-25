@@ -9,12 +9,14 @@ class PlacesControllerTest < ActionController::TestCase
   context 'GET index' do
     should "succeed" do
       Geocoder.expects(:coordinates).returns([0.0,0.0])
-      Place.expects(:find_by_geocode).with([33.7489954, -84.3879824],LocationCategory::EatDrink.types).returns([])
+      Place.expects(:find_by_geocode).with([0.0,0.0],LocationCategory::EatDrink.types).returns([])
+      # Place.expects(:find_by_geocode).with([33.7489954, -84.3879824],LocationCategory::EatDrink.types).returns([])
       Event.expects(:upcoming_near).returns([])
       EventBrite.expects(:geosearch).returns([])
-      Deal.expects(:find_by_geocode).with([33.7489954, -84.3879824]).returns(DealSet.new([]))
+      Deal.expects(:find_by_geocode).with([0.0,0.0]).returns(DealSet.new([]))
+      # Deal.expects(:find_by_geocode).with([33.7489954, -84.3879824]).returns(DealSet.new([]))
     
-      get :index
+      get :index, :search => 'Atlanta, GA'
       assert_not_nil assigns(:locations)
       assert_response :success
       assert_template :index

@@ -3,10 +3,15 @@ class PlacesController < ApplicationController
   has_mobile_fu
 
   before_filter :redirect_mobile_request, :except => :recent_tweeters
+  before_filter :redirect_to_start, :except => :start
+
   respond_to :html, :json, :js
   
   RADIUS = '750'
   DEFAULT_COORDINATES = Rails.application.config.app.default_coordinates
+  
+  def start
+  end
 
   # GET / (/places)
   def index
@@ -99,6 +104,10 @@ class PlacesController < ApplicationController
 
   def geocode_from_cookie
     cookies[:address] ? cookies[:address].split("&") : DEFAULT_COORDINATES
+  end
+
+  def redirect_to_start
+    redirect_to :action => 'start' unless cookies[:address] || params[:search]
   end
   
   def redirect_mobile_request

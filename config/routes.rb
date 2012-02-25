@@ -10,6 +10,7 @@ NearbyThis::Application.routes.draw do
 
   #------------------------ Consumer --------------------------
   root :to => "places#index"
+  get "start" => "places#start", :as => :places_start
   get "/" => "places#index", :as => :places
   get "search" => "places#search"
   get "details/:reference" => "places#details", :as => :location_details

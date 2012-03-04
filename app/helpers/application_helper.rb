@@ -16,14 +16,26 @@ module ApplicationHelper
     content_tag(:title, @title || 'Nearby restaurants, shops, salons - Nearbythis')
   end
 
-  def url_for_location_details(location)
-    options = {
-      :action => 'details', 
-      :address => location.full_address,  
-      :bizname => location.name, 
-      :type => location.types,
-      :reference => (Location === location) ? location.slug : location.reference
-    }
+  def url_for_location_details(location, options={})
+    controller_type = ApplicationController === self ? self.controller_name : controller.controller_name
+    if controller_type == 'mobile'
+      options.merge!({
+        :action => 'detail',
+        :id => location.slug
+      })
+    else
+      options.merge!({
+        :action => 'details',
+        :address => location.full_address,  
+        :bizname => location.name, 
+        :type => location.types,
+        :reference => location.slug
+      })
+    end
     url_for options
+  end
+
+  def short_url_for_location_details(location)
+    UrlShortener.new.shorten(url_for_location_details(location, :only_path => false))
   end
 end

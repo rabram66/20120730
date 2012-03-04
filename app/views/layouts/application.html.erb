@@ -10,6 +10,7 @@
     <%= yield :javascripts %>
     <%= render :partial => '/shared/google_analytics' %>
     <%= csrf_meta_tag %>
+    <%= yield :head %>
   </head>
   <body onload="<%= "initialize()" if @location %>" onunload="GUnload();">    
     <div class="wrapper">

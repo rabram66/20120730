@@ -30,6 +30,7 @@ gem 'delayed_job_active_record'    # background job processor
 gem 'jsonify-rails'                # JSON views
 gem 'friendly_id'                  # SEO-friendly URLs
 gem 'ri_cal'                       # iCalendar events
+gem 'bitly'                        # URL shortening
 
 group :development, :test do
   gem 'ansi'     # colorize turn output

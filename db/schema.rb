@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120304040443) do
+ActiveRecord::Schema.define(:version => 20120304052033) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -88,6 +88,19 @@ ActiveRecord::Schema.define(:version => 20120304040443) do
   end
 
   add_index "locations", ["slug"], :name => "index_locations_on_slug", :unique => true
+
+  create_table "place_mappings", :force => true do |t|
+    t.string   "name"
+    t.string   "city"
+    t.string   "reference"
+    t.string   "slug"
+    t.integer  "favorites_count",   :default => 0
+    t.datetime "last_favorited_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "place_mappings", ["slug"], :name => "index_place_mappings_on_slug", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false

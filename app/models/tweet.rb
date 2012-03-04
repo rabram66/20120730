@@ -195,7 +195,7 @@ class Tweet
         :created_at        => DateTime.parse( result['created_at'] ),
         :profile_image_url => result['profile_image_url'],
         :tweet_id          => result['id_str'],
-        :hashtags          => (result['entities']['hashtags'] || []).map{|tag| tag['text']}
+        :hashtags          => ((result['entities'] || {})['hashtags'] || []).map{|tag| tag['text']}
       )
     end
 

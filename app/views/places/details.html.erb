@@ -12,6 +12,10 @@
   </script>
 <% end %>
 
+<% content_for :head do -%>
+  <link rel="canonical" href="<%= url_for_location_details(@location, :only_path => false) %>"/>
+<% end -%>
+
 <div style="display:none">
   <% unless cookies[:address].blank? -%>
     <%= hidden_field_tag :orig_lat, cookies[:address].split('&').first %>

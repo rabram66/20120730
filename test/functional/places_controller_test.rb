@@ -41,18 +41,18 @@ class PlacesControllerTest < ActionController::TestCase
   #           to_return(:status => 200, :body => "", :headers => {})
   
   context 'GET details for Google place' do
-    should "succeed on valid reference" do
+    should "redirect to slug on valid reference" do
       place           = Place.new
       place.name      = 'Bozos'
       place.address   = '2578 Binghamton Drive'
       place.city      = 'Atlanta'
-      place.latitude  = 33.7489954
-      place.longitude = -84.3879824
+      # place.latitude  = 33.7489954
+      # place.longitude = -84.3879824
       Place.expects(:find_by_reference).with('CqHDHYDY63636').returns(place)
-      Tweet.expects(:geosearch).with("\"#{place.name}\"",place.coordinates,5,40).returns([])
+      # Tweet.expects(:geosearch).with("\"#{place.name}\"",place.coordinates,5,40).returns([])
       get :details, :reference => "CqHDHYDY63636"
-      assert_response :success
-      assert_template :details
+      assert_response :redirect
+      # assert_template :details
     end
     
   end

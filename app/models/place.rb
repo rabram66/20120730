@@ -57,6 +57,17 @@ class Place
     false
   end
 
+  def mapping
+    unless @mapping
+      @mapping = PlaceMapping.find_by_reference(reference) || PlaceMapping.create!(:name => name, :city => city, :reference => reference)
+    end
+    @mapping
+  end
+
+  def mapping=(mapping)
+    @mapping = mapping
+  end
+
   # End compatability methods
 
   def in_category?(category)
@@ -85,11 +96,25 @@ class Place
       }
     end)
   end
+  
+  def favorites_count
+    mapping.favorites_count
+  end
+
+  def last_favorited_at
+    mapping.last_favorited_at
+  end
+  
+  def slug
+    mapping.slug
+  end
 
   class << self
 
     # No-op for the time being
-    def favorite(reference)
+    def favorite(slug)
+      mapping = find(slug)
+      mapping.update_attributes(:favorites_count => mapping.favorites_count + 1, :last_favorited_at => Time.now) if mapping
     end
     
     # Adds a Location to Google Places, and sets the generated reference on the location
@@ -146,6 +171,14 @@ class Place
         raise Places::Api::NotFound.new(reference)
       else
         Place.new(result)
+      end
+    end
+    
+    def find_by_slug(slug)
+      if (mapping = PlaceMapping.find_by_slug(slug))
+        place = Place.find_by_reference(mapping.reference)
+        place.mapping = mapping
+        place
       end
     end
 

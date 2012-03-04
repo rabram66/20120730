@@ -5,7 +5,7 @@ module MobileHelper
   end
 
   def path_for_mobile_detail(location)
-    mobile_detail_path(:id => (Location === location ? location.slug : location.reference))
+    mobile_detail_path(:id => location.slug)
   end
 
 end

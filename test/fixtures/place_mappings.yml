@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  reference: MyString
+  favorites_count: 1
+  last_favorited_at: 2012-03-04 00:20:33
+
+two:
+  reference: MyString
+  favorites_count: 1
+  last_favorited_at: 2012-03-04 00:20:33

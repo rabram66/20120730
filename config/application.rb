@@ -43,6 +43,7 @@ module NearbyThis
     # Custom config
     config.app = ActiveSupport::OrderedOptions.new
     config.app.eventbrite_app_key = 'FMKOHYNE36ODPTPEDM'
+    config.app.bitly_api_key = 'R_1ea09f3c979c13e84563e4ce75b65c09'
     config.app.default_coordinates = [33.7489954, -84.3879824] # Atlanta, GA
 
   end

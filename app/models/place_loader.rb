@@ -1,26 +1,29 @@
 # Loads events from the NearbyThis database and Google Places
 class PlaceLoader
 
-  attr_reader :locations, :places, :coordinates
+  attr_reader :locations, :places, :coordinates, :category
 
-  def initialize(coordinates)
+  def initialize(coordinates, category=nil)
     @coordinates = coordinates
+    @category = category
   end
 
   class << self
-    def near(coordinates)
-      new(coordinates).load
+    def near(coordinates, category=nil)
+      new(coordinates, category).load
     end
   end
 
   def load
-    @locations = Location.find_by_geocode(coordinates)
-    @places    = Place.find_by_geocode(coordinates)
+    @locations = category ? Location.find_by_geocode_and_category(coordinates, category) : Location.find_by_geocode(coordinates)
+    @places    = category ? Place.find_by_geocode(coordinates, category.types) : Place.find_by_geocode(coordinates)
 
     # Fire off a delayed job to update the twitter statuses
     Jobs::TwitterStatusUpdate.new(locations).delay.process
 
     remove_duplicates unless places.length == 0 || locations.length == 0
+
+    associate_place_mappings
 
     # merge location and places
     [locations + places].flatten.sort do |a,b|
@@ -29,6 +32,13 @@ class PlaceLoader
   end
 
   private
+
+  def associate_place_mappings
+    mappings = Hash[PlaceMapping.where(:reference => places.map(&:reference)).map{|p| [p.reference, p]}]
+    places.each do |place|
+      place.mapping = mappings[place.reference]
+    end
+  end
     
   def remove_duplicates
     if places

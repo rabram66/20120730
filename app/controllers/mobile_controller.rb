@@ -35,8 +35,21 @@ class MobileController < ApplicationController
   # GET the detail for a location/place
   def detail
     reference = params[:id]
-    @location = reference =~ /^[A-Z]/ ? Place.find_by_reference(reference) : Location.find(reference)
-    
+
+    case reference
+    when /^[A-Z]/ 
+      @location = Place.find_by_reference(reference)
+      if @location
+        redirect_to url_for_location_details(@location), :status => 301 and return
+      end
+    when /^#{PlaceMapping::SLUG_PREFIX}/
+      @location = Place.find_by_slug(reference)
+    else
+      @location = Location.find(reference)
+    end
+
+    not_found unless @location # 404
+
     @twitter_mentions = @location.twitter_mentions
     
     if Location === @location

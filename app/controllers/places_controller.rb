@@ -18,21 +18,10 @@ class PlacesController < ApplicationController
     set_coordinates
 
     category = params[:types].blank? ? LocationCategory::EatDrink : LocationCategory.find_by_name(params[:types])
-    @locations = Location.find_by_geocode_and_category(@coordinates, category)
-    @locations.reject! {|l| l.reference.nil? } # TODO: Remove this once reference can be gauranteed
 
-    # Fire off a delayed job to update the twitter statuses
-    Jobs::TwitterStatusUpdate.new(@locations).delay.process
+    @locations = PlaceLoader.near(@coordinates, category)
 
-    @places = Place.find_by_geocode(@coordinates, category.types)
-    remove_duplicate_places unless @places.empty? || @locations.empty?
     @events = EventSet.upcoming_near(@coordinates)
-    
-    # merge location and places
-    @locations = [@locations + @places].flatten.sort do |a,b|
-      a.distance_from(@coordinates) <=> b.distance_from(@coordinates)
-    end
-
     @deals = Deal.find_by_geocode( @coordinates )
 
     @locations.each do |location|
@@ -51,10 +40,21 @@ class PlacesController < ApplicationController
   def details
     reference = params[:reference]
 
-    @location = reference =~ /^[A-Z]/ ? Place.find_by_reference(reference) : Location.find(reference)
+    case reference
+    when /^[A-Z]/ 
+      @location = Place.find_by_reference(reference)
+      if @location
+        redirect_to url_for_location_details(@location), :status => 301 and return
+      end
+    when /^#{PlaceMapping::SLUG_PREFIX}/
+      @location = Place.find_by_slug(reference)
+    else
+      @location = Location.find(reference)
+    end
+
+    not_found unless @location # 404
     
     @origin_address = params[:address]
-    
     @user_saying = @location.twitter_mentions(20)
 
     if Location === @location
@@ -136,18 +136,4 @@ class PlacesController < ApplicationController
     end
   end
   
-  def remove_duplicate_places
-    @places.reject! do |place| 
-      exclude_place? place
-    end
-  end
-
-  def exclude_place?(place)
-    @locations.any? do |location| 
-      place.name == location.name ||
-      (!place.address.blank? && place.address.include?(location.address)) ||
-      place.coordinates == location.coordinates
-    end
-  end
-
 end

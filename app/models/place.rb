@@ -182,6 +182,11 @@ class Place
       end
     end
 
+    def favorite(id)
+      place_mapping = PlaceMapping.find(id)
+      place_mapping.update_attributes(:favorites_count => place_mapping.favorites_count + 1, :last_favorited_at => Time.now) if place_mapping
+    end
+
   end
 
   private

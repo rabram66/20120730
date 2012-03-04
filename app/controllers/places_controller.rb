@@ -78,7 +78,7 @@ class PlacesController < ApplicationController
   # XHR POST 
   def favorite
     reference = params[:reference]
-    if reference =~ /^[A-Z]/
+    if reference =~ /^#{PlaceMapping::SLUG_PREFIX}/
       Place.favorite(reference)
     else
       Location.favorite(reference)

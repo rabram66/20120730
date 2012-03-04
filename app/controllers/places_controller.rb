@@ -74,8 +74,24 @@ class PlacesController < ApplicationController
     }
     render :json => recently_updated
   end
+
+  # XHR POST 
+  def favorite
+    reference = params[:reference]
+    if reference =~ /^[A-Z]/
+      Place.favorite(reference)
+    else
+      Location.favorite(reference)
+    end
+    render :nothing => true
+  end
   
   private
+  
+  def load_from_reference
+    reference = params[:reference]
+    @location = reference =~ /^[A-Z]/ ? Place.find_by_reference(reference) : Location.find(reference)
+  end
   
   def set_coordinates
     @search = params[:search]

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120218143835) do
+ActiveRecord::Schema.define(:version => 20120304040443) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -75,14 +75,16 @@ ActiveRecord::Schema.define(:version => 20120218143835) do
     t.string   "reference"
     t.string   "email"
     t.string   "types"
-    t.integer  "accuracy",         :default => 50
+    t.integer  "accuracy",          :default => 50
     t.string   "facebook_page_id"
     t.string   "general_type"
     t.integer  "user_id"
     t.string   "slug"
-    t.boolean  "verified",         :default => false
+    t.boolean  "verified",          :default => false
     t.date     "verified_on"
     t.string   "verified_by"
+    t.integer  "favorites_count",   :default => 0
+    t.datetime "last_favorited_at"
   end
 
   add_index "locations", ["slug"], :name => "index_locations_on_slug", :unique => true

@@ -960,8 +960,11 @@ p#event-state {
   margin-top: -8px;
 }
 
-#tweet-this {
+#tweet-this, #favorite-this {
   float:right;
+  padding: 10px;
+  margin-top:-10px;
+  
 }
 
 .centered {

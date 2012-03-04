@@ -15,7 +15,7 @@ class Location < ActiveRecord::Base
   attr_accessible :name, :address, :city, :state, :twitter, 
                   :phone, :latitude, :longitude, :reference, :email, 
                   :types, :twitter_name, :facebook_page_id, :user_id,
-                  :verified, :verified_on, :verified_by
+                  :verified, :verified_on, :verified_by, :favorites_count, :last_favorited_at
                   
   # Rating as implemented in Location, here, returns nil (no-op) for Place compatability
   attr_accessor :rating # virtual; not persisted
@@ -45,12 +45,15 @@ class Location < ActiveRecord::Base
   before_destroy :delete_reference
 
   class << self
+
     def find_by_geocode(coordinates, radius_in_miles=20, limit=50)
       self.near(coordinates, radius_in_miles, :order => :distance).limit(limit)
     end
+
     def find_by_geocode_and_category(coordinates,category=LocationCategory::EatDrink)
       find_by_geocode(coordinates).where(:general_type => category.name)
     end
+
     def all_by_filters(general_type=nil, radius=nil, coordinates=nil, name=nil, order='name', to_verify=false)
       relation = scoped
       relation = relation.where(:general_type => general_type) if general_type
@@ -65,9 +68,16 @@ class Location < ActiveRecord::Base
       end
       relation
     end
+
     def to_verify(older_than=60.days.ago)
       where("(verified_on ISNULL AND verified = false) OR verified_on < ?", older_than)
     end
+
+    def favorite(id)
+      location = find(id)
+      location.update_attributes(:favorites_count => location.favorites_count + 1, :last_favorited_at => Time.now) if location
+    end
+
   end
 
   def name_and_city

@@ -87,6 +87,10 @@ class Place
   end
 
   class << self
+
+    # No-op for the time being
+    def favorite(reference)
+    end
     
     # Adds a Location to Google Places, and sets the generated reference on the location
     def add(location)

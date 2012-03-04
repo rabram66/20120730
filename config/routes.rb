@@ -14,6 +14,7 @@ NearbyThis::Application.routes.draw do
   get "/" => "places#index", :as => :places
   get "search" => "places#search"
   get "details/:reference" => "places#details", :as => :location_details
+  post "favorite/:reference" => "places#favorite", :as => :location_favorite
   post "recent_tweeters" => "places#recent_tweeters", :as => :recent_tweeters
 
   #----------------------------- Mobile ---------------------------

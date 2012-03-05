@@ -1,7 +1,7 @@
 module TweetFilter
   
   module EachTweet
-    def apply(tweets)
+    def apply(tweets=[])
       tweets.reject do |tweet|
         yield tweet
       end
@@ -14,7 +14,7 @@ module TweetFilter
       @filters = filters
     end
     
-    def filter(tweets)
+    def filter(tweets=[])
       @filters.inject(tweets) do |tweets, filter|
         filter.filter(tweets)
       end
@@ -33,7 +33,7 @@ module TweetFilter
       @count = count
     end
 
-    def filter(tweets)
+    def filter(tweets=[])
       apply(tweets) do |tweet|
         mentions = tweet.text.scan(/@\w+/)
         mentions.reject! {|mentioner| mentioner.downcase == except.downcase} if except
@@ -54,7 +54,7 @@ module TweetFilter
       @count = count
     end
 
-    def filter(tweets)
+    def filter(tweets=[])
       apply(tweets) do |tweet|
         hashtags = tweet.hashtags
         hashtags.reject! {|tag| tag.downcase == except.downcase} if except
@@ -64,10 +64,9 @@ module TweetFilter
 
   end
 
-
-
+  # Remove duplicates based on the text of the tweet
   class DuplicateText
-    def filter(tweets)
+    def filter(tweets=[])
       Hash[ tweets.map { |tweet| [tweet.text, tweet] } ].values
     end
   end

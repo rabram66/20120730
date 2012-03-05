@@ -86,7 +86,13 @@ class MobileController < ApplicationController
 
   def redirect_nonmobile_request
     unless is_mobile_device?
-      redirect_to request.fullpath.gsub(%r{mobile/detail/},'details/') if request.fullpath =~ %r{mobile/detail/}
+      redirect_path = case request.fullpath
+      when %r{mobile/detail/}
+        request.fullpath.gsub(%r{mobile/detail/},'details/')
+      else
+        request.fullpath.gsub(%r{/mobile}, '')
+      end
+      redirect_to redirect_path
     end
   end
 

@@ -5,7 +5,7 @@ class PlaceMapping < ActiveRecord::Base
   extend FriendlyId
   friendly_id :slugged_id, :use => :history
 
-  def prefixed_name_and_city
+  def slugged_id
     "#{SLUG_PREFIX} #{name} #{city}"[0..250]
   end
   

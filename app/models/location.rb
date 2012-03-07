@@ -20,7 +20,7 @@ class Location < ActiveRecord::Base
   # Rating as implemented in Location, here, returns nil (no-op) for Place compatability
   attr_accessor :rating # virtual; not persisted
   
-  friendly_id :name_and_city, :use => :history
+  friendly_id :slugged_id, :use => :history
 
   geocoded_by :full_address
   
@@ -80,8 +80,8 @@ class Location < ActiveRecord::Base
 
   end
 
-  def name_and_city
-    "#{name} #{city}"
+  def slugged_id
+    "#{name} #{city}"[0..250]
   end
 
   def categories

@@ -81,7 +81,7 @@ class Location < ActiveRecord::Base
   end
 
   def slugged_id
-    "#{name} #{city}"[0..250]
+    "#{name} #{city}"
   end
 
   def categories

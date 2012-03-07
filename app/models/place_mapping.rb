@@ -6,7 +6,7 @@ class PlaceMapping < ActiveRecord::Base
   friendly_id :slugged_id, :use => :history
 
   def slugged_id
-    "#{SLUG_PREFIX} #{name} #{city}"[0..250]
+    "#{SLUG_PREFIX} #{name} #{city}"
   end
   
 end

@@ -23,30 +23,33 @@ class FacebookApi
     end
 
     def feed(facebook_id,count=10)
-      facebook_id = id_for_page(facebook_id) unless facebook_id =~ /^\d+$/
       results = []
+      begin
+        facebook_id = id_for_page(facebook_id) unless facebook_id =~ /^\d+$/
       
-      if facebook_id
-        url = format(FEED_URL, facebook_id) 
-        begin
-          response = RestClient.get( url )
+        if facebook_id
+          url = format(FEED_URL, facebook_id) 
           begin
-            result = ActiveSupport::JSON.decode(response.body)
-            if result['link'].nil? || result['entries'].nil?
-              Rails.logger.error "Unexpected response body: (#{result}) #{url}"
-            else
-              results = result['entries'].reject{|e| e['title'].strip.blank?}[0,count].map do |entry|
-                yield entry
+            response = RestClient.get( url )
+            begin
+              result = ActiveSupport::JSON.decode(response.body)
+              if result['link'].nil? || result['entries'].nil?
+                Rails.logger.error "Unexpected response body: (#{result}) #{url}"
+              else
+                results = result['entries'].reject{|e| e['title'].strip.blank?}[0,count].map do |entry|
+                  yield entry
+                end
               end
+            rescue MultiJson::DecodeError => e
+              Rails.logger.error "Exception: #{e}: #{url}"
             end
-          rescue MultiJson::DecodeError => e
-            Rails.logger.error "Exception: #{e}: #{url}"
+          rescue RestClient::Exception => e
+            Rails.logger.error "Unable to retrieve Facebook feed: (#{e}) #{url}"
           end
-        rescue RestClient::Exception => e
-          Rails.logger.error "Unable to retrieve Facebook feed: (#{e}) #{url}"
         end
+      rescue Errno::ETIMEDOUT, Errno::ECONNRESET
+        Rails.logger.error "Connection error retrieving Facebook feed: (#{e}) #{url}"
       end
-      
       results
     end
 

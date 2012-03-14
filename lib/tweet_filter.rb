@@ -14,7 +14,8 @@ module TweetFilter
       @filters = filters
     end
     
-    def filter(tweets=[])
+    def filter(tweets)
+      tweets ||= []
       @filters.inject(tweets) do |tweets, filter|
         filter.filter(tweets)
       end

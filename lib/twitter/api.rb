@@ -1,5 +1,8 @@
 module Twitter
 
+  USER_TIMELINE_URL = "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=%s&count=%d&include_entities=1"
+  USER_PROFILE_URL = ""
+
   module Api
     
     class Timeline
@@ -22,5 +25,27 @@ module Twitter
         end
       end
 
+      def profile(screen_name)
+      end
+
+      private
+
+      def api(url, *args)
+        url = format(url, *args)
+        begin
+          Rails.logger.info("Twitter fetch: #{url}")
+          response = RestClient.get(url)
+          write_ratelimit(response)
+          yield ActiveSupport::JSON.decode(response)
+        rescue RestClient::Exception => e
+          # HoptoadNotifier.notify e, :error_message => "Twitter API failure: (#{e}) #{url}"
+          Rails.logger.info("Twitter API failure from #{`hostname`.strip}: (#{e}) #{url}: #{e.http_body}")
+          nil
+        end
+      end
+
+    end
+
   end
+
 end

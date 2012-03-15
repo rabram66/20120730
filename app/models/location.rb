@@ -15,7 +15,8 @@ class Location < ActiveRecord::Base
   attr_accessible :name, :address, :city, :state, :twitter, 
                   :phone, :latitude, :longitude, :reference, :email, 
                   :types, :twitter_name, :facebook_page_id, :user_id,
-                  :verified, :verified_on, :verified_by, :favorites_count, :last_favorited_at
+                  :verified, :verified_on, :verified_by, :favorites_count, :last_favorited_at,
+                  :profile_image_url, :description
                   
   # Rating as implemented in Location, here, returns nil (no-op) for Place compatability
   attr_accessor :rating # virtual; not persisted

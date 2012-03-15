@@ -15,6 +15,17 @@
     <%= f.text_field :name, :class => 'input_form_field' %>
   </div>
 
+  <p>
+    <%= f.label :profile_image_url %><br/>  
+    <%= f.text_field :profile_image_url, :class => 'input_form_field' %>
+    <%= image_tag @location.profile_image_url %>
+  </p>
+
+  <p id='reference'>
+    <%= f.label :description %><br/>
+    <%= f.text_area :description, :class => 'input_form_field' %>
+  </p>
+
   <%= render :partial => 'shared/address_form', :locals => {:f => f} %>
 
   <p>

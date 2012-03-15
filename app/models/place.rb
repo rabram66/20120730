@@ -4,7 +4,8 @@ class Place
   include DealHolder
   
   attr_accessor :name, :reference, :latitude, :longitude, :categories, :types,
-                :phone_number, :website, :full_address, :rating, :city, :address, :state
+                :phone_number, :website, :full_address, :rating, :city, :address, :state,
+                :profile_image_url, :description
 
   RADIUS = 750
   API_KEY = "AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc"
@@ -21,6 +22,7 @@ class Place
         @city = result['vicinity'].split(',').last
         @address = result['vicinity'].split(',')[0..-2].join(',')
       end
+      @profile_image_url = result['icon']
       @reference = result['reference']
       @latitude = result['geometry']['location']['lat'].to_f
       @longitude = result['geometry']['location']['lng'].to_f

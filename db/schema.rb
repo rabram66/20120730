@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120307213903) do
+ActiveRecord::Schema.define(:version => 20120314234043) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -85,6 +85,8 @@ ActiveRecord::Schema.define(:version => 20120307213903) do
     t.string   "verified_by"
     t.integer  "favorites_count",   :default => 0
     t.datetime "last_favorited_at"
+    t.text     "description"
+    t.string   "profile_image_url"
   end
 
   add_index "locations", ["slug"], :name => "index_locations_on_slug", :unique => true

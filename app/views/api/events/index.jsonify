@@ -1,0 +1,24 @@
+json.coordinates do
+  json.latitude @coordinates.first
+  json.longitude @coordinates.last
+end
+json.events @events do |event|
+  json.links do
+    json.place api_event_url(:id => event.id)
+  end
+  json.source event.class
+  json.name event.name
+  json.category event.category
+  json.start_date event.start_date
+  json.end_date event.end_date
+  json.location do
+    json.address event.address
+    json.city event.city
+    json.state event.state
+  end
+  json.geography do
+    json.latitude event.latitude
+    json.longitude event.longitude
+    json.distance event.distance_from(@coordinates)
+  end
+end

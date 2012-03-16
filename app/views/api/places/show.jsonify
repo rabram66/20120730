@@ -5,6 +5,8 @@ json.place do
   json.reference @place.reference
   json.categories @place.categories.map(&:short_name)
   json.recent_tweet @place.recent_tweet?
+  json.profile_image_url @place.profile_image_url
+  json.description @place.description
   if Location === @place
     if @place.twitter_status
       json.twitter_status do

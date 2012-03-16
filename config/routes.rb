@@ -38,6 +38,8 @@ NearbyThis::Application.routes.draw do
     get "/" => "api#index"
     get "/places" => "places#index", :as => :places
     get "/places/:reference" => "places#show", :as => :place
+    get "/events" => "events#index", :as => :events
+    get "/events/:id" => "events#show", :as => :event
   end
   
     

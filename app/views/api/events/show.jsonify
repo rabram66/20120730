@@ -12,6 +12,5 @@ json.event do
   json.geography do
     json.latitude @event.latitude
     json.longitude @event.longitude
-    json.distance @event.distance_from(@coordinates)
   end
 end

@@ -17,7 +17,8 @@ The Discovery URL provides an initial starting point for API access. Though not 
 
 {
   "links":{
-    "places":"http://nearbythis.com/api/places"
+    "places":"http://nearbythis.com/api/places",
+    "events":"http://nearbythis.com/api/events"
   }
 }
 

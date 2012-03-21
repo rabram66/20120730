@@ -343,6 +343,22 @@ div#splash-social-buttons a {
   display:block;
 }
 
+.sidebar h3 {
+  font-size: 18px;
+  color: white;
+  padding: 8px;
+  margin: 2px;
+  font-weight: normal;
+}
+
+#events-heading {
+  background-color: #3fbaeb;
+}
+
+#deals-heading {
+  background-color: #89b556;
+}
+
 /*******************************************************************inner1*************************************************/
 
 .banner
@@ -773,11 +789,12 @@ div#maps {
   height: 90px;
 }
 span.powered-by {
-  font-size: 14px;
+  font-size: 10px;
 }
 
 span.powered-by img {
-  margin-bottom: -6px;
+  margin-bottom: -1px;
+  height: 10px;
 }
 
 textarea.input_form_field

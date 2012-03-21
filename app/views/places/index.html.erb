@@ -82,8 +82,8 @@
       <div id="maps"></div>
     </div>
       <% unless @events.count == 0 %>
+        <h3 id='events-heading'>Nearby Events</h3>
         <div class='sidebar_block sidebar_txt'>
-          <h3>Nearby Events</h3>
           <% unless @events.happening_now.count == 0 %>
             <h4>Happening Today</h4>
             <% @events.happening_now.each do |event| %>
@@ -103,8 +103,8 @@
         </div>
       <% end -%>
       <% unless @deals.length == 0 %>
+        <h3 id='deals-heading'>Nearby Deals <span class='powered-by'>powered by <%= image_tag "yipit-logo-small.jpg"%></span></h3>
         <div class='sidebar_block sidebar_txt'>
-          <h3>Nearby Deals <span class='powered-by'>powered by <%= image_tag "yipit-logo-small.jpg"%></span></h3>
           <% @deals.each do |deal| %>
             <p>
               <%= link_to deal.title, deal.url, :target => :blank %>

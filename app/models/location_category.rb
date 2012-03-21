@@ -1,12 +1,13 @@
 class LocationCategory
   
-  attr_accessor :name, :display_name, :types, :short_name
+  attr_accessor :name, :display_name, :types, :short_name, :icon
   
-  def initialize(name, types=[], display_name=nil)
+  def initialize(name, types=[], display_name=nil, icon="general_category_icon.png")
     @name = name
     @display_name = display_name || name
     @short_name = name.split('/').first
     @types = types
+    @icon = icon
   end
 
   class << self
@@ -34,23 +35,29 @@ class LocationCategory
   EatDrink = LocationCategory.new(
     'Eat/Drink',
     %w(bar cafe restaurant food),
-    'Eat & Drink'
+    'Eat & Drink',
+    "restaurant_category_icon.png"
   )
 
   ShopFind = LocationCategory.new(
     'Shop/Find',
     %w(clothing_store shoe_store convenience_store grocery_or_supermarket),
-    'Shop'
+    'Shop',
+    "shopping_category_icon.png"
   )
     
   Play = LocationCategory.new(
     'Play',
-    %w(aquarium art_gallery bowling_alley casino gym movie_theater museum night_club park)
+    %w(aquarium art_gallery bowling_alley casino gym movie_theater museum night_club park),
+    "Play",
+    "bar_category_icon.png"
   )
 
   Spa = LocationCategory.new(
     'Spa',
-    %w(beauty_salon spa)
+    %w(beauty_salon spa), 
+    "spa",
+    "spa_category_icon.png"
   )
 
 

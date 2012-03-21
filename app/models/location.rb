@@ -89,6 +89,15 @@ class Location < ActiveRecord::Base
     [LocationCategory.find_by_name(general_type)]
   end
 
+  # TODO implement
+  def category_image_url
+    general_category.icon
+  end
+
+  def general_category
+    LocationCategory.find_by_name(general_type)
+  end
+
   # True if there any tweets (status or otherwise) for this location
   def tweets?
     twitter?

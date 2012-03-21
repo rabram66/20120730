@@ -36,6 +36,10 @@ class Place
     end
   end
 
+  # TODO implement
+  def category_image_url
+  end
+
   def tweets?
     !cached_tweets.empty?
   end

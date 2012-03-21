@@ -995,3 +995,10 @@ p#places-list-bottom a
 a#show-less-places {
   display: none;
 }
+
+#places-list img.profile-image {
+  float:left;
+  height: 48px;
+  width: 48px;
+  margin: 4px 10px 0px -4px;
+}

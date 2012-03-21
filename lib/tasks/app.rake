@@ -1,5 +1,6 @@
 require_relative 'locations_spreadsheet'
 require_relative 'locations_verifier'
+require_relative 'locations_updater'
 
 namespace :app do
   namespace :import do
@@ -21,6 +22,11 @@ namespace :app do
       LocationsVerifier.new.run
     end
 
+    desc "Set locations profile image from cache"
+    task :set_image, [:near] => :environment do |t,args|
+      LocationsUpdater.new(args).run
+    end
+
   end
-  
+
 end

@@ -38,4 +38,9 @@ module ApplicationHelper
   def short_url_for_location_details(location)
     UrlShortener.new.shorten(url_for_location_details(location, :only_path => false))
   end
+
+  def profile_image_url(location)
+    location.profile_image_url || location.category_image_url || "mobile/logo-trans.png"
+  end
+
 end

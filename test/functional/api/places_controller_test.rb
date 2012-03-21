@@ -8,13 +8,13 @@ class Api::PlacesControllerTest < ActionController::TestCase
 
   context 'index' do
     should 'be successful' do
-      PlaceLoader.expects(:near).with(@coordinates).returns([place])
+      PlaceLoader.expects(:near).with(@coordinates, nil).returns([place])
       get :index, :format => :json, :lat => @coordinates.first, :lng => @coordinates.last
       assert_response :success
     end
     context 'parsed response' do
       setup do
-        PlaceLoader.expects(:near).with(@coordinates).returns([place])
+        PlaceLoader.expects(:near).with(@coordinates, nil).returns([place])
         get :index, :format => :json, :lat => @coordinates.first, :lng => @coordinates.last
         @result = MultiJson.decode(response.body)
       end

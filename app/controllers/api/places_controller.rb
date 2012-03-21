@@ -3,7 +3,8 @@ module Api
     
     def index
       set_coordinates
-      respond_with( @places = PlaceLoader.near(@coordinates) )
+      category = LocationCategory.find_by_name(params[:category]) if params[:category].present?
+      respond_with( @places = PlaceLoader.near(@coordinates, category) )
     end
 
     def show

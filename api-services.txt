@@ -43,6 +43,7 @@ http://nearbythis.com/api/places/
 Parameters (input):
 lat : Latitude (e.g. -84.8383)
 lng : Longitude (e.g 35.8484)
+category: 'eat', 'shop', 'play', or 'spa' (optional: no more than one category can be specified)
 
 Example Full URL:
 http://nearbythis.com/api/places?lat=33.928797&lng=-84.281831

@@ -52,7 +52,12 @@
           <% end %>
           <a href="<%= url_for_location_details(location) %>">
             <%= image_tag profile_image_url(location), :class => 'profile-image' %>
-            <%= location.name %><strong><%= " - #{location.address}" unless location.address.blank? %></strong>
+            <span class='place-name-and-description'>
+              <%= location.name %><strong><%= " - #{location.address}" unless location.address.blank? %></strong>
+              <% if location.description.present? -%>
+                <br/><span class='place-description'><%= truncate(location.description, :length => 100) %></span>
+              <% end -%>
+            </span>
             <% if location.tweets? -%>
               <%= image_tag "twitter.jpg" %>
             <% end -%>

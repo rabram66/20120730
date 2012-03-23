@@ -359,6 +359,19 @@ div#splash-social-buttons a {
   background-color: #89b556;
 }
 
+.place-name-and-description {
+  display:inline;
+  float:left;
+}
+
+.place-description {
+  font-size: 11px;
+  font-weight: normal;
+  color: black;
+  float:left;
+  margin: -36px 0px;
+}
+
 /*******************************************************************inner1*************************************************/
 
 .banner

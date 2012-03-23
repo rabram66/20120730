@@ -1,7 +1,7 @@
 module Twitter
 
   USER_TIMELINE_URL = "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=%s&count=%d&include_entities=1"
-  USER_PROFILE_URL = ""
+  USER_PROFILE_URL = "https://api.twitter.com/1/users/search.json?q=%s"
 
   module Api
     
@@ -26,6 +26,9 @@ module Twitter
       end
 
       def profile(screen_name)
+        api(USER_PROFILE_URL, screen_name) do |response|
+          puts response
+        end
       end
 
       private

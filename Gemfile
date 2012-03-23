@@ -31,6 +31,7 @@ gem 'jsonify-rails'                # JSON views
 gem 'friendly_id'                  # SEO-friendly URLs
 gem 'ri_cal'                       # iCalendar events
 gem 'bitly'                        # URL shortening
+gem 'twitter'                      # Twitter
 
 group :development, :test do
   gem 'ansi'     # colorize turn output

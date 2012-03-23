@@ -180,6 +180,16 @@ class Location < ActiveRecord::Base
     end
   end
 
+  def update_twitter_profile
+    if twitter?
+      begin
+        res = Twitter.user twitter_name
+        update_attributes({:profile_image_url => res.profile_image_url, :description => res.description})
+      rescue Twitter::Error => e
+        Rails.logger.warn "Unable to update twitter profile for #{name}: #{e}"
+      end
+    end
+  end
 
   def facebook?
     !facebook_page_id.blank?

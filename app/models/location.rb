@@ -185,6 +185,7 @@ class Location < ActiveRecord::Base
       begin
         res = Twitter.user twitter_name
         update_attributes({:profile_image_url => res.profile_image_url, :description => res.description})
+        Rails.logger.info("Updated twitter profile for #{name}")
       rescue Twitter::Error => e
         Rails.logger.warn "Unable to update twitter profile for #{name}: #{e}"
       end

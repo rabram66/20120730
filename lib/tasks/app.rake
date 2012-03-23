@@ -23,7 +23,7 @@ namespace :app do
     end
 
     desc "Set locations profile image from cache"
-    task :set_image, [:near] => :environment do |t,args|
+    task :update_profiles => :environment do |t,args|
       LocationsUpdater.new(args).run
     end
 

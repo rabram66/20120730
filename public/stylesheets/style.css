@@ -164,7 +164,7 @@ div#splash-social-buttons a {
 
 .content_left
 {
-  width:602px;
+  width:603px;
   float:left;
   border-right:#e0dfdf 1px solid;
 }
@@ -285,7 +285,15 @@ div#splash-social-buttons a {
 {
   width:360px;
   float:right;
-  padding-top:20px;
+  padding-top: 20px;
+}
+
+#places-list-sidebar {
+  padding-top: 0px;
+}
+
+#places-list-sidebar h3 {
+  margin: 0;
 }
 
 .sidebar h2
@@ -501,9 +509,9 @@ div#splash-social-buttons a {
   background:#fff1df url(/images/hover_bg.jpg) no-repeat right top;
 }
 
-.sidebar_top
+.sidebar_map
 {
-  padding:0 0 18px 19px;
+  padding: 19px 0 18px 19px;
   border-bottom:#e0dfdf solid 1px;
 }
 

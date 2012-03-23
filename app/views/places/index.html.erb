@@ -82,41 +82,41 @@
     </p>
   </div><!--content_left end-->
 
-  <div class="sidebar"><!--sidebar start-->
-    <div class="sidebar_top">
-      <div id="maps"></div>
-    </div>
-      <% unless @events.count == 0 %>
-        <h3 id='events-heading'>Nearby Events</h3>
-        <div class='sidebar_block sidebar_txt'>
-          <% unless @events.happening_now.count == 0 %>
-            <h4>Happening Today</h4>
-            <% @events.happening_now.each do |event| %>
-              <p>
-                <%= (Event === event) ? link_to(content_tag(:strong, event.name), event) : link_to(event.name, event_path(event.id)) %>
-              </p>
-            <% end -%>
-          <% end -%>
-          <% unless @events.coming_soon.count == 0 %>
-            <h4>Coming Soon</h4>
-            <% @events.coming_soon.each do |event| %>
-              <p>
-                <%= (Event === event) ? link_to(content_tag(:strong, event.name), event) : link_to(event.name, event_path(event.id)) %>
-              </p>
-            <% end -%>
-          <% end -%>
-        </div>
-      <% end -%>
-      <% unless @deals.length == 0 %>
-        <h3 id='deals-heading'>Nearby Deals <span class='powered-by'>powered by <%= image_tag "yipit-logo-small.jpg"%></span></h3>
-        <div class='sidebar_block sidebar_txt'>
-          <% @deals.each do |deal| %>
+  <div id="places-list-sidebar" class="sidebar"><!--sidebar start-->
+    <% unless @events.count == 0 %>
+      <h3 id='events-heading'>Nearby Events</h3>
+      <div class='sidebar_block sidebar_txt'>
+        <% unless @events.happening_now.count == 0 %>
+          <h4>Happening Today</h4>
+          <% @events.happening_now.each do |event| %>
             <p>
-              <%= link_to deal.title, deal.url, :target => :blank %>
+              <%= (Event === event) ? link_to(content_tag(:strong, event.name), event) : link_to(event.name, event_path(event.id)) %>
             </p>
           <% end -%>
-        </div>
-      <% end -%>
+        <% end -%>
+        <% unless @events.coming_soon.count == 0 %>
+          <h4>Coming Soon</h4>
+          <% @events.coming_soon.each do |event| %>
+            <p>
+              <%= (Event === event) ? link_to(content_tag(:strong, event.name), event) : link_to(event.name, event_path(event.id)) %>
+            </p>
+          <% end -%>
+        <% end -%>
+      </div>
+    <% end -%>
+    <% unless @deals.length == 0 %>
+      <h3 id='deals-heading'>Nearby Deals <span class='powered-by'>powered by <%= image_tag "yipit-logo-small.jpg"%></span></h3>
+      <div class='sidebar_block sidebar_txt'>
+        <% @deals.each do |deal| %>
+          <p>
+            <%= link_to deal.title, deal.url, :target => :blank %>
+          </p>
+        <% end -%>
+      </div>
+    <% end -%>
+    <div class="sidebar_map">
+      <div id="maps"></div>
+    </div>
   </div><!--sidebar end-->
 
   <div class="clear"></div>

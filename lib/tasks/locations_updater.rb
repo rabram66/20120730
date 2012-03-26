@@ -19,7 +19,7 @@ class LocationsUpdater
   # end
 
   def run
-    Location.where('profile_image_url IS NULL').limit(60).each {|l| l.update_twitter_profile}
+    Location.where('description IS NULL').limit(60).each {|l| l.update_twitter_profile}
   end
 
 end

@@ -1,0 +1,21 @@
+json.coordinates do
+  json.latitude @coordinates.first
+  json.longitude @coordinates.last
+end
+json.deals @deals do |deal|
+  json.title deal.title
+  json.description deal.description
+  json.name deal.name
+  json.url deal.url
+  json.mobile_url deal.mobile_url
+  json.thumbnail_url deal.thumbnail_url
+  json.locations(deal.locations) do |location|
+    json.address      location.address 
+    json.city         location.city
+    json.state        location.state
+    json.latitude     location.latitude
+    json.longitude    location.longitude
+    json.phone_number location.phone_number
+  end
+end
+

@@ -35,11 +35,12 @@ NearbyThis::Application.routes.draw do
 
   #------------------------------ API ==----------------------------
   namespace :api do
-    get "/" => "api#index"
-    get "/places" => "places#index", :as => :places
-    get "/places/:reference" => "places#show", :as => :place
-    get "/events" => "events#index", :as => :events
-    get "/events/:id" => "events#show", :as => :event
+    get "/"                  => "api#index"
+    get "/places"            => "places#index", :as => :places
+    get "/places/:reference" => "places#show",  :as => :place
+    get "/events"            => "events#index", :as => :events
+    get "/events/:id"        => "events#show",  :as => :event
+    get "/deals"             => "deals#index",  :as => :deals
   end
   
     

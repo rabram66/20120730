@@ -10,6 +10,7 @@ json.place do
   if Location === @place
     if @place.twitter_status
       json.twitter_status do
+        json.screen_name @place.twitter_name
         json.text @place.twitter_status.text
         json.created_at @place.twitter_status.created_at
         json.follow_url @place.twitter_status.follow_url

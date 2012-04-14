@@ -21,7 +21,7 @@ module ApplicationHelper
     if controller_type == 'mobile'
       options.merge!({
         :action => 'detail',
-        :id => location.slug
+        :id => location.slug || location.reference
       })
     else
       options.merge!({
@@ -29,14 +29,15 @@ module ApplicationHelper
         :address => location.full_address,  
         :bizname => location.name, 
         :type => location.types,
-        :reference => location.slug
+        :reference => location.slug || location.reference
       })
     end
     url_for options
   end
 
-  def short_url_for_location_details(location)
-    UrlShortener.new.shorten(url_for_location_details(location, :only_path => false))
+  def short_url_for_location_details(location, options={})
+    options.merge!({:only_path => false})
+    UrlShortener.new.shorten(url_for_location_details(location, options))
   end
 
   def profile_image_url(location)

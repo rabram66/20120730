@@ -1,4 +1,8 @@
 json.place do
+  json.links do
+    json.self api_place_url(:reference => @place.reference)
+    json.web_shortened short_url_for_location_details(@place, :controller => '/places')
+  end
   json.source @place.class
   json.name @place.name
   json.phone_number @place.phone_number

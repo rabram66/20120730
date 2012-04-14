@@ -8,9 +8,9 @@ json.place do
   json.profile_image_url @place.profile_image_url
   json.description @place.description
   if Location === @place
+    json.twitter_name @place.twitter_name
     if @place.twitter_status
       json.twitter_status do
-        json.screen_name @place.twitter_name
         json.text @place.twitter_status.text
         json.created_at @place.twitter_status.created_at
         json.follow_url @place.twitter_status.follow_url

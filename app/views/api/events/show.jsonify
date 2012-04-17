@@ -1,4 +1,8 @@
-json.event do 
+json.event do
+  json.links do
+    json.self api_event_url(:id => @event.id)
+    json.url( Event === @event ? event_url(@event) : @event.url )
+  end
   json.source @event.class
   json.name @event.name
   json.category @event.category

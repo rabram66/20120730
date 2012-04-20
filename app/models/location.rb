@@ -43,6 +43,10 @@ class Location < ActiveRecord::Base
     update_reference if !(REF_ATTRS & changes.keys).empty?
   end
   
+  after_create do
+    update_twitter_profile
+  end
+  
   before_destroy :delete_reference
 
   class << self

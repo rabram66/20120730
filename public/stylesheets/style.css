@@ -294,6 +294,7 @@ div#splash-social-buttons a {
 
 #places-list-sidebar h3 {
   margin: 0;
+  color: white;  
 }
 
 .sidebar h2
@@ -353,7 +354,6 @@ div#splash-social-buttons a {
 
 .sidebar h3 {
   font-size: 18px;
-  color: white;
   padding: 8px;
   margin: 2px;
   font-weight: normal;

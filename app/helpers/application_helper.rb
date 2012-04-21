@@ -41,7 +41,13 @@ module ApplicationHelper
   end
 
   def profile_image_url(location)
-    location.profile_image_url || location.category_image_url || "mobile/logo-trans.png"
+    if location.profile_image_url.present? 
+      location.profile_image_url
+    elsif location.category_image_url.present?
+      location.category_image_url
+    else
+      "mobile/logo-trans.png"
+    end
   end
 
 end

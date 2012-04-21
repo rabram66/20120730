@@ -16,6 +16,12 @@
   </div>
 
   <p>
+    <%= f.label :twitter_name %><br />
+    <%= f.text_field :twitter_name, :class => 'input_form_field' %>
+    <%= button_tag "Update Profile Image and Description", :id => 'update-twitter-profile' %>
+  </p>
+
+  <p>
     <%= f.label :profile_image_url %><br/>  
     <%= f.text_field :profile_image_url, :class => 'input_form_field' %>
     <%= image_tag @location.profile_image_url %>
@@ -47,11 +53,6 @@
     <%= grouped_collection_select(
       :location, :types, LocationCategory.all, :types, :name, :to_s, :humanize,
       {:include_blank => true}, html_options = {}) %>
-  </p>
-
-  <p>
-    <%= f.label :twitter_name %><br />
-    <%= f.text_field :twitter_name, :class => 'input_form_field' %>
   </p>
 
   <p>

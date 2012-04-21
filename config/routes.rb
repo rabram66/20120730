@@ -41,6 +41,7 @@ NearbyThis::Application.routes.draw do
     get "/events"            => "events#index", :as => :events
     get "/events/:id"        => "events#show",  :as => :event
     get "/deals"             => "deals#index",  :as => :deals
+    get "/twitter_profile"   => "api#twitter_profile", :as => :twitter_profile
   end
   
     

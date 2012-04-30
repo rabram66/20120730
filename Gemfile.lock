@@ -93,6 +93,7 @@ GEM
     hoptoad_notifier (2.4.11)
       activesupport
       builder
+    hpricot (0.8.6)
     httparty (0.8.1)
       multi_json
       multi_xml
@@ -235,6 +236,7 @@ DEPENDENCIES
   geocoder!
   heroku
   hoptoad_notifier
+  hpricot
   httparty
   jquery-rails
   jsonify-rails

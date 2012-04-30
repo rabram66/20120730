@@ -18,6 +18,7 @@ gem "faster_haversine", "~> 0.1.3" # Calculating distance between geocodes
 gem 'stamp'                        # user-friendly date-time formatting
 gem 'chronic'                      # user-friendly date-time parsing
 gem 'hoptoad_notifier'             # exception notification
+gem 'hpricot'                      # screen scraping
 gem 'spreadsheet'                  # used for spreadsheet imports
 gem 'taps'                         # enables heroku db:push
 gem 'dalli'                        # memcached interface

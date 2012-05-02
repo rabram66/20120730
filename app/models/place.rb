@@ -206,7 +206,7 @@ class Place
   end
 
   def cached_tweets=(tweets)
-    Rails.cache.write(twitter_search_cache_key, tweets, :expires_in => 30.minutes) if tweets && !tweets.empty?
+    Rails.cache.write(twitter_search_cache_key, tweets, :expires_in => 15.minutes) if tweets && !tweets.empty?
   end
 
 end

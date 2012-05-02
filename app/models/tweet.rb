@@ -119,7 +119,7 @@ class Tweet
           end
         end
         if tweets
-          Rails.cache.write(cache_key, tweets, :expires_in => 30.minutes)
+          Rails.cache.write(cache_key, tweets, :expires_in => 15.minutes)
           cached_tweets = tweets
         end
       end

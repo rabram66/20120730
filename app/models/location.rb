@@ -237,7 +237,7 @@ class Location < ActiveRecord::Base
   end
 
   def cached_twitter_mentions=(tweets)
-    Rails.cache.write(twitter_mentions_cache_key, tweets, :expires_in => 30.minutes) if tweets && !tweets.empty?
+    Rails.cache.write(twitter_mentions_cache_key, tweets, :expires_in => 15.minutes) if tweets && !tweets.empty?
   end
   
   def update_reference

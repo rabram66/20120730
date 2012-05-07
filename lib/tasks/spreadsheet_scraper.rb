@@ -1,7 +1,8 @@
 # This utilitity reads a spreadsheet, then searches the website for each row for twitter and facebook information.
 # Writing that information back to the spreadsheet and saving it.
 require 'open-uri'
-require 'hpricot'
+require 'nokogiri'
+require 'csv'
 
 class SpreadsheetScraper
   
@@ -13,30 +14,56 @@ class SpreadsheetScraper
   
   def scrape
     puts "Scraping locations from #{filename}"
+
     File.open(filename,'r') do |file|
+
       @book = Spreadsheet.open file
+
       sheet = book.worksheet 0 # First worksheet
-      sheet.each(1) do |row| # skip first row
-        # #(number) Name  Address-1 Address-2 City  State Zip Code  Neighborhood  
-        # Phone Website Category Found  Twitter Facebook
-        begin
-          next unless row[0] # Skip empty rows
-          url = strip(row[9])
-          next if url.blank?
-          puts url
-          doc = open(url) {|f| Hpricot(f)}
-          links = doc.search("//a").map{|a| a['href']}
+      count = 0
 
-          tlink = links.detect {|href| href =~ /twitter\.com/}
-          row[11] = tlink.split('/').last if tlink
+      CSV.open(File.join(Rails.root, 'New_Addresses_1_csv.csv'), 'wb') do |csv|
 
-          flink = links.detect {|href| href =~ /facebook\.com/}
-          row[12] = flink if flink
-        rescue
-          puts "Error processing #{row}: #{$!}"
+        sheet.each(1) do |row| # skip first row
+
+          count += 1
+
+          #     0            1         2       3          4         5     6       7      8          9         10      11           12         13     14
+          # #(number) Keyword Search  Name Address-1 Address-2 Address-3 City  State Zip Code  Neighborhood  Phone  Website Category Found  Twitter Facebook 
+          next if row[0].nil? || strip(row[7]).blank? # Skip empty rows and entries without a State 
+
+          data = {:name => row[2], :address => row[3], :city => row[6], :state => row[7], :phone => row[10]}
+          url = strip(row[11])
+
+          unless url.blank?
+            begin
+              doc = Nokogiri::HTML(open(url))
+              links = doc.search("//a").map{|a| a['href']}
+
+              tlink = links.detect {|href| href =~ /twitter\.com/}
+              data[:twitter_name] = tlink.split('/').last.gsub('#','') if tlink
+
+              flink = links.detect {|href| href =~ /facebook\.com/}
+              if flink
+                case flink
+                when %r{facebook.com/(\w+)$}
+                  data[:facebook_page_id] = $1
+                when %r{facebook.com/pages/[^0-9]*(\d+)($|\?)}
+                  data[:facebook_page_id] = $1
+                end
+              end
+            rescue
+              puts "Error processing #{row}: #{$!}"
+            end
+          end
+
+          csv << data.values
+
+          print '.'
+          $stdout.flush
+
         end
       end
-      book.write 'SampleData-new.xls'
     end
     puts "\nDone"
   end

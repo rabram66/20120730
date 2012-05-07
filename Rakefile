@@ -6,3 +6,6 @@ require 'rake/dsl_definition'
 require 'rake'
 
 NearbyThis::Application.load_tasks
+
+# Enable 'rake delay:<task>' to run any task as delayed job
+require 'tasks/delayed_tasks' 

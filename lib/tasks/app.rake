@@ -8,6 +8,10 @@ namespace :app do
     task :locations, [:file] => :environment do |t, args|
       LocationsSpreadsheet.new(args).import
     end
+    desc "Import locations from a CSV"
+    task :locations_csv, [:file] => :environment do |t, args|
+      LocationsCsvImporter.new(args).import
+    end
   end
 
   namespace :locations do

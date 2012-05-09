@@ -22,7 +22,7 @@ class SpreadsheetScraper
       sheet = book.worksheet 0 # First worksheet
       count = 0
 
-      CSV.open(File.join(Rails.root, 'New_Addresses_1_csv.csv'), 'wb') do |csv|
+      CSV.open(File.join(Rails.root, 'NewAddresses_2.csv'), 'wb') do |csv|
 
         sheet.each(1) do |row| # skip first row
 
@@ -32,7 +32,7 @@ class SpreadsheetScraper
           # #(number) Keyword Search  Name Address-1 Address-2 Address-3 City  State Zip Code  Neighborhood  Phone  Website Category Found  Twitter Facebook 
           next if row[0].nil? || strip(row[7]).blank? # Skip empty rows and entries without a State 
 
-          data = {:name => row[2], :address => row[3], :city => row[6], :state => row[7], :phone => row[10]}
+          data = {:types => row[1], :name => row[2], :address => row[3], :city => row[6], :state => row[7], :phone => row[10],:twitter_name => ''}
           url = strip(row[11])
 
           unless url.blank?

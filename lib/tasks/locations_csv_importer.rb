@@ -3,7 +3,7 @@ require 'csv'
 class LocationsCsvImporter
   
   def initialize(args)
-    @filename = args[:file] || 'NewAddresses_5.csv'
+    @filename = args[:file] || 'NewAddresses_51.csv'
   end
   
   def import
@@ -22,7 +22,7 @@ class LocationsCsvImporter
   end
 
   def transform_type(val)
-    case val
+    case val.downcase
       when /arts/; 'art_gallery'
       when /restaurant/; 'restaurant'
       when /nightlife/; 'bar'

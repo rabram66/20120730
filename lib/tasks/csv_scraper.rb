@@ -15,7 +15,7 @@ class CsvScraper
   def scrape
     puts "Scraping locations from #{filename}"
 
-    CSV.open(File.join(Rails.root, 'NewAddresses_5.csv'), 'wb') do |csv|
+    CSV.open(File.join(Rails.root, 'NewAddresses_6.csv'), 'wb') do |csv|
 
       csv << ['types','name','address','city','state','phone','twitter_name','facebook_page_id']
 

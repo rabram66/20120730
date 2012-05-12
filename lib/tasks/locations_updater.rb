@@ -19,7 +19,7 @@ class LocationsUpdater
   # end
 
   def run
-    Location.where('description IS NULL').limit(60).each {|l| l.update_twitter_profile}
+    Location.where('twitter_name IS NOT NULL AND description IS NULL').limit(60).each {|l| l.update_twitter_profile}
   end
 
 end

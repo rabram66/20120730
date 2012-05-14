@@ -3,7 +3,7 @@ require 'csv'
 class LocationsCsvImporter
   
   def initialize(args)
-    @filename = args[:file] || 'NewAddresses_8.csv'
+    @filename = args[:file] || 'NewAddresses_9.csv'
   end
   
   def import

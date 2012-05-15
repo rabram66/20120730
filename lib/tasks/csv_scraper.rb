@@ -11,27 +11,31 @@ class CsvScraper
   def initialize(args)
     @filename = args[:file]
   end
+#
+#  Restaurants,Potbelly's Sandwich Works,5304 N Clark St,Chicago,IL,60640,"Andersonville, Edgewater",NULL,http://www.potbelly.com/,Sandwiches
   
   def scrape
     puts "Scraping locations from #{filename}"
 
-    CSV.open(File.join(Rails.root, 'NewAddresses_10.csv'), 'wb') do |csv|
+    CSV.open(File.join(Rails.root, 'NewAddresses_11.csv'), 'wb') do |csv|
 
       csv << ['types','name','address','city','state','phone','twitter_name','facebook_page_id']
 
       count = 0
 
-      CSV.foreach(filename, :headers => true) do |row|
+      CSV.foreach(filename, :headers => false) do |row|
 
         count += 1
 
-        #     0            1         2       3          4         5     6       7      8          9         10      11           12         13     14
-        # #(number) Keyword Search  Name Address-1 Address-2 Address-3 City  State Zip Code  Neighborhood  Phone  Website Category Found  Twitter Facebook 
-        next if row[0].nil? || strip(row[7]).blank? # Skip empty rows and entries without a State 
+        #     0            1         2     3      4       5         6           7      8          9       
+        # Keyword Search  Name Address-1 City  State Zip Code  Neighborhood  Phone  Website Category Found
+        next if row[0].nil? || strip(row[7]).blank? # Skip empty rows and entries without a State
 
-        data = {:types => row[1], :name => row[2], :address => row[3], :city => row[6], :state => row[7], :phone => row[10],:twitter_name => '',:facebook_page_id => ''}
+        row = row.map{|val| val == '' || val == 'NULL' ? nil : val}
 
-        url = strip(row[11])
+        data = {:types => row[0], :name => row[1], :address => row[2], :city => row[3], :state => row[4], :phone => row[7], :twitter_name => '',:facebook_page_id => ''}
+
+        url = strip(row[8])
 
         unless url.blank?
           begin

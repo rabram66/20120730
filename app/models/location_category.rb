@@ -20,6 +20,9 @@ class LocationCategory
     end
     
     def find_by_name(name)
+      # Temp fix for mobile sending incorrect category
+      name = 'Play' if name =~ /^fun/i
+      
       all.detect{ |lc| lc.name =~ /#{name}/i}
     end
     

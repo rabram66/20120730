@@ -10,7 +10,7 @@ json.places @places do |place|
   json.name place.name
   json.categories place.categories.map(&:short_name)
   json.recent_tweet place.recent_tweet?
-  json.profile_image_url place.profile_image_url
+  json.profile_image_url profile_image_url(place)
   json.description place.description
   json.location do
     json.address place.address

@@ -9,7 +9,7 @@ json.place do
   json.reference @place.reference
   json.categories @place.categories.map(&:short_name)
   json.recent_tweet @place.recent_tweet?
-  json.profile_image_url @place.profile_image_url
+  json.profile_image_url profile_image_url(@place)
   json.description @place.description
   if Location === @place
     json.twitter_name @place.twitter_name

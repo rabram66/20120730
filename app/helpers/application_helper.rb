@@ -40,14 +40,19 @@ module ApplicationHelper
     UrlShortener.new.shorten(url_for_location_details(location, options))
   end
 
+  def image_url(source)
+    "#{root_url}#{image_path(source).gsub(%r[^/],'')}"
+  end
+  
   def profile_image_url(location)
     if location.profile_image_url.present? 
       location.profile_image_url
     elsif location.category_image_url.present?
-      location.category_image_url
+      image_url location.category_image_url
     else
       "mobile/logo-trans.png"
     end
   end
+
 
 end

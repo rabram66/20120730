@@ -3,7 +3,7 @@ module Api
     
     def index
       set_coordinates
-      respond_with( @deals = Deal.find_by_geocode(@coordinates) )
+      respond_with( @deals = DealSet.find_by_geocode(@coordinates) )
     end
 
     private

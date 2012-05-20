@@ -22,12 +22,12 @@ class IphoneController < ApplicationController
     remove_duplicate_places unless @places.empty? || @locations.empty?
 
     @events = Event.upcoming_near(@coordinates)
-    @deals = Deal.find_by_geocode(@coordinates)
+    @deals = DealSet.find_by_geocode(@coordinates)
     respond_with @places, @locations, @events, @deals, @coordinates
   end
 
   def deals
-    respond_with(@deals = Deal.find_by_geocode(@coordinates))
+    respond_with(@deals = DealSet.find_by_geocode(@coordinates))
   end
 
   def events

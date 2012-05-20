@@ -1040,3 +1040,8 @@ a#show-less-places {
   width: 48px;
   margin: 4px 10px 0px -4px;
 }
+
+span.deal-merchant-name {
+  font-size: 80%;
+  padding-left: 10px;
+}

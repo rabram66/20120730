@@ -31,12 +31,24 @@ class LocationsControllerTest < ActionController::TestCase
     should "create location" do
       @location.reference = nil
       @location.name = 'FalaflHouse'
-      Location.any_instance.expects(:geocode).once
+      Location.any_instance.expects(:geocode).twice
+
       # Place.add
       stub_request(:post, "https://maps.googleapis.com/maps/api/place/add/json?key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc&sensor=false").
-        with(:body => "{\"location\":{\"lat\":33.7489954,\"lng\":-84.3879824},\"accuracy\":50,\"name\":\"#{@location.name}\",\"types\":[\"restaurant\"],\"language\":\"en-US\"}", 
-             :headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>'126', 'Content-Type'=>'application/json', 'User-Agent'=>'Ruby'}).
+        with(:body => "{\"location\":{\"lat\":33.7489954,\"lng\":-84.3879824},\"accuracy\":50,\"name\":\"#{@location.name}\",\"types\":[\"restaurant\"],\"language\":\"en-US\"}").
         to_return(:status => 200, :body => "{\"status\":\"OK\",\"reference\":123}", :headers => {})
+
+      #Place.delete
+      stub_request(:post, "https://maps.googleapis.com/maps/api/place/delete/json?key=AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc&sensor=false").
+        with(:body => "{\"reference\":123}").
+        to_return(:status => 200, :body => "{\"status\":\"OK\",\"reference\":123}", :headers => {})
+
+        
+      Twitter.expects(:user).with(@location.twitter_name).returns(stub(:profile_image_url=>'http://foo.com',:description=>'foo'))
+
+      # Update profile image and description from twitter
+      # stub_request(:get, "https://api.twitter.com/1/users/show.json?screen_name=wafflehouse").
+      #   to_return(:status => 200, :body => "", :headers => {})
   
       assert_difference('Location.count') do
         post :create, :location => @location.attributes

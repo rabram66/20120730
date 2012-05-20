@@ -109,7 +109,10 @@
       <div class='sidebar_block sidebar_txt'>
         <% @deals.each do |deal| %>
           <p>
-            <%= link_to deal.title, deal.url, :target => :blank %>
+            <a href=<%= deal.url %> target='blank'>
+              <span class='deal-title'><%= deal.title %></span><br/>
+              <span class='deal-merchant-name'><%= deal.name %></span>
+            </a>
           </p>
         <% end -%>
       </div>

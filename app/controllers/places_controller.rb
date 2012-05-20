@@ -22,7 +22,7 @@ class PlacesController < ApplicationController
     @locations = PlaceLoader.near(@coordinates, category)
 
     @events = EventSet.upcoming_near(@coordinates)
-    @deals = Deal.find_by_geocode( @coordinates )
+    @deals = DealSet.find_by_geocode( @coordinates )
 
     @locations.each do |location|
       location.deals = @deals.matching_deals(location)

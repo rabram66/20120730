@@ -8,8 +8,8 @@ class CsvScraper
   
   attr_reader :filename, :book
 
-  def initialize(args)
-    @filename = args[:file]
+  def initialize(args={})
+    @filename = args[:file] || File.join(Rails.root,'SF_Austin.csv')
   end
 #
 #  Restaurants,Potbelly's Sandwich Works,5304 N Clark St,Chicago,IL,60640,"Andersonville, Edgewater",NULL,http://www.potbelly.com/,Sandwiches
@@ -17,26 +17,25 @@ class CsvScraper
   def scrape
     puts "Scraping locations from #{filename}"
 
-    CSV.open(File.join(Rails.root, 'NewAddresses_13.csv'), 'wb') do |csv|
+    CSV.open(File.join(Rails.root, 'NewAddresses_SF_Austin.csv'), 'wb') do |csv|
 
       csv << ['types','name','address','city','state','phone','twitter_name','facebook_page_id']
 
       count = 0
 
-      CSV.foreach(filename, :headers => false) do |row|
+      CSV.foreach(filename, :headers => true) do |row|
 
         count += 1
 
-        #     0            1         2     3      4       5         6           7      8          9       
-        # Keyword Search  Name Address-1 City  State Zip Code  Neighborhood  Phone  Website Category Found
+        # 0,      1          2       3          4       5       6    7    
+        # #,Keyword Search,Name,Address-1,Address-2,Address-3,City,State,Zip Code,Neighborhood,Phone,Website,Category Found
+
         next if row[0].nil? || strip(row[7]).blank? # Skip empty rows and entries without a State
 
-        row = row.map{|val| val == '' || val == 'NULL' ? nil : val}
+        data = {:types => row['Keyword Search'], :name => row['Name'], :address => row['Address-1'], :city => row['City'], :state => row['State'], :phone => row['Phone'], :twitter_name => '',:facebook_page_id => ''}
 
-        data = {:types => row[0], :name => row[1], :address => row[2], :city => row[3], :state => row[4], :phone => row[7], :twitter_name => '',:facebook_page_id => ''}
-
-        url = strip(row[8])
-
+        url = strip(row['Website'])
+        
         unless url.blank?
           begin
             doc = Nokogiri::HTML(open(url))

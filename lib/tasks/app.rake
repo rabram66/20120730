@@ -33,7 +33,7 @@ namespace :app do
 
     desc "Delete duplicate locations based on matching name, address, and phone"
     task :dedupe => :environment do |t,args|
-      LocationsDeduper.new.dedupe
+      LocationsDeduper.new.run
     end
 
   end

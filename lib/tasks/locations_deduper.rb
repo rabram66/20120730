@@ -9,7 +9,7 @@
 
 class LocationsDeduper
   
-  def dedup
+  def run
     dup_sets = find_dups
     dup_sets.each do |dup_set|
       locations = Location.find(dup_set['ids'].split(',').map{|id| id.to_i})

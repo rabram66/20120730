@@ -12,8 +12,8 @@ class LocationsDeduper
   def run
     dup_sets = find_dups
     dup_sets.each do |dup_set|
-      locations = Location.where("name like ? and address = ? and phone = ?", 
-        "#{dup_set['name_match']}%", dup_set['address_match'], dup_set['phone_match']
+      locations = Location.where("name like ? and address = ?", 
+        "#{dup_set['name_match']}%", dup_set['address_match']
       )
       best = choose_best( locations )
       puts locations.inspect
@@ -27,13 +27,12 @@ class LocationsDeduper
   
   def find_dups
     sql = <<-SQL
-      select substring(n1.name from 1 for 8) as name_match, n1.address as address_match, n1.phone as phone_match
+      select substring(n1.name from 1 for 8) as name_match, n1.address as address_match
       from locations n1 join locations n2 
       on substring(n1.name from 1 for 8) = substring(n2.name from 1 for 8) 
       and n1.address = n2.address 
-      and n1.phone = n2.phone
       and n1.id != n2.id 
-      group by name_match, address_match, phone_match
+      group by name_match, address_match
     SQL
     Location.connection.select_all( sql )
   end

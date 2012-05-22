@@ -31,6 +31,11 @@ namespace :app do
       LocationsUpdater.new(args).run
     end
 
+    desc "Delete duplicate locations based on matching name, address, and phone"
+    task :dedupe => :environment do |t,args|
+      LocationsDeduper.new.dedupe
+    end
+
   end
 
 end

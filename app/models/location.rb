@@ -16,10 +16,12 @@ class Location < ActiveRecord::Base
                   :phone, :latitude, :longitude, :reference, :email, 
                   :types, :twitter_name, :facebook_page_id, :user_id,
                   :verified, :verified_on, :verified_by, :favorites_count, :last_favorited_at,
-                  :profile_image_url, :description
+                  :profile_image_url, :description, :active
                   
   # Rating as implemented in Location, here, returns nil (no-op) for Place compatability
   attr_accessor :rating # virtual; not persisted
+  
+  default_scope where(:active => true)
   
   friendly_id :slugged_id, :use => :history
 
@@ -48,7 +50,7 @@ class Location < ActiveRecord::Base
   end
   
   before_destroy :delete_reference
-
+  
   class << self
 
     def find_by_geocode(coordinates, radius_in_miles=20, limit=50)
@@ -59,11 +61,19 @@ class Location < ActiveRecord::Base
       find_by_geocode(coordinates).where(:general_type => category.name)
     end
 
-    def all_by_filters(general_type=nil, radius=nil, coordinates=nil, name=nil, order='name', to_verify=false)
-      relation = scoped
+    def all_by_filters(options={})
+      general_type = options[:general_type]
+      radius       = options[:radius]
+      coordinates  = options[:coordinates]
+      name         = options[:name]
+      order        = options[:order] || 'name'
+      to_verify    = options[:to_verify] unless options[:to_verify].nil?
+
+      relation = unscoped
       relation = relation.where(:general_type => general_type) if general_type
       relation = relation.where(arel_table[:name].matches(name)) if name
       relation = relation.where(:verified => false) if to_verify
+      relation = relation.where(:active => options[:active]) unless options[:active].nil?
       if coordinates
         order = "#{order},distance" unless order == 'distance'
         radius ||= 20

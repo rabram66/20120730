@@ -9,6 +9,15 @@ class LocationTest < ActiveSupport::TestCase
   context 'relationships' do
     should belong_to(:user)
   end
+
+  context 'finders' do
+    should 'only find active locations by default' do
+      assert_equal Location.where(:active => true).to_sql, Location.scoped.to_sql
+    end
+    should 'allow finding of inactive locations' do
+      assert_not_equal Location.unscoped.to_sql, Location.scoped.to_sql
+    end
+  end
   
   context 'validations' do
     should validate_presence_of(:name)

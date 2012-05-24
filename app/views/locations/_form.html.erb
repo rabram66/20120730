@@ -9,11 +9,16 @@
       </ul>
     </div>
   <% end %>
-  
+
   <div class="field" id="bus_name">
     * <%= f.label :name, "Business name" %><br />
     <%= f.text_field :name, :class => 'input_form_field' %>
   </div>
+
+  <p>
+    <%= f.label :active %><br/>
+    <%= f.check_box :active, :class => 'input_form_field' %>
+  </p>
 
   <p>
     <%= f.label :twitter_name %><br />

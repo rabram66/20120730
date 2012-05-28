@@ -35,9 +35,33 @@ module ApplicationHelper
     url_for options
   end
 
+  def url_for_location_details2(location, options={})
+    controller_type = ApplicationController === self ? self.controller_name : controller.controller_name
+    if controller_type == 'mobile'
+      options.merge!({
+        :action => 'detail',
+        :id => location.slug || location.reference
+      })
+    else
+      options.merge!({
+        :action => 'details2',
+        :address => location.full_address,  
+        :bizname => location.name, 
+        :type => location.types,
+        :reference => location.slug || location.reference
+      })
+    end
+    url_for options
+  end
+
   def short_url_for_location_details(location, options={})
     options.merge!({:only_path => false})
     UrlShortener.new.shorten(url_for_location_details(location, options))
+  end
+
+  def short_url_for_location_details2(location, options={})
+    options.merge!({:only_path => false})
+    UrlShortener.new.shorten(url_for_location_details2(location, options))
   end
 
   def image_url(source)
@@ -52,6 +76,15 @@ module ApplicationHelper
     else
       "mobile/logo-trans.png"
     end
+  end
+
+  def event_source_url(event)
+    (Event === event) ? event_detail_path(event) : event_detail_path(event.id)
+  end
+
+  def tweet_count(location)
+    count = location.tweet_count
+    count == 0 ? '-' : count
   end
 
 

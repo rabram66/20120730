@@ -17,6 +17,12 @@ NearbyThis::Application.routes.draw do
   post "favorite/:reference" => "places#favorite", :as => :location_favorite
   post "recent_tweeters" => "places#recent_tweeters", :as => :recent_tweeters
 
+  #------------------------------ V2 -------------------------------
+  get "/places2" => "places2#index"
+  get "details2/:reference" => "places2#details2", :as => :location_details2
+  get "event/:id" => "places2#event", :as => :event_detail
+  get "event/:id/ical" => "places2#ical", :as => :event_to_ical
+
   #----------------------------- Mobile ---------------------------
   get "/mobile"             => "mobile#index",  :as => :mobile_index
   get "/mobile/list"        => "mobile#list",   :as => :mobile_list

@@ -102,6 +102,16 @@ class Place
       }
     end)
   end
+
+  def recent_tweets(within)
+    cached_tweets.select { |tweet|
+      (Time.now - tweet.created_at).abs < within
+    }
+  end
+
+  def tweet_count(within=7.days)
+    recent_tweets(within).length
+  end
   
   def favorites_count
     mapping.favorites_count
@@ -194,7 +204,7 @@ class Place
     end
 
   end
-
+  
   private
   
   def twitter_search_cache_key

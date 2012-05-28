@@ -1,0 +1,32 @@
+<script src="http://www.google.com/jsapi?key=ABQIAAAAhLOpZfesDeMKWC3zGdB4BxRyAQIOZcmWQaZgGjJb-w1DbZAmsxTfbS2hwencPWx3W54SemwGmRyFwA"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
+<script>
+  function initialize() {    
+    var input = document.getElementById('searchTextField');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+  }
+  google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+<div class="banner"><!--banner start-->
+  <div class="banner_area">
+    <form action="/" method="get" id='place_search'>
+      <label>Find a place to</label>
+      <%= select_tag :types, options_for_select(LocationCategory.all.map{|lc| [lc.display_name, lc.name]}, params[:types]), :class => 'list_menu' %>
+      <label>near</label>
+      <%= text_field_tag :search, @search, :id => "searchTextField", :class => 'form_field' %>
+      <%= submit_tag "", :name => nil, :class => 'button' %>
+    </form>
+  </div>
+</div><!--banner end-->
+<div class="content nopadd"><!--content start-->
+  <div id='start-splash'>
+    <div id='discover-button'>
+      <%= link_to image_tag('new_splash_screen_OrangeButton.png'), places_path(:search => 'Inman Park, Atlanta, GA') %>
+    </div>
+    <div id='splash-social-buttons'>
+      <%= link_to image_tag('facebook_button.png'), "http://www.facebook.com/nearbythis", :target => :new %>
+      <%= link_to image_tag('twitter_button.png'), "https://twitter.com/#!/nearbythis", :target => :new %>
+    </div>
+  </div>
+</div><!--content end-->

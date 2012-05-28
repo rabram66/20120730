@@ -20,7 +20,7 @@ class EventBrite
   ID_PREFIX        = 'EB'
 
   attr_reader :id, :name, :description, :address, :city, :state, 
-              :latitude, :longitude, :url, 
+              :latitude, :longitude, :url, :thumbnail_url,
               :start_date, :end_date, :venue, :category
 
   def initialize(attrs={})
@@ -85,7 +85,8 @@ class EventBrite
         :name      => result['title'],
         :category  => result['category'],
         :url       => result['url'],
-        :description => @sanitizer.strip(result['description'])
+        :description => @sanitizer.strip(result['description']),
+        :thumbnail_url => result['logo']
       }
       unless result['venue'].blank?
         res = result['venue']

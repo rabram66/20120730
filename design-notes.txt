@@ -1,0 +1,10 @@
+- We need a new favicon
+- The details page of the new design displays a link to the locations website; this data is currently not part of our location data
+- Footer links need to be defined; I am removing them temporarily
+- Because we use the Google Places Autocomplete API on the home page, and the new design does not include a map on the homepage, we are required by the Google terms of use to display a Powered by Google logo somewhere on the home page.
+- I still do not know what are the business rules around the display of the Twitter box on the locations list (left column); What are the rules for the number? What do I display if its a location for which we don't have a twitter name (that would be for all Google Places locations by the way)
+- I realized that pagination is not required for the locations list or the twitter mentions as the designer has implemented scrolling; which, in retrospect, I think looks pretty good
+- We will, however, need some way of viewing more listings for deals and events; I should be able to put something in place for that
+- Regarding the searchability of the site via crawlers as it relates to Ajax; the use of hashbang URIs has really fallen out of favor since HTML5 supports "pushState" events; therefore, for this first implementation the details page is actually a separate page (not Ajax), once I get this initial design implemented; I will change the page refresh to an Ajax call with pushState.
+
+I am making good progress; however, understand that this is a massive redesign.

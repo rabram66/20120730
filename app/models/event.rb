@@ -37,6 +37,10 @@ class Event < ActiveRecord::Base
   def url
   end
 
+  def thumbnail_url
+    "/images/event_icon.jpg"
+  end
+
   def name_and_city
     "#{name} #{city}"
   end

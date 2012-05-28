@@ -150,6 +150,24 @@ class Location < ActiveRecord::Base
       }
     end)
   end
+  
+  def recent_twitter_mentions(within)
+    cached_twitter_mentions.select { |tweet|
+      (Time.now - tweet.created_at).abs < within
+    }
+  end
+
+  def recent_twitter_status(within)
+    if cached_twitter_status
+      cached_twitter_status if (Time.now - cached_twitter_status.created_at).abs < within 
+    end
+  end
+
+  def tweet_count(within=7.days)
+    count = recent_twitter_mentions(within).length
+    count += 1 if recent_twitter_status(within)
+    count
+  end
 
   def tweets(count=10)
     !twitter_name.blank? ? Tweet.latest(twitter_name,count) : []

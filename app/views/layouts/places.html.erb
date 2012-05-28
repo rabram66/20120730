@@ -14,7 +14,7 @@
     <%= render :partial => '/shared/google_analytics' %>
     <%= csrf_meta_tag %>
     <%= yield :head %>
-    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
   </head>
 
   <body onload="<%= "initialize()" if @location %>" onunload="GUnload();">    
@@ -55,11 +55,10 @@
 
           <div class="footer">
             <p style="text-align:center;">
-              <a href="#">About</a>
-              <a href="#">Contact</a>
-              <a href="#">Jobs</a>
-              <a href="#">Blog</a>
-              <a href="#">Signin</a>
+              <a href="/about">About</a>
+              <a href="/advertise">Advertise</a>
+              <a href="http://nearbythis.info/blog" target="_blank">Blog</a>
+              <%= link_to "Signin", new_user_session_path %>
             </p>
           </div>
 

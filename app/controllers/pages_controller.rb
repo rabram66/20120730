@@ -1,7 +1,9 @@
 class PagesController < ApplicationController
   
-  layout false
-
   def landing
+    layout false
+  end
+
+  def dashboard
   end
 end

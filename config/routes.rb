@@ -2,11 +2,7 @@ NearbyThis::Application.routes.draw do
   
   devise_for :users
   resources :users, :locations
-  resources :events do
-    member do
-      get :ical
-    end
-  end
+  resources :events, :except => :show
 
   #------------------------ Consumer --------------------------
   root :to => "places#index"
@@ -15,9 +11,13 @@ NearbyThis::Application.routes.draw do
   get "search" => "places#search"
   get "details/:reference" => "places#details", :as => :location_details
   get "events/:id" => "places#event", :as => :event_detail
-  get "events/:id/ical" => "places#ical", :as => :event_to_ical
+  get "events/:id/ical" => "places#ical", :as => :ical_event
   post "favorite/:reference" => "places#favorite", :as => :location_favorite
   post "recent_tweeters" => "places#recent_tweeters", :as => :recent_tweeters
+
+  # -------------------------- Superflous pages --------------------
+  get "/about" => 'places#about'
+  get "/advertise" => 'places#advertise'
 
   #----------------------------- Mobile ---------------------------
   get "/mobile"             => "mobile#index",  :as => :mobile_index
@@ -28,7 +28,7 @@ NearbyThis::Application.routes.draw do
   get "/mobile/event/:id"   => "mobile#event",  :as => :mobile_event
   get "/mobile/city/:city"  => "mobile#city",  :as => :mobile_city
 
-  #------------------------------ API ==----------------------------
+  #------------------------------ API ------------------------------
   namespace :api do
     get "/"                  => "api#index"
     get "/places"            => "places#index", :as => :places
@@ -38,6 +38,7 @@ NearbyThis::Application.routes.draw do
     get "/deals"             => "deals#index",  :as => :deals
     get "/twitter_profile"   => "api#twitter_profile", :as => :twitter_profile
   end
-  
-    
+
+  # ---------------------------- Backend -----------------------------
+  match '/dashboard' => 'pages#dashboard', :as => :user_root
 end

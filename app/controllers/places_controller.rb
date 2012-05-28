@@ -12,6 +12,14 @@ class PlacesController < ApplicationController
   
   def start
   end
+  
+  def about
+    load_for_index
+  end
+
+  def advertise
+    load_for_index
+  end
 
   # GET /
   def index

@@ -129,4 +129,7 @@ div.ad-container { width: 610px; height: 76px; text-align: center; }
 div.footer a {margin: 5px 20px 5px 20px;}
 #events-list {display: none;}
 .top_info_sec a                { text-decoration:underline; color:#3390ee; display:inline-block}       
-.top_info_sec a:hover            { text-decoration:none}   
+.top_info_sec a:hover            { text-decoration:none}
+.info-page {background: white;}
+.info-page p {margin-top: 0px; margin-bottom: 20px;}
+.info-page ul {list-style-type: square; margin-left: 20px; margin-top: 10px;}

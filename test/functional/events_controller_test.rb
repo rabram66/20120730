@@ -35,7 +35,7 @@ class EventsControllerTest < ActionController::TestCase
         Event.any_instance.stubs(:tweets).returns([])
       end
 
-      [:show, :edit].each do |action|
+      [:edit].each do |action|
         should "allow access to #{action}" do
           get action, id: @event.id
           assert_response :success
@@ -82,11 +82,6 @@ class EventsControllerTest < ActionController::TestCase
       end
 
       assert_redirected_to event_path(assigns(:event))
-    end
-
-    should "show event" do
-      get :show, id: @event.to_param
-      assert_response :success
     end
 
     should "get edit" do

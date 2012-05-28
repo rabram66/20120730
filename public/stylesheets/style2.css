@@ -76,7 +76,6 @@ body                    { color:#b1b1b1; font-family:Verdana, Geneva, sans-serif
 .conect                   { background:url(../images/twtr_bx.png) no-repeat; width:50px; height:42px; padding:7px;}      
 .conect span                { display:block; text-align:center; color:#b32e02; font-size:13px; margin-bottom:10px;} 
 .conect p                 { background:url(../images/twt.jpg) left center no-repeat; padding-left:35px; color:#7a7e80 } 
-a.visit                   { background:url(../images/visit_bg.jpg) no-repeat;  width:492px; height:40px; display:block; margin: 7px 0;  text-shadow:1px 1px #fff; text-align:center; line-height:40px; font-size:15px; font-weight:bold   }
 .rgt_section                { width:610px; }
 .top_info_sec               { border-bottom:5px #c0c0c0 solid; padding:20px;}
 .map                    { width:190px;} 
@@ -94,8 +93,8 @@ a.visit                   { background:url(../images/visit_bg.jpg) no-repeat;  w
 .wat_day_saying .txtside          { width:280px;} 
 .wat_day_saying .txtside h6         { font-size:15px; color:#000; }
 .wat_day_saying .txtside h6 span      { font-size:11px; color:#707478; padding-left:20px; font-weight:normal }          
-.wat_day_saying .txtside p          { color:#526c78; line-height:18px;}              
-.wat_other_saying             { height:375px; padding:20px; overflow:scroll; overflow-x: hidden}  
+.wat_day_saying .txtside p          { color:#526c78; line-height:18px;}
+.wat_other_saying             { height:382px; padding:20px; overflow:scroll; overflow-x: hidden}  
 .wat_other_saying .txtside          { width:495px;}
 .wat_other_saying ul li           { border-bottom:1px #d4d4d4 solid; padding:10px 0}  
 .wat_other_saying ul li  p          { color:#000 !important; width:400px; padding-bottom:5px;}
@@ -125,7 +124,7 @@ a.visit                   { background:url(../images/visit_bg.jpg) no-repeat;  w
 /* details */
 div.ad-container { width: 610px; height: 76px; text-align: center; }
 #map_canvas {width: 189px; height: 220px;}
-#directions-container {display: none; height:375px; padding:20px; overflow:scroll; overflow-x: hidden}
+#directions-container {display: none; height:382px; padding:20px; overflow:scroll; overflow-x: hidden}
 div.footer a {margin: 5px 20px 5px 20px;}
 #events-list {display: none;}
 #deals-list {display:none;}
@@ -134,3 +133,5 @@ div.footer a {margin: 5px 20px 5px 20px;}
 .info-page {background: white;}
 .info-page p {margin-top: 0px; margin-bottom: 20px;}
 .info-page ul {list-style-type: square; margin-left: 20px; margin-top: 10px;}
+.right-ad-container {text-align: center;border-top: 5px silver solid;padding: 10px;}
+.left-ad-container { background:url(../images/visit_bg.jpg) no-repeat;  width:492px; height:40px; display:block; margin: 7px 0;  text-shadow:1px 1px #fff; text-align:center; line-height:40px; font-size:15px; font-weight:bold   }

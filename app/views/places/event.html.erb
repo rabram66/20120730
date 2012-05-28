@@ -69,7 +69,7 @@
                 <%= link_to image_tag(tweet.profile_image_url, :width => 48, :height => 48, :alt => 'Twitter'), tweet.twitter_page_url, :target => :new %>
               </span>
               <div class="txtside flt_Rt">
-                <h6><em>@<%= tweet.screen_name %></em><span class="flt_Rt"><%= time_ago_in_words tweet.created_at %></span> <span class="clear_0">&nbsp;</span></h6>
+                <h6><em><%= link_to "@#{tweet.screen_name}", :alt => 'Twitter', :target => '_blank' %></em><span class="flt_Rt"><%= time_ago_in_words tweet.created_at %></span> <span class="clear_0">&nbsp;</span></h6>
                 <p>
                   <%= auto_link( tweet.text, :link => :urls, :html => {:target => :blank} ).html_safe %>
                 </p>

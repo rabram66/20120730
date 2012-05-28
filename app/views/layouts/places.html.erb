@@ -53,11 +53,32 @@
             <div class="clear_0">&nbsp;</div>
           </div>
 
+          <!-- javascript for feedback link -->
+          <script type="text/javascript">
+            var _usrp = {
+            type: "inline",
+            company: "nearbythis",
+            host: "nearbythis.userrules.com",
+            mode: "advanced",
+            sso: {},
+            getVisitorId: function() {return "";},
+            getAdditionalParams: function() {return "";}
+            };
+
+            (function(D) {
+            var _usr = D.createElement("script"), s = D.getElementsByTagName("script")[0];
+            _usr.type = "text/javascript"; _usr.async = true;
+            _usr.src = ("https:" == D.location.protocol ? "https" : "http" ) + "://dtkm4pd19nw6z.cloudfront.net/js/userrules/9a41a826e957127b4e5bfc7d140e45c4/feedback.canary.js";
+            s.parentNode.insertBefore(_usr, s);
+            })(document);
+          </script>
+
           <div class="footer">
             <p style="text-align:center;">
               <a href="/about">About</a>
               <a href="/advertise">Advertise</a>
               <a href="http://nearbythis.info/blog" target="_blank">Blog</a>
+              <a href="javascript: void(0);" onclick="USR.Main.show(); return false;">Feedback</a>
               <%= link_to "Signin", new_user_session_path %>
             </p>
           </div>

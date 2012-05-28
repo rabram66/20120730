@@ -86,7 +86,7 @@ class EventBrite
         :category  => result['category'],
         :url       => result['url'],
         :description => @sanitizer.strip(result['description']),
-        :thumbnail_url => result['logo']
+        :thumbnail_url => result['logo'] || "/images/event_icon.jpg"
       }
       unless result['venue'].blank?
         res = result['venue']

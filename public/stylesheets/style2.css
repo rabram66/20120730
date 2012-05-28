@@ -128,6 +128,7 @@ div.ad-container { width: 610px; height: 76px; text-align: center; }
 #directions-container {display: none; height:375px; padding:20px; overflow:scroll; overflow-x: hidden}
 div.footer a {margin: 5px 20px 5px 20px;}
 #events-list {display: none;}
+#deals-list {display:none;}
 .top_info_sec a                { text-decoration:underline; color:#3390ee; display:inline-block}       
 .top_info_sec a:hover            { text-decoration:none}
 .info-page {background: white;}

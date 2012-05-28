@@ -10,30 +10,40 @@
     <div class="clear_0">&nbsp;</div>
   </div>
   <div class="sub_link">
-    <p><a href="javascript:void(0)" id='show-deals' class="active"><%= @deals.count %> Daily Deals</a> &nbsp; | &nbsp; <a href="javascript:void(0)" id='show-events'><%= @events.count %> Local Events</a> </p>
+    <p><a href="javascript:void(0)" id='show-deals'><%= @deals.count %> Daily Deals</a> &nbsp; | &nbsp; <a href="javascript:void(0)" id='show-events'><%= @events.count %> Local Events</a> </p>
   </div>
-  <ul id='deals-list' class="list_itm">
-    <% @deals.each do |deal| %>
-      <li>
-        <a href=<%= deal.url %> target='blank'>
-          <div class="imgside flt_Lt"><%= image_tag deal.thumbnail_url, :width => 52, :height => 50 %></div>
-          <div class='link_txt flt_Lt'><%= deal.title %><br/><%= deal.name %></div>
-          <div class="clear_0">&nbsp;</div>
-        </a>
-      </li>
-    <% end %>
-  </ul>
-  <ul id='events-list' class='list_itm'>
-    <% @events.each do |event| %>
-      <li>
-        <a href=<%= event_source_url(event) %>>
-          <div class="imgside flt_Lt"><%= image_tag event.thumbnail_url, :width => 52, :height => 50 %></div>
-          <div class='link_txt flt_Lt'><%= event.name %></div>
-          <div class="clear_0">&nbsp;</div>
-        </a>
-      </li>
-    <% end %>
-  </ul>
+  <div id='deals-list'>
+    <div class="check_out">
+      <p>Deals in your area</p>
+    </div>
+    <ul class="list_itm">
+      <% @deals.each do |deal| %>
+        <li>
+          <a href=<%= deal.url %> target='blank'>
+            <div class="imgside flt_Lt"><%= image_tag deal.thumbnail_url, :width => 52, :height => 50 %></div>
+            <div class='link_txt flt_Lt'><%= deal.title %><br/><%= deal.name %></div>
+            <div class="clear_0">&nbsp;</div>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <div id='events-list'>
+    <div class="check_out">
+      <p>Local events happening nearby</p>
+    </div>
+    <ul class='list_itm'>
+      <% @events.each do |event| %>
+        <li>
+          <a href=<%= event_source_url(event) %>>
+            <div class="imgside flt_Lt"><%= image_tag event.thumbnail_url, :width => 52, :height => 50 %></div>
+            <div class='link_txt flt_Lt'><%= event.name %></div>
+            <div class="clear_0">&nbsp;</div>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  </div>
   
   <div class="check_out">
     <p>Check out what's happening now at nearby businesses</p>

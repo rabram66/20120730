@@ -1,13 +1,13 @@
 $(document).ready(function() {
   
   $('#show-deals').click( function() {
-    $('#events-list').hide();
-    $('#deals-list').show();
+    $('#deals-list').toggle();
+    $('#show-deals').toggleClass('active')
   });
 
   $('#show-events').click( function() {
-    $('#deals-list').hide();
-    $('#events-list').show();
+    $('#events-list').toggle();
+    $('#show-events').toggleClass('active')
   });
 
   // Toggle Directions display

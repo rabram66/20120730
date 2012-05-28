@@ -1,127 +1,19 @@
-<%= render "script" %>
-
-<script type='text/javascript'>
-  var twitterNames = [
-    <%= @locations.select{|l1| !l1.twitter_name.blank?}.map{|l2| "'#{l2.twitter_name}'"}.join(',') -%>
-  ];
-
-  var fetchCount = 0;
-  var maxFetchCount = 3;
-
-  function recentTweetUpdate() {
-    setTimeout(function() {
-      checkStatus(function(data) {
-        $.each(data, function(i,name) {
-          $('img.'+name).fadeIn();
-        });
-        if (fetchCount < maxFetchCount) recentTweetUpdate();
-      });
-    }, 5000);
-  }
-
-  function checkStatus(callback) {
-    fetchCount++;
-    $.post("/recent_tweeters", { 'n[]': twitterNames }, function(data) {
-      callback(data);
-    });
-  }    
-
-  $(function() {
-    recentTweetUpdate();
-  });
-</script>
-<div class="banner"><!--banner start-->
-  <div class="banner_area">
-    <form action="" method="get" id='place_search'>
-      <label>Find a place to</label>
-      <%= select_tag :types, options_for_select(LocationCategory.all.map{|lc| [lc.display_name, lc.name]}, params[:types]), :class => 'list_menu' %>
-      <label>near</label>
-      <%= text_field_tag :search, @search, :id => "searchTextField", :class => 'form_field' %>
-      <%= submit_tag "", :name => nil, :class => 'button' %>
-    </form>
-  </div>
-</div><!--banner end-->
-
-<div class="content nopadd"><!--content start-->
-  <div id="places-list" class="content_left padd"><!--content_left start-->
-    <% @locations.each_with_index do |location, index| %>
-      <div class='<%="block #{index < 25 ? 'initial' : 'expanded'}"-%>'>
-        <p>
-          <% if Location === location && can?(:update, location) %>
-            <%= link_to 'Edit', edit_location_path(location), :class => 'inline' %>
-          <% end %>
-          <a href="<%= url_for_location_details(location) %>">
-            <%= image_tag profile_image_url(location), :class => 'profile-image' %>
-            <span class='place-name-and-description'>
-              <%= location.name %><strong><%= " - #{location.address}" unless location.address.blank? %></strong>
-              <% if location.description.present? -%>
-                <br/><span class='place-description'><%= truncate(location.description, :length => 80) %></span>
-              <% end -%>
-            </span>
-            <% if location.tweets? -%>
-              <%= image_tag "twitter.jpg" %>
-            <% end -%>
-            <% if location.twitter_deal? -%>
-              <span class='twitter-deal'>$</span>
-            <% end -%>
-            <% if Location === location && !location.twitter_name.blank? -%>
-              <%= image_tag "flame.png", :class => "#{location.twitter_name} recent_tweet", 
-                                         :style => location.recent_tweet? ? "display:inline" : "display:none" -%>
-            <% end -%>
-            <% if location.deals? -%>
-              <%= image_tag "yipit-logo-small.jpg" %>
-            <% end -%>
-            <span class='distance-from'><%= number_with_precision(location.distance_from(@coordinates), :precision => 1) %> miles</span>
-          </a>
-        </p>
-      </div>
-    <% end -%>
-    <p id='places-list-bottom'>
-      <a id='show-more-places' class='show-more-less' href='javascript:void(0);'>More Results ...</a>
-      <a id='show-less-places' class='show-more-less' href='javascript:void(0);'>Less Results ...</a>
+<div id='index-right-content'>
+  <div class="one_step">
+    <p>
+    Your one stop app for deals,  dining, shopping and events to explore nearby. 
     </p>
-  </div><!--content_left end-->
-
-  <div id="places-list-sidebar" class="sidebar"><!--sidebar start-->
-    <% unless @events.count == 0 %>
-      <h3 id='events-heading'>Nearby Events</h3>
-      <div class='sidebar_block sidebar_txt'>
-        <% unless @events.happening_now.count == 0 %>
-          <h4>Happening Today</h4>
-          <% @events.happening_now.each do |event| %>
-            <p>
-              <%= (Event === event) ? link_to(content_tag(:strong, event.name), event) : link_to(event.name, event_path(event.id)) %>
-            </p>
-          <% end -%>
-        <% end -%>
-        <% unless @events.coming_soon.count == 0 %>
-          <h4>Coming Soon</h4>
-          <% @events.coming_soon.each do |event| %>
-            <p>
-              <%= (Event === event) ? link_to(content_tag(:strong, event.name), event) : link_to(event.name, event_path(event.id)) %>
-            </p>
-          <% end -%>
-        <% end -%>
+  </div>
+  <div class="applction_box">
+    <img src="images/phone.jpg" width="178" height="347" alt="" class="flt_Lt"/>
+    <div class="applction_txt flt_Lt ">
+      <div class="txt1">
+        <h4>Take Us With You.</h4>
+        <p>Download our mobile app from the app store to explore nearby deals, specials and events.</p>
       </div>
-    <% end -%>
-    <% unless @deals.length == 0 %>
-      <h3 id='deals-heading'>Nearby Deals <span class='powered-by'>powered by <%= image_tag "yipit-logo-small.jpg"%></span></h3>
-      <div class='sidebar_block sidebar_txt'>
-        <% @deals.each do |deal| %>
-          <p>
-            <a href=<%= deal.url %> target='blank'>
-              <span class='deal-title'><%= deal.title %></span><br/>
-              <span class='deal-merchant-name'><%= deal.name %></span>
-            </a>
-          </p>
-        <% end -%>
-      </div>
-    <% end -%>
-    <div class="sidebar_map">
-      <div id="maps"></div>
+      <a href="#" class="app_store"><img src="images/app_stor_06.jpg" width="130" height="47" alt=""></a>
+      <a href="#"><img src="images/scan_06.jpg" width="124" height="139" alt=""></a>
     </div>
-  </div><!--sidebar end-->
-
-  <div class="clear"></div>
-
-</div><!--content end-->
+    <div class="clear_0">&nbsp;</div>
+  </div>
+</div>

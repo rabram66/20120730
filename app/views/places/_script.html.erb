@@ -1,62 +1,94 @@
-<script src="http://www.google.com/jsapi?key=ABQIAAAAhLOpZfesDeMKWC3zGdB4BxRyAQIOZcmWQaZgGjJb-w1DbZAmsxTfbS2hwencPWx3W54SemwGmRyFwA"></script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
 <script>
-  var map;
   var latitude = <%= session[:search].blank? ? @coordinates[0] : session[:search][0] %>;
   var longitude = <%= session[:search].blank? ? @coordinates[1] : session[:search][1] %>;
-  function initialize() {    
-    var mapOptions = {
-      center: new google.maps.LatLng(latitude, longitude),
-      zoom: 13,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    map = new google.maps.Map(document.getElementById('maps'), mapOptions);
-    
-    var point = new google.maps.LatLng(latitude,longitude);
-    var marker = new google.maps.Marker({
-      position: point,
-      map: map
-    });
-    marker.setMap(map);  
-    
-    var input = document.getElementById('searchTextField');
-    var autocomplete = new google.maps.places.Autocomplete(input);
 
-    autocomplete.bindTo('bounds', map);    
+  function toRadians(degrees) {
+    return degrees * (Math.PI / 180);
   }
+  
+  function toDegrees(radians) {
+    return radians * (180 / Math.PI);
+  }
+  
+
+  /* Simple approximation */
+  function bounds(lat, lng, radius) {
+    var R = 6371;  // earth radius in km
+    var radius = 25; // km
+
+    // southwest
+    var sw_lat = lat - toDegrees(radius/R);
+    var sw_lng = lng - toDegrees(radius/R/Math.cos(toRadians(lat)));
+
+    // northeast
+    var ne_lat = lat + toDegrees(radius/R);
+    var ne_lng = lng + toDegrees(radius/R/Math.cos(toRadians(lat)));
+
+    return new google.maps.LatLngBounds(
+      new google.maps.LatLng(sw_lat, sw_lng), // southwest
+      new google.maps.LatLng(ne_lat, ne_lng)  // northeast
+    );
+  }
+
+
+  function initialize() {
+    var defaultBounds = bounds(latitude, longitude);
+    var input = document.getElementById('searchTextField');
+    var autocomplete = new google.maps.places.Autocomplete(input, {bounds: defaultBounds});
+  }
+
   google.maps.event.addDomListener(window, 'load', initialize);
    
   (function () {    
     google.setOnLoadCallback(function () {      
-      markOutLocation = function (lat, lng) {
-        var latLong = new google.maps.LatLng(lat, lng),
-        marker = new google.maps.Marker(latLong);
-        map.setCenter(latLong, 13);
-      };
       <% if session[:search].blank? %>
-        // Check for geolocation support       
         if (navigator.geolocation) {
-          // Get current position
           navigator.geolocation.getCurrentPosition(function (position) {
-            // Success!
             longitude = position.coords.longitude;
             latitude = position.coords.latitude;
-            markOutLocation(position.coords.latitude, position.coords.longitude);
-            window.location = "/search?lng=" + longitude + "&lat=" + latitude ;
-          }, 
-          function () {            
-            markOutLocation(<%= @coordinates[0] %>, <%= @coordinates[1] %>);
-          }        
-        );      
-        }
-        else {             
-          markOutLocation(<%= @coordinates[0] %>, <%= @coordinates[1] %>);
+            window.location = "/search?lng=" + longitude + "&lat=" + latitude;
+          });      
         }
       <% end %>
-      
       google.setOnLoadCallback(initialize);
+    });
+  })();
 
-    });        
-  })();    
-      
+  var twitterNames = [
+    <%= @locations.select{|l1| !l1.twitter_name.blank?}.map{|l2| "'#{l2.twitter_name}'"}.join(',') -%>
+  ];
+
+  // var fetchCount = 0;
+  // var maxFetchCount = 3;
+  // 
+  // function recentTweetUpdate() {
+  //   setTimeout(function() {
+  //     checkStatus(function(data) {
+  //       $.each(data, function(i,name) {
+  //         $('img.'+name).fadeIn();
+  //       });
+  //       if (fetchCount < maxFetchCount) recentTweetUpdate();
+  //     });
+  //   }, 5000);
+  // }
+  // 
+  // function checkStatus(callback) {
+  //   fetchCount++;
+  //   $.post("/recent_tweeters", { 'n[]': twitterNames }, function(data) {
+  //     callback(data);
+  //   });
+  // }
+  
+  $(document).ready(function() {
+    // recentTweetUpdate();
+    $('#search_button').click( function() {$('#place_search').submit()} ); // go button
+    $('#location_type_nav a').click( function(event) {
+      $('#place_search input#location_type').val(event.target.textContent);
+      $('#place_search').submit();
+    });
+    var active_tab = '#location_type_nav li#nav' + $('#place_search input#location_type').val();
+    $('#location_type_nav li').removeClass('active');
+    $(active_tab).addClass('active');
+  });
+  
 </script>

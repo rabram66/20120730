@@ -41,7 +41,7 @@
     <ul class="chk_list">
       <% @locations.each_with_index do |location, index| %>
         <li>
-          <a href="<%= url_for_location_details2(location) %>">
+          <a href="<%= url_for_location_details(location) %>">
             <div class="smal_img flt_Lt">
               <%= image_tag profile_image_url(location), :width => 36, :height => 45 %>
             </div>

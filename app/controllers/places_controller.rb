@@ -3,7 +3,7 @@ class PlacesController < ApplicationController
   has_mobile_fu
 
   before_filter :redirect_mobile_request, :except => :recent_tweeters
-  before_filter :redirect_to_start, :only => :index
+  # before_filter :redirect_to_start, :only => :index
 
   respond_to :html, :json, :js
   
@@ -13,20 +13,9 @@ class PlacesController < ApplicationController
   def start
   end
 
-  # GET / (/places)
+  # GET /
   def index
-    set_coordinates
-
-    category = params[:types].blank? ? LocationCategory::EatDrink : LocationCategory.find_by_name(params[:types])
-
-    @locations = PlaceLoader.near(@coordinates, category)
-
-    @events = EventSet.upcoming_near(@coordinates)
-    @deals = DealSet.find_by_geocode( @coordinates )
-
-    @locations.each do |location|
-      location.deals = @deals.matching_deals(location)
-    end
+    load_for_index
   end
   
   # GET /search?lat=33.3lng=-84.5 # Called via ajax based on browser geo nav
@@ -38,6 +27,7 @@ class PlacesController < ApplicationController
   
   # GET /details/QUIOUREIOWFI-FJSDJFII38427387 (reference)
   def details
+    load_for_index
     reference = params[:reference]
 
     case reference
@@ -61,9 +51,21 @@ class PlacesController < ApplicationController
       @last_tweet = @location.twitter_status    
       @last_post = @location.facebook_status      
     end
+
+  end
+
+  def event
+    load_for_index
+    load_event
+  end
+
+  def ical
+    load_event
+    render :text => to_ical(@event), :header => {'Content-Type'=>'text/calendar'}, :layout => false
   end
 
   # XHR POST returns those twitter names with cached statuses
+  # NOT CURRENTLY USED; this maybe replaced by a similar request that fetches tweet counts
   def recent_tweeters
     within = 1.day
     now = Time.now
@@ -88,9 +90,46 @@ class PlacesController < ApplicationController
   
   private
   
+  def load_for_index
+    set_coordinates
+    
+    @location_type = params[:location_type] || 'ALL'
+    category = case @location_type
+      when /eat/i; LocationCategory::EatDrink
+      when /shop/i; LocationCategory::ShopFind
+      when /fun/i; LocationCategory::Play
+      when /spa/i; LocationCategory::Spa
+    end
+
+    @locations = PlaceLoader.near(@coordinates, category)
+
+    @events = EventSet.upcoming_near(@coordinates)
+    @deals = DealSet.find_by_geocode( @coordinates )
+
+    @locations.each do |location|
+      location.deals = @deals.matching_deals(location)
+    end
+  end
+  
   def load_from_reference
     reference = params[:reference]
     @location = reference =~ /^[A-Z]/ ? Place.find_by_reference(reference) : Location.find(reference)
+  end
+
+  def load_event
+    @event = (params[:id] =~ /^EB/) ? EventBrite.find_by_id(params[:id]) : Event.find(params[:id])
+  end
+
+  def to_ical(event)
+    RiCal.Calendar do |cal|
+      cal.event do |cal_event|
+        cal_event.summary = event.name
+        cal_event.dtstart = event.start_date if event.start_date
+        cal_event.dtend = event.end_date if event.end_date
+        cal_event.location = event.full_address
+        cal_event.url = event_url(event.id)
+      end
+    end
   end
   
   def set_coordinates
@@ -122,9 +161,9 @@ class PlacesController < ApplicationController
     cookies[:address] ? cookies[:address].split("&") : DEFAULT_COORDINATES
   end
 
-  def redirect_to_start
-    redirect_to :action => 'start' unless cookies[:address] || params[:search]
-  end
+  # def redirect_to_start
+  #   redirect_to :action => 'start' unless cookies[:address] || params[:search]
+  # end
   
   def redirect_mobile_request
     if is_mobile_device?

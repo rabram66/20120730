@@ -14,14 +14,10 @@ NearbyThis::Application.routes.draw do
   get "/" => "places#index", :as => :places
   get "search" => "places#search"
   get "details/:reference" => "places#details", :as => :location_details
+  get "events/:id" => "places#event", :as => :event_detail
+  get "events/:id/ical" => "places#ical", :as => :event_to_ical
   post "favorite/:reference" => "places#favorite", :as => :location_favorite
   post "recent_tweeters" => "places#recent_tweeters", :as => :recent_tweeters
-
-  #------------------------------ V2 -------------------------------
-  get "/places2" => "places2#index"
-  get "details2/:reference" => "places2#details2", :as => :location_details2
-  get "event/:id" => "places2#event", :as => :event_detail
-  get "event/:id/ical" => "places2#ical", :as => :event_to_ical
 
   #----------------------------- Mobile ---------------------------
   get "/mobile"             => "mobile#index",  :as => :mobile_index
@@ -31,13 +27,6 @@ NearbyThis::Application.routes.draw do
   get "/mobile/events"      => "mobile#events", :as => :mobile_events
   get "/mobile/event/:id"   => "mobile#event",  :as => :mobile_event
   get "/mobile/city/:city"  => "mobile#city",  :as => :mobile_city
-
-  #---------------------------- Iphone ----------------------------
-  get "/iphone" => "iphone#index"
-  get "/iphone_details" => "iphone#iphone_details"
-  get "/iphone_delete_place/:reference" => "iphone#delete_place"
-  get "/iphone_deals" => "iphone#deals"
-  get "/iphone_events" => "iphone#events"
 
   #------------------------------ API ==----------------------------
   namespace :api do

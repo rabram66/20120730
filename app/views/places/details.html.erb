@@ -1,6 +1,5 @@
 <%- @title = "#{@location.page_title}" %>
 <% content_for :javascripts do %>
-  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
   <script type="text/javascript" src="/javascripts/directions.js"></script>
   <script type="text/javascript" charset="utf-8">
     window.twttr = (function (d,s,id) {
@@ -18,112 +17,107 @@
 
 <div style="display:none">
   <% unless cookies[:address].blank? -%>
-    <%= hidden_field_tag :orig_lat, cookies[:address].split('&').first %>
-    <%= hidden_field_tag :orig_lng, cookies[:address].split('&').last %>
+    <%= hidden_field_tag :orig_lat, cookies[:address].first %>
+    <%= hidden_field_tag :orig_lng, cookies[:address].last %>
   <% end -%>
   <%= hidden_field_tag :dest_lat, @location.latitude %>
   <%= hidden_field_tag :dest_lng, @location.longitude %>
 </div>  
 
-<div class="content"><!--content start-->
-  <div class="content_left"><!--content_left start-->
-    <div class="left_top">
-      <h2><%= @location.name %>
-        <% if @location.twitter? %>
-          <span>
-            <%= link_to image_tag('twitter.jpg', :alt => 'Twitter'), @location.twitter_page_url, :target => :new %>
-          </span>
+<div id='place-detail'>
+  <div class="top_info_sec">
+    <div class="infoside flt_Lt">
+      <div class="contact">
+        <h5><%= @location.name %><br/><span><%= @location.vicinity %></span></h5>
+        <% if @location.phone_number.present? %>
+          <span class="phone"><%= number_to_phone @location.phone_number, :area_code => true %></span>
         <% end -%>
-        <% if @location.facebook? %>
-          <strong>
-            <%= link_to image_tag('facebook.jpg', :alt => 'Facebook'), @location.facebook_page_url, :target => :new %>
-          </strong>
-        <% end -%>
+      </div>
+      <div id='tweet-this-buttons'>
         <%= render :partial => 'shared/tweet_this' %>
-      </h2>
-      <h3>
-        <%= @location.vicinity %>
-        <span id='get-directions-link'> - <a href="javascript:void(0)" id="direction_id">Get Directions</a></span>
-        <% unless @location.phone_number.blank? %>
-          <span class='phone-number'><%= number_to_phone @location.phone_number, :area_code => true %></span>
+      </div>  
+      <div class="wat_day_saying">
+        <% if @last_post || @last_tweet %>
+          <h5>What They Are Saying</h5>
+          <ul>
+            <% if @last_post %>
+              <li>
+                <span class="img">
+                  <%= image_tag profile_image_url(@location), :width => 48, :height => 48 %>
+                </span>
+                <div class="txtside flt_Rt">
+                  <h6>
+                    <%= @location.name %>
+                    <span>
+                      <%= link_to image_tag('f.jpg', :alt => 'Facebook', :width => 21, :height => 21), @location.facebook_page_url, :target => :new %>
+                      2h
+                    </span>
+                  </h6>
+                  <p>
+                    <%= auto_link( @last_post.text, :link => :urls, :html => {:target => :new} ).html_safe %>
+                  </p>
+                </div>
+                <div class="clear_0"></div>
+              </li>
+            <% end -%>
+            <% if @last_tweet %>
+              <li>
+                <span class="img">
+                  <%= image_tag profile_image_url(@location), :width => 48, :height => 48 %>
+                </span>
+                <div class="txtside flt_Rt">
+                  <h6>
+                    <%= @location.name %>
+                    <span>
+                      <%= link_to image_tag('t.jpg', :alt => 'Twitter', :width => 21, :height => 21), @location.twitter_page_url, :target => :new %>
+                      <%= time_ago_in_words @last_tweet.created_at %>
+                    </span>
+                  </h6>
+                  <p>
+                    <%= auto_link( @last_tweet.text, :link => :urls, :html => {:target => :new} ).html_safe %>
+                  </p>
+                </div>
+                <div class="clear_0"></div>
+              </li>
+            <% end -%>
+          </ul>
         <% end -%>
-      </h3>
+      </div>
     </div>
-            
-    <% if @last_tweet -%>
-      <div id='twitter-status' class="top_box">
-        <%= link_to image_tag(@last_tweet.profile_image_url, :alt => 'Twitter'), @location.twitter_page_url, :target => :new %>
-        <p>
-          <%= auto_link( @last_tweet.text, :link => :urls, :html => {:target => :new} ).html_safe %>
-          <span class='tweeted-at'>&nbsp;-&nbsp;<%= time_ago_in_words @last_tweet.created_at %> ago</span>
-          <span class='follow-link'><%= link_to 'follow', @last_tweet.follow_url, :class => 'follow-link', :target => '_blank' %></span>
-        </p>
-        <div class="clear"></div>
-      </div>
-    <% end -%>
-
-    <% if @last_post -%>
-      <div id='facebook-status' class="threed_box">
-        <%= link_to image_tag('fb.jpg', :alt => 'Facebook'), @location.facebook_page_url, :target => :new %>
-        <p>
-          <%= auto_link( @last_post.text, :link => :urls, :html => {:target => :new} ).html_safe %>
-          <span class='follow-link'><%= link_to 'visit page', @location.facebook_page_url, :class => 'follow-link', :target => :new %></span>
-        </p>
-        <div class="clear"></div>
-      </div>
-    <% end -%>
-
-    <div class="map_area">
+    <div class="mapside flt_Rt">
+      <a href="javascript:void(0)" id="direction_id" class='flt_Rt'>Directions</a>
+      <div class="clear_0">&nbsp;</div>
       <div id='map_canvas'></div>
-      <div class="black_pic">
-        <%= render :partial => 'shared/ad_container' %>
-      </div>
+      <!-- <a href="#" class="map"><img src="/images/map.jpg" width="189" height="220" alt=""></a> -->
     </div>
-
-  </div><!--content_left end-->
-
-  <div class="sidebar"><!--sidebar start-->
-    <div id='directions-sidebar'>
-      <h2>Walking Directions</h2>
+    <div class="clear_0"></div>
+  </div> <!-- end top_info section -->
+  <div>
+    <div id='directions-container'>
+      <h5>Walking Directions</h5>
       <div id='directions-panel-detail'></div>
     </div>
-    <% unless @location.deals.length == 0 %>
-      <div id='deal-panel'>
-        <h2>Today's Deal <span class='powered-by'>powered by <%= image_tag "yipit-logo-small.jpg"%></span></h2>
-        <% @location.deals.each do |deal| %>
-          <p>
-            <%= link_to deal.title, deal.url, :target => :new %>
-          </p>
-        <% end -%>
-      </div>
-    <% end -%>
-    <% unless @user_saying.length == 0 -%>
-      <div id='mentions-panel'>
-        <h2>What People Are Saying</h2>
-        <ul class='content'>
-        <% @user_saying.each do |tweet| -%>
-        <li>
-          <div class="twitter_box">
-            <div class="twitter_box_pic">
-              <%= link_to image_tag(tweet.profile_image_url, :alt => 'Twitter'), tweet.twitter_page_url, :target => :new %>
-            </div>
-            <div class="twitter_box_txt">
-              <h3><%= tweet.screen_name.titleize %> Says:</h3>
-              <p>
-                <%= auto_link( tweet.text, :link => :urls, :html => {:target => :blank} ).html_safe %>
-              </p>
-              <span class='tweeted-at'><%= time_ago_in_words tweet.created_at %> ago</span>
-              <span class='follow-link'><%= link_to 'follow', tweet.follow_url, :class => 'follow-link', :target => '_blank' %></span>
-            </div>
-            <div class="clear"></div>
-          </div>
-        </li>
-        <% end -%>
+    <% unless @user_saying.length == 0 %>
+      <div id='mentions-container' class="wat_day_saying wat_other_saying">
+        <h5>What Others Are Saying</h5>
+        <ul id='mentions-container'>
+          <% @user_saying.each do |tweet| %>
+            <li>
+              <span class="img">
+                <%= link_to image_tag(tweet.profile_image_url, :width => 48, :height => 48, :alt => 'Twitter'), tweet.twitter_page_url, :target => :new %>
+              </span>
+              <div class="txtside flt_Rt">
+                <h6><%= @location.name %><em>@<%= tweet.screen_name %></em><span class="flt_Rt"><%= time_ago_in_words tweet.created_at %></span> <span class="clear_0">&nbsp;</span></h6>
+                <p>
+                  <%= auto_link( tweet.text, :link => :urls, :html => {:target => :blank} ).html_safe %>
+                </p>
+              </div>
+              <div class="clear_0"></div>
+            </li>
+          <% end %>
         </ul>
-        <div class='page_navigation'></div>
       </div>
-    <% end -%>
-    <div class="clear"></div>
-  </div><!--sidebar end-->
-  <div class="clear"></div>
-</div><!--content end-->
+    <% end %>
+  </div>
+  <%= render :partial => 'shared/ad_container' %>
+</div>

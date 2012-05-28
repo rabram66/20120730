@@ -8,14 +8,7 @@ class PlacesControllerTest < ActionController::TestCase
 
   context 'GET index' do
     should "succeed" do
-      Geocoder.expects(:coordinates).returns([0.0,0.0])
-      Place.expects(:find_by_geocode).with([0.0,0.0],LocationCategory::EatDrink.types).returns([])
-      # Place.expects(:find_by_geocode).with([33.7489954, -84.3879824],LocationCategory::EatDrink.types).returns([])
-      Event.expects(:upcoming_near).returns([])
-      EventBrite.expects(:geosearch).returns([])
-      DealSet.expects(:find_by_geocode).with([0.0,0.0]).returns(DealSet.new([]))
-      # Deal.expects(:find_by_geocode).with([33.7489954, -84.3879824]).returns(DealSet.new([]))
-    
+      expectations_for_index
       get :index, :search => 'Atlanta, GA'
       assert_not_nil assigns(:locations)
       assert_response :success
@@ -23,8 +16,20 @@ class PlacesControllerTest < ActionController::TestCase
     end
   end
 
+  def expectations_for_index
+    Geocoder.expects(:coordinates).returns([0.0,0.0])
+    Place.expects(:find_by_geocode).returns([])
+    Event.expects(:upcoming_near).returns([])
+    EventBrite.expects(:geosearch).returns([])
+    DealSet.expects(:find_by_geocode).with([0.0,0.0]).returns(DealSet.new([]))
+  end
+
   context 'GET details for location' do
     should "succeed" do
+      Geocoder.expects(:coordinates).returns([0.0,0.0])
+      Place.expects(:find_by_geocode).returns([])
+      EventBrite.expects(:geosearch).returns([])
+      DealSet.expects(:find_by_geocode).returns(DealSet.new([]))
       Tweet.expects(:user_status).with(@location.twitter_name).returns(nil)
       Tweet.expects(:geosearch).with("@#{@location.twitter_name}",@location.coordinates, 5, 40).returns([])
       Tweet.expects(:geosearch).with("\"#{@location.name}\"",@location.coordinates, 5, 40).returns([])
@@ -42,6 +47,11 @@ class PlacesControllerTest < ActionController::TestCase
   
   context 'GET details for Google place' do
     should "redirect to slug on valid reference" do
+      Geocoder.expects(:coordinates).returns([0.0,0.0])
+      Place.expects(:find_by_geocode).returns([])
+      EventBrite.expects(:geosearch).returns([])
+      DealSet.expects(:find_by_geocode).returns(DealSet.new([]))
+      # expectations_for_index
       place           = Place.new
       place.name      = 'Bozos'
       place.address   = '2578 Binghamton Drive'

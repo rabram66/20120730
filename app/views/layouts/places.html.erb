@@ -7,7 +7,7 @@
     <meta name="description" content="Find great places to Eat, Shop and Relax nearby and get deals and specials on your computer or phone." />
     <%= stylesheet_link_tag 'style2' %>
     <%= yield :stylesheets %>  
-    <%= javascript_include_tag :defaults, "jquery.pajinate.min", "jquery.cookies.2.2.0.min" %>
+    <%= javascript_include_tag :defaults, "jquery.pajinate.min", "jquery.cookies.2.2.0.min", "jquery.pjax.js" %>
     <script src="http://www.google.com/jsapi?key=ABQIAAAAhLOpZfesDeMKWC3zGdB4BxRyAQIOZcmWQaZgGjJb-w1DbZAmsxTfbS2hwencPWx3W54SemwGmRyFwA"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
     <%= yield :javascripts %>
@@ -47,7 +47,8 @@
             <div class="lft_section flt_Lt">
               <%= render :partial => '/places/left_section' %>
             </div>
-            <div class="rgt_section flt_Rt">
+            <div id='loading'><%= image_tag 'ajax-loader.gif' %></div>
+            <div id='detail-content' class="rgt_section flt_Rt">
               <%= yield %>
             </div>
             <div class="clear_0">&nbsp;</div>
@@ -75,8 +76,8 @@
 
           <div class="footer">
             <p style="text-align:center;">
-              <a href="/about">About</a>
-              <a href="/advertise">Advertise</a>
+              <a href="/about" class='pjax'>About</a>
+              <a href="/advertise" class='pjax'>Advertise</a>
               <a href="http://nearbythis.info/blog" target="_blank">Blog</a>
               <a href="javascript: void(0);" onclick="USR.Main.show(); return false;">Feedback</a>
               <%= link_to "Signin", new_user_session_path %>

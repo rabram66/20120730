@@ -1,5 +1,11 @@
 $(document).ready(function() {
   
+  $('a.pjax').pjax('#detail-content', {timeout: 4000});
+
+  $(document)
+    .bind('pjax:start', function() { $('#loading').show() })
+    .bind('pjax:end',   function() { $('#loading').hide() });
+  
   $('#show-deals').click( function() {
     $('#deals-list').toggle();
     $('#show-deals').toggleClass('active')

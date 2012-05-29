@@ -3,10 +3,10 @@ class PlacesController < ApplicationController
   has_mobile_fu
 
   before_filter :redirect_mobile_request, :except => :recent_tweeters
-  # before_filter :redirect_to_start, :only => :index
-
   respond_to :html, :json, :js
-  
+
+  layout :set_layout
+
   RADIUS = '750'
   DEFAULT_COORDINATES = Rails.application.config.app.default_coordinates
   
@@ -14,16 +14,16 @@ class PlacesController < ApplicationController
   end
   
   def about
-    load_for_index
+    load_for_index unless pjax?
   end
 
   def advertise
-    load_for_index
+    load_for_index unless pjax?
   end
 
   # GET /
   def index
-    load_for_index
+    load_for_index unless pjax?
   end
   
   # GET /search?lat=33.3lng=-84.5 # Called via ajax based on browser geo nav
@@ -98,6 +98,20 @@ class PlacesController < ApplicationController
   
   private
   
+  def pjax?
+    !!@pjax
+  end
+
+  def set_layout
+    if request.headers['X-PJAX']
+      @pjax = true
+      false
+    else
+      @pjax = false
+      "places"
+    end
+  end
+
   def load_for_index
     set_coordinates
     

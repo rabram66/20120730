@@ -135,3 +135,5 @@ div.footer a {margin: 5px 20px 5px 20px;}
 .info-page ul {list-style-type: square; margin-left: 20px; margin-top: 10px;}
 .right-ad-container {text-align: center;border-top: 5px silver solid;padding: 10px;}
 .left-ad-container { background:url(../images/visit_bg.jpg) no-repeat;  width:492px; height:40px; display:block; margin: 7px 0;  text-shadow:1px 1px #fff; text-align:center; line-height:40px; font-size:15px; font-weight:bold   }
+
+#loading {display: none; position: absolute; top: 400px; left: 760px; z-index: 1000;}

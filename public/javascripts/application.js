@@ -5,8 +5,6 @@ window.twttr = (function (d,s,id) {
   return window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f) } });
 }(document, "script", "twitter-wjs"));
 
-
-
 function toRadians(degrees) {
   return degrees * (Math.PI / 180);
 }
@@ -37,7 +35,7 @@ function bounds(lat, lng, radius) {
 $(document).ready(function() {
   
   // pjax
-  $('a.pjax').pjax('#detail-content', {timeout: 4000});
+  $('a.pjax').pjax('#detail-content', {timeout: 10000});
 
   $(document)
     .bind('pjax:start', function() { $('#loading').show() })

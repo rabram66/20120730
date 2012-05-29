@@ -1,14 +1,4 @@
 <%- @title = "#{@location.page_title}" %>
-<% content_for :javascripts do %>
-  <script type="text/javascript" charset="utf-8">
-    window.twttr = (function (d,s,id) {
-      var t, js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return; js=d.createElement(s); js.id=id;
-      js.src="//platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs);
-      return window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f) } });
-    }(document, "script", "twitter-wjs"));
-  </script>
-<% end %>
 
 <div style="display:none">
   <% unless cookies[:address].blank? -%>
@@ -30,7 +20,7 @@
       </div>
       <div id='tweet-this-buttons'>
         <%= render :partial => 'shared/tweet_this' %>
-      </div>  
+      </div>
       <div class="wat_day_saying">
         <% if @last_post || @last_tweet %>
           <h5>What They Are Saying</h5>
@@ -86,7 +76,7 @@
       <!-- <a href="#" class="map"><img src="/images/map.jpg" width="189" height="220" alt=""></a> -->
     </div>
     <div class="clear_0"></div>
-  </div> <!-- end top_info section -->
+  </div> <!-- end top_info_sec -->
   <div id='bottom-info-sec'>
     <div id='directions-container'>
       <h5>Walking Directions</h5>
@@ -113,6 +103,5 @@
         </ul>
       </div>
     <% end %>
-  </div>
-  <%= render :partial => 'shared/right_ad_container' %>
-</div>
+  </div> <!-- end bottom-info-sec -->
+</div> <!-- end place-detail -->

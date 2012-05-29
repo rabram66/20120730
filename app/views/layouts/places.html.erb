@@ -56,6 +56,7 @@
             <div id='loading'><%= image_tag 'ajax-loader.gif' %></div>
             <div id='detail-content' class="rgt_section flt_Rt">
               <%= yield %>
+              <%= render :partial => 'shared/right_ad_container' %>
             </div>
             <div class="clear_0">&nbsp;</div>
           </div>

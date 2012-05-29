@@ -2,7 +2,7 @@ class PlacesController < ApplicationController
 
   has_mobile_fu
 
-  before_filter :redirect_mobile_request, :except => :recent_tweeters
+  before_filter :set_pjax, :redirect_mobile_request, :except => :recent_tweeters
   respond_to :html, :json, :js
 
   layout :set_layout
@@ -37,6 +37,7 @@ class PlacesController < ApplicationController
   
   # GET /details/QUIOUREIOWFI-FJSDJFII38427387 (reference)
   def details
+    puts "PJAX!!!!!: #{@pjax.to_s}"
     load_for_index unless pjax?
     reference = params[:reference]
 
@@ -101,17 +102,15 @@ class PlacesController < ApplicationController
   private
   
   def pjax?
-    !!@pjax
+    @pjax
+  end
+
+  def set_pjax
+    @pjax = !!request.headers['X-PJAX']
   end
 
   def set_layout
-    if request.headers['X-PJAX']
-      @pjax = true
-      false
-    else
-      @pjax = false
-      "places"
-    end
+    pjax? ? false : 'places'
   end
 
   def load_for_index

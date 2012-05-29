@@ -1,18 +1,10 @@
 <%- @title = "#{@event.page_title}" %>
 
-<% content_for :stylesheets do %>
-  <link rel="stylesheet" href="/javascripts/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
-<% end -%>
-
-<% content_for :javascripts do %>
-  <script type="text/javascript" src="/javascripts/fancybox/jquery.fancybox.pack.js"></script>
-  <script type="text/javascript" src="/javascripts/directions.js"></script>
-  <script>
-    $(document).ready(function() {
-      $('#show-events').click();
-    });
-  </script>
-<% end %>
+<script>
+  $(document).ready(function() {
+    $('#show-events').click();
+  });
+</script>
 
 <div style="display:none">
   <% unless cookies[:address].blank? -%>
@@ -23,7 +15,7 @@
   <%= hidden_field_tag :dest_lng, @event.longitude %>
 </div>  
 
-<div id='place-detail'>
+<div id='place-detail' data-title='<%= @title %>'>
   <div class="top_info_sec">
     <div class="infoside flt_Lt">
       <div class="contact">

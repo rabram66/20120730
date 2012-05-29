@@ -11,6 +11,7 @@ class PlacesController < ApplicationController
   DEFAULT_COORDINATES = Rails.application.config.app.default_coordinates
   
   def start
+    redirect_to root_path
   end
   
   def about

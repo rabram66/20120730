@@ -2,34 +2,6 @@
   var latitude = <%= session[:search].blank? ? @coordinates[0] : session[:search][0] %>;
   var longitude = <%= session[:search].blank? ? @coordinates[1] : session[:search][1] %>;
 
-  function toRadians(degrees) {
-    return degrees * (Math.PI / 180);
-  }
-  
-  function toDegrees(radians) {
-    return radians * (180 / Math.PI);
-  }
-  
-
-  /* Simple approximation */
-  function bounds(lat, lng, radius) {
-    var R = 6371;  // earth radius in km
-    var radius = 25; // km
-
-    // southwest
-    var sw_lat = lat - toDegrees(radius/R);
-    var sw_lng = lng - toDegrees(radius/R/Math.cos(toRadians(lat)));
-
-    // northeast
-    var ne_lat = lat + toDegrees(radius/R);
-    var ne_lng = lng + toDegrees(radius/R/Math.cos(toRadians(lat)));
-
-    return new google.maps.LatLngBounds(
-      new google.maps.LatLng(sw_lat, sw_lng), // southwest
-      new google.maps.LatLng(ne_lat, ne_lng)  // northeast
-    );
-  }
-
 
   function initialize() {
     var defaultBounds = bounds(latitude, longitude);
@@ -53,42 +25,4 @@
       google.setOnLoadCallback(initialize);
     });
   })();
-
-  var twitterNames = [
-    <%= @locations.select{|l1| !l1.twitter_name.blank?}.map{|l2| "'#{l2.twitter_name}'"}.join(',') -%>
-  ];
-
-  // var fetchCount = 0;
-  // var maxFetchCount = 3;
-  // 
-  // function recentTweetUpdate() {
-  //   setTimeout(function() {
-  //     checkStatus(function(data) {
-  //       $.each(data, function(i,name) {
-  //         $('img.'+name).fadeIn();
-  //       });
-  //       if (fetchCount < maxFetchCount) recentTweetUpdate();
-  //     });
-  //   }, 5000);
-  // }
-  // 
-  // function checkStatus(callback) {
-  //   fetchCount++;
-  //   $.post("/recent_tweeters", { 'n[]': twitterNames }, function(data) {
-  //     callback(data);
-  //   });
-  // }
-  
-  $(document).ready(function() {
-    // recentTweetUpdate();
-    $('#search_button').click( function() {$('#place_search').submit()} ); // go button
-    $('#location_type_nav a').click( function(event) {
-      $('#place_search input#location_type').val(event.target.textContent);
-      $('#place_search').submit();
-    });
-    var active_tab = '#location_type_nav li#nav' + $('#place_search input#location_type').val();
-    $('#location_type_nav li').removeClass('active');
-    $(active_tab).addClass('active');
-  });
-  
 </script>

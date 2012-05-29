@@ -37,7 +37,7 @@ class PlacesController < ApplicationController
   
   # GET /details/QUIOUREIOWFI-FJSDJFII38427387 (reference)
   def details
-    load_for_index
+    load_for_index unless pjax?
     reference = params[:reference]
 
     case reference

@@ -10,10 +10,6 @@
   </script>
 <% end %>
 
-<% content_for :head do -%>
-  <link rel="canonical" href="<%= url_for_location_details(@location, :only_path => false) %>"/>
-<% end -%>
-
 <div style="display:none">
   <% unless cookies[:address].blank? -%>
     <%= hidden_field_tag :orig_lat, cookies[:address].first %>
@@ -23,7 +19,7 @@
   <%= hidden_field_tag :dest_lng, @location.longitude %>
 </div>  
 
-<div id='place-detail'>
+<div id='place-detail' data-title="<%= @title %>">
   <div class="top_info_sec">
     <div class="infoside flt_Lt">
       <div class="contact">

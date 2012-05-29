@@ -36,11 +36,10 @@
             <div class="logo">
               <%= link_to image_tag("logo.jpg", :width => 195, :height => 141), root_path %>
             </div>
-            <form id='place_search' class="search_box" action="" method="get">
+            <form id='place_search' class="search_box" action="/" method="get">
               <%= text_field_tag :search, @search, :id => "searchTextField", :class => 'inpttxt flt_Lt', :placeholder => "Enter Address, Neighborhood, City or Zip" %>
               <input id='search_button' type="button" value="go" class="gobtn flt_Lt"/>
               <%= hidden_field_tag :location_type, @location_type, :id => 'location_type' %>
-              <!-- <input type="text" class="inpttxt flt_Lt" value="Enter Address, Neighborhood, City or Zip" onclick="this.value='';" onfocus="this.select()" onblur="this.value=!this.value?'Enter Address, Neighborhood, City or Zip':this.value;"> -->
               <div class="clear_0">&nbsp;</div>
             </form>
           </div>

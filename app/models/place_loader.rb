@@ -34,9 +34,9 @@ class PlaceLoader
   private
 
   def associate_place_mappings
-    mappings = Hash[PlaceMapping.where(:reference => places.map(&:reference)).map{|p| [p.reference, p]}]
+    mappings = Hash[PlaceMapping.where(:places_id => places.map(&:places_id)).map{|p| [p.places_id, p]}]
     places.each do |place|
-      place.mapping = mappings[place.reference]
+      place.mapping = mappings[place.places_id]
     end
   end
     

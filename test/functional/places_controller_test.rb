@@ -41,28 +41,22 @@ class PlacesControllerTest < ActionController::TestCase
     end
   end
 
-  # stub_request(:get, "http://search.twitter.com/search.json?geocode=33.7489954,-84.3879824,5mi&include_entities=1&page=1&q=@wafflehouse&rpp=40").
-  #           with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
-  #           to_return(:status => 200, :body => "", :headers => {})
-  
   context 'GET details for Google place' do
     should "redirect to slug on valid reference" do
       Geocoder.expects(:coordinates).returns([0.0,0.0])
       Place.expects(:find_by_geocode).returns([])
       EventBrite.expects(:geosearch).returns([])
       DealSet.expects(:find_by_geocode).returns(DealSet.new([]))
-      # expectations_for_index
+
       place           = Place.new
       place.name      = 'Bozos'
       place.address   = '2578 Binghamton Drive'
       place.city      = 'Atlanta'
-      # place.latitude  = 33.7489954
-      # place.longitude = -84.3879824
+      place.reference = 'CqHDHYDY63636'
+
       Place.expects(:find_by_reference).with('CqHDHYDY63636').returns(place)
-      # Tweet.expects(:geosearch).with("\"#{place.name}\"",place.coordinates,5,40).returns([])
       get :details, :reference => "CqHDHYDY63636"
       assert_response :redirect
-      # assert_template :details
     end
     
   end

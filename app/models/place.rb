@@ -5,7 +5,7 @@ class Place
   
   attr_accessor :name, :reference, :latitude, :longitude, :categories, :types,
                 :phone_number, :website, :full_address, :rating, :city, :address, :state,
-                :profile_image_url, :description
+                :profile_image_url, :description, :places_id
 
   RADIUS = 750
   API_KEY = "AIzaSyA1mwwvv3NAL_N7gNRf_0uqK2pfiXEqkZc"
@@ -24,6 +24,7 @@ class Place
       end
       @profile_image_url = result['icon']
       @reference = result['reference']
+      @places_id = result['id']
       @latitude = result['geometry']['location']['lat'].to_f
       @longitude = result['geometry']['location']['lng'].to_f
       @types = result['types']
@@ -65,7 +66,7 @@ class Place
 
   def mapping
     unless @mapping
-      @mapping = PlaceMapping.find_by_reference(reference) || PlaceMapping.create!(:name => name, :city => city, :reference => reference)
+      @mapping = PlaceMapping.find_by_places_id(places_id) || PlaceMapping.create!(:name => name, :city => city, :places_id => places_id, :reference => reference)
     end
     @mapping
   end

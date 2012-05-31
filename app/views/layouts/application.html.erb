@@ -6,13 +6,13 @@
     <meta name="description" content="Find great places to Eat, Shop and Relax nearby and get deals and specials on your computer or phone." />
     <%= stylesheet_link_tag 'style' %>
     <%= yield :stylesheets %>  
-    <%= javascript_include_tag :defaults, "jquery.pajinate.min", "jquery.cookies.2.2.0.min" %>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <%= javascript_include_tag 'admin' %>
     <%= yield :javascripts %>
-    <%= render :partial => '/shared/google_analytics' %>
     <%= csrf_meta_tag %>
     <%= yield :head %>
   </head>
-  <body onload="<%= "initialize()" if @location %>" onunload="GUnload();">    
+  <body>
     <div class="wrapper">
       <div class="header"><!--header start-->
         <div class="logo"><%= link_to image_tag("logo.png"), root_path %></div>

@@ -29,7 +29,7 @@
   <p>
     <%= f.label :profile_image_url %><br/>  
     <%= f.text_field :profile_image_url, :class => 'input_form_field' %>
-    <%= image_tag @location.profile_image_url %>
+    <%= image_tag @location.profile_image_url if @location.profile_image_url %>
   </p>
 
   <p id='reference'>
@@ -82,6 +82,6 @@
 
 
   <p class="actions">
-    <input value="<%= "#{params[:action] == 'edit' ? 'Update' : 'Create'} Location"%>" type="button" />
+    <%= f.submit %>
   </p>
 <% end %>

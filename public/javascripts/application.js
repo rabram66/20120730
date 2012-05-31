@@ -77,12 +77,6 @@ $(document).ready(function() {
     $("#direction_id").hide();
   }
 
-  // TODO: Why implement form submit this way? to prevent double-post?
-  $(".actions input[type='button']").live('click', function() {
-    $(this).attr("disabled","true");
-    document.location_name.submit();
-  });
-  
   if ($('.fancybox').length) $('.fancybox').fancybox();
 
   if ($('#tweet-this').length) {
@@ -96,22 +90,4 @@ $(document).ready(function() {
        });
      });
   }
-
-  // TODO: Move to separate admin.js
-  if ($('#update-twitter-profile').length) {
-    $('#update-twitter-profile').click(function(){
-      $.get('/api/twitter_profile?twitter_name='+$('#location_twitter_name').val(), function(data) {
-        if( data['profile_image_url'] ) {
-          el = $('#location_profile_image_url');
-          el.val(data['profile_image_url']);
-        }
-        if( data['description'] ) {
-          el = $('#location_description');
-          el.val(data['description']);
-        }
-      });
-      return false;
-    });
-  }
-
 });

@@ -1,0 +1,38 @@
+Event modifications
+===================
+Pulling events for every request results in ~ 2.3 seconds. A significant portion of this time (~ 2 seconds) is taken up in the real-time fetch of events from EventBrite. We need to reduce this by utilizing a strategy like the following:
+
+A. Decide on an exceptable maximum of events to show. Let's start off with:
+  MAX_EVENTS = 10
+
+B. Decide on a time period (T) to pull events for: we don't need all events in the future; perhaps just events that are happening over the next two weeks.
+
+C. When a request comes into NearbyThis we will:
+
+1. Count events (E's) within a given radius R of the current coordinates XY that are within time period T from our local Events database 
+
+2. If the number of events is > MAX_EVENTS; load those events from the database and display to the user.
+
+3. If the number of events is < MAX_EVENTS then we will supplant the list from external sources (currently only EventBrite).
+
+4. Load events from EventBrite based on the XY and R; potentially, we may want to limit the number of results returned and only query for events within time period T (the use of these criterion may vary by provider)
+
+5. For each event, normalize the data to be consistent with our own Event data model. Then, if we do not have that event in our database (matching against  the provider name and provider reference ID), then add it to our Event database.
+
+6. Now, run the original query against our Events table.
+
+Pros:
+  The benefit of this approach is that we won't hit event brite on every request; only when the amount of local data is small; and from then it will be cached; so there will be a penalty (~ equal to the current penalty) when the first user accesses events. After that, we will only need to hit event brite when we fall below the maximum number of events threshold.
+
+Cons:
+  One potential problem with this approach is that we may miss out on Events from EventBrite that are added after our fetch that are within the time period T. Here's the senario:
+  1. A user hits the an area the first time
+  2. We pull our local events (let's say there are 4 occuring within the next two weeks (T))
+  3. Since 4 < 10 (MAX_EVENTS), we then load events from EventBrite and store them into our Events table (let's say we found 12 events); so we now have 16 events in our table; plenty for the next two weeks.
+  4. Later that evening, new events are added to EventBrite that have a start date three days from now. Because we have already loaded events from event brite (we have 16 total); we will not fetch these new events even though they may have start dates closer than our current set of events.
+  
+  So, I don't have an immediate solution to this problem; (if it is a problem at all), however, I think we can mitigate by:
+  a. Keeping the time period T small (say 1 or 2 weeks)
+  b. If that is not enough, we can come up with a more complex algorithm 
+     For example, we could say that we always want to have X number of events happening now, Y number of events within the next week, and Z number within the next 2 weeks; then, if, when we fetch events, our data does not meet those requirements; we supplant from EventBrite.
+

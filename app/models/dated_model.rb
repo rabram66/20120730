@@ -7,6 +7,8 @@ module DatedModel
       date >= start_date.to_date
     elsif end_date
       date <= end_date.to_date
+    else
+      true # if no start/end, assume it's happening now
     end
   end
 

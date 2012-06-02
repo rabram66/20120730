@@ -140,7 +140,7 @@ class PlacesController < ApplicationController
   end
 
   def load_event
-    @event = (params[:id] =~ /^EB/) ? EventBrite.find_by_id(params[:id]) : Event.find(params[:id])
+    @event = Event.find(params[:id])
   end
 
   def to_ical(event)

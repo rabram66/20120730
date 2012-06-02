@@ -29,4 +29,20 @@ class EventTest < ActiveSupport::TestCase
     end
   end
   
+  context 'defaults' do
+    should 'rank default to 1' do
+      e = Event.new
+      assert_equal 1, e.rank
+    end
+    should 'thumbnail_url should default to event icon' do
+      e = Event.new
+      assert_equal '/images/event_icon.jpg', e.thumbnail_url
+    end
+    should 'allow non-defaults on initialization' do
+      e = Event.new(:rank => 10, :thumbnail_url => "http://foo.com/bar.gif")
+      assert_equal 10, e.rank
+      assert_equal "http://foo.com/bar.gif", e.thumbnail_url
+    end
+  end
+  
 end

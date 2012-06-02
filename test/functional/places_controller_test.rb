@@ -19,8 +19,7 @@ class PlacesControllerTest < ActionController::TestCase
   def expectations_for_index
     Geocoder.expects(:coordinates).returns([0.0,0.0])
     Place.expects(:find_by_geocode).returns([])
-    Event.expects(:upcoming_near).returns([])
-    EventBrite.expects(:geosearch).returns([])
+    EventSet.expects(:upcoming_near).returns([])
     DealSet.expects(:find_by_geocode).with([0.0,0.0]).returns(DealSet.new([]))
   end
 
@@ -28,7 +27,7 @@ class PlacesControllerTest < ActionController::TestCase
     should "succeed" do
       Geocoder.expects(:coordinates).returns([0.0,0.0])
       Place.expects(:find_by_geocode).returns([])
-      EventBrite.expects(:geosearch).returns([])
+      # EventBriteApi.expects(:geosearch).returns([])
       DealSet.expects(:find_by_geocode).returns(DealSet.new([]))
       Tweet.expects(:user_status).with(@location.twitter_name).returns(nil)
       Tweet.expects(:geosearch).with("@#{@location.twitter_name}",@location.coordinates, 5, 40).returns([])
@@ -45,7 +44,7 @@ class PlacesControllerTest < ActionController::TestCase
     should "redirect to slug on valid reference" do
       Geocoder.expects(:coordinates).returns([0.0,0.0])
       Place.expects(:find_by_geocode).returns([])
-      EventBrite.expects(:geosearch).returns([])
+      # EventBriteApi.expects(:geosearch).returns([])
       DealSet.expects(:find_by_geocode).returns(DealSet.new([]))
 
       place           = Place.new

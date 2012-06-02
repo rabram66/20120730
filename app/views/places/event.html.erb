@@ -44,6 +44,17 @@
       <div id='map_canvas'></div>
     </div>
     <div class="clear_0"></div>
+
+    <div id='event-description'>
+      <p>
+        <%= auto_link( simple_format(@event.description), :link => :urls, :html => {:target => :new} ).html_safe %>
+      </p>
+      <% unless @event.url.blank? -%>
+        <p class='event-flyer-link'><%= link_to "More Info ...", @event.url, :title => @event.name, :target => :new %></p>
+      <% end -%>
+      <div class="clear_0"></div>
+    </div>
+
   </div> <!-- end top_info section -->
 
   <div>

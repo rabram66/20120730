@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class EventBriteTest < ActiveSupport::TestCase
+class EventBriteApiTest < ActiveSupport::TestCase
 
   setup do
     @coordinates = Rails.application.config.app.default_coordinates
@@ -19,7 +19,7 @@ class EventBriteTest < ActiveSupport::TestCase
         stub_api without_events
       end
       should 'return an empty array' do
-        events = EventBrite.geosearch @coordinates
+        events = EventBriteApi.geosearch @coordinates
         assert events.empty?
       end
     end
@@ -28,26 +28,27 @@ class EventBriteTest < ActiveSupport::TestCase
       setup do
         stub_api with_events
       end
-      should 'return an array of events' do
-        events = EventBrite.geosearch @coordinates
-        assert_equal 2, events.length, "there should be an array of events"
-        assert_kind_of EventBrite, events.first
+      should 'return an array of hashes' do
+        events = EventBriteApi.geosearch @coordinates
+        assert_equal 2, events.length, "there should be an array of hashes"
+        assert_kind_of Hash, events.first
       end
       should 'transform each event into a model' do
-        events = EventBrite.geosearch @coordinates
+        events = EventBriteApi.geosearch @coordinates
         event = events.first
-        assert_equal "#{EventBrite::ID_PREFIX}2800356943", event.id
-        assert_equal "Floco Torres, StereoMonster & Guests LIVE at The Masquerade", event.name
-        assert_equal "695 North Ave", event.address
-        assert_equal "Atlanta", event.city
-        assert_equal "GA", event.state
-        assert_equal "695 North Ave, Atlanta, GA", event.full_address
-        assert_equal "The Masquerade", event.venue
-        assert_equal [33.771038,-84.364801], event.coordinates
-        assert_equal "music,entertainment", event.category
-        assert_equal DateTime.parse("2012-02-10 20:00:00"), event.start_date
-        assert_equal DateTime.parse("2012-02-11 00:00:00"), event.end_date
-        assert_equal "http://www.eventbrite.com/event/2800356943", event.url
+        assert_equal 'EventBrite', event[:source]
+        assert_equal "2800356943", event[:source_id]
+        assert_equal "Floco Torres, StereoMonster & Guests LIVE at The Masquerade", event[:name]
+        assert_equal "695 North Ave", event[:address]
+        assert_equal "Atlanta", event[:city]
+        assert_equal "GA", event[:state]
+        assert_equal "The Masquerade", event[:venue]
+        assert_equal 33.771038, event[:latitude]
+        assert_equal -84.364801, event[:longitude]
+        assert_equal "music", event[:category]
+        assert_equal DateTime.parse("2012-02-10 20:00:00"), event[:start_date]
+        assert_equal DateTime.parse("2012-02-11 00:00:00"), event[:end_date]
+        assert_equal "http://www.eventbrite.com/event/2800356943", event[:url]
       end
     end
 
@@ -97,6 +98,7 @@ class EventBriteTest < ActiveSupport::TestCase
                           "id": 1847982959,
                           "name": "Random Family"
                       },
+                      
                       "background_color": "677479",
                       "id": 2800356943,
                       "category": "music,entertainment",

@@ -8,10 +8,11 @@ class Event < ActiveRecord::Base
   ADDRESS_ATTRS = %w(city state address)
   CATEGORIES =  %w(conference conventions entertainment fundraisers meetings other performances reunions sales seminars social sports tradeshows travel religion fairs food music recreation)
 
-  validates_presence_of :name, :address, :city, :state, :description
+  validates_presence_of :name, :address, :city, :state
   attr_accessible :name, :address, :city, :state, :description,
                   :latitude, :longitude, :user_id, :full_address, :start_date,
-                  :tags, :end_date, :venue, :category, :flyer, :remove_flyer
+                  :tags, :end_date, :venue, :category, :flyer, :remove_flyer,
+                  :url, :thumbnail_url, :source, :source_id, :rank
 
   friendly_id :name_and_city, :use => :history
 
@@ -21,25 +22,20 @@ class Event < ActiveRecord::Base
   validates :category, :inclusion => {:in => CATEGORIES, :allow_blank => true}
 
   scope :upcoming, where("(start_date ISNULL AND end_date ISNULL) OR (start_date >= :today OR end_date >= :today)", {:today => Date.today})
+  scope :upcoming_in, lambda { |t|
+    where("(start_date ISNULL AND end_date ISNULL) OR ((start_date >= :today OR end_date >= :today) AND (start_date <= :until OR end_date <=:until))",
+     {:today => Date.today, :until => t.from_now}
+    )
+  }
 
-  before_save :parse_dates
+  before_save :parse_dates, :if => Proc.new {|model| model.source.nil?}
   
   after_validation do
     geocode if !(ADDRESS_ATTRS & changes.keys).empty? || latitude.blank? || longitude.blank?
     normalize_tags unless tags.blank?
   end
-
-  def rank
-    1
-  end
   
-  # Placeholder method for external web page link
-  def url
-  end
-
-  def thumbnail_url
-    "/images/event_icon.jpg"
-  end
+  after_initialize :set_defaults
 
   def name_and_city
     "#{name} #{city}"
@@ -64,9 +60,17 @@ class Event < ActiveRecord::Base
     def upcoming_near(coordinates)
       upcoming.find_by_geocode(coordinates).order(:start_date)
     end
+    def find_by_source_and_id(source, source_id)
+      where(:source => source, :source_id => source_id).first
+    end
   end
 
   private
+
+  def set_defaults
+    self.rank ||= 1
+    self.thumbnail_url ||= "/images/event_icon.jpg"
+  end
   
   def parse_dates
     self.start_date = Chronic::parse(start_date_before_type_cast) unless start_date_before_type_cast.blank?

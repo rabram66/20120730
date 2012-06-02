@@ -1,6 +1,7 @@
-class EventBrite
+class EventBriteApi
 
-  include DatedModel
+  EVENT_SEARCH_URL = "https://www.eventbrite.com/json/event_search?app_key=#{Rails.application.config.app.eventbrite_app_key}&latitude=%s&longitude=%s&within=%s"
+  EVENT_GET_URL    = "https://www.eventbrite.com/json/event_get?app_key=#{Rails.application.config.app.eventbrite_app_key}&id=%s"
 
   class Sanitizer
     include ActionView::Helpers::SanitizeHelper
@@ -8,39 +9,9 @@ class EventBrite
     def strip(html)
       strip_tags(html)
     end
-
   end
 
   @sanitizer = Sanitizer.new
-
-  include Address
-  
-  EVENT_SEARCH_URL = "https://www.eventbrite.com/json/event_search?app_key=#{Rails.application.config.app.eventbrite_app_key}&latitude=%s&longitude=%s&within=%s"
-  EVENT_GET_URL    = "https://www.eventbrite.com/json/event_get?app_key=#{Rails.application.config.app.eventbrite_app_key}&id=%s"
-  ID_PREFIX        = 'EB'
-
-  attr_reader :id, :name, :description, :address, :city, :state, 
-              :latitude, :longitude, :url, :thumbnail_url,
-              :start_date, :end_date, :venue, :category
-
-  def initialize(attrs={})
-    attrs.each do |k,v|
-      v = v.blank? ? nil : v
-      instance_variable_set("@#{k}", v)
-    end
-  end
-
-  def rank
-    10
-  end
-
-  # Event compatibility
-  def flyer_url
-  end
-
-  def tweets
-    []
-  end
 
   class << self
     def geosearch(coordinates, radius=2, count=10)
@@ -55,8 +26,7 @@ class EventBrite
       end
     end
     
-    def find_by_id(id)
-      id.gsub!(/^#{ID_PREFIX}/,'')
+    def find_by_source_id(id)
       api(EVENT_GET_URL, id) do |response|
         if response['event'].present?
           transform response['event']
@@ -69,21 +39,20 @@ class EventBrite
     def api(url, *args)
       url = format(url, *args)
       begin
-        Rails.logger.info("EventBrite fetch: #{url}")
+        Rails.logger.info("EventBriteApi fetch: #{url}")
         response = RestClient.get(url)
         yield ActiveSupport::JSON.decode(response)
       rescue RestClient::Exception => e
-        # HoptoadNotifier.notify e, :error_message => "EventBrite API failure: (#{e}) #{url}"
-        Rails.logger.info("EventBrite API failure from #{`hostname`.strip}: (#{e}) #{url}: #{e.http_body}")
+        # HoptoadNotifier.notify e, :error_message => "EventBriteApi failure: (#{e}) #{url}"
+        Rails.logger.info("EventBriteApi failure from #{`hostname`.strip}: (#{e}) #{url}: #{e.http_body}")
         nil
       end
     end
 
     def transform(result)
       hash = {
-        :id        => "#{ID_PREFIX}#{result['id']}",
         :name      => result['title'],
-        :category  => result['category'],
+        :category  => result['category'].split(',').first,
         :url       => result['url'],
         :description => @sanitizer.strip(result['description']),
         :thumbnail_url => result['logo'] || "/images/event_icon.jpg"
@@ -99,7 +68,12 @@ class EventBrite
       end
       hash[:start_date] = DateTime.parse( result['start_date'] ) unless result['start_date'].blank?
       hash[:end_date]   = DateTime.parse( result['end_date'] ) unless result['end_date'].blank?
-      EventBrite.new( hash )
+      
+      hash[:source] = 'EventBrite'
+      hash[:source_id] = result['id'].to_s
+      hash[:rank] = 10
+      
+      hash
     end
 
   end

@@ -1,10 +1,20 @@
-# Loads events from the NearbyThis database and EventBrite
+# Loads events from the NearbyThis database
 class EventSet
   include Enumerable
   attr_reader :events
 
+  MIN_EVENTS = 2
+  RADIUS     = 2 # miles
+  WITHIN     = 2.weeks
+
   def initialize(events)
-    @events = events.sort_by(&:start_date)
+    @events = events.sort do |a,b| 
+      case  # sort by start date (nils come first)
+        when a.start_date.nil?; -1
+        when b.start_date.nil?; 1
+        else a.start_date <=> b.start_date
+      end
+    end
   end
   
   def each
@@ -22,9 +32,20 @@ class EventSet
   end
 
   class << self
+    
     def upcoming_near(coordinates)
-      EventSet.new(Event.upcoming_near(coordinates) + EventBrite.geosearch(coordinates))
+      events = Event.upcoming_in(WITHIN).near(coordinates, RADIUS)
+      if events.count < MIN_EVENTS
+        EventImporter.new(coordinates).delay.import
+      end
+      new(events)
     end
+
+    private
+    
+    def supplant # from external services
+    end
+
   end
 
 end

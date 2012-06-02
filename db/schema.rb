@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120531111945) do
+ActiveRecord::Schema.define(:version => 20120601033827) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -46,6 +46,11 @@ ActiveRecord::Schema.define(:version => 20120531111945) do
     t.string   "category"
     t.string   "flyer"
     t.string   "slug"
+    t.string   "source"
+    t.string   "source_id"
+    t.integer  "rank"
+    t.string   "url"
+    t.string   "thumbnail_url"
   end
 
   add_index "events", ["slug"], :name => "index_events_on_slug", :unique => true
@@ -95,13 +100,13 @@ ActiveRecord::Schema.define(:version => 20120531111945) do
   create_table "place_mappings", :force => true do |t|
     t.string   "name"
     t.string   "city"
-    t.text     "reference"
     t.text     "slug"
     t.integer  "favorites_count",   :default => 0
     t.datetime "last_favorited_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "places_id"
+    t.string   "reference"
   end
 
   add_index "place_mappings", ["places_id"], :name => "index_place_mappings_on_places_id"

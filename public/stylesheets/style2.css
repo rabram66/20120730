@@ -137,3 +137,4 @@ div.footer a {margin: 5px 20px 5px 20px;}
 .left-ad-container { background:url(../images/visit_bg.jpg) no-repeat;  width:492px; height:40px; display:block; margin: 7px 0;  text-shadow:1px 1px #fff; text-align:center; line-height:40px; font-size:15px; font-weight:bold   }
 
 #loading {display: none; position: absolute; top: 400px; left: 760px; z-index: 1000;}
+#event-description p {color: black;}

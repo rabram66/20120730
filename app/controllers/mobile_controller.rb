@@ -67,7 +67,7 @@ class MobileController < ApplicationController
   end
 
   def event
-    @event = (params[:id] =~ /^EB/) ? EventBrite.find_by_id(params[:id]) : Event.find(params[:id])
+    @event = Event.find(params[:id])
   end
 
   private

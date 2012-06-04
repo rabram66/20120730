@@ -1,0 +1,2 @@
+class DealLocationsController < ApplicationController
+end

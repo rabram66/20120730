@@ -1,5 +1,9 @@
 NearbyThis::Application.routes.draw do
   
+  resources :deals do
+    resources :deal_locations
+  end
+
   devise_for :users
   resources :users, :locations
   resources :events, :except => :show

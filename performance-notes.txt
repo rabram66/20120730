@@ -3,23 +3,21 @@ Event modifications
 Pulling events for every request results in ~ 2.3 seconds. A significant portion of this time (~ 2 seconds) is taken up in the real-time fetch of events from EventBrite. We need to reduce this by utilizing a strategy like the following:
 
 A. Decide on an exceptable maximum of events to show. Let's start off with:
-  MAX_EVENTS = 10
+  MIN_EVENTS = 10
 
 B. Decide on a time period (T) to pull events for: we don't need all events in the future; perhaps just events that are happening over the next two weeks.
 
 C. When a request comes into NearbyThis we will:
 
-1. Count events (E's) within a given radius R of the current coordinates XY that are within time period T from our local Events database 
+1. Load events (E's) within a given radius R of the current coordinates XY that are within time period T from our local Events database 
 
-2. If the number of events is > MAX_EVENTS; load those events from the database and display to the user.
+2. If the number of events is < MIN_EVENTS then we will supplant the list from external sources (currently only EventBrite).
 
-3. If the number of events is < MAX_EVENTS then we will supplant the list from external sources (currently only EventBrite).
+3. Kick off a delayed job that will load events from EventBrite based on the XY and R; potentially, we may want to limit the number of results returned and only query for events within time period T (the use of these criterion may vary by provider)
 
-4. Load events from EventBrite based on the XY and R; potentially, we may want to limit the number of results returned and only query for events within time period T (the use of these criterion may vary by provider)
+4. For each event, normalize the data to be consistent with our own Event data model. Then, if we do not have that event in our database (matching against  the provider name and provider reference ID), then add it to our Event database.
 
-5. For each event, normalize the data to be consistent with our own Event data model. Then, if we do not have that event in our database (matching against  the provider name and provider reference ID), then add it to our Event database.
-
-6. Now, run the original query against our Events table.
+5. If the number of events is > MIN_EVENTS; load those events from the database and display to the user.
 
 Pros:
   The benefit of this approach is that we won't hit event brite on every request; only when the amount of local data is small; and from then it will be cached; so there will be a penalty (~ equal to the current penalty) when the first user accesses events. After that, we will only need to hit event brite when we fall below the maximum number of events threshold.
@@ -36,3 +34,110 @@ Cons:
   b. If that is not enough, we can come up with a more complex algorithm 
      For example, we could say that we always want to have X number of events happening now, Y number of events within the next week, and Z number within the next 2 weeks; then, if, when we fetch events, our data does not meet those requirements; we supplant from EventBrite.
 
+=============================================================================
+Deal Redesign
+
+-----------------------------------------------------------------------------
+ScoutMob feed (http://feeds.feedburner.com/atl.xml)
+
+<?xml version="1.0" encoding="UTF-8"?>
+    <?xml-stylesheet type="text/xsl" media="screen" href="/~d/styles/rss2full.xsl"?>
+        <?xml-stylesheet type="text/css" media="screen" href="http://feeds.feedburner.com/~d/styles/itemcontent.css"?>
+            <rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0" version="2.0">
+                  <channel>
+    <title>Scoutmob Atlanta</title>
+                <description>Mobile Deals + Curious Finds</description>
+                <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml" href="http://feeds.feedburner.com/scoutmob/atl" />
+            <feedburner:info uri="scoutmob/atl" />
+            <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com/" />
+            <item>
+      <link>http://feedproxy.google.com/~r/scoutmob/atl/~3/MjGwis4Bu1c/2658</link>
+              <guid isPermaLink="false">http://scoutmob.com/atlanta/deal/2658</guid>
+          <title>50% Off Carizma Restaurant and Lounge</title>
+          <description>&lt;img alt="Original" src="http://cloud.scoutmob.com/upload/images/deals/2658/original.jpg?1338576050" /&gt; &lt;br/&gt;&lt;br/&gt;&lt;strong&gt;Scout Notes:&lt;/strong&gt; Walking in to this spankin' new 'cue joint, you may be taken aback by the atmosphere, decor, and impressively well-stocked bar... a departure from the usual barbecue restaurant's... er, &lt;i&gt;minimalist&lt;/i&gt; aesthetic. Of course, there's a time and a place for legit dirt-floor barbecue shacks, but when it comes down to date night or just a hankering for a nice sophisticated supper, Carizma stands out among almost all the 'cue joints in the area. 
+        &lt;br&gt;&lt;br&gt;
+        But don't you dare assume that because Carizma lacks the styrofoam plates and unassuming atmosphere, they don't have real and true barbecue chops. Because this BBQ fan can assure you: those ribs, tender and glazed with owner Rob's mama's sauce recipe, and smoked each morning with absolutely &lt;i&gt;none&lt;/i&gt; of yesterday's leftovers allowed anywhere near that dining room, are legit. The meats are tender and smoky, Mom's sauce is on the sweet side with a little kick of pizazz, and the menu will feature collard and mac 'n cheese in the coming weeks. Those meaty victuals are the genuine articles. So are the baked beans. And the warm peach cobbler. Need I go on? Probably not, because all you barbecue enthusiasts should already be penciling a visit to Carizma into your schedules. We recommend making a beeline at any time, but note that this joint hosts live blues and jazz on their indoor stage each weekend. With the full bar and cocktails. Oh, and for the many folks in the neighborhood with kids, Carizma will soon offer kids' karaoke. And if that's not a good reason to hit up Howell Mill for this spot, we don't know what is. 
+        &lt;br&gt;&lt;br&gt;
+        &lt;hr&gt;&lt;br&gt;
+        &lt;strong&gt;Hours:&lt;/strong&gt;&lt;br&gt;
+        Monday - Friday, 11 a.m. - 3 p.m., 5 p.m. - 9 p.m.&lt;br&gt;
+        Saturday, 2 p.m. - 'til the party stops&lt;br&gt;
+    &lt;i&gt;Closed Sunday&lt;/i&gt;</description>
+      <pubDate>Sat, 02 Jun 2012 00:00:00 -0400</pubDate>
+      <siteEndDate>2012-06-02 23:59:59</siteEndDate>
+      <percentageOff>50%</percentageOff>
+      <location>Carizma Restaurant and Lounge</location>
+      <address>1950 Howell Mill Road</address>
+      <city>Atlanta</city>
+      <state>GA</state>
+      <zip>30318</zip>
+      <latitude>33.8078</latitude>
+      <longitude>-84.4127</longitude>
+      <phone>(404) 549-3255</phone>
+      <image>http://cloud.scoutmob.com/upload/images/deals/2658/original.jpg?1338576050</image>
+      <website>http://www.yelp.com/biz/carizma-atlanta</website>
+    <feedburner:origLink>http://scoutmob.com/atlanta/deal/2658</feedburner:origLink>
+</item>
+<item>
+...
+</item>
+=============================================================================
+
+Current Deal model used for Yipit and Mobile Spinach
+
+class Deal
+
+  attr_reader :title, :description, :url, :mobile_url, :thumbnail_url, 
+              :latitude, :longitude, :name, :locations, :source
+
+  def initialize(attrs={})
+    attrs.each do |k,v|
+      instance_variable_set("@#{k}", v)
+    end
+  end
+  
+  def match?(location)
+    name_match?(location) || locations_match?(location)
+  end
+
+  private
+
+  def locations_match?(location)
+    locations.any? do |deal_location| 
+      deal_location.phone_match?(location)
+    end
+  end
+  
+  def name_match?(location)
+    unless name.blank? || location.name.blank?
+      name.include? location.name
+    end
+  end
+
+end
+
+deals
+----------------
+id
+source
+source_id
+title
+description
+name
+url
+mobile_url
+thumbnail_url
+
+start_date
+end_date
+
+deal_locations
+-----------------
+id
+deal_id
+address
+city
+state
+phone_number
+latitude
+longitude

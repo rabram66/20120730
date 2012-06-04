@@ -10,7 +10,34 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120601033827) do
+ActiveRecord::Schema.define(:version => 20120604005214) do
+
+  create_table "deal_locations", :force => true do |t|
+    t.integer  "deal_id"
+    t.string   "address"
+    t.string   "city"
+    t.string   "state"
+    t.string   "phone_number"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "deals", :force => true do |t|
+    t.string   "source"
+    t.string   "source_id"
+    t.string   "title"
+    t.text     "description"
+    t.string   "name"
+    t.string   "url"
+    t.string   "mobile_url"
+    t.string   "thumbnail_url"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0

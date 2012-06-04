@@ -69,7 +69,7 @@ body                    { color:#b1b1b1; font-family:Verdana, Geneva, sans-serif
 .chk_list li:hover         { background:#eaeff5}
 .smal_img                   { background:url(../images/small_frm.png) no-repeat; width:47px; height:50px; text-align:center; padding-top:5px;}
 .smal_img1                  { background:#a5b0b5; width:44px; height:50px; text-align:center; padding-top:5px;} 
-.link_txt                 { margin:0 10px; width:269px; padding-top:10px;}
+.link_txt                 { margin:0 10px; width:269px; padding-top:2px;}
 .link_txt a                 { color:#526c78;}   
 .link_txt a:hover             { text-decoration:underline}
 .link_txt span                { color:#7a7e80; font-style:italic;}  
@@ -138,3 +138,4 @@ div.footer a {margin: 5px 20px 5px 20px;}
 
 #loading {display: none; position: absolute; top: 400px; left: 760px; z-index: 1000;}
 #event-description p {color: black;}
+a.more-info {font-style: italic;}

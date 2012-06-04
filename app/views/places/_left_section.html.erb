@@ -57,7 +57,8 @@
             </div>
             <div class="link_txt flt_Lt">
               <b><%= location.name %></b> - <%= location.address %><br/>
-              <span><%= truncate(location.description, :length => 80) %></span>
+              <%= description_for(location) %>
+              <a class='more-info' href="<%= url_for_location_details(location) %>">More Info ...</a>
             </div>
             <div class="conect flt_Rt">
               <span><%= number_with_precision(location.distance_from(@coordinates), :precision => 1) %> Mi</span>

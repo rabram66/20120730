@@ -9,6 +9,7 @@ class PlacesController < ApplicationController
 
   RADIUS = '750'
   DEFAULT_COORDINATES = Rails.application.config.app.default_coordinates
+  DEFAULT_SEARCH      = Rails.application.config.app.default_search
   
   def start
     redirect_to root_path
@@ -171,6 +172,7 @@ class PlacesController < ApplicationController
       @coordinates = Geocoder.coordinates(request.remote_ip)
       if !@coordinates || (@coordinates.first == 0.0 && @coordinates.last == 0.0)
         @coordinates = DEFAULT_COORDINATES
+        @search = DEFAULT_SEARCH
       end
     else
       # Only set when coordinates not from fallback (forces browser geonav)

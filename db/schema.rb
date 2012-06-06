@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120604005214) do
+ActiveRecord::Schema.define(:version => 20120606050738) do
 
   create_table "deal_locations", :force => true do |t|
     t.integer  "deal_id"
@@ -31,14 +31,16 @@ ActiveRecord::Schema.define(:version => 20120604005214) do
     t.string   "title"
     t.text     "description"
     t.string   "name"
-    t.string   "url"
-    t.string   "mobile_url"
-    t.string   "thumbnail_url"
+    t.string   "url",           :limit => 1024
+    t.string   "mobile_url",    :limit => 1024
+    t.string   "thumbnail_url", :limit => 1024
     t.datetime "start_date"
     t.datetime "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "deals", ["provider", "provider_id"], :name => "index_deals_on_provider_and_provider_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0

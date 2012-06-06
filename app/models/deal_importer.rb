@@ -5,7 +5,7 @@ class DealImporter
   def initialize( coordinates, options={})
     @coordinates = coordinates
     @radius = options[:radius] || 2 
-    @services = options[:services] || %w(YipitApi MobileSpinachApi)
+    @services = options[:services] || %w(Deals::YipitApi Deals::MobileSpinachApi)
   end
   
   def import

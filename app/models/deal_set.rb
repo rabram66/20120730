@@ -4,15 +4,19 @@ class DealSet
 
   alias_attribute :length, :count
   
+  MIN_DEALS = 4
+  
   def initialize(deals)
     @deals = deals
   end
   
   class << self
-    def find_by_geocode(coordinates)
-      yipit_deals = YipitApi.find_by_geocode(coordinates)
-      mobile_spinach_deals = MobileSpinachApi.find_by_geocode(coordinates)
-      new(mobile_spinach_deals + yipit_deals)
+    def near(coordinates)
+      deals = Deal.near(coordinates, 2)
+      if deals.count < MIN_DEALS
+        DealImporter.new(coordinates).delay.import
+      end
+      new(deals)
     end
   end
 

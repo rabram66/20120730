@@ -42,7 +42,7 @@ class MobileControllerTest < ActionController::TestCase
 
     should "get list" do
       Place.expects(:find_by_geocode).returns([])
-      DealSet.expects(:find_by_geocode).returns([])
+      DealSet.expects(:near).returns([])
       get :list
       assert_response :success
       assert_template :list
@@ -60,7 +60,7 @@ class MobileControllerTest < ActionController::TestCase
     end
   
     should "get deals" do
-      DealSet.expects(:find_by_geocode).returns([])
+      DealSet.expects(:near).returns([])
       get :deals
       assert_response :success
       assert_template :deals

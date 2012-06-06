@@ -20,7 +20,7 @@ class PlacesControllerTest < ActionController::TestCase
     Geocoder.expects(:coordinates).returns([0.0,0.0])
     Place.expects(:find_by_geocode).returns([])
     EventSet.expects(:upcoming_near).returns([])
-    DealSet.expects(:find_by_geocode).with([0.0,0.0]).returns(DealSet.new([]))
+    DealSet.expects(:near).with([0.0,0.0]).returns(DealSet.new([]))
   end
 
   context 'GET details for location' do
@@ -28,7 +28,7 @@ class PlacesControllerTest < ActionController::TestCase
       Geocoder.expects(:coordinates).returns([0.0,0.0])
       Place.expects(:find_by_geocode).returns([])
       # EventBriteApi.expects(:geosearch).returns([])
-      DealSet.expects(:find_by_geocode).returns(DealSet.new([]))
+      DealSet.expects(:near).returns(DealSet.new([]))
       Tweet.expects(:user_status).with(@location.twitter_name).returns(nil)
       Tweet.expects(:geosearch).with("@#{@location.twitter_name}",@location.coordinates, 5, 40).returns([])
       Tweet.expects(:geosearch).with("\"#{@location.name}\"",@location.coordinates, 5, 40).returns([])
@@ -45,7 +45,7 @@ class PlacesControllerTest < ActionController::TestCase
       Geocoder.expects(:coordinates).returns([0.0,0.0])
       Place.expects(:find_by_geocode).returns([])
       # EventBriteApi.expects(:geosearch).returns([])
-      DealSet.expects(:find_by_geocode).returns(DealSet.new([]))
+      DealSet.expects(:near).returns(DealSet.new([]))
 
       place           = Place.new
       place.name      = 'Bozos'

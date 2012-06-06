@@ -25,8 +25,9 @@ ActiveRecord::Schema.define(:version => 20120604005214) do
   end
 
   create_table "deals", :force => true do |t|
+    t.string   "provider"
+    t.string   "provider_id"
     t.string   "source"
-    t.string   "source_id"
     t.string   "title"
     t.text     "description"
     t.string   "name"

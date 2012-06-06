@@ -5,9 +5,9 @@ class Event < ActiveRecord::Base
   include Address
   include DatedModel
 
-  ADDRESS_ATTRS = %w(city state address)
   CATEGORIES =  %w(conference conventions entertainment fundraisers meetings other performances reunions sales seminars social sports tradeshows travel religion fairs food music recreation)
-
+  ADDRESS_ATTRS = %w(address city state)
+  
   validates_presence_of :name, :address, :city, :state
   attr_accessible :name, :address, :city, :state, :description,
                   :latitude, :longitude, :user_id, :full_address, :start_date,

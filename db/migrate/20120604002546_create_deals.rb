@@ -1,8 +1,9 @@
 class CreateDeals < ActiveRecord::Migration
   def change
     create_table :deals do |t|
+      t.string   :provider
+      t.string   :provider_id
       t.string   :source
-      t.string   :source_id
       t.string   :title
       t.text     :description
       t.string   :name

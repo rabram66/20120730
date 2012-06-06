@@ -41,11 +41,6 @@ class EventSet
       new(events)
     end
 
-    private
-    
-    def supplant # from external services
-    end
-
   end
 
 end

@@ -45,7 +45,7 @@ module NearbyThis
     config.app.eventbrite_app_key = 'FMKOHYNE36ODPTPEDM'
     config.app.bitly_api_key = 'R_1ea09f3c979c13e84563e4ce75b65c09'
     config.app.default_search = "Inman Park, Atlanta, GA"
-    config.app.default_coordinates = Geocoder.coordinates( Rails.application.config.app.default_search ) #[33.7583923, -84.3555194] # Inman Park, Atlanta, GA
+    config.app.default_coordinates = [33.7583923, -84.3555194] # Inman Park, Atlanta, GA
 
   end
 end

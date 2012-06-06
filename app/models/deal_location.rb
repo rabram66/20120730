@@ -1,7 +1,16 @@
 class DealLocation < ActiveRecord::Base
   include Address
-  attr_accessible :address, :city, :state, :latitude, :longitude
+  attr_accessible :address, :city, :state, :latitude, :longitude, :phone_number
+
   belongs_to :deal
+
+  geocoded_by :full_address
+
+  ADDRESS_ATTRS = %w(city state address)
+
+  after_validation do
+    geocode if !(ADDRESS_ATTRS & changes.keys).empty? || latitude.blank? || longitude.blank?
+  end
   
   def phone_match?(location)
     unless phone_number.blank? || location.phone_number.blank?

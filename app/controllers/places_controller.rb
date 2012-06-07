@@ -3,6 +3,7 @@ class PlacesController < ApplicationController
   has_mobile_fu
 
   before_filter :set_pjax, :redirect_mobile_request, :except => :recent_tweeters
+  before_filter :set_coordinates, :only => [:index, :details, :event]
   respond_to :html, :json, :js
 
   layout :set_layout
@@ -37,7 +38,6 @@ class PlacesController < ApplicationController
   
   # GET /details/QUIOUREIOWFI-FJSDJFII38427387 (reference)
   def details
-    puts "PJAX!!!!!: #{@pjax.to_s}"
     load_for_index unless pjax?
     reference = params[:reference]
 
@@ -114,8 +114,6 @@ class PlacesController < ApplicationController
   end
 
   def load_for_index
-    set_coordinates
-    
     @location_type = params[:location_type] || 'ALL'
     category = case @location_type
       when /eat/i; LocationCategory::EatDrink

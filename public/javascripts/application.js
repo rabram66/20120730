@@ -34,12 +34,85 @@ function bounds(lat, lng, radius) {
 
 $(document).ready(function() {
   
+  // Directions.js
+  var directionDisplay;
+  var directionsService = new google.maps.DirectionsService();
+  var map;
+  var marker;
+
+  function loadMapAndDirections() {
+
+    if (!$('#map_canvas').length) return;
+
+    var dest_latlng = new google.maps.LatLng($('#dest_lat').val(), $('#dest_lng').val());
+    if($('#orig_lat').length) {
+      var orig_latlng = new google.maps.LatLng($('#orig_lat').val(), $('#orig_lng').val());
+    } else {
+      var orig_latlng = dest_latlng;
+    }
+
+    var myOptions = {
+      zoom:10,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      center: dest_latlng
+    };
+
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    
+    if ($('#directions-panel-detail').length) {
+      directionsDisplay = new google.maps.DirectionsRenderer();
+      directionsDisplay.setMap(map);
+      directionsDisplay.setPanel(document.getElementById('directions-panel-detail'));
+
+      var request = {
+        origin: orig_latlng,
+        destination: dest_latlng,
+        travelMode: google.maps.DirectionsTravelMode.WALKING
+      };
+
+      directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          directionsDisplay.setDirections(response);
+        }
+      });
+    }
+
+  }
+
+  loadMapAndDirections();
+
+  function bindDirectionControls() {
+    // Toggle Directions display
+    if ($('#mentions-container').length) {
+      $("#direction_id").on('click', function() {
+        if ($('#mentions-container').css("display") != "none") {
+          $("#direction_id").text("Tweets");
+          $("#mentions-container").hide();
+          $("#directions-container").show();            
+        } else {
+          $("#direction_id").text("Directions");
+          $("#mentions-container").show();
+          $("#directions-container").hide();
+        }
+        return false;
+      });
+    } else {
+      $("#directions-container").show();
+      $("#direction_id").hide();
+    }
+  }
+  
   // pjax
   $('a.pjax').pjax('#detail-content', {timeout: 10000});
 
   $(document)
-    .bind('pjax:start', function() { $('#loading').show() })
-    .bind('pjax:end',   function() { $('#loading').hide() });
+    .on('pjax:start', function() { $('#loading').show() })
+    .on('pjax:end',   function() {
+      twttr.widgets.load(); // rebind tweet buttons
+      loadMapAndDirections();
+      bindDirectionControls();
+      $('#loading').hide();
+    });
 
   // go button
   $('#search_button').click( function() {$('#place_search').submit()} );
@@ -65,36 +138,19 @@ $(document).ready(function() {
     $('#show-events').toggleClass('active')
   });
 
-  // Toggle Directions display
-  if ($('#mentions-container').length) {
-    $("#direction_id").live('click', function() {
-      if ($('#mentions-container').css("display") != "none") {
-        $("#direction_id").text("Tweets");
-        $("#mentions-container").hide();
-        $("#directions-container").show();            
-      } else {
-        $("#direction_id").text("Directions");
-        $("#mentions-container").show();
-        $("#directions-container").hide();
-      }
-      return false;
-    });
-  } else {
-    $("#directions-container").show();
-    $("#direction_id").hide();
-  }
+  bindDirectionControls();
 
   if ($('.fancybox').length) $('.fancybox').fancybox();
 
   if ($('#tweet-this').length) {
     twttr.ready(function (twttr) { // load twitter widget.js
-       // bind events here
-       twttr.events.bind('tweet', function(event) {
-         if (event.target.parentElement.id == "favorite-this") {
-           // invoke favorite callback
-           $.post(window.location.pathname.replace("/details","/favorite"));
-         }
-       });
-     });
+      // bind events here
+      twttr.events.bind('tweet', function(event) {
+        if (event.target.parentElement.id == "favorite-this") {
+         // invoke favorite callback
+          $.post(window.location.pathname.replace("/details","/favorite"));
+        }
+      });
+    });
   }
 });

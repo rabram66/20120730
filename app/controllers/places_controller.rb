@@ -130,9 +130,10 @@ class PlacesController < ApplicationController
     @events = EventSet.upcoming_near(@coordinates)
     @deals = DealSet.near( @coordinates )
 
-    @locations.each do |location|
-      location.deals = @deals.matching_deals(location)
-    end
+    # Not needed until UI for locations w/deals is determined
+    # @locations.each do |location|
+    #   location.deals = @deals.matching_deals(location)
+    # end
   end
   
   def load_from_reference

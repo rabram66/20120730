@@ -13,7 +13,7 @@
   <div class="top_info_sec">
     <div class="infoside flt_Lt">
       <div class="contact">
-        <h5><%= @location.name %><br/><span><%= @location.vicinity %></span></h5>
+        <h1><%= @location.name %><br/><span><%= @location.vicinity %></span></h1>
         <% if @location.phone_number.present? %>
           <span class="phone"><%= number_to_phone @location.phone_number, :area_code => true %></span>
         <% end -%>

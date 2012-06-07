@@ -19,7 +19,7 @@
   <div class="top_info_sec">
     <div class="infoside flt_Lt">
       <div class="contact">
-        <h5><%= @event.name %><br/><span><%= @event.vicinity %></span></h5>
+        <h1><%= @event.name %><br/><span><%= @event.vicinity %></span></h1>
       </div>
       <% unless @event.flyer_url.blank? -%>
         <p class='event-flyer-link'><%= link_to "View Event Flyer", @event.flyer_url, :title => @event.name, :class => :fancybox %></p>

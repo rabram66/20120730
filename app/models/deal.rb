@@ -5,14 +5,14 @@ class Deal < ActiveRecord::Base
   
   include DatedModel
 
-  has_many :deal_locations, :dependent => :destroy
+  has_many :deal_locations, :dependent => :delete_all
   alias_attribute :locations, :deal_locations
   accepts_nested_attributes_for :deal_locations
 
   validates_presence_of :start_date, :end_date, :name, :title
 
   scope :current, where("(start_date ISNULL AND end_date ISNULL) OR (start_date >= :today OR end_date >= :today)", {:today => Date.today})
-                  
+
   class << self
     def near(coordinates, radius)
       Deal.current.joins(:deal_locations).select('deals.*').merge( DealLocation.near(coordinates,2) )

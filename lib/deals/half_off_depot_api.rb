@@ -35,6 +35,7 @@ module Deals
             {
               :provider      => 'HalfOffDepot',
               :provider_id   => deal['id'],
+              :source        => 'HalfOffDepot',
               :title         => deal['title'],
               :description   => deal['description'],
               :name          => deal['brand'],

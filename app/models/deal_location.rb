@@ -11,6 +11,10 @@ class DealLocation < ActiveRecord::Base
   after_validation do
     geocode if !(ADDRESS_ATTRS & changes.keys).empty? || latitude.blank? || longitude.blank?
   end
+
+  scope :for_provider, lambda { |provider|
+    where("deal_id IN (#{select('deal_id').joins(:deal).where(['deals.provider = ?', provider]).to_sql})")
+  }
   
   def phone_match?(location)
     unless phone_number.blank? || location.phone_number.blank?

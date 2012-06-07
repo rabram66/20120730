@@ -2,11 +2,18 @@ module Deals
   class HalfOffDepotImporter
     def import
       results = HalfOffDepotApi.search_all_cities
+
+      # Remove all HalfOffDepot deals
+      provider = 'HalfOffDepot'
+      DealLocation.for_provider( provider ).delete_all
+      Deal.delete_all(['provider = ?', provider])
+
       results.each do |city, deals|
         deals.each do |deal|
-          Deal.create(deal) unless Deal.find_by_provider_and_provider_id(deal[:provider], deal[:provider_id].to_s)
+          Deal.create(deal)
         end
       end
+
     end
   end
 end

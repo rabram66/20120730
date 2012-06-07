@@ -1,7 +1,7 @@
 class Deal < ActiveRecord::Base
   attr_accessible :title, :description, :url, :mobile_url, :thumbnail_url, :provider, :provider_id,
                   :name, :locations, :source, :source_id, :start_date, :end_date, :deal_locations_attributes
-  extend FriendlyId
+  # extend FriendlyId
   
   include DatedModel
 

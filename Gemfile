@@ -37,6 +37,7 @@ gem 'twitter'                      # Twitter
 
 group :development, :test do
   gem 'ansi'     # colorize turn output
+  gem 'lol_dba'  # find indexes
 end
 
 group :test do

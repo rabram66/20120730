@@ -8,8 +8,12 @@ module Api
     end
     
     def twitter_profile
-      res = Twitter.user params[:twitter_name]
-      respond_with({:profile_image_url => res.profile_image_url, :description => res.description})
+      begin 
+        res = Twitter.user params[:twitter_name]
+        respond_with({:profile_image_url => res.profile_image_url, :description => res.description})
+      rescue Twitter::NotFound
+        Rails.logger.info("Twitter profile for '#{params[:twitter_name]}' not found.")
+      end
     end
   end
 end

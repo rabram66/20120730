@@ -16,7 +16,7 @@ class FacebookApi
         else
           Rails.logger.error "Unable to retrieve Facebook ID for page: (#{response.code}) #{url}"
         end
-      rescue RestClient::ResourceNotFound
+      rescue RestClient::ResourceNotFound, MultiJson::DecodeError
         Rails.logger.error "Unable to retrieve Facebook ID for page: (404) #{url}"
         nil
       end

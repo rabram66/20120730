@@ -7,7 +7,7 @@ class FacebookApi
     
     # Get the facebook ID (required for fetching the feed) from the page name
     def id_for_page(name)
-      url = format(PAGE_URL, name)
+      url = format(PAGE_URL, CGI.escape(name))
       begin
         response = RestClient.get( url )
         if response.code == 200
@@ -28,7 +28,7 @@ class FacebookApi
         facebook_id = id_for_page(facebook_id) unless facebook_id =~ /^\d+$/
       
         if facebook_id
-          url = format(FEED_URL, facebook_id) 
+          url = format(FEED_URL, CGI.escape(facebook_id)) 
           begin
             response = RestClient.get( url )
             begin

@@ -2,8 +2,8 @@ class PlacesController < ApplicationController
 
   has_mobile_fu
 
-  before_filter :set_pjax, :redirect_mobile_request, :except => :recent_tweeters
-  before_filter :set_coordinates, :only => [:index, :details, :event]
+  before_filter :set_pjax, :redirect_mobile_request, :except => :favorite
+  before_filter :set_coordinates, :except => [:search, :ical, :favorite]
   respond_to :html, :json, :js
 
   layout :set_layout
@@ -73,19 +73,6 @@ class PlacesController < ApplicationController
   def ical
     load_event
     render :text => to_ical(@event), :header => {'Content-Type'=>'text/calendar'}, :layout => false
-  end
-
-  # XHR POST returns those twitter names with cached statuses
-  # NOT CURRENTLY USED; this maybe replaced by a similar request that fetches tweet counts
-  def recent_tweeters
-    within = 1.day
-    now = Time.now
-    twitter_names = params['n'] || []
-    recently_updated = twitter_names.select { |name|
-      status = Tweet.cached_user_status(name)
-      ((now - status.created_at).abs < within) if status
-    }
-    render :json => recently_updated
   end
 
   # XHR POST 

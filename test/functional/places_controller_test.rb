@@ -60,25 +60,4 @@ class PlacesControllerTest < ActionController::TestCase
     
   end
   
-  context 'XHR POST recent tweeters' do
-
-    should 'fetch twitter user statuses from cache' do
-      names = %w(foo bar baz)
-      names.each do |name|
-        Tweet.expects(:cached_user_status).with(name).returns(nil)
-      end
-      xhr :post, :recent_tweeters, :n => names
-    end
-
-    should 'return twitter names with recent tweets' do
-      names = %w(foo bar baz fizz)
-      Tweet.expects(:cached_user_status).with("foo").returns(Tweet.new(:created_at => 4.hours.ago))
-      Tweet.expects(:cached_user_status).with("bar").returns(Tweet.new(:created_at => 2.days.ago))
-      Tweet.expects(:cached_user_status).with("baz").returns(Tweet.new(:created_at => 3.minutes.ago))
-      Tweet.expects(:cached_user_status).with("fizz").returns(nil)
-      xhr :get, :recent_tweeters, :n => names
-      assert_equal ["foo","baz"], JSON.parse(response.body)
-    end
-
-  end
 end

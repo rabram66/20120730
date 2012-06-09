@@ -40,5 +40,6 @@ json.place do
     json.screen_name mention.screen_name.titleize
     json.created_at mention.created_at
     json.follow_url mention.follow_url
+    json.profile_image_url mention.profile_image_url
   end
 end

@@ -3,19 +3,19 @@ json.coordinates do
   json.longitude @coordinates.last
 end
 json.deals @deals do |deal|
-  json.title deal.title
-  json.description deal.description
-  json.name deal.name
-  json.url deal.url
-  json.mobile_url deal.mobile_url
-  json.thumbnail_url deal.thumbnail_url
+  json.title deal.title.to_s
+  json.description deal.description.to_s
+  json.name deal.name.to_s
+  json.url deal.url.to_s
+  json.mobile_url deal.mobile_url.to_s
+  json.thumbnail_url deal.thumbnail_url.to_s
   json.locations(deal.locations) do |location|
-    json.address      location.address 
-    json.city         location.city
-    json.state        location.state
-    json.latitude     location.latitude
-    json.longitude    location.longitude
-    json.phone_number location.phone_number
+    json.address      location.address.to_s
+    json.city         location.city.to_s
+    json.state        location.state.to_s
+    json.latitude     location.latitude.to_s
+    json.longitude    location.longitude.to_s
+    json.phone_number location.phone_number.to_s
   end
 end
 

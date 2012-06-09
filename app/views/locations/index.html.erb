@@ -41,7 +41,7 @@
         <td class='actions'>
           <%= link_to "Show", location_details_path(:reference => location.reference) %>&nbsp;|&nbsp;
           <%= link_to "Edit", edit_location_path(location) %>&nbsp;|&nbsp;
-          <%= link_to "Delete", location_path(location), :method => :delete, :confirm => "Are you sure you want to delete this location?" %>
+          <%= button_to "Delete", location_path(location), :method => :delete, :confirm => "Are you sure you want to delete this location?" %>
         </td>
       </tr>
     <% end -%>

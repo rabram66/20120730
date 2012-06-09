@@ -1,53 +1,54 @@
 <div class="lft_sectionsub">
   <div class="tab">
     <ul id='location_type_nav' class="tab_nav">
-      <li id='navALL' class="last active"><a href="javascript:void(0)"><span>ALL</span></a></li>
-      <li id='navEAT'><a href="javascript:void(0)"><span>EAT</span></a></li>
-      <li id='navSHOP'><a href="javascript:void(0)"><span>SHOP</span></a></li>
-      <li id='navFUN'><a href="javascript:void(0)"><span>FUN</span></a></li>
-      <li id='navSPA' class="last1"><a href="javascript:void(0)"><span>SPA</span></a></li>
+      <li id='navEAT' class="eat last <%= @location_type == 'EAT' ? 'active' : '' %>"><a class='loc_type' href="javascript:void(0)"><span>EAT</span></a></li>
+      <li id='navSHOP' class="shop <%= @location_type == 'SHOP' ? 'active' : '' %>"><a class='loc_type' href="javascript:void(0)"><span>SHOP</span></a></li>
+      <li id='navFUN' class="fun <%= @location_type == 'FUN' ? 'active' : '' %>"><a class='loc_type' href="javascript:void(0)"><span>FUN</span></a></li>
+      <li id='navSPA' class="spa <%= @location_type == 'SPA' ? 'active' : '' %>"><a class='loc_type' href="javascript:void(0)"><span>SPA</span></a></li>
+      <li id='navDEALS' class='deals'><a href="javascript:void(0)"><span>DEALS</span></a></li>
+      <li id='navEVENTS' class='events last1'><a href="javascript:void(0)"><span>EVENTS</span></a></li>
     </ul>
     <div class="clear_0">&nbsp;</div>
   </div>
   <div class="sub_link">
     <p><a href="javascript:void(0)" id='show-deals'><%= @deals.count %> Daily Deals</a> &nbsp; | &nbsp; <a href="javascript:void(0)" id='show-events'><%= @events.count %> Local Events</a> </p>
   </div>
-  <div id='deals-list'>
-    <div class="check_out">
-      <p>Deals in your area</p>
+  <div id='lft_sectionScroll'>
+    <div id='deals-list'>
+      <div class="check_out">
+        <p>Deals in your area</p>
+      </div>
+      <ul class="list_itm">
+        <% @deals.each do |deal| %>
+          <li>
+            <a href=<%= deal.url %> target='blank'>
+              <div class="imgside flt_Lt"><%= image_tag deal.thumbnail_url, :width => 52, :height => 50 %></div>
+              <div class='link_txt flt_Lt'><%= deal.title %><br/><%= deal.name %></div>
+              <div class="clear_0">&nbsp;</div>
+            </a>
+          </li>
+        <% end %>
+      </ul>
     </div>
-    <ul class="list_itm">
-      <% @deals.each do |deal| %>
-        <li>
-          <a href=<%= deal.url %> target='blank'>
-            <div class="imgside flt_Lt"><%= image_tag deal.thumbnail_url, :width => 52, :height => 50 %></div>
-            <div class='link_txt flt_Lt'><%= deal.title %><br/><%= deal.name %></div>
-            <div class="clear_0">&nbsp;</div>
-          </a>
-        </li>
-      <% end %>
-    </ul>
-  </div>
-  <div id='events-list'>
+    <div id='events-list'>
+      <div class="check_out">
+        <p>Local events happening nearby</p>
+      </div>
+      <ul class='list_itm'>
+        <% @events.each do |event| %>
+          <li>
+            <a href=<%= event_source_url(event) %>>
+              <div class="imgside flt_Lt"><%= image_tag event.thumbnail_url, :width => 52, :height => 50 %></div>
+              <div class='link_txt flt_Lt'><%= event.name %></div>
+              <div class="clear_0">&nbsp;</div>
+            </a>
+          </li>
+        <% end %>
+      </ul>
+    </div>  
     <div class="check_out">
-      <p>Local events happening nearby</p>
+      <p>Click the links below to see what&apos;s happening <b>now</b> at nearby businesses</p>
     </div>
-    <ul class='list_itm'>
-      <% @events.each do |event| %>
-        <li>
-          <a href=<%= event_source_url(event) %>>
-            <div class="imgside flt_Lt"><%= image_tag event.thumbnail_url, :width => 52, :height => 50 %></div>
-            <div class='link_txt flt_Lt'><%= event.name %></div>
-            <div class="clear_0">&nbsp;</div>
-          </a>
-        </li>
-      <% end %>
-    </ul>
-  </div>
-  
-  <div class="check_out">
-    <p>Check out what's happening now at nearby businesses</p>
-  </div>
     <ul class="chk_list">
       <% @locations.each_with_index do |location, index| %>
         <li>
@@ -58,7 +59,6 @@
             <div class="link_txt flt_Lt">
               <b><%= location.name %></b> - <%= location.address %><br/>
               <%= description_for(location) %>
-              <a class='more-info' href="<%= url_for_location_details(location) %>">More Info ...</a>
             </div>
             <div class="conect flt_Rt">
               <span><%= number_with_precision(location.distance_from(@coordinates), :precision => 1) %> Mi</span>
@@ -69,5 +69,6 @@
         </li>
       <% end %>
     </ul>
+  </div>
 </div>
 <%= render :partial => 'shared/left_ad_container' %>  

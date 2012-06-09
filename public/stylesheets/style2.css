@@ -44,12 +44,23 @@ body                    { color:#b1b1b1; font-family:Verdana, Geneva, sans-serif
 /* ------------------------ MIAN CONTENT HERE --------------*/
 .content_wrapper              { background: #98b8d8 url(../images/banne_img_02.jpg) center top no-repeat;}  
 .lft_section                { width:492px;}
-.lft_sectionsub               { background:#fff; height:700px; overflow:scroll; overflow-x:hidden; padding:20px;}
+.lft_sectionsub               { background:#fff; padding:20px;}
+#lft_sectionScroll            { background:#fff; height: 660px; overflow:scroll; overflow-x:hidden;}
 .tab_nav                  { display:block}  
-.tab_nav li                 { float:left; height:26px; margin-left:20px;}
+.tab_nav li                 { float:left; height:26px; margin-left:17px;}
 .tab_nav li.last1             { float:right !important}
-.tab_nav li a               { display:block; padding-left:10px; color:#6c6762; font-size:18px;}
-.tab_nav li a span              { display:block; padding:0 12px 0 7px; line-height:26px; } 
+.tab_nav li a               { display:block; padding-left:6px; color:#6c6762; font-size:18px;}
+.tab_nav li a span          { display:block; padding-top:0; padding-bottom:0; line-height:26px; } 
+
+.tab_nav li.eat a span          { padding-left:0px; padding-right:6px;} 
+.tab_nav li.shop a span          { padding-left:4px; padding-right:8px; } 
+.tab_nav li.fun a span          { padding-left:0px; padding-right:6px; } 
+.tab_nav li.spa a span          { padding-left:0px; padding-right:6px; } 
+.tab_nav li.deals a span          { padding-left:0px; padding-right:6px; } 
+.tab_nav li.events a span          { padding-left:0px; padding-right:6px;} 
+
+.tab_nav li.deals a   { color: #d03f10} 
+
 .tab_nav li a:hover,.tab_nav li.active a  { background:url(../images/tab_hv_02.jpg) left top no-repeat; color:#fff }
 .tab_nav li.active a span, .tab_nav li a:hover span { background:url(../images/tab_hv_04.jpg) right top no-repeat; }  
 .sub_link                 { background:#4b4b4b; height:25px;}   
@@ -63,7 +74,7 @@ body                    { color:#b1b1b1; font-family:Verdana, Geneva, sans-serif
 .list_itm li:hover         { background:#eaeff5}
 .list_itm .link_txt         { margin:0 10px; width:354px; padding-top:10px;}
 .check_out                  { background:#4b4b4b; padding: 0 15px; margin:10px 0 }
-.check_out p                { line-height:23px; font-size:13px; color:#fff }
+.check_out p                { line-height:23px; font-size:11px; color:#fff; text-align:center; }
 .chk_list li                { padding:10px; padding-left:5px; border-bottom:1px #d4d4d4 solid;}
 .chk_list li.first1             { background:#e9eff4; border-color:#fff;}
 .chk_list li:hover         { background:#eaeff5}

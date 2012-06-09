@@ -118,7 +118,8 @@ $(document).ready(function() {
   $('#search_button').click( function() {$('#place_search').submit()} );
 
   // location type (all, eat, shop, ...) tab handling
-  $('#location_type_nav a').click( function(event) {
+  $('#location_type_nav a.loc_type').click( function(event) {
+    $('#location_type_nav li.active').removeClass('active');
     $('#place_search input#location_type').val(event.target.textContent);
     $('#place_search').submit();
   });
@@ -128,12 +129,12 @@ $(document).ready(function() {
   $(active_tab).addClass('active');
   
   // deals and events toggles
-  $('#show-deals').click( function() {
+  $('#show-deals, li#navDEALS a').click( function() {
     $('#deals-list').toggle();
     $('#show-deals').toggleClass('active')
   });
 
-  $('#show-events').click( function() {
+  $('#show-events, li#navEVENTS a').click( function() {
     $('#events-list').toggle();
     $('#show-events').toggleClass('active')
   });

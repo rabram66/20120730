@@ -101,7 +101,7 @@ class PlacesController < ApplicationController
   end
 
   def load_for_index
-    @location_type = params[:location_type] || 'ALL'
+    @location_type = params[:location_type] || 'EAT'
     category = case @location_type
       when /eat/i; LocationCategory::EatDrink
       when /shop/i; LocationCategory::ShopFind

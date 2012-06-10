@@ -51,7 +51,7 @@
 
           <div class="main_content">
             <div class="lft_section flt_Lt">
-              <% cache( "search_results_#{@coordinates.join('_')}", :expires_in => 10.minutes) do %>
+              <% cache( "search_#{@location_type}_#{@coordinates.join('_')}", :expires_in => 10.minutes) do %>
                 <%= render :partial => '/places/left_section' %>
               <% end %>
             </div>

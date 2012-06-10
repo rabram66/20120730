@@ -103,7 +103,7 @@ class PlacesController < ApplicationController
   def load_for_index
     @location_type = params[:location_type] || 'EAT'
 
-    unless fragment_exist?("search_results_#{@coordinates.join('_')}")
+    unless fragment_exist?("search_#{@location_type}_#{@coordinates.join('_')}")
       category = case @location_type
         when /eat/i; LocationCategory::EatDrink
         when /shop/i; LocationCategory::ShopFind

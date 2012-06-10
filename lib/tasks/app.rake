@@ -15,11 +15,19 @@ namespace :app do
     end
     
     namespace :deals do
+
       desc "Import deals from Half Off Depot" 
       task :half_off_depot => :environment do
         Deals::HalfOffDepotImporter.new.import
       end
+
+      desc "Import deals from Scoutmob" 
+      task :scoutmob => :environment do
+        Deals::ScoutmobImporter.new.import
+      end
+
     end
+
   end
 
   namespace :locations do

@@ -38,7 +38,7 @@ Cons:
 Deal Redesign
 
 -----------------------------------------------------------------------------
-ScoutMob feed (http://feeds.feedburner.com/atl.xml)
+ScoutMob feed (http://feeds.feedburner.com/scoutmob/atl.xml)
 
 <?xml version="1.0" encoding="UTF-8"?>
     <?xml-stylesheet type="text/xsl" media="screen" href="/~d/styles/rss2full.xsl"?>

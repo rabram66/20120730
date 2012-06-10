@@ -51,7 +51,9 @@
 
           <div class="main_content">
             <div class="lft_section flt_Lt">
-              <%= render :partial => '/places/left_section' %>
+              <% cache( "search_results_#{@coordinates.join('_')}", :expires_in => 10.minutes) do %>
+                <%= render :partial => '/places/left_section' %>
+              <% end %>
             </div>
             <div id='loading'><%= image_tag 'ajax-loader.gif' %></div>
             <div id='detail-content' class="rgt_section flt_Rt">

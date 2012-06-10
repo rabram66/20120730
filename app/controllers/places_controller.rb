@@ -102,17 +102,20 @@ class PlacesController < ApplicationController
 
   def load_for_index
     @location_type = params[:location_type] || 'EAT'
-    category = case @location_type
-      when /eat/i; LocationCategory::EatDrink
-      when /shop/i; LocationCategory::ShopFind
-      when /fun/i; LocationCategory::Play
-      when /spa/i; LocationCategory::Spa
+
+    unless fragment_exist?("search_results_#{@coordinates.join('_')}")
+      category = case @location_type
+        when /eat/i; LocationCategory::EatDrink
+        when /shop/i; LocationCategory::ShopFind
+        when /fun/i; LocationCategory::Play
+        when /spa/i; LocationCategory::Spa
+      end
+
+      @locations = PlaceLoader.near(@coordinates, category)
+
+      @events = EventSet.upcoming_near(@coordinates)
+      @deals = DealSet.near( @coordinates )
     end
-
-    @locations = PlaceLoader.near(@coordinates, category)
-
-    @events = EventSet.upcoming_near(@coordinates)
-    @deals = DealSet.near( @coordinates )
 
     # Not needed until UI for locations w/deals is determined
     # @locations.each do |location|

@@ -8,8 +8,8 @@
 
 <div style="display:none">
   <% unless cookies[:address].blank? -%>
-    <%= hidden_field_tag :orig_lat, cookies[:address].first %>
-    <%= hidden_field_tag :orig_lng, cookies[:address].last %>
+    <%= hidden_field_tag :orig_lat, cookies[:address].split('&')[0] %>
+    <%= hidden_field_tag :orig_lng, cookies[:address].split('&')[1] %>
   <% end -%>
   <%= hidden_field_tag :dest_lat, @event.latitude %>
   <%= hidden_field_tag :dest_lng, @event.longitude %>

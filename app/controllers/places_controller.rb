@@ -148,8 +148,13 @@ class PlacesController < ApplicationController
     @coordinates = case
       when !lat.blank? && !lng.blank?; [lat.to_f, lng.to_f]
       when !@search.blank?; Geocoder.coordinates(@search)
-      when session[:search]; session[:search]
-      when cookies[:address]; cookies[:address].split("&").map(&:to_f) 
+      when session[:search]
+        @search = Geocoder.search(session[:search]).first.address
+        session[:search]
+      when cookies[:address]
+        cookie_bits = cookies[:address].split("&")
+        @search = cookie_bits.last if cookie_bits.length > 2
+        cookie_bits[0,2].map(&:to_f) 
     end
     
     unless @coordinates
@@ -158,22 +163,16 @@ class PlacesController < ApplicationController
       if !@coordinates || (@coordinates.first == 0.0 && @coordinates.last == 0.0)
         @coordinates = DEFAULT_COORDINATES
         @search = DEFAULT_SEARCH
+      else
+        @search = Geocoder.search(@coordinates).first.address
       end
     else
       # Only set when coordinates not from fallback (forces browser geonav)
       session[:search] = @coordinates
     end
     
-    cookies[:address] = { :value => @coordinates, :expires => 1.year.from_now }
+    cookies[:address] = { :value => (@coordinates.clone << @search).join('&'), :expires => 1.year.from_now }
   end
-
-  def geocode_from_cookie
-    cookies[:address] ? cookies[:address].split("&") : DEFAULT_COORDINATES
-  end
-
-  # def redirect_to_start
-  #   redirect_to :action => 'start' unless cookies[:address] || params[:search]
-  # end
   
   def redirect_mobile_request
     if is_mobile_device?

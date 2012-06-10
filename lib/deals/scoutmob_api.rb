@@ -33,7 +33,7 @@ module Deals
     
       def transform_item(item)
         {
-          :provider      => 'Scoutob',
+          :provider      => 'Scoutmob',
           :provider_id   => item.xpath('guid').text,
           :source        => 'Scoutmob',
           :title         => item.xpath('title').text,

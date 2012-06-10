@@ -72,7 +72,7 @@ body                    { color:#b1b1b1; font-family:Verdana, Geneva, sans-serif
 .list_itm li a                { text-decoration:underline; color:#3390ee; display:inline-block}       
 .list_itm li a:hover            { text-decoration:none}   
 .list_itm li:hover         { background:#eaeff5}
-.list_itm .link_txt         { margin:0 10px; width:354px; padding-top:10px;}
+.list_itm .link_txt         { margin:0 10px; width:352px; padding-top:10px;}
 .check_out                  { background:#4b4b4b; padding: 0 15px; margin:10px 0 }
 .check_out p                { line-height:23px; font-size:11px; color:#fff; text-align:center; }
 .chk_list li                { padding:10px; padding-left:5px; border-bottom:1px #d4d4d4 solid;}

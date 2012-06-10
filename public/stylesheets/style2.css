@@ -47,7 +47,7 @@ body                    { color:#b1b1b1; font-family:Verdana, Geneva, sans-serif
 .lft_sectionsub               { background:#fff; padding:20px;}
 #lft_sectionScroll            { background:#fff; height: 660px; overflow:scroll; overflow-x:hidden;}
 .tab_nav                  { display:block}  
-.tab_nav li                 { float:left; height:26px; margin-left:17px;}
+.tab_nav li                 { float:left; height:26px; margin-left:16px;}
 .tab_nav li.last1             { float:right !important}
 .tab_nav li a               { display:block; padding-left:6px; color:#6c6762; font-size:18px;}
 .tab_nav li a span          { display:block; padding-top:0; padding-bottom:0; line-height:26px; } 

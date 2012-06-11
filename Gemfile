@@ -5,7 +5,9 @@ gem 'rails', '3.1.0.rc5'
 gem 'rack', '1.3.3'
 
 # Geocoder version that plays better with pagination
-gem 'geocoder', :git => 'git://github.com/alexreisner/geocoder.git', :ref => '0e157f6794'
+# gem 'geocoder', :git => 'git://github.com/alexreisner/geocoder.git', :ref => '0e157f6794'
+gem 'geocoder', :git => 'git://github.com/alexreisner/geocoder.git', :ref => '4592b73'
+# gem 'geocoder'
 
 gem 'httparty'                     # calls external APIs
 gem 'heroku'                       # manages deployment

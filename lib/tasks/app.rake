@@ -52,6 +52,11 @@ namespace :app do
       LocationsDeduper.new.run
     end
 
+    desc "Geocode locations"
+    task :geocode => :environment do |t,args|
+      LocationsGeocoder.new.run
+    end
+
   end
 
 end

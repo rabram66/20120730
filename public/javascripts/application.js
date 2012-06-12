@@ -143,7 +143,7 @@ $(document).ready(function() {
 
   if ($('.fancybox').length) $('.fancybox').fancybox();
 
-  if ($('#tweet-this').length) {
+  if ($('.tweet-this').length) {
     twttr.ready(function (twttr) { // load twitter widget.js
       // bind events here
       twttr.events.bind('tweet', function(event) {

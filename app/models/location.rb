@@ -68,13 +68,15 @@ class Location < ActiveRecord::Base
       name         = options[:name]
       order        = options[:order] || 'name'
       to_verify    = options[:to_verify] unless options[:to_verify].nil?
+      to_geocode   = options[:to_geocode] unless options[:to_geocode].nil?
 
       relation = unscoped
       relation = relation.where(:general_type => general_type) if general_type
       relation = relation.where(arel_table[:name].matches(name)) if name
       relation = relation.where(:verified => false) if to_verify
+      relation = relation.where(:latitude => nil) if to_geocode
       relation = relation.where(:active => options[:active]) unless options[:active].nil?
-      if coordinates
+      if coordinates and !to_geocode
         order = "#{order},distance" unless order == 'distance'
         radius ||= 20
         relation = relation.near(coordinates, radius, :order => order)

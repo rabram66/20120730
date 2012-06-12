@@ -12,6 +12,7 @@ class LocationsController < ApplicationController
     @name = params[:name] unless params[:name].blank?
     @order = params[:order] || 'name'
     @to_verify = params[:to_verify] == 'true'
+    @to_geocode = params[:to_geocode] == 'true'
     @active = case params[:active]
       when 'Active'; true
       when 'Inactive'; false
@@ -22,11 +23,12 @@ class LocationsController < ApplicationController
     @locations = @locations.all_by_filters(
       :general_type => @general_type,
       :radius       => @radius,
-      :coordinate   => @coordinates, 
+      :coordinates  => @coordinates, 
       :name         => @name, 
       :order        => @order, 
-      :to_verity    => @to_verify,
-      :active       => @active
+      :to_verify    => @to_verify,
+      :active       => @active,
+      :to_geocode   => @to_geocode
     ).page(params[:page])
     respond_with @locations
   end

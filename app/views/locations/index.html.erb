@@ -8,7 +8,7 @@
       of <%= text_field_tag :address, @address, :size => 40 %><br/><br/>
       Named <%= text_field_tag :name, @name, :size => 40 %>
       ordered by <%= select_tag :order, options_for_select([ ['Name','name'],['Distance','distance'],['Address','address'],['Twitter Name','twitter_name'],['Facebook Page','facebook_page_id'],['Verified On','verified_on'] ], @order) %><br/><br/>
-      needing verification <%= check_box_tag :to_verify, 'true' %> with status <%= select_tag :active, options_for_select(%w(All Active Inactive)) %><br/>
+      needing verification <%= check_box_tag :to_verify, 'true' %>, to geocode <%= check_box_tag :to_geocode, 'true' %>, with status <%= select_tag :active, options_for_select(%w(All Active Inactive)) %><br/>
       <p>
       <%= submit_tag "Search", :style => 'float:right' %>
       </p>

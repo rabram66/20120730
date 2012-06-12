@@ -152,7 +152,8 @@ class PlacesController < ApplicationController
       when !lat.blank? && !lng.blank?; [lat.to_f, lng.to_f]
       when !@search.blank?; Geocoder.coordinates(@search)
       when session[:search]
-        @search = Geocoder.search(session[:search]).first.address
+        searching_for = Geocoder.search(session[:search]).first
+        @search = searching_for && searching_for.address 
         session[:search]
       when cookies[:address]
         cookie_bits = cookies[:address].split("&")

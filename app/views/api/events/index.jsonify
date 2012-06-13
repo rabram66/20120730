@@ -5,7 +5,7 @@ end
 json.events @events do |event|
   json.links do
     json.event api_event_url(:id => event.id)
-    json.url( Event === event ? event_url(event) : event.url )
+    json.url( Event === event ? mobile_event_url(event) : event.url )
   end
   json.id event.id
   json.source event.class

@@ -13,7 +13,10 @@ class LocationsCsvImporter
     CSV.foreach(filename, :headers => true) do |row|
       data = map_csv_data(row.to_hash)
       begin
-        Location.create data
+        if data[:twitter_name]
+          query = data.select{|k,v| [:name, :address,:city].include? k}
+          Location.where(query).update_all(:twitter_name => data[:twitter_name])
+        end
       rescue
         puts $!
       end

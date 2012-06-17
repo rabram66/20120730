@@ -1,6 +1,6 @@
 module Twitter
   
-  class RateLimitStatus
+  class RateLimit
 
     attr_reader :api_class, :limit, :remaining, :reset_time
 

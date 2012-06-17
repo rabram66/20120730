@@ -9,6 +9,8 @@ gem 'rack', '1.3.3'
 gem 'geocoder', :git => 'git://github.com/alexreisner/geocoder.git', :ref => '4592b73'
 # gem 'geocoder'
 
+gem 'thin'                         # application server
+gem 'foreman'                      # Procfile support
 gem 'httparty'                     # calls external APIs
 gem 'heroku'                       # manages deployment
 gem 'rest-client', '~> 1.6.7'      # calls external APIs
@@ -20,7 +22,6 @@ gem "mobile-fu"                    # mobile detection
 gem "faster_haversine", "~> 0.1.3" # Calculating distance between geocodes
 gem 'stamp'                        # user-friendly date-time formatting
 gem 'chronic'                      # user-friendly date-time parsing
-gem 'hoptoad_notifier'             # exception notification
 gem 'nokogiri'                     # screen scraping
 gem 'spreadsheet'                  # used for spreadsheet imports
 gem 'taps'                         # enables heroku db:push
@@ -51,3 +52,6 @@ group :test do
   gem 'webmock' # stubs web requests
 end
 
+group :production do
+  gem 'newrelic_rpm'                 # Application monitoring and analysis
+end  

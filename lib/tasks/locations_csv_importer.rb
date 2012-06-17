@@ -26,13 +26,6 @@ class LocationsCsvImporter
 
   private
 
-  # attr_accessible :name, :address, :city, :state, :twitter, 
-  #                 :phone, :latitude, :longitude, :reference, :email, 
-  #                 :types, :twitter_name, :facebook_page_id, :user_id,
-  #                 :verified, :verified_on, :verified_by, :favorites_count, :last_favorited_at,
-  #                 :profile_image_url, :description, :active
-  # 
-  
   def map_csv_data(d)
     { 
       :types   => transform_type(d['Category']),

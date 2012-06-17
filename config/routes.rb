@@ -22,6 +22,7 @@ NearbyThis::Application.routes.draw do
   # -------------------------- Superflous pages --------------------
   get "/about" => 'places#about'
   get "/advertise" => 'places#advertise'
+  get "/press" => 'places#press'
 
   #----------------------------- Mobile ---------------------------
   get "/mobile"             => "mobile#index",  :as => :mobile_index

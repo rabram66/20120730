@@ -17,7 +17,6 @@ NearbyThis::Application.routes.draw do
   get "events/:id" => "places#event", :as => :event_detail
   get "events/:id/ical" => "places#ical", :as => :ical_event
   post "favorite/:reference" => "places#favorite", :as => :location_favorite
-  post "recent_tweeters" => "places#recent_tweeters", :as => :recent_tweeters
 
   # -------------------------- Superflous pages --------------------
   get "/about" => 'places#about'

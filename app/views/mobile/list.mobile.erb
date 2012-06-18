@@ -1,34 +1,3 @@
-<script type='text/javascript'>
-var twitterNames = [
-  <%= @locations.select{|l1| !l1.twitter_name.blank?}.map{|l2| "'#{l2.twitter_name}'"}.join(',') -%>
-];
-
-var fetchCount = 0;
-var maxFetchCount = 3;
-
-function recentTweetUpdate() {
-  setTimeout(function() {
-    checkStatus(function(data) {
-      $.each(data, function(i,name) {
-        if ($('li.'+name).length) $('li.'+name).addClass('recent_tweet');
-      });
-      if (fetchCount < maxFetchCount) recentTweetUpdate();
-    });
-  }, 5000);
-}
-
-function checkStatus(callback) {
-  fetchCount++;
-  $.post("/recent_tweeters", { 'n[]': twitterNames }, function(data) {
-    callback(data);
-  });
-}    
-
-$(function() {
-  recentTweetUpdate();
-});
-</script>
-
 <div data-role="header" data-id="category-selector" data-position="fixed" data-theme='a'>
   <div data-role="navbar">
     <ul id='category-selector'>

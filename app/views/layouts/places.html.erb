@@ -15,7 +15,7 @@
     <script src="http://www.google.com/jsapi?key=ABQIAAAAhLOpZfesDeMKWC3zGdB4BxRyAQIOZcmWQaZgGjJb-w1DbZAmsxTfbS2hwencPWx3W54SemwGmRyFwA"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
 
-    <%= javascript_include_tag 'application', 'jquery.pjax', 'fancybox/jquery.fancybox.pack' %>
+    <%= javascript_include_tag 'application', 'jquery.pjax', 'fancybox/jquery.fancybox.pack', 'spin.min' %>
 
     <%= render :partial => '/shared/google_analytics' %>
     <%= csrf_meta_tag %>
@@ -55,7 +55,7 @@
                 <%= render :partial => '/places/left_section' %>
               <% end %>
             </div>
-            <div id='loading'><%= image_tag 'ajax-loader.gif' %></div>
+            <div id='loading'></div>
             <div id='detail-content' class="rgt_section flt_Rt">
               <%= yield %>
               <%= render :partial => 'shared/right_ad_container' %>

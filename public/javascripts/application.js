@@ -32,6 +32,22 @@ function bounds(lat, lng, radius) {
   );
 }
 
+$.fn.spin = function(opts) {
+  this.each(function() {
+    var $this = $(this),
+        data = $this.data();
+
+    if (data.spinner) {
+      data.spinner.stop();
+      delete data.spinner;
+    }
+    if (opts !== false) {
+      data.spinner = new Spinner($.extend({color: $this.css('color')}, opts)).spin(this);
+    }
+  });
+  return this;
+};
+
 $(document).ready(function() {
   
   // Directions.js
@@ -106,12 +122,12 @@ $(document).ready(function() {
   $('a.pjax').pjax('#detail-content', {timeout: 10000});
 
   $(document)
-    .on('pjax:start', function() { $('#loading').show() })
+    .on('pjax:start', function() { $('#loading').show().spin(); })
     .on('pjax:end',   function() {
       twttr.widgets.load(); // rebind tweet buttons
       loadMapAndDirections();
       bindDirectionControls();
-      $('#loading').hide();
+      $('#loading').hide().spin(false);
     });
 
   // go button

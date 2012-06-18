@@ -10,6 +10,7 @@ gem 'geocoder', :git => 'git://github.com/alexreisner/geocoder.git', :ref => '45
 # gem 'geocoder'
 
 gem 'thin'                         # application server
+gem 'airbrake'                     # Exception logging and monitoring
 gem 'foreman'                      # Procfile support
 gem 'httparty'                     # calls external APIs
 gem 'heroku'                       # manages deployment

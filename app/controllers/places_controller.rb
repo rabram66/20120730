@@ -24,8 +24,11 @@ class PlacesController < ApplicationController
     load_for_index unless pjax?
   end
 
-  # GET /
   def index
+    load_for_index unless pjax?
+  end
+
+  def press
     load_for_index unless pjax?
   end
   

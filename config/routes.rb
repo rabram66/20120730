@@ -32,6 +32,15 @@ NearbyThis::Application.routes.draw do
   get "/mobile/event/:id"   => "mobile#event",  :as => :mobile_event
   get "/mobile/city/:city"  => "mobile#city",  :as => :mobile_city
 
+  #----------------------------- Power24 ---------------------------
+  get "/power24/index"       => "power24#index",  :as => :power24_index
+  get "/power24"             => "power24#events"
+  get "/power24/list"        => "power24#list",   :as => :power24_list
+  get "/power24/detail/:id"  => "power24#detail", :as => :power24_detail
+  get "/power24/deals"       => "power24#deals",  :as => :power24_deals
+  get "/power24/events"      => "power24#events", :as => :power24_events
+  get "/power24/event/:id"   => "power24#event",  :as => :power24_event
+
   #------------------------------ API ------------------------------
   namespace :api do
     get "/"                  => "api#index"

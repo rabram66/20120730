@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NearbyThis</title>
+    <meta name="description" content="Find great places to Eat, Shop and Relax nearby and get deals and specials on your computer or phone." />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+    <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
+    <%= stylesheet_link_tag "themes/nearbythis.css" %>
+    <%= stylesheet_link_tag 'mobile' %>
+    <%= javascript_include_tag 'mobile' %>
+    <%= render :partial => '/shared/google_analytics' %>
+    <%= csrf_meta_tag %>
+  </head>
+  <body id='mobile-content'>
+    <%= yield :layout %>
+  <script type='text/javascript'>
+    $('[data-role=page]').live('pageshow', function (event, ui) {
+      try {
+        _gaq.push(['_setAccount', 'UA-26519575-1']);
+        hash = location.hash;
+        if (hash) {
+          _gaq.push(['_trackPageview', hash.substr(1)]);
+        } else {
+          _gaq.push(['_trackPageview']);
+        }
+      } catch(err) {
+      }
+    });
+  </script>
+  </body>
+</html>

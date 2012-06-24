@@ -1,0 +1,29 @@
+<div data-role='header'>
+  <h1><%= @event.name.titleize %></h1>
+</div>
+<div id='mobile-event-detail' data-role='content'>
+  <%= hidden_field_tag :origin_lat, @geocode.first %>
+  <%= hidden_field_tag :origin_lng, @geocode.last %>
+  <%= hidden_field_tag :dest_lat, @event.coordinates.first %>
+  <%= hidden_field_tag :dest_lng, @event.coordinates.last %>
+  <div id='mobile-event-info'>
+    <% unless @event.start_date.blank? -%>
+      <h4 class='event-date'>
+        <%= @event.start_date.stamp("Sunday, January 1 at 6:30 pm") %>
+        <% if @event.end_date -%>
+          till <%= @event.end_date.stamp("7:00 pm")%>
+        <% end -%>
+      </h4>
+    <% end -%>
+    <% unless @event.venue.blank? -%>
+      <h3 class='venue'><%= @event.venue %></h3>
+    <% end -%>
+    <h4>
+      <%= @event.vicinity %>
+    </h4>
+    <p id='mobile-event-description'><%= @event.description %></p>
+    <% unless @event.flyer_url.blank? -%>
+      <p class='event-flyer-link'><%= link_to "View Event Flyer", @event.flyer_url, :title => @event.name %></p>
+    <% end -%>
+  </div>
+</div>

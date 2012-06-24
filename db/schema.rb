@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120608201013) do
+ActiveRecord::Schema.define(:version => 20120622120634) do
 
   create_table "deal_locations", :force => true do |t|
     t.integer  "deal_id"
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(:version => 20120608201013) do
     t.integer  "rank"
     t.string   "url"
     t.string   "thumbnail_url"
+    t.boolean  "conference",    :default => false
   end
 
   add_index "events", ["slug"], :name => "index_events_on_slug", :unique => true

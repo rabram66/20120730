@@ -1,0 +1,31 @@
+<div data-role="header">
+  <a href="/power24/index" data-icon="back">Back</a>
+  <h1><span>Events</span>
+  <img border="0" src="/images/power24_thumbnail.png" height="50" style="float:right"/>
+  </h1>
+</div>
+<div data-role='content'>
+  <script type='text/javascript'>
+    $('#select_day').live('change', function() {
+      $('.event-day').hide();
+      $('#'+$(this).val()).show();
+    });
+  </script>
+  <%= select_tag :select_day, options_for_select(%w(Friday Saturday Sunday), Date.today.stamp("Friday")) %>
+  <% @events.each do |day, set| %>
+    <div id='<%=day%>' class='event-day' style="display:<%= day == Date.today.stamp('Friday') ? 'block' : 'none' %>">
+      <% set.each do |time, sessions| %>
+        <h2><%= time.stamp("9:00 am") %></h2>
+        <ul id='events-list' data-role="listview" data-theme="b" data-inset='true'>
+          <% for event in sessions -%>
+            <li>
+              <a href="<%= (Event === event) ? power24_event_path(event) : event.url %>" <%= "target='new'" unless Event === event %>>
+                <%= (Event === event) ? content_tag(:i, event.name) : event.name %>
+              </a>
+            </li>
+          <% end -%>
+        </ul>
+      <% end -%>
+    </div>
+  <% end -%>
+</div>

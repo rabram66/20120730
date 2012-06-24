@@ -1,0 +1,70 @@
+<div data-role='header'>
+  <a href="/power24/list" data-icon="back" data-rel='back'>Back</a>
+  <h1><%= @location.name.titleize %></h1>
+</div>
+<div id='mobile-detail' data-role='content'>
+  <%= hidden_field_tag :origin_lat, @geocode.first %>
+  <%= hidden_field_tag :origin_lng, @geocode.last %>
+  <%= hidden_field_tag :dest_lat, @location.coordinates.first %>
+  <%= hidden_field_tag :dest_lng, @location.coordinates.last %>
+  <% if @twitter_status || @facebook_status %>
+    <div id='mobile-social-status'>
+      <h4 class='center-wrapper'><%= render :partial => 'shared/tweet_this' %></h4>
+      <h3 class='center-wrapper'>
+        What They Are Saying
+      </h3>
+      <% if @twitter_status -%>
+        <ul data-role='listview' data-inset='true'>
+          <li id='mobile-twitter-status'>
+            <img src='/images/twitter_newbird_blue.png' class='ul-li-thumb'/>
+            <p class='tweet-text ul-li-desc'><%= auto_link( @twitter_status.text, :link => :urls, :html => {:target => :blank} ).html_safe %></p>
+            <p class='tweeted-at ul-li-desc'><%= time_ago_in_words(@twitter_status.created_at) %> ago</p>
+          </li>
+        </ul>
+      <% end -%>
+      <% if @facebook_status -%>
+        <ul data-role='listview' data-inset='true'>
+          <li id='mobile-facebook-status'>
+            <img src='/images/f_logo_small.png' class='ul-li-thumb'/>
+            <%= auto_link( @facebook_status.text, :link => :urls, :html => {:target => :blank} ).html_safe %>
+          </li>
+        </ul>
+      <% end -%>
+    </div>
+  <% end -%>
+  <div id='mobile-twitter-mentions'>
+    <% if @twitter_mentions && !@twitter_mentions.empty? -%>
+      <h3 class='center-wrapper'>What Others Are Saying</h3>
+      <% for tweet in @twitter_mentions -%>
+        <div class='mobile-twitter-mention' style="display:none">
+          <ul data-role='listview' data-inset='true'>
+            <li>
+              <img src="<%= tweet.profile_image_url %>" class="ul-li-thumb"/>
+              <p class='tweeted-by ul-li-desc'>
+                <span class='mentioner'><%= tweet.screen_name%></span>
+                <a href="http://twitter.com/<%= tweet.screen_name %>/status/<%= tweet.tweet_id %>" target="_blank">
+                  follow
+                </a>
+              </p>
+              <p class='tweet-text ul-li-desc'><%= auto_link( tweet.text, :link => :urls, :html => {:target => :blank} ).html_safe %></p>
+              <p class='tweeted-at ul-li-desc'><%= time_ago_in_words(tweet.created_at) %> ago</p>
+            </li>
+          </ul>
+        </div>
+      <% end -%>
+      <div id='twitter-mention-control' data-role='controlgroup' data-type='horizontal' class='center-wrapper'>
+        <a href='#' id='prev-tweet' data-role='button' data-icon='arrow-l'>Prev</a>
+        <a href='#' id='next-tweet' data-role='button' data-icon='arrow-r'>Next</a>
+      </div>
+    <% end -%>
+  </div>
+  <div data-role='controlgroup' data-type='horizontal' id='directions-and-phone-buttons' class='center-wrapper'>
+    <a href='#' data-role='button' data-inline='true' id='mobile-directions-button'>Directions</a>
+    <% unless @location.phone_number.blank? -%>
+      <a href="tel:<%= number_to_phone @location.phone_number, :area_code => true %>" data-role='button' data-inline='true'><%= number_to_phone @location.phone_number, :area_code => true %></a>
+    <% end -%>
+  </div>
+  <div id='mobile-directions'>
+  </div>
+  <div id='mobile-map'>MAP</div>
+</div>

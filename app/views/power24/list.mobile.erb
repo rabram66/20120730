@@ -1,0 +1,38 @@
+<div data-role="header" data-id="category-selector" data-position="fixed" data-theme='a'>
+  <div data-role="navbar">
+    <ul id='category-selector'>
+      <li class='home'><a href='/'><img src="/images/mobile/logo-trans.png"/></a></li>
+      <li class='first'><a href="#">EAT</a></li>
+      <li><a href="#">SHOP</a></li>
+      <li><a href="#">PLAY</a></li>
+      <li><a href="#">SPA</a></li>
+    </ul>
+  </div>
+</div>
+<div data-role='content'>
+  <div id='event-and-deal-links'>
+    <%= ( link_to "#{pluralize(@deals.length, 'Daily Deal')}", 
+          power24_deals_path(:lat => @geocode.first, :lng => @geocode.last), 
+          :"data-role" => 'button') if @deals.count > 0 %>
+    <%= ( link_to "#{pluralize(@events.count, 'Event')}",
+          power24_events_path(:lat => @geocode.first, :lng => @geocode.last), 
+          :"data-role" => 'button') if @events.count > 0 %>
+  </div>
+  
+  <ul id='locations-list' data-role="listview" data-theme='b'>
+    <% for location in @locations -%>
+      <% if Location === location -%>
+        <li class='<%= location.twitter_name %> <%= category_class_names(location) %> <%=location.recent_tweet? ? "recent_tweet" : "" %>' style='display:none'>
+          <a href="<%= power24_detail_path(:id => location.slug) %>">
+            <img src='/images/twitter-logo.jpg' class='ui-li-icon twitter-icon'/>
+            <b><%= location.name %></b> - <%= number_with_precision(location.distance, :precision => 1) %> miles
+          </a>
+        </li>
+      <% else -%>
+        <li class='<%= category_class_names(location)%>' style='display:none'>
+          <%= link_to "<b>#{location.name}</b> - #{number_with_precision(location.distance_from(@geocode), :precision => 1)} miles".html_safe, power24_detail_path(location.reference) %>
+        </li>
+      <% end -%>
+    <% end -%>
+  </ul>
+</div>

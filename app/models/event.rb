@@ -12,7 +12,7 @@ class Event < ActiveRecord::Base
   attr_accessible :name, :address, :city, :state, :description,
                   :latitude, :longitude, :user_id, :full_address, :start_date,
                   :tags, :end_date, :venue, :category, :flyer, :remove_flyer,
-                  :url, :thumbnail_url, :source, :source_id, :rank
+                  :url, :thumbnail_url, :source, :source_id, :rank, :conference
 
   friendly_id :name_and_city, :use => :history
 
@@ -21,12 +21,13 @@ class Event < ActiveRecord::Base
   geocoded_by :full_address
   validates :category, :inclusion => {:in => CATEGORIES, :allow_blank => true}
 
-  scope :upcoming, where("(start_date ISNULL AND end_date ISNULL) OR (start_date >= :today OR end_date >= :today)", {:today => Date.today})
+  scope :upcoming, where("((start_date ISNULL AND end_date ISNULL) OR (start_date >= :today OR end_date >= :today)) AND conference IS FALSE", {:today => Date.today})
   scope :upcoming_in, lambda { |t|
-    where("(start_date ISNULL AND end_date ISNULL) OR ((start_date >= :today OR end_date >= :today) AND (start_date <= :until OR end_date <=:until))",
+    where("((start_date ISNULL AND end_date ISNULL) OR ((start_date >= :today OR end_date >= :today) AND (start_date <= :until OR end_date <=:until))) AND conference IS FALSE",
      {:today => Date.today, :until => t.from_now}
     )
   }
+  scope :for_conference, where("((start_date ISNULL AND end_date ISNULL) OR (start_date >= :today OR end_date >= :today)) AND conference IS TRUE", {:today => Date.today})
 
   before_save :parse_dates, :if => Proc.new {|model| model.source.nil?}
   

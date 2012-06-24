@@ -1,0 +1,14 @@
+<div data-role='header'>
+  <h1>Daily Deals</h1>
+</div>
+<div id='mobile-deals' data-role='content'>
+  <ul id='deals-list' data-role="listview" data-theme="g">
+    <% for deal in @deals -%>
+      <li>
+        <a href="<%= deal.mobile_url %>" target="new">
+          <h3><%= deal.title %></h3>
+        </a>
+      </li>
+    <% end -%>
+  </ul>
+</div>

@@ -2,6 +2,7 @@ class PlacesController < ApplicationController
 
   has_mobile_fu
 
+  before_filter :tablet_device_fallback
   before_filter :set_pjax, :redirect_mobile_request, :except => :favorite
   before_filter :set_coordinates, :except => [:search, :ical, :favorite]
   respond_to :html, :json, :js
@@ -90,6 +91,10 @@ class PlacesController < ApplicationController
   end
   
   private
+
+  def tablet_device_fallback
+    request.format = :html if is_tablet_device?
+  end
   
   def pjax?
     @pjax

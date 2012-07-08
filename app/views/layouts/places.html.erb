@@ -36,6 +36,7 @@
             <div class="logo">
               <%= link_to image_tag("logo.jpg", :width => 195, :height => 141), root_path %>
             </div>
+            <p id='search_instruction'>Enter the name of a local shopping mall to get started.</p>
             <form id='place_search' class="search_box" action="/" method="get">
               <%= text_field_tag :search, @search, :id => "searchTextField", :class => 'inpttxt flt_Lt', :placeholder => "Enter Address, Neighborhood, City or Zip" %>
               <input id='search_button' type="button" value="go" class="gobtn flt_Lt"/>

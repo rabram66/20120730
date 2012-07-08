@@ -40,6 +40,7 @@ body                    { color:#b1b1b1; font-family:Verdana, Geneva, sans-serif
 .logo a                   { display:block;}
 .search_box input.inpttxt          { background:url(../images/txtinput_bg.png) no-repeat; width:421px; height:21px; border:0; margin-top:3px; font-size:18px; color:#555c63; padding:10px;}  
 .search_box input.gobtn            { background:url(../images/go_btn.png) no-repeat; width:48px; height:48px; border:0; color:#787a7b; text-shadow:1px 1px #fff; text-transform:uppercase; font-family:"Arial Black", Gadget, sans-serif; cursor:pointer} 
+#search_instruction {color: white; font-weight:bold; font-size:120%;margin-top:-10px;}
 
 /* ------------------------ MIAN CONTENT HERE --------------*/
 .content_wrapper              { background: #98b8d8 url(../images/banne_img_02.jpg) center top no-repeat;}  

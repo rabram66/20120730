@@ -75,6 +75,7 @@ class Event < ActiveRecord::Base
   
   def parse_dates
     self.start_date = Chronic::parse(start_date_before_type_cast) unless start_date_before_type_cast.blank?
+    self.start_date ||= Date.today
     unless end_date_before_type_cast.blank?
       parsed_date = Chronic::parse(end_date_before_type_cast)
       date = Time.new(start_date.year, start_date.month, start_date.day, end_date.hour, end_date.min, end_date.sec, end_date.utc_offset)

@@ -1,4 +1,4 @@
-module Twitter
+module Twit
   
   class RateLimit
 

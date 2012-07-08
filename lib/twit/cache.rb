@@ -1,4 +1,4 @@
-module Twitter
+module Twit
   class Cache
     
     # KEY_TEMPLATES = {

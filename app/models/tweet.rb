@@ -161,12 +161,12 @@ class Tweet
     
     def read_ratelimit(api_class)
       ratelimit = Rails.cache.read("twitter:ratelimit:#{api_class}:#{`hostname`.strip}")
-      ::Twitter::RateLimit.new(ratelimit) if ratelimit
+      ::Twit::RateLimit.new(ratelimit) if ratelimit
     end
     
     def parse_ratelimit(headers)
       unless headers[:x_ratelimit_class].blank?
-        ::Twitter::RateLimit.new(
+        ::Twit::RateLimit.new(
           :api_class  => headers[:x_ratelimit_class].to_sym,
           :limit      => headers[:x_ratelimit_limit].to_i,
           :remaining  => headers[:x_ratelimit_remaining].to_i,
